@@ -2,30 +2,32 @@
 import { DropdownMenuActionsBase } from '@shared/base-classes';
 
 // services
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 
 // enums
 import { eDropdownMenu } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 
-// helpers
-import { LoadTableHelper } from 'src/app/pages/load/pages/load-table/utils/helpers/load-table.helper';
-
 // models
 import { TableCardBodyActions } from '@shared/models';
+import { LoadResponse } from 'appcoretruckassist';
+
+// interfaces
+import { IMappedLoad } from '@pages/new-load/interfaces';
 
 export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBase {
-    // services
-    protected abstract loadStoreService: LoadStoreService;
+    // services Not working on old stuff keep as any but it is LoadStoreService
+    protected abstract loadStoreService: any;
 
     constructor() {
         super();
     }
 
-    protected handleDropdownMenuActions<T>(
+    protected handleDropdownMenuActions<T extends IMappedLoad | LoadResponse>(
         action: TableCardBodyActions<T>,
         tableType: string,
-        selectedTab?: string
+        selectedTab?: string,
+        isDetailsPage?: boolean
     ) {
         const { type } = action;
 
@@ -44,7 +46,7 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
 
                 break;
             case eDropdownMenu.DELETE_TYPE:
-                this.handleLoadDeleteAction(action, tableType, selectedTab);
+                this.handleLoadDeleteAction(action, isDetailsPage);
 
                 break;
             default:
@@ -85,21 +87,17 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
         );
     }
 
-    private handleLoadDeleteAction<T>(
+    private handleLoadDeleteAction<T extends IMappedLoad | LoadResponse>(
         action: TableCardBodyActions<T>,
-        tableType: string,
-        selectedTab: string
+        isDetailsPage?: boolean
     ): void {
-        const modalHeaderTitle =
-            LoadTableHelper.composeDeleteModalTitle(selectedTab);
+        const { data } = action;
+        const isTemplate = !data.loadNumber;
 
-        const adjustedAction = {
-            ...action,
-            template: eDropdownMenu.LOAD,
-            subType: selectedTab.toLowerCase(),
-            modalHeaderTitle,
-        };
-
-        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
+        this.loadStoreService.onDeleteLoadFromDropdown({
+            isTemplate,
+            loads: [data],
+            isDetailsPage,
+        });
     }
 }

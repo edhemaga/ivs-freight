@@ -169,7 +169,8 @@ export class TodoModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string) {
-        this.activeAction = action;
+        if (this.taskForm.valid && this.isFormDirty) this.activeAction = action;
+
         switch (action) {
             case TaModalActionEnum.CLOSE: {
                 this.ngbActiveModal.close();
@@ -189,7 +190,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.taskForm);
                     return;
                 }
-                if (this.editData?.type === eGeneralActions.EDIT) {
+                if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE) {
                     this.updateTaskById(this.editData.id);
                 } else {
                     this.addTask();
@@ -199,7 +200,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
             case TaModalActionEnum.DELETE: {
                 this.deleteTaskById(this.editData.id);
                 this.modalService.setModalSpinner({
-                    action: eGeneralActions.DELETE,
+                    action: eGeneralActions.DELETE_LOWERCASE,
                     status: true,
                     close: false,
                 });
@@ -213,7 +214,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
 
     public changeCommentsEvent(comments: ReviewComment) {
         switch (comments.action) {
-            case eGeneralActions.DELETE: {
+            case eGeneralActions.DELETE_LOWERCASE: {
                 this.deleteComment(comments);
                 break;
             }
@@ -308,7 +309,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
-            case eGeneralActions.DELETE: {
+            case eGeneralActions.DELETE_LOWERCASE: {
                 this.taskForm
                     .get(eFileFormControls.FILES)
                     .patchValue(
@@ -487,7 +488,9 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                     });
                     this.resCompanyUsers = [...this.showCompanyUsers];
 
-                    if (this.editData?.type === eGeneralActions.EDIT) {
+                    if (
+                        this.editData?.type === eGeneralActions.EDIT_LOWERCASE
+                    ) {
                         this.isCardAnimationDisabled = true;
                         this.editTask(this.editData.id);
                     } else {

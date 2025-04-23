@@ -52,21 +52,11 @@ export class StoreFunctionsHelper {
         column: ITableColumn,
         columns: ITableColumn[]
     ): ITableColumn[] {
-        return columns.map((col) => {
-            if (col.key === column.key) {
-                // Use left as pinned side
-                return { ...col, pinned: col.pinned ? null : 'left' };
-            }
-            if (col.columns && col.columns.length) {
-                // Check all sub group column
-                const updatedColumns = this.togglePinned(column, col.columns);
-                return {
-                    ...col,
-                    columns: updatedColumns,
-                };
-            }
-            return col;
-        });
+        return columns.map((col) =>
+            col.key === column.key
+                ? { ...col, pinned: col.pinned ? null : 'left' }
+                : col
+        );
     }
 
     static toggleSort(
@@ -74,10 +64,11 @@ export class StoreFunctionsHelper {
         columns: ITableColumn[]
     ): {
         columns: ITableColumn[];
-        sortKey: MilesStopSortBy;
+        sortKey: string;
         sortDirection: SortOrder | null;
+        label: string;
     } {
-        const { sortName, key } = column;
+        const { sortName, key, label } = column;
 
         let updatedSortKey = sortName;
         let updatedSortDirection: SortOrder | null = SortOrder.Ascending;
@@ -112,6 +103,37 @@ export class StoreFunctionsHelper {
             columns: updatedColumns,
             sortKey: updatedSortDirection ? updatedSortKey : null,
             sortDirection: updatedSortDirection,
+            label,
         };
+    }
+
+    static updateColumnWidth(
+        columns: ITableColumn[],
+        columnId: number,
+        newWidth: number
+    ): ITableColumn[] {
+        return columns.map((col) => {
+            // if this column contains nested columns, recursively call updateColumnWidth
+
+            if (col.columns)
+                return {
+                    ...col,
+                    columns: this.updateColumnWidth(
+                        col.columns,
+                        columnId,
+                        newWidth
+                    ), // recursive call
+                };
+
+            // if column id matches, update the width
+
+            if (col.id === columnId)
+                return {
+                    ...col,
+                    width: newWidth,
+                };
+
+            return col;
+        });
     }
 }

@@ -54,12 +54,41 @@ export const tableColumnsSelector = createSelector(
 
 export const detailsSelector = createSelector(selectMilesState, (state) => {
     const { details } = state || {};
-    return details;
+    return details.data;
 });
 
-export const unitsPaginationSelector = createSelector(
+export const stopsSelector = createSelector(selectMilesState, (state) => {
+    const { details } = state || {};
+    return details.stops ?? [];
+});
+
+export const stopsSearchSelector = createSelector(selectMilesState, (state) => {
+    const { details } = state || {};
+    return details.searchString;
+});
+
+export const currentStopsPageSelector = createSelector(
     selectMilesState,
-    (state: IMilesState) => state.unitsPagination
+    (state) => {
+        const { details } = state || {};
+        return details.currentPage;
+    }
+);
+
+export const activeUnitIdSelector = createSelector(
+    selectMilesState,
+    (state) => {
+        const { details } = state || {};
+        return details.activeUnitId;
+    }
+);
+
+export const totalStopsCountSelector = createSelector(
+    selectMilesState,
+    (state) => {
+        const { details } = state || {};
+        return details.totalCount;
+    }
 );
 
 export const pageSelector = createSelector(
@@ -91,4 +120,49 @@ export const cardFlipViewModeSelector = createSelector(
         const { cardFlipViewMode } = state || {};
         return eCardFlipViewMode[cardFlipViewMode];
     }
+);
+
+export const minimalListSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.minimalList.data || []
+);
+
+export const currentPageSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.minimalList.currentPage
+);
+
+export const searchTextSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.minimalList.searchString
+);
+
+export const totalMinimalListCountSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.minimalList.totalCount
+);
+
+export const minimalListFiltersSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.minimalListFilters
+);
+
+export const detailsLoadingSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.isDetailsLoading
+);
+
+export const milesUnitMapDataSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.unitMapData
+);
+
+export const frontSideDataSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.frontSideData
+);
+
+export const backSideDataSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.backSideData
 );

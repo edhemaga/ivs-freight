@@ -4,10 +4,10 @@ import { Component } from '@angular/core';
 // components
 import { MilesMapUnitListComponent } from '@pages/miles/pages/miles-map/components/miles-map-unit-list/miles-map-unit-list.component';
 import { MilesMapUnitTotalComponent } from '@pages/miles/pages/miles-map/components/miles-map-unit-total/miles-map-unit-total.component';
-import { CaMapComponent, ICaMapProps } from 'ca-components';
+import { CaMapComponent } from 'ca-components';
 
-// TODO: Ognjen
-import { RepairShopMapConfig } from '@pages/repair/pages/repair-table/utils/constants/repair-shop-map.config';
+// services
+import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 
 @Component({
     selector: 'app-miles-map',
@@ -22,5 +22,9 @@ import { RepairShopMapConfig } from '@pages/repair/pages/repair-table/utils/cons
     ],
 })
 export class MilesMapComponent {
-    public mapData: ICaMapProps = RepairShopMapConfig.repairShopMapConfig;
+    constructor(public milesStoreService: MilesStoreService) {}
+
+    public handleRoutingMarkerClick(stopId: number): void {
+        this.milesStoreService.dispatchGetMapStopData(stopId);
+    }
 }

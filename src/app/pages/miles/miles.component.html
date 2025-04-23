@@ -6,6 +6,8 @@
         statesSelector: milesStoreService.statesSelector$ | async,
         tableSettings: milesStoreService.tableSettingsSelector$ | async,
         miles: milesStoreService.miles$ | async,
+        toolbarDropdownMenuActions:
+            milesStoreService.toolbarDropdownMenuOptionsSelector$ | async,
     };
 
 <div
@@ -20,7 +22,7 @@
             [isMarginTopDisabled]="true"
             [leftSide]="leftSide"
             [hasPlusIcon]="false"
-            [toolbarDropdownContent]="toolbarDropdownMenuOptions"
+            [toolbarDropdownContent]="store.toolbarDropdownMenuActions"
             (toolbarDropdownAction)="onToolbarDropdownMenuActions($event)"
         >
             <ng-template #leftSide>
@@ -87,24 +89,9 @@
             </ng-template>
         </app-new-table-toolbar>
 
-        <!-- List, Card, Map -->
-
-        @switch (store.activeViewMode) {
-            @case (eCommonElement.LIST) {
-                <app-miles-table></app-miles-table>
-            }
-
-            @case (eCommonElement.CARD) {
-                <app-miles-card></app-miles-card>
-            }
-
-            @case (eCommonElement.MAP) {
-                <app-miles-map></app-miles-map>
-            }
-        }
+        <router-outlet></router-outlet>
 
         <!-- Empty State - List, Card -->
-
         <app-ta-table-empty
             [activeViewMode]="store.activeViewMode"
             [btnText]="eSharedString.TRUCK_CAPITALIZED"

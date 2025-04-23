@@ -200,7 +200,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
-            case eGeneralActions.DELETE: {
+            case eGeneralActions.DELETE_LOWERCASE: {
                 this.registrationForm
                     .get(eFileFormControls.FILES)
                     .patchValue(

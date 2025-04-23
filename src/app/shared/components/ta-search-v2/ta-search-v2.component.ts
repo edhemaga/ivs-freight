@@ -46,7 +46,7 @@ export class TaSearchV2Component implements OnChanges {
         }
     }
 
-    public handleSearchValue(event: Event): void {
+    public onHandleSearchValue(event: Event): void {
         const searchValue = (event.target as HTMLInputElement).value;
 
         if (!this.isDetailsSearchLayout) {

@@ -1147,6 +1147,9 @@ export class FuelTableComponent
 
                     this.fuelData.pageIndex = 1;
 
+                    if (this.activeViewMode === TableStringEnum.MAP)
+                        this.handleMapFilters(currentFilter);
+
                     if (
                         !!currentFilter &&
                         (currentFilter?.filterName ===

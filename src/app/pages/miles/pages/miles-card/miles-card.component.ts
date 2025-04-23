@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+
+// modules
 import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
@@ -8,7 +11,17 @@ import { MilesStoreService } from '@pages/miles/state/services/miles-store.servi
 import { CaTableCardViewComponent } from 'ca-components';
 
 // pipes
-import { FormatCurrencyPipe, ThousandSeparatorPipe } from '@shared/pipes';
+import {
+    FormatCurrencyPipe,
+    ThousandSeparatorPipe,
+    GetNestedValuePipe,
+} from '@shared/pipes';
+
+// enums
+import { eTableCardViewData } from '@shared/enums';
+
+// svg-routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-miles-card',
@@ -17,6 +30,7 @@ import { FormatCurrencyPipe, ThousandSeparatorPipe } from '@shared/pipes';
     standalone: true,
     imports: [
         CommonModule,
+        AngularSvgIconModule,
 
         // components
         CaTableCardViewComponent,
@@ -24,12 +38,19 @@ import { FormatCurrencyPipe, ThousandSeparatorPipe } from '@shared/pipes';
         // pipes
         FormatCurrencyPipe,
         ThousandSeparatorPipe,
+        GetNestedValuePipe,
     ],
 })
 export class MilesCardComponent {
+    // enums
+    public eTableCardViewData = eTableCardViewData;
+
+    // svg-routes
+    public sharedSvgRoutes = SharedSvgRoutes;
+
     constructor(public milesStoreService: MilesStoreService) {}
 
-    public openColumnsModal(): void {
-        // todo open columns modal
+    public onShowMoreClick(): void {
+        this.milesStoreService.getNewPage();
     }
 }

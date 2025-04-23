@@ -1,55 +1,136 @@
-<div
-    class="d-flex flex-column justify-content-center comments-search-container"
->
-    <div class="search-container">
-        <ng-container *ngIf="isDisplaySearch">
-            <app-ta-search-v2
-                [isDetailsSearchLayout]="true"
-                [placeHolderText]="'Comment'"
-                (searchValueEmitter)="handleSearchValue($event)"
-            ></app-ta-search-v2>
-        </ng-container>
-    </div>
+@if (isLoading) {
+    <div class="d-flex justify-content-between align-items-center h-37">
+        <p class="placeholder-glow p-l-6">
+            <span class="placeholder placeholder-muted br-2 h-10 w-49"></span>
+        </p>
 
-    <div class="d-flex flex-column justify-content-center comments-container">
-        <ng-container *ngIf="!isHeaderHidden">
+        <div class="d-flex justify-content-center align-items-center">
+            <p class="placeholder-glow">
+                <span
+                    class="placeholder placeholder-muted br-2 h-14 w-36"
+                ></span>
+            </p>
+
             <div
-                class="d-flex align-items-center justify-content-between comments-container-header"
-                [ngClass]="{ disabled: commentsData?.length === 1 }"
+                class="d-flex w-26 h-26 justify-content-center align-items-center"
             >
-                <ng-container *ngIf="!lettersToHightlight; else showResultsCount">
-                    <p class="m-0 ta-font-bold">SORT BY</p>
-                </ng-container>
-
-                <ng-template #showResultsCount>
-                    <p class="m-0 ta-font-bold">{{commentsData.length}} {{commentsData.length === 1 ? 'RESULT' : 'RESULTS'}} </p>
-                </ng-template>
-
-                <div class="d-flex align-items-center">
-                    <span class="ta-font-medium"> Date </span>
-
-                    <svg-icon
-                        class="icon"
-                        [src]="
-                            sortDirection === 'dsc'
-                                ? commentsSearchSvgRoutes.arrowUpSortRoute
-                                : commentsSearchSvgRoutes.arrowDownSortRoute
-                        "
-                        (click)="handleSortClick()"
-                    ></svg-icon>
-                </div>
+                <p class="placeholder-glow">
+                    <span
+                        class="placeholder placeholder-muted br-5 rotate-45 w-15 h-15"
+                    ></span>
+                </p>
             </div>
-        </ng-container>
-
-        <ng-container *ngFor="let comment of commentsData; let i = index">
-            <app-ta-comment
-                [isDetailsCommentLayout]="true"
-                [commentData]="comment"
-                [commentIndex]="i"
-                [isMe]="comment.isMe"
-                [commentHighlight]="lettersToHightlight"
-                (btnActionEmitter)="handleCommentActionEmit($event)"
-            ></app-ta-comment>
-        </ng-container>
+        </div>
     </div>
-</div>
+    <div class="divider divider--small divider--dark"></div>
+
+    <!-- Comment body -->
+    @let commentsSkeletonSize = [1, 2, 3, 4, 5];
+    @for (
+        commentSkeleton of commentsSkeletonSize;
+        track $index;
+        let even = $even
+    ) {
+        <!-- Comment header -->
+        <div class="d-flex align-items-center h-26 gap-1 m-t-6">
+            <p class="placeholder-glow line-0">
+                <span
+                    class="placeholder placeholder-muted rounded-circle w-22 h-22"
+                ></span>
+            </p>
+            <div class="d-flex align-items-start flex-column">
+                <p class="placeholder-glow line-0">
+                    <span
+                        class="placeholder placeholder-muted br-2 h-10 w-106"
+                    ></span>
+                </p>
+                <p class="placeholder-glow m-t-2 line-0">
+                    <span
+                        class="placeholder placeholder-muted br-2 h-10 w-80"
+                    ></span>
+                </p>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-start flex-column mt-1 m-b-8">
+            <p class="placeholder-glow w-100 line-0">
+                <span
+                    class="placeholder placeholder-muted br-2 h-10 w-75"
+                ></span>
+            </p>
+            @if (even) {
+                <p class="placeholder-glow m-t-2 w-100 line-0">
+                    <span
+                        class="placeholder placeholder-muted br-2 h-10 w-90p"
+                    ></span>
+                </p>
+            }
+            <p class="placeholder-glow m-t-2 w-100 line-0">
+                <span
+                    class="placeholder placeholder-muted br-2 h-10"
+                    [ngClass]="even ? 'w-50' : 'w-40p'"
+                ></span>
+            </p>
+        </div>
+    }
+} @else {
+    <div
+        class="d-flex flex-column justify-content-center comments-search-container"
+    >
+        <div class="search-container">
+            @if (isDisplaySearch) {
+                <app-ta-search-v2
+                    [isDetailsSearchLayout]="true"
+                    [placeHolderText]="'Comment'"
+                    (searchValueEmitter)="onHandleSearchValue($event)"
+                ></app-ta-search-v2>
+            }
+        </div>
+
+        <div
+            class="d-flex flex-column justify-content-center comments-container"
+        >
+            @if (!isHeaderHidden) {
+                @let commentsDataCount = commentsData?.length;
+                <div
+                    class="d-flex align-items-center justify-content-between comments-container-header h-26 m-t-6 m-b-6"
+                    [ngClass]="{ disabled: commentsDataCount === 1 }"
+                >
+                    @if (lettersToHighlight) {
+                        <p class="m-0 ta-font-bold">
+                            {{ commentsDataCount }}
+                            {{ commentsDataCount === 1 ? 'RESULT' : 'RESULTS' }}
+                        </p>
+                    } @else {
+                        <p class="m-0 ta-font-bold">SORT BY</p>
+                    }
+                    <div class="d-flex align-items-center">
+                        <span class="ta-font-medium"> Date </span>
+
+                        <svg-icon
+                            class="icon"
+                            [src]="
+                                sortDirection === eSortDirection.DSC
+                                    ? commentsSearchSvgRoutes.arrowUpSortRoute
+                                    : commentsSearchSvgRoutes.arrowDownSortRoute
+                            "
+                            (click)="handleSortClick()"
+                        ></svg-icon>
+                    </div>
+                </div>
+                <div class="divider divider--small divider--dark"></div>
+            }
+
+            @for (comment of commentsData; let i = $index; track i) {
+                <app-ta-comment
+                    [isDetailsCommentLayout]="true"
+                    [commentData]="comment"
+                    [commentIndex]="i"
+                    [isMe]="comment.isMe"
+                    [commentHighlight]="lettersToHighlight"
+                    (onAction)="onCommentAction($event)"
+                ></app-ta-comment>
+            }
+        </div>
+    </div>
+}

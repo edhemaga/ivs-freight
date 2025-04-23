@@ -1,4 +1,4 @@
-import { MilesStopSortBy, SortOrder } from 'appcoretruckassist';
+import { SortOrder } from 'appcoretruckassist';
 
 export interface ITableColumn {
     id?: number;
@@ -14,12 +14,11 @@ export interface ITableColumn {
     pinned?: 'left' | 'right';
     hasSort?: boolean;
     direction?: SortOrder | null;
-    isPinEnabled?: boolean;
     isResizable?: boolean;
     isAlignedRight?: boolean;
     columns?: ITableColumn[];
     isDisabled?: boolean;
     isChecked?: boolean;
     labelToolbar?: string;
-    sortName?: MilesStopSortBy;
+    sortName?: string;
 }

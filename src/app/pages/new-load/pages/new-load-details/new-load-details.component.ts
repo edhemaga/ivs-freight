@@ -6,8 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
 
 // Services
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
-import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 import { ModalService } from '@shared/services';
@@ -28,7 +27,6 @@ import { LoadResponse } from 'appcoretruckassist';
 // Enums
 import { eLoadRouting } from '@pages/new-load/enums';
 import { eDropdownMenu, TableStringEnum } from '@shared/enums';
-import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 // Interfaces
 import {
@@ -71,48 +69,29 @@ export class NewLoadDetailsComponent
         protected loadStoreService: LoadStoreService,
         protected modalService: ModalService,
         protected tableService: TruckassistTableService,
-        protected confirmationResetService: ConfirmationResetService,
-
-        private confirmationService: ConfirmationService
+        protected confirmationResetService: ConfirmationResetService
     ) {
         super();
     }
 
     ngOnInit(): void {
         this.getStoreData();
-        this.confirmationDataSubscribe();
     }
 
     private getStoreData(): void {
-        this.loadStoreService.resolveLoadDetails$
+        // TODO: Dragan, do we need this?
+        this.loadStoreService.loadDetailsSelector$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.load = res;
-                this.setDropdownMenuOptions(res?.statusType?.name);
+                this.load = res.data;
+
+                this.setDropdownMenuOptions(res?.data.statusType?.name);
             });
     }
 
     private setDropdownMenuOptions(statusType: string): void {
         this.dropdownMenuOptions =
             DropdownMenuContentHelper.getLoadDropdownContent(statusType, true);
-    }
-
-    private confirmationDataSubscribe(): void {
-        this.confirmationService.confirmationData$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((confirmationData) => {
-                const { type } = confirmationData || {};
-
-                if (type === TableStringEnum.DELETE) {
-                    const { id } = confirmationData || {};
-                    const { statusType } = this.load;
-
-                    this.loadStoreService.dispatchDeleteLoadOrTemplateById(
-                        id,
-                        eLoadStatusType[statusType.name]
-                    );
-                }
-            });
     }
 
     public onDetailsDropdownMenuActions(action: IDropdownMenuOptionEmit): void {
@@ -122,12 +101,14 @@ export class NewLoadDetailsComponent
         const mappedAction = {
             type,
             id,
+            data: this.load,
         };
 
         this.handleDropdownMenuActions(
             mappedAction,
             eDropdownMenu.LOAD,
-            statusType.name
+            statusType.name,
+            true
         );
     }
 

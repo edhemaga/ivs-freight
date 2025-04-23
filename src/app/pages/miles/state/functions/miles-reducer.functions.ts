@@ -1,21 +1,38 @@
 // interfaces
-import { IMilesModel, IMilesState } from '@pages/miles/interface';
-import { IStateFilters } from '@shared/interfaces';
+import {
+    IMilesModel,
+    IMilesState,
+    IMinimalListState,
+} from '@pages/miles/interface';
+import {
+    ICardValueData,
+    IMinimalListFilters,
+    IStateFilters,
+} from '@shared/interfaces';
 import {
     ITableColumn,
     ITableResizeAction,
 } from '@shared/components/new-table/interface';
 
 // enums
-import {
-    eActiveViewMode,
-    eCardFlipViewMode,
-    eGeneralActions,
-} from '@shared/enums';
+import { eActiveViewMode, eCardFlipViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
+import { eSharedString } from '@shared/enums';
 
 // models
-import { MilesByUnitPaginatedStopsResponse } from 'appcoretruckassist';
+import {
+    MilesByUnitMinimalListResponse,
+    MilesByUnitPaginatedStopsResponse,
+    MilesStopDetailsResponse,
+    RoutingResponse,
+} from 'appcoretruckassist';
+import {
+    ICaMapProps,
+    IMapMarkers,
+    IMapRoutePath,
+    MapMarkerIconHelper,
+    MapOptionsConstants,
+} from 'ca-components';
 
 // configs
 import { MilesTableColumnsConfig } from '@pages/miles/utils/config';
@@ -24,6 +41,7 @@ import { MilesTableColumnsConfig } from '@pages/miles/utils/config';
 import { MilesDropdownMenuHelper } from '@pages/miles/utils/helpers';
 import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
+import { MilesMapDropdownHelper } from '@pages/miles/pages/miles-map/utils/helpers';
 
 export const updateTruckCounts = function (
     state: IMilesState,
@@ -55,10 +73,7 @@ export const changeViewMode = function (
     return {
         ...state,
         activeViewMode,
-        unitsPagination: {
-            ...state.unitsPagination,
-            activeUnitIndex: 0,
-        },
+        isDetailsLoading: true,
         toolbarDropdownMenuOptions:
             MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
                 activeViewMode,
@@ -71,19 +86,13 @@ export const changeViewMode = function (
 
 export const updateMilesData = function (
     state: IMilesState,
-    miles: IMilesModel[],
-    totalResultsCount: number
+    miles: IMilesModel[]
 ): IMilesState {
     return {
         ...state,
         items: miles,
         page: 1,
         loading: false,
-        unitsPagination: {
-            ...state.unitsPagination,
-            activeUnitIndex: 0,
-            totalResultsCount,
-        },
     };
 };
 
@@ -103,11 +112,6 @@ export const updateMilesListData = function (
     return {
         ...state,
         items,
-        // New items are not selected no need to filter it
-        unitsPagination: {
-            ...state.unitsPagination,
-            currentPage: state.unitsPagination.currentPage + 1,
-        },
     };
 };
 
@@ -120,6 +124,20 @@ export const updateFilters = function (
         filters,
     };
 };
+
+export function onSeachFilterChange(
+    state: IMilesState,
+    searchQuery: string[]
+): IMilesState {
+    return {
+        ...state,
+        page: 1,
+        filters: {
+            ...state.filters,
+            searchQuery,
+        },
+    };
+}
 
 export const updateTabSelection = function (
     state: IMilesState,
@@ -134,43 +152,144 @@ export const updateTabSelection = function (
 
 export const setUnitDetails = function (
     state: IMilesState,
-    details: MilesByUnitPaginatedStopsResponse,
-    isLast: boolean
+    details: MilesByUnitPaginatedStopsResponse
 ): IMilesState {
+    const selectedTab = details.truck.status
+        ? eMileTabs.ACTIVE
+        : eMileTabs.INACTIVE;
+    const minimalListFilters = getTruckNavigationMeta(
+        details.truck.id,
+        state.minimalList
+    );
     return {
         ...state,
-        details,
-        unitsPagination: {
-            ...state.unitsPagination,
-            isLastUnit: isLast,
-            isFirstUnit: true,
+        selectedTab,
+        isDetailsLoading: false,
+        details: {
+            ...state.details,
+            data: details,
+            currentPage: details.stops.pageIndex,
+            totalCount: details.stops.count,
+            stops: details.stops.data,
+            activeUnitId: details.truck.id,
         },
+        minimalListFilters,
     };
 };
-export const setFollowingUnitDetails = function (
+export const updateUnitDetails = function (
     state: IMilesState,
-    details: MilesByUnitPaginatedStopsResponse,
-    activeUnitIndex: number,
-    isFirstUnit: boolean,
-    isLastUnit: boolean,
-    isLastInCurrentList: boolean
+    details: MilesByUnitPaginatedStopsResponse
 ): IMilesState {
-    const { unitsPagination } = state;
+    const newData = details.stops?.data ?? [];
+
     return {
         ...state,
-        details,
-        unitsPagination: {
-            ...unitsPagination,
-            isFirstUnit,
-            isLastUnit,
-            activeUnitIndex,
-            isLastInCurrentList,
+        details: {
+            ...state.details,
+            stops: [...state.details.stops, ...newData],
+            currentPage: state.details.currentPage + 1,
         },
     };
 };
 
+export const setUnitMapRoutes = function (
+    state: IMilesState,
+    unitMapRoutes: RoutingResponse
+): IMilesState {
+    return { ...state, unitMapRoutes };
+};
+
+export const setMapSelectedStop = function (
+    state: IMilesState,
+    unitStopData: MilesStopDetailsResponse
+): IMilesState {
+    const { unitMapData } = state;
+
+    const markerData = unitMapData.routingMarkers.find(
+        (marker) => marker.data?.id === unitStopData.id
+    );
+
+    let selectedRoutingMarkerData: IMapMarkers = null;
+
+    if (markerData)
+        selectedRoutingMarkerData = {
+            ...markerData,
+            infoWindowContent:
+                MilesMapDropdownHelper.getMilesUnitMapDropdownConfig(
+                    unitStopData
+                ),
+            data: { ...unitStopData },
+        };
+
+    const newMapData = { ...unitMapData, selectedRoutingMarkerData };
+
+    return { ...state, unitMapData: newMapData };
+};
+
+export const setUnitMapData = function (state: IMilesState): IMilesState {
+    const {
+        unitMapRoutes,
+        details: { stops },
+    } = state || {};
+
+    let routeMarkers: IMapMarkers[] = [];
+    let routePaths: IMapRoutePath[] = [];
+
+    stops?.map((stop, index) => {
+        const routeMarker: IMapMarkers = {
+            position: {
+                lat: stop.latitude,
+                lng: stop.longitude,
+            },
+            content: MapMarkerIconHelper.getMilesMarkerElement(
+                stop.order ?? 0,
+                stop.type.name.toLowerCase(),
+                stop.location.address,
+                index
+            ),
+            hasClickEvent: true,
+            data: { ...stop },
+        };
+
+        routeMarkers = [...routeMarkers, routeMarker];
+
+        if (index > 0) {
+            const isDashedPath = !!stops?.[index - 1]?.empty;
+
+            const strokeColor =
+                stops?.[index - 1].type.name === eSharedString.TOWING
+                    ? MapOptionsConstants.ROUTING_PATH_COLORS.purple
+                    : MapOptionsConstants.ROUTING_PATH_COLORS.gray;
+
+            const routePath: IMapRoutePath = {
+                path: [],
+                decodedShape: unitMapRoutes?.legs?.[index - 1]?.decodedShape,
+                strokeColor,
+                strokeOpacity: 1,
+                strokeWeight: 4,
+                isDashed: isDashedPath,
+            };
+
+            routePaths = [...routePaths, routePath];
+        }
+    });
+
+    const unitMapData = {
+        markers: [],
+        clusterMarkers: [],
+        darkMode: false,
+        isZoomShown: true,
+        isVerticalZoom: true,
+        routingMarkers: routeMarkers,
+        routePaths: routePaths,
+    } as ICaMapProps;
+
+    return { ...state, unitMapData };
+};
+
 export const toggleTableLockingStatus = function (
-    state: IMilesState
+    state: IMilesState,
+    isLocked?: boolean
 ): IMilesState {
     const {
         tableSettings,
@@ -179,10 +298,12 @@ export const toggleTableLockingStatus = function (
         isToolbarDropdownMenuColumnsActive,
     } = state;
 
+    const isTableLocked = isLocked ?? !tableSettings.isTableLocked;
+
     const toolbarDropdownMenuOptions =
         MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
             activeViewMode,
-            !tableSettings.isTableLocked,
+            isTableLocked,
             cardFlipViewMode,
             isToolbarDropdownMenuColumnsActive
         );
@@ -191,7 +312,7 @@ export const toggleTableLockingStatus = function (
         ...state,
         tableSettings: {
             ...tableSettings,
-            isTableLocked: !tableSettings.isTableLocked,
+            isTableLocked,
         },
         toolbarDropdownMenuOptions,
     };
@@ -211,10 +332,8 @@ export function tableSortingChange(
     state: IMilesState,
     column: ITableColumn
 ): IMilesState {
-    const { columns, sortKey, sortDirection } = StoreFunctionsHelper.toggleSort(
-        column,
-        state.columns
-    );
+    const { columns, sortKey, sortDirection, label } =
+        StoreFunctionsHelper.toggleSort(column, state.columns);
 
     return {
         ...state,
@@ -223,6 +342,7 @@ export function tableSortingChange(
             ...state.tableSettings,
             sortDirection,
             sortKey,
+            label,
         },
     };
 }
@@ -250,9 +370,9 @@ export function onSearchChange(
 ): IMilesState {
     return {
         ...state,
-        unitsPagination: {
-            ...state.unitsPagination,
-            search,
+        details: {
+            ...state.details,
+            searchString: search,
         },
     };
 }
@@ -268,14 +388,15 @@ export function resetTable(state: IMilesState): IMilesState {
         ...state,
         columns: MilesTableColumnsConfig.columnsConfig,
         tableSettings: {
-            isTableLocked: false,
+            isTableLocked: true,
             sortKey: null,
             sortDirection: null,
+            label: '',
         },
         toolbarDropdownMenuOptions:
             MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
                 activeViewMode,
-                false,
+                true,
                 cardFlipViewMode,
                 isToolbarDropdownMenuColumnsActive
             ),
@@ -308,29 +429,24 @@ export function toggleCardFlipViewMode(state: IMilesState): IMilesState {
     };
 }
 
-export function toggleToolbarDropdownMenuColumnsActive(
-    state: IMilesState
+export function setToolbarDropdownMenuColumnsActive(
+    state: IMilesState,
+    isActive: boolean
 ): IMilesState {
-    const {
-        cardFlipViewMode,
-        activeViewMode,
-        tableSettings,
-        isToolbarDropdownMenuColumnsActive,
-        columns,
-    } = state;
+    const { cardFlipViewMode, activeViewMode, tableSettings, columns } = state;
 
     const toolbarDropdownColumns =
         DropdownMenuColumnsActionsHelper.mapToolbarDropdownColumnsNew(columns);
 
     return {
         ...state,
-        isToolbarDropdownMenuColumnsActive: !isToolbarDropdownMenuColumnsActive,
+        isToolbarDropdownMenuColumnsActive: isActive,
         toolbarDropdownMenuOptions:
             MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
                 activeViewMode,
                 tableSettings.isTableLocked,
                 cardFlipViewMode,
-                !isToolbarDropdownMenuColumnsActive,
+                isActive,
                 toolbarDropdownColumns
             ),
     };
@@ -343,36 +459,93 @@ export function tableResizeChange(
     const { columns } = state;
     const { id, newWidth } = resizeAction;
 
-    function updateColumnWidth(
-        columns: ITableColumn[],
-        columnId: number,
-        newWidth: number
-    ): ITableColumn[] {
-        return columns.map((col) => {
-            // if this column contains nested columns, recursively call updateColumnWidth
-
-            if (col.columns)
-                return {
-                    ...col,
-                    columns: updateColumnWidth(col.columns, columnId, newWidth), // recursive call
-                };
-
-            // if column id matches, update the width
-
-            if (col.id === columnId)
-                return {
-                    ...col,
-                    width: newWidth,
-                };
-
-            return col;
-        });
-    }
-
-    const resizedColumns = updateColumnWidth(columns, id, newWidth);
+    const resizedColumns = StoreFunctionsHelper.updateColumnWidth(
+        columns,
+        id,
+        newWidth
+    );
 
     return {
         ...state,
         columns: resizedColumns,
+    };
+}
+export function setInitalMinimalList(
+    state: IMilesState,
+    list: MilesByUnitMinimalListResponse,
+    text: string
+): IMilesState {
+    const data = list.pagination?.data ?? [];
+    const totalCount = list.pagination?.count ?? 0;
+
+    return {
+        ...state,
+        minimalList: {
+            data,
+            currentPage: 1,
+            totalCount,
+            searchString: text,
+        },
+    };
+}
+
+export function appendToMinimalList(
+    state: IMilesState,
+    list: MilesByUnitMinimalListResponse
+): IMilesState {
+    const newData = list.pagination?.data ?? [];
+    const totalCount = list.pagination?.count ?? state.minimalList.totalCount;
+
+    return {
+        ...state,
+        minimalList: {
+            ...state.minimalList,
+            data: [...state.minimalList.data, ...newData],
+            currentPage: state.minimalList.currentPage + 1,
+            totalCount,
+        },
+    };
+}
+
+function getTruckNavigationMeta(
+    currentId: number,
+    truckList: IMinimalListState
+): IMinimalListFilters {
+    const index = truckList.data.findIndex(
+        (truck) => truck.truck.id === currentId
+    );
+
+    const isFirst = index === 0;
+    const isLast = index === truckList.data.length - 1;
+
+    if (index === -1) {
+        return {
+            isFirst: true,
+            isLast: false,
+            prevId: null,
+            nextId: truckList.data[0]?.truck.id ?? null,
+        };
+    }
+
+    const prevId = !isFirst ? truckList.data[index - 1].truck.id : null;
+    const nextId = !isLast ? truckList.data[index + 1].truck.id : null;
+
+    return {
+        isFirst,
+        isLast,
+        prevId,
+        nextId,
+    };
+}
+
+export function setColumnsModalResult(
+    state: IMilesState,
+    frontSideData: ICardValueData[],
+    backSideData: ICardValueData[]
+): IMilesState {
+    return {
+        ...state,
+        frontSideData,
+        backSideData,
     };
 }

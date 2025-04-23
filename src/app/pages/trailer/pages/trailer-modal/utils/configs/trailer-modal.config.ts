@@ -29,7 +29,7 @@ export class TrailerModalConfig {
             textTransform: 'uppercase',
             minLength: 1,
             maxLength: 8,
-            autoFocus: options?.editType !== eGeneralActions.EDIT,
+            autoFocus: options?.editType !== eGeneralActions.EDIT_LOWERCASE,
         };
     }
     static getTrailerTypeIdConfig(options: TrailerConfigInterface): ICaInput {

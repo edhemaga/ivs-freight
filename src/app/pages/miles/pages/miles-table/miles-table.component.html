@@ -5,6 +5,7 @@
         tableSettings: milesStoreService.tableSettingsSelector$ | async,
         selectedTab: milesStoreService.selectedTab$ | async,
         tabResultsSelector: milesStoreService.tabResultsSelector$ | async,
+        filter: milesStoreService.filter$ | async,
     };
 
 @if (store) {
@@ -45,27 +46,23 @@
         (onColumnPinned)="onColumnPinned($event)"
         (onSortingChange)="onSortingChange($event)"
         (onColumnResize)="onColumnResize($event)"
-        (onHandleShowMoreClick)="onHandleShowMoreClick()"
+        (onShowMore)="onShowMoreClick()"
+        (onRemoveColumn)="onRemoveColumn($event)"
     >
         <!-- Header Templates -->
 
-        <ng-template #revenueHeaderTemplate let-data="data">
+        <ng-template
+            #revenueHeaderTemplate
+            let-data="data"
+            let-tableColumnClass="tableColumnClass"
+            let-tableColumnLabelWidth="tableColumnLabelWidth"
+        >
             @let isEmptyTable = !store.miles.length;
 
-            <div
-                class="d-flex justify-content-end w-100 m-l-4 order-2"
-                [ngClass]="
-                    {
-                        column: data,
-                        isTableLocked,
-                        isGroup: true,
-                        isEmptyTable,
-                        isAlignedRight: true,
-                    } | tableColumnClass
-                "
-            >
+            <div class="d-flex" [ngClass]="tableColumnClass">
                 <span
-                    class="text-size-11 ta-font-bold color-inherit text-uppercase"
+                    class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
+                    [ngStyle]="tableColumnLabelWidth"
                 >
                     Revenue
                 </span>
@@ -81,11 +78,19 @@
 
             <div class="d-flex align-items-center">
                 <p
-                    class="text-color-black ta-font-bold text-size-14 d-inline-block text-truncate"
+                    ngbTooltip
+                    mainTooltip="Open Map"
+                    [tooltipBackground]="eColor.BLACK"
+                    [position]="ePosition.BOTTOM"
+                    class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 d-inline-block text-truncate"
                     [ngStyle]="unitTemplateStyle"
-                >
-                    {{ data.unit }}
-                </p>
+                    [innerHtml]="
+                        data.unit
+                            | tableHighlightSearchText
+                                : store.filter?.searchQuery
+                    "
+                    (click)="goToMilesDetailsPage(data.truckId)"
+                ></p>
             </div>
         </ng-template>
 
@@ -100,13 +105,15 @@
 
         <!-- Percent Template -->
 
-        <ng-template #percentTemplate let-data="data" let-key="key">
-            @let percentTemplateClass =
-                !!data[key]?.count ? 'text-color-black-2' : 'text-color-muted';
-
+        <ng-template
+            #percentTemplate
+            let-data="data"
+            let-key="key"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
             @let percentValue = data[key]?.percent + eUnit.PERCENTAGE_SIGN;
 
-            <p class="text-size-14" [class]="percentTemplateClass">
+            <p class="text-size-14" [class]="cellColumnTextColorClass">
                 {{ data[key]?.count }}
 
                 <span class="text-color-muted text-size-11 ta-font-semi-bold">
@@ -117,25 +124,27 @@
 
         <!-- Fuel Cost Template -->
 
-        <ng-template #fuelCostTemplate let-data="data">
-            @let fuelCostTemplateClass =
-                !!data.fuelCost ? 'text-color-black-2' : 'text-color-muted';
-
-            <p class="text-size-14" [class]="fuelCostTemplateClass">
+        <ng-template
+            #fuelCostTemplate
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <p class="text-size-14" [class]="cellColumnTextColorClass">
                 ${{ data.fuelCost }}
             </p>
         </ng-template>
 
         <!-- Revenue Template -->
 
-        <ng-template #revenueTemplate let-data="data">
-            @let revenueTemplateColorClass =
-                !!data.revenue ? 'text-color-black' : 'text-color-muted';
-
+        <ng-template
+            #revenueTemplate
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
             <div class="d-flex justify-content-end">
                 <p
                     class="text-size-14 ta-font-semi-bold"
-                    [class]="revenueTemplateColorClass"
+                    [class]="cellColumnTextColorClass"
                 >
                     ${{ (data.revenue | thousandSeparator) ?? 0 }}
                 </p>

@@ -67,6 +67,10 @@ export class FilterHelper {
             case eFilterDropdownEnum.STATUS:
                 return { ...currentFilters, status: res.selectedIds };
 
+            // TODO: Uroš ADD DEPARTMENT
+            // case eFilterDropdownEnum.DEPARTMENT:
+            //     return { ...currentFilters, department: res.selectedIds };
+
             case eFilterDropdownEnum.DISPATCHER:
                 return {
                     ...currentFilters,

@@ -1,0 +1,109 @@
+@let store =
+    {
+        toolbarTabs: userStoreService.toolbarTabsSelector$ | async,
+        selectedTab: userStoreService.selectedTabSelector$ | async,
+        activeViewMode: userStoreService.activeViewModeSelector$ | async,
+        users: userStoreService.userListSelector$ | async,
+        selectedCountSelector: userStoreService.selectedCountSelector$ | async,
+        selectedUserSelector: userStoreService.selectedUserSelector$ | async,
+        departmentList: userStoreService.departmentListSelector$ | async,
+    };
+
+<ng-template #divider>
+    <div class="new-table--toolbar-divider">
+        <div
+            class="new-table--toolbar-divider-border background-light-grey-6"
+        ></div>
+    </div>
+</ng-template>
+
+@if (store) {
+    <app-new-table-toolbar
+        [title]="'User'"
+        [leftSide]="leftSide"
+        [rightSide]="rightSide"
+        (onPlusClick)="
+            onToolBarAction({
+                action: generalActions.OPEN_MODAL,
+            })
+        "
+        (toolbarDropdownAction)="onToolbarDropdownMenuActions($event)"
+    >
+        <ng-template #leftSide>
+            <app-toolbar-tabs-wrapper
+                class="d-flex align-items-center"
+                [data]="store.toolbarTabs"
+                [selectedTab]="store.selectedTab"
+                [viewMode]="store.activeViewMode"
+                [betweenTabsTemplate]="betweenTabsTemplate"
+                [isTableLocked]="isTableLocked"
+                (onTabChange)="onToolBarAction($event)"
+            ></app-toolbar-tabs-wrapper>
+
+            <ng-container *ngTemplateOutlet="divider"></ng-container>
+            <ca-search-multiple-states-2
+                [selectedTab]="store.selectedTab"
+                (onSearchQueryChange)="onSearchQueryChange($event)"
+            ></ca-search-multiple-states-2>
+
+            <!-- // TODO: Add department on components -->
+            <app-ca-filter-list-dropdown
+                type="Truck"
+                [list]="store.departmentList"
+                (setFilter)="setFilters($event)"
+            >
+            </app-ca-filter-list-dropdown>
+
+            @if (store.selectedCountSelector) {
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+                <div
+                    class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
+                >
+                    {{ store.selectedCountSelector }} Selected
+                </div>
+            }
+        </ng-template>
+        <ng-template #rightSide>
+            @if (store.selectedCountSelector) {
+                @let iconConfig =
+                    store.selectedTab
+                        | activateIconTooltip: store.selectedCountSelector;
+
+                <div
+                    ngbTooltip
+                    [tooltipBackground]="eColor.BLACK"
+                    [position]="ePosition.BOTTOM"
+                    [mainTooltip]="iconConfig.tooltip"
+                >
+                    <svg-icon
+                        [src]="sharedIcons.DEACTIVATE_ICON"
+                        class="svg-size-18 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26 m-l-4"
+                        [ngClass]="iconConfig.iconClass"
+                        (click)="oUserStatusChange(store.selectedUserSelector)"
+                    >
+                    </svg-icon>
+                </div>
+
+                <svg-icon
+                    class="background-hover-bw2 svg-fill-red-10 svg-hover-red-14 svg-size-16 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26"
+                    [src]="sharedIcons.DELETE_ICON"
+                    (click)="onDeleteUserList(store.selectedUserSelector)"
+                >
+                </svg-icon>
+
+                <svg-icon
+                    [src]="sharedIcons.PRINT_ICON"
+                    class="background-hover-dark-2 svg-fill-muted svg-hover-black svg-size-18 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26 m-l-4"
+                >
+                </svg-icon>
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+            }
+        </ng-template>
+    </app-new-table-toolbar>
+
+    @if (store?.activeViewMode === eCommonElement.LIST) {
+        <app-user-table></app-user-table>
+    } @else {
+        <app-user-cards></app-user-cards>
+    }
+}

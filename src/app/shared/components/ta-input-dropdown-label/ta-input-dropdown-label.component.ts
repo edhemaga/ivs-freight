@@ -101,7 +101,7 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
      * SAVE LABEL NAME
      */
     public onSaveLabel(event: any): void {
-        if (event.action === eGeneralActions.EDIT)
+        if (event.action === eGeneralActions.EDIT_LOWERCASE)
             this.saveLabel.emit({ data: event.data, action: event.action });
 
         if (event.action === 'new') {

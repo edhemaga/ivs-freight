@@ -58,6 +58,8 @@ export class DriverCardComponent
 
     public driverImageRoutes = DriverCardSvgRoutes;
 
+    public eDropdownMenu = eDropdownMenu;
+
     constructor(
         protected router: Router,
 

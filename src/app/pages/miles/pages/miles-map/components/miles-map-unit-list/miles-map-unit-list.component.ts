@@ -1,11 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    OnDestroy,
+    ViewChild,
+    ElementRef,
+} from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import {
-    CdkVirtualScrollViewport,
-    ScrollingModule,
-} from '@angular/cdk/scrolling';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // Form
 import { ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
@@ -22,7 +26,13 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
-import { CaInputComponent, CaDetailsTitleCardComponent } from 'ca-components';
+import {
+    CaInputComponent,
+    CaDetailsTitleCardComponent,
+    eStringPlaceholder,
+    eGeneralActions,
+} from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Enums
 import { ArrowActionsStringEnum } from '@shared/enums';
@@ -30,8 +40,8 @@ import { ArrowActionsStringEnum } from '@shared/enums';
 // Const
 import { MilesStopsTable } from '@pages/miles/utils/constants';
 
-// Interface
-import { IMilesModel, IMilesState } from '@pages/miles/interface';
+// Helpers
+import { onHTMLElementScroll } from '@shared/utils/helpers/scroll-helper';
 
 @Component({
     selector: 'app-miles-map-unit-list',
@@ -43,11 +53,13 @@ import { IMilesModel, IMilesState } from '@pages/miles/interface';
         CommonModule,
         ReactiveFormsModule,
         ScrollingModule,
+        NgbTooltip,
 
         // Components
         SvgIconComponent,
         CaInputComponent,
         CaDetailsTitleCardComponent,
+        TaAppTooltipV2Component,
 
         // Pipes
         ThousandSeparatorPipe,
@@ -55,7 +67,11 @@ import { IMilesModel, IMilesState } from '@pages/miles/interface';
     ],
 })
 export class MilesMapUnitListComponent implements OnInit, OnDestroy {
-    @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
+    @ViewChild('stopListViewport') stopListViewport!: ElementRef;
+    @ViewChild('minimalListViewport') minimalListViewport!: ElementRef;
+
+    @ViewChild('detailsTitleCard')
+    detailsTitleCard: CaDetailsTitleCardComponent<unknown>;
 
     public sharedSvgRoutes = SharedSvgRoutes;
     public stopsConfig = MilesStopsTable.HEADER_CONFIG;
@@ -63,16 +79,15 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
 
     public isStopListWidthExpanded: boolean = false;
     public isStopListHeightExpanded: boolean = false;
-    public isLoading: boolean = false;
-    public isUserOnLastPage: boolean = false;
     public truckId: number;
     public ArrowActionsStringEnum = ArrowActionsStringEnum;
+    public sekeletonSize = new Array(11);
 
     private scrollSubject: Subject<void> = new Subject();
     private subscriptions: Subscription = new Subscription();
 
     public searchForm = this.formBuilder.group({
-        search: null,
+        [eGeneralActions.SEARCH_LOWERCASE]: null,
     });
 
     constructor(
@@ -85,29 +100,27 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     }
 
     public onScrollEvent(): void {
-        if (this.isLoading || this.isUserOnLastPage) return;
         this.scrollSubject.next();
     }
 
     public onScroll(): void {
-        const viewport = this.viewport;
-        const scrollOffset = viewport.measureScrollOffset('bottom');
-        const threshold = 100;
-
-        if (scrollOffset < threshold) {
-        }
+        onHTMLElementScroll(
+            this.stopListViewport.nativeElement,
+            MilesStopsTable.BOTTOM_SCROLL_THRESHOLD,
+            () => this.milesStoreService.loadNextStopsPage()
+        );
     }
 
-    public getTruckUnit(
-        getFollowingUnitDirection: ArrowActionsStringEnum
-    ): void {
+    public getTruckUnit(unitId: string): void {
         this.resetFormValue();
-        this.milesStoreService.dispatchFollowingUnit(getFollowingUnitDirection);
+        this.detailsTitleCard.dropdownPopover?.close();
+        this.milesStoreService.goToMilesDetailsPage(unitId);
     }
 
-    public selectUnit(unit: IMilesModel): void {
+    public selectUnit(truckId: string): void {
         this.resetFormValue();
-        this.milesStoreService.dispatchSelectUnit(unit);
+        this.milesStoreService.goToMilesDetailsPage(truckId);
+        this.detailsTitleCard.dropdownPopover?.close();
     }
 
     public toogleStopListWidth(): void {
@@ -116,6 +129,24 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
 
     public toogleStopListHeight(): void {
         this.isStopListHeightExpanded = !this.isStopListHeightExpanded;
+    }
+
+    public onSearchTextChange(text: string): void {
+        this.milesStoreService.dispatchSearchMinimalUnitList(text);
+    }
+
+    public onMinimalListScroll(): void {
+        onHTMLElementScroll(
+            this.minimalListViewport.nativeElement,
+            MilesStopsTable.BOTTOM_SCROLL_THRESHOLD,
+            () => this.milesStoreService.loadNextMinimalListPage()
+        );
+    }
+
+    public onClearInputEvent(): void {
+        this.searchForm
+            .get(eGeneralActions.SEARCH_LOWERCASE)
+            .patchValue(eStringPlaceholder.EMPTY);
     }
 
     private manageScrollDebounce(): void {
@@ -139,7 +170,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
 
     private onSeachFieldChange(): void {
         this.searchForm
-            .get('search')
+            .get(eGeneralActions.SEARCH_LOWERCASE)
             ?.valueChanges.pipe(debounceTime(300))
             .subscribe((value) => {
                 this.milesStoreService.dispatchSearchInputChanged(value);

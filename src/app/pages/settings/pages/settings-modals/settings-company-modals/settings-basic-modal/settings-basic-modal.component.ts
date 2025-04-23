@@ -618,11 +618,11 @@ export class SettingsBasicModalComponent
                 }
 
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 if (!this.editData.company?.divisions.length) {
                     this.deleteCompanyDivisionById(this.editData.company.id);
                     this.modalService.setModalSpinner({
-                        action: eGeneralActions.DELETE,
+                        action: eGeneralActions.DELETE_LOWERCASE,
                         status: true,
                         close: false,
                     });
@@ -1433,8 +1433,7 @@ export class SettingsBasicModalComponent
             factorByDefault: additionalInfo.factorByDefault,
             customerCredit: additionalInfo.customerCredit,
             truckInspectionMonths: additionalInfo.truckInspectionMonths,
-            trailerInspectionMonths:
-                additionalInfo.trailerInspectionMonths,
+            trailerInspectionMonths: additionalInfo.trailerInspectionMonths,
         });
 
         this.selectedAddress = this.editData.company.address;
@@ -1635,14 +1634,14 @@ export class SettingsBasicModalComponent
             .subscribe({
                 next: () => {
                     this.modalService.setModalSpinner({
-                        action: eGeneralActions.DELETE,
+                        action: eGeneralActions.DELETE_LOWERCASE,
                         status: true,
                         close: true,
                     });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
-                        action: eGeneralActions.DELETE,
+                        action: eGeneralActions.DELETE_LOWERCASE,
                         status: false,
                         close: false,
                     });
@@ -2409,7 +2408,7 @@ export class SettingsBasicModalComponent
     }
 
     public handleDeleteClick(event: any): void {
-        if (event.action === eGeneralActions.DELETE) {
+        if (event.action === eGeneralActions.DELETE_LOWERCASE) {
             this.hasDisplayUploadZone = true;
 
             this.companyForm.get(ESettingsFormControls.LOGO).patchValue(null);

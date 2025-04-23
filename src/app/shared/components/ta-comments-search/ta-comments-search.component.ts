@@ -12,11 +12,10 @@ import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.com
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
 
 // enums
-import { CommentsSearchStringEnum } from '@shared/components/ta-comments-search/enums/comments-search-string.enum';
+import { eGeneralActions, eSortDirection } from '@shared/enums';
 
 // models
-import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
-import { CommentData } from '@shared/models/comment-data.model';
+import { CommentCompanyUser, CommentData } from '@shared/models';
 
 @Component({
     selector: 'app-ta-comments-search',
@@ -37,35 +36,38 @@ export class TaCommentsSearchComponent {
     @Input() commentsData: CommentCompanyUser[];
     @Input() isDisplaySearch: boolean = false;
     @Input() isHeaderHidden: boolean = false;
+    @Input() isLoading: boolean = false;
 
-    @Output() btnActionEmitter = new EventEmitter<CommentData>();
-    @Output() btnSortEmitter = new EventEmitter<string>();
-    @Output() searchHightlightEmitter = new EventEmitter<string>();
+    @Output() onActionEmitter = new EventEmitter<CommentData>();
+    @Output() onSortEmitter = new EventEmitter<string>();
+    @Output() onSearchHighlightEmitter = new EventEmitter<string>();
 
     public commentsSearchSvgRoutes = CommentsSearchSvgRoutes;
 
-    public sortDirection: string = CommentsSearchStringEnum.DSC;
+    public sortDirection: string = eSortDirection.DSC;
 
-    public lettersToHightlight: string;
+    public eGeneralActions = eGeneralActions;
+    public eSortDirection = eSortDirection;
+
+    public lettersToHighlight: string;
 
     constructor() {}
 
-    public handleCommentActionEmit(commentData: CommentData): void {
-        this.btnActionEmitter.emit(commentData);
+    public onCommentAction(commentData: CommentData): void {
+        this.onActionEmitter.emit(commentData);
     }
 
     public handleSortClick(): void {
         this.sortDirection =
-            this.sortDirection === CommentsSearchStringEnum.DSC
-                ? CommentsSearchStringEnum.ASC
-                : CommentsSearchStringEnum.DSC;
+            this.sortDirection === eSortDirection.DSC
+                ? eSortDirection.ASC
+                : eSortDirection.DSC;
 
-        this.btnSortEmitter.emit(this.sortDirection);
+        this.onSortEmitter.emit(this.sortDirection);
     }
 
-    public handleSearchValue(searchValue: string): void {
-        this.lettersToHightlight = searchValue;
-
-        this.searchHightlightEmitter.emit(searchValue);
+    public onHandleSearchValue(searchValue: string): void {
+        this.lettersToHighlight = searchValue;
+        this.onSearchHighlightEmitter.emit(searchValue);
     }
 }

@@ -1015,7 +1015,7 @@ export class RepairShopModalComponent
     }
 
     public onModalAction(data: string): void {
-        this.activeAction = data;
+        if (this.isModalValidToSubmit) this.activeAction = data;
 
         if (data === ActionTypesEnum.CLOSE) {
             this.ngbActiveModal.close();
@@ -1327,7 +1327,7 @@ export class RepairShopModalComponent
 
     public changeReviewsEvent(reviews: ReviewComment): void {
         switch (reviews.action) {
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.deleteReview(reviews);
                 break;
 

@@ -304,7 +304,7 @@
                                             | allowedTruckTrailer
                                                 : item?.allowedTruckIds
                                     "
-                                    [isYearShown]="!columnsToShow[1].hidden"
+                                    [isYearShown]="!columnsToShow[1]?.hidden"
                                     [rowIndex]="rowIndex"
                                     [isBoardLocked]="isDispatchBoardLocked"
                                     [isDrag]="isDrag"
@@ -395,7 +395,7 @@
                                                         : item?.allowedTrailerIds
                                             "
                                             [isYearShown]="
-                                                !columnsToShow[3].hidden
+                                                !columnsToShow[3]?.hidden
                                             "
                                             [rowIndex]="rowIndex"
                                             [isBoardLocked]="
@@ -912,7 +912,7 @@
                                     columnSpecifications?.truckWidth
                                 "
                                 [truckList]="truckList"
-                                [isYearShown]="!columnsToShow[1].hidden"
+                                [isYearShown]="!columnsToShow[1]?.hidden"
                                 [rowIndex]="rowIndex"
                                 [isBoardLocked]="isDispatchBoardLocked"
                                 [isDrag]="isDrag"
@@ -947,7 +947,7 @@
                                 [trailerList]="trailerList"
                                 [rowIndex]="rowIndex"
                                 [isBoardLocked]="isDispatchBoardLocked"
-                                [isYearShown]="!columnsToShow[3].hidden"
+                                [isYearShown]="!columnsToShow[3]?.hidden"
                                 [isDrag]="isDrag"
                                 [isHoveringRow]="
                                     isHoveringRowIndex === rowIndex

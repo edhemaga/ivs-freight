@@ -1,4 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    Input,
+    OnInit,
+    Renderer2,
+    ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
@@ -16,8 +23,8 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
 
 // enums
-import { CaModalComponent, eColor, ePosition } from 'ca-components';
-import { eGeneralActions } from '@shared/enums';
+import { CaModalComponent, eColor, ePosition, eUnit } from 'ca-components';
+import { eGeneralActions, eSharedString } from '@shared/enums';
 
 // pipes
 import { SafeHtmlPipe } from '@shared/pipes';
@@ -48,6 +55,7 @@ import { PayrollModal } from '@pages/accounting/pages/payroll/state/models';
 })
 export class PayrollPdfReportComponent implements OnInit {
     @Input() editData: PayrollModal;
+    @ViewChild('contentIframe') iframeRef!: ElementRef;
 
     // zoom
     public zoomLevel = PayrollPdfReportConstants.ZOOM_LEVEL;
@@ -69,6 +77,9 @@ export class PayrollPdfReportComponent implements OnInit {
     public isLoading = true;
 
     constructor(
+        private renderer: Renderer2,
+
+        // services
         private payrollService: PayrollService,
 
         // modules
@@ -90,7 +101,6 @@ export class PayrollPdfReportComponent implements OnInit {
         this.payrollService.generateReport(id, type).subscribe({
             next: (pdfReport) => {
                 const html = this.safeHtmlPipe.transform(pdfReport.html);
-
                 this.pdfReport = {
                     ...pdfReport,
                     html,
@@ -101,7 +111,19 @@ export class PayrollPdfReportComponent implements OnInit {
         });
     }
 
-    public handleDownloadReportClick(): void {
+    public onIframeLoad(): void {
+        const iframe = this.iframeRef?.nativeElement as HTMLIFrameElement;
+        if (!iframe) return;
+
+        const doc = iframe.contentDocument || iframe.contentWindow?.document;
+        if (!doc || !doc.body) return;
+
+        const height = doc.body.offsetHeight + 80;
+
+        this.renderer.setStyle(iframe, eSharedString.HEIGHT, `${height}px`);
+    }
+
+    public onDownloadReportClick(): void {
         const { downloadUrl } = this.pdfReport;
 
         if (!downloadUrl) return;
@@ -113,11 +135,11 @@ export class PayrollPdfReportComponent implements OnInit {
         this.payrollService.downloadPayrollPdfReport(downloadUrl, filename);
     }
 
-    public handleCloseModalClick(): void {
+    public onCloseModalClick(): void {
         this.ngbActiveModal.close();
     }
 
-    public handleZoomClick(change: number): void {
+    public onZoomClick(change: number): void {
         const newZoom = this.zoomLevel + change * this.zoomStep;
 
         this.zoomLevel = Math.min(

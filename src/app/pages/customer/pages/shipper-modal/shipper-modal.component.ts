@@ -359,7 +359,7 @@ export class ShipperModalComponent
     }
 
     public onModalAction(action: string): void {
-        this.activeAction = action;
+        if (this.isModalValidToSubmit) this.activeAction = action;
 
         if (action === TaModalActionEnum.CLOSE) {
             switch (this.editData?.key) {
@@ -412,7 +412,9 @@ export class ShipperModalComponent
                     this.inputService.markInvalid(this.shipperForm);
                     return;
                 }
-                if (this.editData?.type.includes(eGeneralActions.EDIT))
+                if (
+                    this.editData?.type.includes(eGeneralActions.EDIT_LOWERCASE)
+                )
                     this.updateShipper(this.editData.id);
                 else this.addShipper();
             }
@@ -517,7 +519,7 @@ export class ShipperModalComponent
 
     public changeReviewsEvent(review: ReviewComment): void {
         switch (review.action) {
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.deleteReview(true, review);
                 break;
             case eGeneralActions.ADD:
@@ -935,40 +937,25 @@ export class ShipperModalComponent
                             res.receivingAppointment &&
                             res.receivingOpenTwentyFourHours
                                 ? null
-                                : res.receivingFrom
-                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                        res.receivingFrom
-                                    )
-                                  : null,
+                                : res.receivingFrom,
                         receivingTo:
                             res.receivingAppointment &&
                             res.receivingOpenTwentyFourHours
                                 ? null
-                                : res.receivingTo
-                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                        res.receivingTo
-                                    )
-                                  : null,
+                                : res.receivingTo,
                         shippingFrom:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : res.shippingFrom
-                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                        res.shippingFrom
-                                    )
-                                  : null,
+                                : res.shippingFrom,
                         shippingTo:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : res.shippingTo
-                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                        res.shippingTo
-                                    )
-                                  : null,
+                                : res.shippingTo,
                         note: res.note,
                         contacts: this.mapContacts(res.shipperContacts, true),
+                        addressUnit: res?.address?.addressUnit,
                     });
 
                     this.shipperName = res.businessName;
@@ -1160,7 +1147,7 @@ export class ShipperModalComponent
                     .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.shipperForm
                     .get(eFileFormControls.FILES)
                     .patchValue(
@@ -1251,15 +1238,17 @@ export class ShipperModalComponent
                 )
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res: AddressEntity) => {
+                    const { addressUnit, ...addressData } = res;
+
                     this.shipperForm.patchValue({
-                        ...res,
+                        ...addressData,
                         countryStateAddress:
-                            res?.county +
+                            addressData?.county +
                             eStringPlaceholder.COMMA_WHITESPACE +
-                            res.stateShortName,
+                            addressData.stateShortName,
                     });
 
-                    this.selectedAddress = res;
+                    this.selectedAddress = addressData;
                 });
         } else
             this.shipperForm.patchValue({

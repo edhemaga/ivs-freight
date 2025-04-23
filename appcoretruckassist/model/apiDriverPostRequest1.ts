@@ -22,6 +22,7 @@ export interface ApiDriverPostRequest1 {
     Phone?: string;
     Email?: string;
     Ssn?: string;
+    Hired?: string;
     Address_City?: string;
     Address_State?: string;
     Address_County?: string;
@@ -32,6 +33,8 @@ export interface ApiDriverPostRequest1 {
     Address_ZipCode?: string;
     Address_StateShortName?: string;
     Address_AddressUnit?: string;
+    BussinesName?: string;
+    Ein?: string;
     IsOwner?: boolean;
     OwnerType?: OwnerType;
     OwnerId?: number;

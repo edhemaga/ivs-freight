@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 // rxjs
 import { filter, Observable, take } from 'rxjs';
@@ -19,6 +19,7 @@ import { ITableData } from '@shared/models/table-data.model';
 
 import {
     Column,
+    CommentCompanyUser,
     ICurrentSearchTableData,
     ITableColummn,
     ITableOptions,
@@ -32,7 +33,9 @@ import {
     LoadModalResponse,
     LoadPossibleStatusesResponse,
     LoadResponse,
+    LoadStatusHistoryResponse,
     LoadStatusType,
+    LoadStopResponse,
     LoadTemplateListResponse,
     RevertLoadStatusCommand,
     ShipperLoadModalResponse,
@@ -69,18 +72,28 @@ import {
     minimalListSelector,
     tableColumnsSelector,
     groupedByStatusTypeListSelector,
+    loadDetailsMapDataSelector,
+    closedLoadStatusSelector,
+    loadStatusHistoryReversedSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
 import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants/index';
 
 // enums
-import { eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode, eSortDirection } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import { eLoadRouting } from '@pages/new-load/enums';
+import { eLoadModalActions, eLoadRouting } from '@pages/new-load/enums';
 
-import { IFilterDropdownList } from 'ca-components';
+import { ICaMapProps, IFilterDropdownList } from 'ca-components';
 import { ITableColumn } from '@shared/components/new-table/interface';
+import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
+
+// Service
+import { ModalService } from '@shared/services';
+
+// Components
+import { NewLoadModalComponent } from '@pages/new-load/pages/new-load-modal/new-load-modal.component';
 
 @Injectable({
     providedIn: 'root',
@@ -88,7 +101,8 @@ import { ITableColumn } from '@shared/components/new-table/interface';
 export class LoadStoreService {
     constructor(
         private store: Store,
-        private router: Router
+        private router: Router,
+        private modalService: ModalService
     ) {}
 
     public resolveInitialData$: Observable<
@@ -149,6 +163,15 @@ export class LoadStoreService {
         select(loadDetailsSelector)
     );
 
+    public loadStatusHistoryReversedSelector$: Observable<
+        LoadStatusHistoryResponse[]
+    > = this.store.pipe(select(loadStatusHistoryReversedSelector));
+
+    // TODO:
+    public closedLoadStatusSelector$: Observable<any> = this.store.pipe(
+        select(closedLoadStatusSelector)
+    );
+
     public isLoadDetailsLoaded$: Observable<boolean> = this.store.pipe(
         select(isLoadDetailsLoadedSelector)
     );
@@ -179,6 +202,10 @@ export class LoadStoreService {
 
     public isLoadDetailsMapOpen$: Observable<boolean> = this.store.pipe(
         select(isLoadDetailsMapOpenSelector)
+    );
+
+    public loadDetailsMapData$: Observable<ICaMapProps> = this.store.pipe(
+        select(loadDetailsMapDataSelector)
     );
 
     public minimalListSelector$: Observable<LoadMinimalListResponse> =
@@ -375,7 +402,7 @@ export class LoadStoreService {
         else this.dispatchDeleteBulkLoads(ids);
     }
 
-    public dsipatchCanDeleteSelectedDataRows(
+    public dispatchCanDeleteSelectedDataRows(
         canDeleteSelectedDataRows: boolean,
         ids: number[]
     ): void {
@@ -460,9 +487,27 @@ export class LoadStoreService {
         metadata: ICreateCommentMetadata
     ): void {
         this.store.dispatch({
-            type: LoadStoreConstants.ACTION_CREATE_COMMENT,
+            type: LoadStoreConstants.ACTION_CREATE_COMMENT_SUCCESS,
             apiParam,
             metadata,
+        });
+    }
+
+    public dispatchUpdateComment(apiParam: CommentCompanyUser): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_UPDATE_COMMENT,
+            apiParam,
+        });
+    }
+
+    public sortLoadComments(
+        loadId: number,
+        sortDirection: eSortDirection
+    ): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_SORT_COMMENTS,
+            loadId,
+            sortDirection,
         });
     }
 
@@ -668,9 +713,47 @@ export class LoadStoreService {
         ]);
     }
 
+    public onOpenModal(modal: ILoadModal): void {
+        this.modalService.openModal(NewLoadModalComponent, {}, modal);
+    }
+
+    public onCreateLoadFromTemplate(id: number): void {
+        this.onOpenModal({
+            isEdit: false,
+            id,
+            isTemplate: true,
+            type: eLoadModalActions.CREATE_LOAD_FROM_TEMPLATE,
+        });
+    }
+
+    public onCreateTemplateFromLoad(id: number): void {
+        this.onOpenModal({
+            isEdit: false,
+            id,
+            isTemplate: false,
+            type: eLoadModalActions.CREATE_TEMPLATE_FROM_LOAD,
+        });
+    }
+
     public toggleMap(): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_TOGGLE_MAP,
+        });
+    }
+
+    public setLoadDetailsMapData(loadMapLocations: LoadStopResponse[]): void {
+        if (!loadMapLocations) return;
+
+        const mapLocations = JSON.stringify(
+            loadMapLocations.map(({ shipper: { longitude, latitude } }) => ({
+                longitude,
+                latitude,
+            }))
+        );
+
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_GET_LOAD_DETAILS_MAP_DATA,
+            mapLocations,
         });
     }
 }

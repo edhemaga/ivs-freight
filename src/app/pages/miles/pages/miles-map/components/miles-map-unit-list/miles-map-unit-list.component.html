@@ -1,116 +1,291 @@
 @let details = milesStoreService.detailsSelector$ | async;
-@let miles = milesStoreService.miles$ | async;
-@let pagination = milesStoreService.unitsPaginationSelector$ | async;
-@let isPreviousButtonDisabled = pagination.isFirstUnit;
-@let isNextButtonDisabled = pagination.isLastUnit;
+@let stops = milesStoreService.stopsSelector$ | async;
+@let minimalList = milesStoreService.minimalListSelector$ | async;
+@let minimalListFilters = milesStoreService.minimalListFiltersSelector$ | async;
+
+@let isPreviousButtonDisabled = minimalListFilters.isFirst;
+@let isNextButtonDisabled = minimalListFilters.isLast;
+
+@let isLoading = milesStoreService.detailsLoadingSelector$ | async;
 
 @if (details) {
+    @let stopListWidth = isStopListWidthExpanded ? '462px' : '334px';
     <div class="position-relative z-2">
         <div
-            class="background-white br-3 p-x-6 mb-2"
-            [ngClass]="isStopListWidthExpanded ? 'w-442' : 'w-334'"
+            class="background-white br-3 p-x-6 mb-2 transition-width"
+            [ngStyle]="{ width: stopListWidth }"
         >
             <div class="h-42 d-flex align-items-center justify-content-between">
-                @let title = 'UNIT ' + details?.truck?.truckNumber;
-                <app-ca-details-title-card
-                    [detailsTitleCardConfig]="{
-                        title: title,
-                        tooltip: 'Search Truck',
-                        placeholder: title,
-                        width: isStopListWidthExpanded ? 398 : 270,
-                        tooltipNext: 'Next Truck',
-                        tooltipPrevious: 'Previous Truck',
-                        disableNext: isNextButtonDisabled,
-                        disablePrevious: isPreviousButtonDisabled,
-                    }"
-                    [dropdownTemplate]="titleDropdown"
-                    [titleRightIconTemplate]="titleRightIconTemplate"
-                    (onNextAction)="getTruckUnit(ArrowActionsStringEnum.NEXT)"
-                    (onPreviousAction)="
-                        getTruckUnit(ArrowActionsStringEnum.PREV)
-                    "
-                >
-                    <ng-template #titleDropdown>
-                        <div class="gap-1 d-flex flex-column">
-                            @for (unit of miles; track unit.id) {
-                                <ng-container
-                                    *ngTemplateOutlet="
-                                        mileUnits;
-                                        context: {
-                                            unit,
-                                        }
-                                    "
-                                >
-                                </ng-container>
-                            }
-                        </div>
-                    </ng-template>
-                </app-ca-details-title-card>
-            </div>
-        </div>
-        <div
-            class="background-white br-3 p-x-6 p-y-6 miles-unit-list"
-            [ngClass]="isStopListWidthExpanded ? 'w-442' : 'w-334'"
-            [class.miles-unit-list-minimal]="isStopListHeightExpanded"
-        >
-            <form [formGroup]="searchForm">
-                <app-ca-input
-                    formControlName="search"
-                    [inputConfig]="searchField"
-                ></app-ca-input>
-            </form>
+                @if (isLoading) {
+                    <div
+                        class="d-flex align-items-center w-100 justify-content-between"
+                    >
+                        <p class="placeholder-glow">
+                            <span
+                                class="placeholder placeholder-muted br-2 h-20 w-144"
+                            ></span>
+                        </p>
 
-            <div
-                class="h-22 d-grid align-items-center p-r-6 gap-1 m-t-4"
-                [ngClass]="
-                    isStopListWidthExpanded
-                        ? 'stops-container-large'
-                        : 'stops-container-small'
-                "
-            >
-                @for (item of stopsConfig; let i = $index; track i) {
-                    @if (!item.isExpandable || isStopListWidthExpanded) {
-                        <div
-                            class="text-color-muted text-size-11 ta-font-bold"
-                            [ngClass]="{
-                                'text-right': item.isAlignedRight,
-                                'text-center': item.isAlignedCenter,
-                            }"
-                        >
-                            {{ item.label }}
+                        <div class="d-flex">
+                            <div
+                                class="d-flex w-26 h-26 justify-content-center"
+                            >
+                                <p class="placeholder-glow">
+                                    <span
+                                        class="placeholder placeholder-muted br-2 w-7 h-18"
+                                    ></span>
+                                </p>
+                            </div>
+
+                            <div
+                                class="d-flex w-26 h-26 justify-content-center ml-1"
+                            >
+                                <p class="placeholder-glow">
+                                    <span
+                                        class="placeholder placeholder-muted br-2 w-7 h-18"
+                                    ></span>
+                                </p>
+                            </div>
                         </div>
-                    }
+                    </div>
+                } @else {
+                    @let title = 'UNIT ' + details?.truck?.truckNumber;
+                    <app-ca-details-title-card
+                        #detailsTitleCard
+                        [detailsTitleCardConfig]="{
+                            title: title,
+                            tooltip: 'Search Truck',
+                            placeholder: title,
+                            width: isStopListWidthExpanded ? '390px' : '264px',
+                            tooltipNext: 'Next Truck',
+                            tooltipPrevious: 'Previous Truck',
+                            disableNext: isNextButtonDisabled,
+                            disablePrevious: isPreviousButtonDisabled,
+                        }"
+                        [dropdownTemplate]="titleDropdown"
+                        [titleTemplate]="titleTemplate"
+                        (onNextAction)="getTruckUnit(minimalListFilters.nextId)"
+                        (onPreviousAction)="
+                            getTruckUnit(minimalListFilters.prevId)
+                        "
+                        (onSearchTextChange)="onSearchTextChange($event)"
+                    >
+                        <ng-template #titleDropdown>
+                            <div
+                                #minimalListViewport
+                                class="gap-1 d-flex flex-column miles-unit-list-scroll"
+                                (scroll)="onMinimalListScroll()"
+                            >
+                                @for (
+                                    unit of minimalList;
+                                    track unit.id;
+                                    let index = $index
+                                ) {
+                                    <ng-container
+                                        *ngTemplateOutlet="
+                                            mileUnits;
+                                            context: {
+                                                unit,
+                                            }
+                                        "
+                                    >
+                                    </ng-container>
+                                }
+                            </div>
+                        </ng-template>
+
+                        <ng-template #titleTemplate>
+                            <div class="d-flex justify-content-between w-full">
+                                <div class="d-flex">
+                                    @if (!details?.truck?.status) {
+                                        <div
+                                            ngbTooltip
+                                            mainTooltip="Deactivated"
+                                            tooltipBackground="#424242"
+                                            position="bottom"
+                                            class="d-flex"
+                                        >
+                                            <svg-icon
+                                                [src]="
+                                                    sharedSvgRoutes.DEACTIVATE_ICON
+                                                "
+                                                class="svg-fill-muted svg-size-18 m-r-6 d-flex align-items-center"
+                                            ></svg-icon>
+                                        </div>
+                                    }
+
+                                    <span
+                                        class="text-size-20 ta-font-bold text-color-black"
+                                        >{{ title }}</span
+                                    >
+                                </div>
+
+                                <svg-icon
+                                    class="svg-size-42-18 d-flex align-items-center"
+                                    [src]="
+                                        sharedSvgRoutes.TRUCK_PATH_BASE +
+                                        details?.truck?.truckType?.logoName
+                                    "
+                                ></svg-icon>
+                            </div>
+                        </ng-template>
+                    </app-ca-details-title-card>
                 }
             </div>
+        </div>
 
-            <div class="divider mt-1 mb-1"></div>
+        <div
+            class="background-white br-3 p-l-6 p-y-6 miles-unit-list transition-width"
+            [ngStyle]="{ width: stopListWidth }"
+        >
+            <div class="p-r-6">
+                @if (isLoading) {
+                    <p class="placeholder-glow">
+                        <span
+                            class="placeholder placeholder-muted br-2 w-100 h-26"
+                        ></span>
+                    </p>
+                } @else {
+                    <form [formGroup]="searchForm">
+                        <app-ca-input
+                            formControlName="search"
+                            [inputConfig]="searchField"
+                        ></app-ca-input>
+                    </form>
+                }
 
-            <!-- TODO:  Virtaul scroll is inside new ticket -->
-            <div class="scrollable-element">
-                <cdk-virtual-scroll-viewport
-                    #viewport
-                    (scroll)="onScrollEvent()"
-                    [itemSize]="26"
-                    style="height: calc(100vh - 188px)"
+                <div
+                    class="h-22 d-grid align-items-center p-r-6 gap-1 m-t-4"
+                    [ngClass]="
+                        isStopListWidthExpanded
+                            ? 'stops-container-large'
+                            : 'stops-container-small'
+                    "
                 >
-                    <div *cdkVirtualFor="let stop of details?.stops?.data">
+                    @if (isLoading) {
+                        <p class="placeholder-glow text-right">
+                            <span
+                                class="placeholder placeholder-muted br-2 w-26 h-10"
+                            ></span>
+                        </p>
+
+                        <p class="placeholder-glow text-right">
+                            <span
+                                class="placeholder placeholder-muted br-2 w-49 h-10"
+                            ></span>
+                        </p>
+
+                        <p class="placeholder-glow text-right">
+                            <span
+                                class="placeholder placeholder-muted br-2 w-42 h-10"
+                            ></span>
+                        </p>
+
+                        <p class="placeholder-glow text-right">
+                            <span
+                                class="placeholder placeholder-muted br-2 w-36 h-10"
+                            ></span>
+                        </p>
+                    } @else {
+                        @for (item of stopsConfig; let i = $index; track i) {
+                            @if (
+                                !item.isExpandable || isStopListWidthExpanded
+                            ) {
+                                <div
+                                    class="text-color-muted text-size-11 ta-font-bold"
+                                    [ngClass]="{
+                                        'text-right': item.isAlignedRight,
+                                        'text-center': item.isAlignedCenter,
+                                    }"
+                                >
+                                    {{ item.label }}
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+
+                <div class="divider mt-1 mb-1"></div>
+            </div>
+            @let listHeight =
+                {
+                    height: isStopListHeightExpanded
+                        ? 'calc(100vh - 200px)'
+                        : '393px',
+                };
+            <div
+                #stopListViewport
+                class="gap-1 d-flex flex-column scrollable-element overflow-y-scroll p-r-4 transition-height"
+                [ngStyle]="listHeight"
+                (scroll)="onScrollEvent()"
+            >
+                @if (isLoading) {
+                    @for (
+                        sekeleton of sekeletonSize;
+                        track $index;
+                        let even = $even
+                    ) {
+                        <div
+                            class="stops-container-small stops-container h-26 br-2 background-white background-hover-light-grey d-grid align-items-center gap-1 c-pointer m-b-2"
+                        >
+                            <div class="d-flex">
+                                <p
+                                    class="placeholder-glow text-right w-24 text-center"
+                                >
+                                    <span
+                                        class="placeholder placeholder-muted rounded-circle w-10 h-10"
+                                    ></span>
+                                </p>
+                                <p class="placeholder-glow text-right">
+                                    <span
+                                        [ngClass]="even ? 'w-36' : 'w-29'"
+                                        class="placeholder placeholder-muted br-2 h-10"
+                                    ></span>
+                                </p>
+                            </div>
+
+                            <p class="placeholder-glow text-right">
+                                <span
+                                    [ngClass]="even ? 'w-57' : 'w-49'"
+                                    class="placeholder placeholder-muted br-2 h-10"
+                                ></span>
+                            </p>
+
+                            <p class="placeholder-glow text-right">
+                                <span
+                                    [ngClass]="even ? 'w-49' : 'w-42'"
+                                    class="placeholder placeholder-muted br-2 h-10"
+                                ></span>
+                            </p>
+
+                            <p class="placeholder-glow text-right">
+                                <span
+                                    [ngClass]="even ? 'w-42' : 'w-36'"
+                                    class="placeholder placeholder-muted br-2 h-10"
+                                ></span>
+                            </p>
+                        </div>
+                    }
+                } @else {
+                    @for (stop of stops; track stop.id; let index = $index) {
                         <ng-container
                             *ngTemplateOutlet="
                                 stopRows;
                                 context: {
                                     stop,
+                                    index,
                                 }
                             "
                         >
                         </ng-container>
-                    </div>
-                </cdk-virtual-scroll-viewport>
+                    }
+                }
             </div>
 
             <div
                 (click)="toogleStopListHeight()"
                 class="position-absolute z-2 arrow arrow-bottom"
-                [class.arrow-bottom-opened]="isStopListHeightExpanded"
+                [class.arrow-bottom-opened]="!isStopListHeightExpanded"
             >
                 <ng-container *ngTemplateOutlet="resizeButton"> </ng-container>
             </div>
@@ -126,17 +301,17 @@
     </div>
 }
 
-<ng-template #stopRows let-stop="stop">
+<ng-template #stopRows let-stop="stop" let-index="index">
+    @let widthClass =
+        isStopListWidthExpanded
+            ? 'stops-container-large'
+            : 'stops-container-small';
     <div
         class="stops-container h-26 br-2 background-white background-hover-light-grey d-grid align-items-center p-r-6 gap-1 c-pointer m-b-2"
-        [ngClass]="
-            isStopListWidthExpanded
-                ? 'stops-container-large'
-                : 'stops-container-small'
-        "
+        [ngClass]="widthClass"
     >
         <div class="text-color-muted text-size-11 text-center">
-            {{ stop.order }}
+            {{ index + 1 }}
         </div>
         <div
             class="text-color-black text-size-11 ta-font-bold text-truncate d-flex"
@@ -180,12 +355,45 @@
 </ng-template>
 
 <ng-template #mileUnits let-unit="unit">
+    @let truckId = details?.truck?.id;
+
     <div
-        class="h-26 br-2 p-y-4 p-x-6 background-hover-black d-flex justify-content-between c-pointer"
-        (click)="selectUnit(unit)"
+        class="h-26 br-2 p-y-4 p-x-6 background-hover-black d-grid c-pointer miles-unit-dropdown gap-1"
+        [class.miles-unit-dropdown-large]="isStopListWidthExpanded"
+        (click)="selectUnit(unit.truck.id)"
     >
-        <p class="text-size-14 text-color-white">
-            {{ unit.unit }}
+        <p
+            class="text-size-14 text-color-white text-ellipsis"
+            [class.ta-font-bold]="unit.truck.id === truckId"
+        >
+            {{ unit.truck.truckNumber }}
         </p>
+
+        <div class="d-flex align-items-center gap-1 m-l-auto">
+            <span
+                class="m-r-4 text-color-muted text-size-11 miles-unit-dropdown-owner text-ellipsis"
+                [class.ta-font-bold]="unit.truck.id === truckId"
+                [class.text-color-blue-19]="unit.truck.id === truckId"
+            >
+                {{ unit.truck.owner }}
+            </span>
+
+            <span
+                class="m-r-4 text-color-muted text-size-11 miles-unit-dropdown-vin text-ellipsis"
+            >
+                {{ unit.vin }}
+            </span>
+
+            <div class="w-42 h-18 d-flex">
+                @let truckPath =
+                    sharedSvgRoutes.TRUCK_PATH_BASE +
+                    unit.truck.truckType.logoName;
+
+                <svg-icon
+                    class="svg-size-42-18 d-flex"
+                    [src]="truckPath"
+                ></svg-icon>
+            </div>
+        </div>
     </div>
 </ng-template>
