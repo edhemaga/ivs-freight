@@ -560,7 +560,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public tabCreditChange(event: Tabs): void {
         this.billingCredit.forEach((item) => {
-            if (item.name === event.name) {
+            if (item?.name === event?.name) {
                 this.brokerForm.get('creditType').patchValue(item.name);
             }
         });
