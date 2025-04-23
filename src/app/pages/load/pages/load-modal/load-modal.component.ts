@@ -168,6 +168,7 @@ import {
     CaInputDatetimePickerComponent,
     InputTestComponent,
     CaInputComponent,
+    CaInputDropdownTestComponent,
 } from 'ca-components';
 
 @Component({
@@ -203,6 +204,7 @@ import {
         CaInputDropdownComponent,
         CaInputDatetimePickerComponent,
         InputTestComponent,
+        CaInputDropdownTestComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -4054,7 +4056,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         : this.selectedCompany,
                 dispatch: this.selectedDispatch,
                 broker: this.selectedBroker,
-                brokerContactId: this.selectedBrokerContact.id,
+                brokerContactId: this.selectedBrokerContact?.id,
                 referenceNumber: form.referenceNumber,
                 generalCommodity: this.selectedGeneralCommodity,
                 weight: form.weight,
