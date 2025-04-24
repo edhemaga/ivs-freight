@@ -8,42 +8,81 @@
 <div
     class="d-flex w-100 h-34 background-white p-x-4 m-t-6 m-b-12 br-3 justify-content-between align-items-center disable-text-selection"
 >
-    <div class="d-flex justify-content-start align-items-center">
-        <div
-            class="dropdown-wrapper text-color-black text-size-16 ta-font-extra-bold mx-1"
-        >
-            <ca-toolbar-dropdown
-                [dropdownOptions]="
-                    load | createLoadAdditionalInfoDropdownOptions
-                "
-                (onDropdownItemSelect)="onDropdownItemSelect($event)"
-            ></ca-toolbar-dropdown>
-        </div>
-        @if (!isSearchActive) {
-            <div class="d-flex alignt-items-center mx-1">
-                <div class="d-flex align-items-center h-26">
-                    <div class="h-18 w-1 background-light-grey-6"></div>
-                </div>
-                <div
-                    class="d-flex justify-content-center align-items-center h-26 w-26 background-hover-light-grey br-2 mx-1 c-pointer"
-                    (click)="toggleIsSearchActive()"
-                >
-                    <svg-icon
-                        class="d-flex svg-size-16"
-                        [src]="sharedSvgRoutes.SEARCH_ICON"
-                    >
-                    </svg-icon>
-                </div>
+    @if (isLoading) {
+        <div class="d-flex justify-content-between p-x-4" style="width: 55%">
+            <div class="d-flex">
+                <p class="placeholder-glow">
+                    <span
+                        class="placeholder placeholder-muted h-16 w-84"
+                    ></span>
+                </p>
+                <p class="placeholder-glow m-l-4">
+                    <span
+                        class="placeholder placeholder-muted rounded-circle h-18 w-18"
+                    ></span>
+                </p>
             </div>
-        }
-    </div>
-    <div
-        class="d-flex justify-content-center align-items-center h-26 w-26 background-hover-light-grey br-2 mx-1 c-pointer"
-        (click)="addNewComment(load.id)"
-    >
-        <svg-icon class="d-flex svg-size-16" [src]="sharedSvgRoutes.PLUS_ICON">
-        </svg-icon>
-    </div>
+            <p class="placeholder-glow">
+                <span class="placeholder placeholder-muted h-7 w-18"></span>
+            </p>
+        </div>
+
+        <p class="placeholder-glow">
+            <span class="placeholder placeholder-muted h-18 w-1"></span>
+        </p>
+        <div class="d-flex justify-content-between p-x-4" style="width: 40%">
+            <p class="placeholder-glow">
+                <span
+                    class="placeholder placeholder-muted h-18 w-18 br-3"
+                ></span>
+            </p>
+            <p class="placeholder-glow">
+                <span
+                    class="placeholder placeholder-muted h-15 w-15 br-3"
+                ></span>
+            </p>
+        </div>
+    } @else {
+        <div class="d-flex justify-content-start align-items-center">
+            <div
+                class="dropdown-wrapper text-color-black text-size-16 ta-font-extra-bold mx-1"
+            >
+                <ca-toolbar-dropdown
+                    [dropdownOptions]="
+                        load | createLoadAdditionalInfoDropdownOptions
+                    "
+                    (onDropdownItemSelect)="onDropdownItemSelect($event)"
+                ></ca-toolbar-dropdown>
+            </div>
+            @if (!isSearchActive) {
+                <div class="d-flex alignt-items-center mx-1">
+                    <div class="d-flex align-items-center h-26">
+                        <div class="h-18 w-1 background-light-grey-6"></div>
+                    </div>
+                    <div
+                        class="d-flex justify-content-center align-items-center h-26 w-26 background-hover-light-grey br-2 mx-1 c-pointer"
+                        (click)="toggleIsSearchActive()"
+                    >
+                        <svg-icon
+                            class="d-flex svg-size-16"
+                            [src]="sharedSvgRoutes.SEARCH_ICON"
+                        >
+                        </svg-icon>
+                    </div>
+                </div>
+            }
+        </div>
+        <div
+            class="d-flex justify-content-center align-items-center h-26 w-26 background-hover-light-grey br-2 mx-1 c-pointer"
+            (click)="addNewComment(load.id)"
+        >
+            <svg-icon
+                class="d-flex svg-size-16"
+                [src]="sharedSvgRoutes.PLUS_ICON"
+            >
+            </svg-icon>
+        </div>
+    }
 </div>
 
 @let backgroundColor = isHeaderHidden ? eColor.TRANSPARENT : eColor.WHITE;
@@ -54,7 +93,7 @@
     }"
 >
     @switch (displayedSection) {
-        @case (eLoadDetailsGeneral.COMMENTS) {
+        @case (eLoadDetailsGeneral.COMMENT) {
             <div class="w-100 mb-1">
                 @if (isLoading) {
                     <p class="placeholder-glow">
