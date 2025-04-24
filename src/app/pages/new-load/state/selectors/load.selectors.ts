@@ -173,6 +173,14 @@ export const loadIdLoadStatusChangeSelector = createSelector(
     selectLoadState,
     (state: ILoadState) => state.loadIdLoadStatusChange
 );
+
+export const selectedLoadForStatusChangeSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => {
+        const loadForChange = state.loads.find(load => load.id === state.loadIdLoadStatusChange)
+        return loadForChange;
+    }
+);
 //#endRegion
 
 export const cardFlipViewModeSelector = createSelector(
