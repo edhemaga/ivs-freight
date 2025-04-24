@@ -2,7 +2,7 @@
     class="main_inside"
     [ngClass]="{
         'add-new': !trailerId && !truckId,
-        filled: !!trailerId || !!truckId
+        filled: !!trailerId || !!truckId,
     }"
 >
     <div class="padding-inside dispatch-parking-wrapper">
@@ -14,14 +14,14 @@
                 'dispatch-parking_assigned': isParkingAssigned,
                 'dispatch-parking-hover': isParkingAvailable,
                 'dispatch-parking-disabled': !isUnlockable,
-                hovering: (!!trailerId || !!truckId) && isHoveringRow
+                hovering: (!!trailerId || !!truckId) && isHoveringRow,
             }"
         >
             <ng-container *ngIf="isParkingAvailable">
                 <div
                     class="d-flex align-items-center p-x-1 justify-content-between pos-absolute"
                     [ngClass]="{
-                        'dispatch-parking-large': isWideTable
+                        'dispatch-parking-large': isWideTable,
                     }"
                     (click)="isUnlockable ? onInputClick() : {}"
                 >
@@ -51,15 +51,17 @@
                         <div
                             class="dispatch-parking-text ta-font-medium flex-1"
                             [ngClass]="{
-                                'dispatch-parking_assigned': !isParkingAssigned
+                                'dispatch-parking_assigned': !isParkingAssigned,
+                                'dispatch-parking-empty-text':
+                                    !isParkingAssigned && isUnlockable,
                             }"
                         >
                             {{
                                 isParkingAssigned
                                     ? parkingSlot?.slotNumber
                                     : isUnlockable
-                                    ? 'ASSIGN'
-                                    : ''
+                                      ? 'ASSIGN'
+                                      : ''
                             }}
                         </div>
 
@@ -96,12 +98,12 @@
                         <div
                             class="dispatch-parking-dropdown"
                             [ngClass]="{
-                                'dispatch-parking-dropdown_large': isWideTable
+                                'dispatch-parking-dropdown_large': isWideTable,
                             }"
                             [ngStyle]="{
                                 width: _parkingDropdownWidth
                                     ? _parkingDropdownWidth + 'px'
-                                    : ''
+                                    : '',
                             }"
                         >
                             <form
@@ -166,7 +168,7 @@
                                                     "
                                                     [ngClass]="{
                                                         'dispatch-parking-dropdown-caret-rotate':
-                                                            parking.isDropdownVisible
+                                                            parking.isDropdownVisible,
                                                     }"
                                                 >
                                                 </svg-icon>
