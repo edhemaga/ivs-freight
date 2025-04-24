@@ -76,6 +76,7 @@ import {
     eModalButtonClassType,
     eModalButtonSize,
     CaTabSwitchComponent,
+    InputTestComponent,
 } from 'ca-components';
 
 // enums
@@ -155,6 +156,7 @@ import { LoadStoreService } from '@pages/load/pages/load-table/services/load-sto
         CaModalButtonComponent,
         CaInputAddressDropdownComponent,
         CaTabSwitchComponent,
+        InputTestComponent,
 
         // Pipes
         FormatDatePipe,
@@ -559,8 +561,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
 
     public tabCreditChange(event: Tabs): void {
+        const tab: Tabs = event ?? this.billingCredit[0];
         this.billingCredit.forEach((item) => {
-            if (item?.name === event?.name) {
+            if (item?.name === tab?.name) {
                 this.brokerForm.get('creditType').patchValue(item.name);
             }
         });
