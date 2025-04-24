@@ -7,7 +7,7 @@ import {
     ITableColumn,
     ITableReorderAction,
     ITableResizeAction,
-} from '@shared/components/new-table/interface';
+} from '@shared/components/new-table/interfaces';
 
 // services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';

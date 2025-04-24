@@ -5,7 +5,7 @@ import { SortOrder } from 'appcoretruckassist';
 import {
     ITableColumn,
     ITableReorderAction,
-} from '@shared/components/new-table/interface';
+} from '@shared/components/new-table/interfaces';
 
 export class StoreFunctionsHelper {
     static mapColumnsVisibility(

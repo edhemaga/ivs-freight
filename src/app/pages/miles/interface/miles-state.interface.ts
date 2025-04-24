@@ -7,14 +7,13 @@ import { ITableData } from '@shared/models';
 
 // Interface
 import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { ITableConfig } from '@shared/components/new-table/interface';
+import { ITableConfig } from '@shared/components/new-table/interfaces';
 
 // External Services or Models
 import { MilesStateFilterResponse, RoutingResponse } from 'appcoretruckassist';
 import {
-    IMilesDetailsFilters,
     IMilesModel,
     IMilesTabResults,
     IMinimalListState,

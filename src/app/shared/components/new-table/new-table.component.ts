@@ -48,7 +48,7 @@ import {
     ITableColumn,
     ITableReorderAction,
     ITableResizeAction,
-} from '@shared/components/new-table/interface';
+} from '@shared/components/new-table/interfaces';
 
 @Component({
     selector: 'app-new-table',

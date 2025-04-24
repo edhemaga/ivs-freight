@@ -331,7 +331,7 @@
                 [hasLabelTop]="hasLabelTop && groupColumn.label"
                 [hasDoubleHeightBorder]="hasDoubleHeightBorder"
                 (resizing)="onColumnResizing($event)"
-                (onColumnResize)="onColumnWidthResize($event)"
+                (columnWidthResize)="onColumnWidthResize($event)"
                 (click)="handleSortColumnClick(column)"
                 (mouseenter)="
                     onHeadingHover(

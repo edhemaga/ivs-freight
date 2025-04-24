@@ -7,7 +7,7 @@ import { TableType, UpdateTableConfigCommand } from 'appcoretruckassist';
 import { eDropdownMenu, eDropdownMenuColumns } from '@shared/enums';
 
 // interfaces
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // configs
 import {

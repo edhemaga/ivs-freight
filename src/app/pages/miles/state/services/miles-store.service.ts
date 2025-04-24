@@ -55,7 +55,7 @@ import {
     ITableConfig,
     ITableReorderAction,
     ITableResizeAction,
-} from '@shared/components/new-table/interface';
+} from '@shared/components/new-table/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { ICaMapProps, IFilterAction } from 'ca-components';
 import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';

@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 
 // interfaces
-import { ITableResizeAction } from '@shared/components/new-table/interface';
+import { ITableResizeAction } from '@shared/components/new-table/interfaces';
 
 @Directive({
     selector: '[appResizableColumn]',
@@ -26,7 +26,7 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
     @Input() hasDoubleHeightBorder: boolean = false;
 
     @Output() resizing = new EventEmitter<boolean>();
-    @Output() onColumnResize = new EventEmitter<ITableResizeAction>();
+    @Output() columnWidthResize = new EventEmitter<ITableResizeAction>();
 
     private isInitialized = false;
 
@@ -152,7 +152,7 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
                 newWidth,
             };
 
-            this.onColumnResize.emit(resizeAction);
+            this.columnWidthResize.emit(resizeAction);
         }
     };
 

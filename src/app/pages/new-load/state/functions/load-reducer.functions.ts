@@ -1,6 +1,6 @@
 // Interfaces
 import { ILoadState, IMappedLoad } from '@pages/new-load/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // Models
 import {
