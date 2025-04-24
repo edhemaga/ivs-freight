@@ -28,6 +28,10 @@
 
     &.hovering {
         background-color: $bw2;
+
+        .dispatch-parking-icon_empty, .dispatch-parking-empty-text {
+            opacity: 1;
+        }
     }
 
     &-dropdown {
@@ -201,6 +205,11 @@
         &:hover {
             color: $ta-black;
         }
+    }
+
+    &-icon_empty, &-empty-text {
+        transition: $transition;
+        opacity: 0;
     }
 
     &-disabled {
