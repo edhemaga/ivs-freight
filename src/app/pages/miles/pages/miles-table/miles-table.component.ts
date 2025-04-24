@@ -5,6 +5,7 @@ import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 // interfaces
 import {
     ITableColumn,
+    ITableReorderAction,
     ITableResizeAction,
 } from '@shared/components/new-table/interface';
 
@@ -63,6 +64,10 @@ export class MilesTableComponent {
 
     public onColumnResize(resizeAction: ITableResizeAction): void {
         this.milesStoreService.dispatchResizeColumn(resizeAction);
+    }
+
+    public onColumnReorder(reorderAction: ITableReorderAction): void {
+        this.milesStoreService.dispatchReorderColumn(reorderAction);
     }
 
     public goToMilesDetailsPage(id: string): void {

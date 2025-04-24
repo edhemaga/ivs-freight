@@ -82,4 +82,6 @@ export class SharedSvgRoutes {
     // applicant
     static BLUE_CHECKMARK: string = 'assets/svg/applicant/check.svg';
     static HAZARDOUS_ICON: string = 'assets/svg/common/ic_hazardous.svg';
+    static REORDER_COLUMN_ICON: string =
+        'assets/svg/common/ic_reorder_column.svg';
 }

@@ -160,6 +160,10 @@ export const milesReducer = createReducer(
         Functions.tableResizeChange(state, resizeAction)
     ),
 
+    on(MilesAction.tableReorderChange, (state, { reorderAction }) =>
+        Functions.tableReorderChange(state, reorderAction)
+    ),
+
     on(MilesAction.onSearchChange, (state, { search }) =>
         Functions.onSearchChange(state, search)
     ),

@@ -1,22 +1,18 @@
 @let displayedDataCount = rows.length;
 
+@let isReorderDisabled = isTableLocked || isResize;
+
 <div class="table-container">
-    <!-- 
-    <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
-  @for (timePeriod of timePeriods; track timePeriod) {
-    <div class="example-box" cdkDrag>{{timePeriod}}</div>
-  }
-</div>
-    -->
     <div class="w-fit-content">
         <!-- Header -->
 
-        <div
-            cdkDropList
-            cdkDropListOrientation="horizontal"
-            class="d-flex m-b-6 p-x-8 new-table--header"
-        >
-            <div class="d-flex new-table--pinned-left">
+        <div class="d-flex m-b-6 p-x-8 new-table--header">
+            <div
+                class="d-flex new-table--pinned-left"
+                cdkDropList
+                cdkDropListOrientation="horizontal"
+                (cdkDropListDropped)="onReorderEnd($event, leftPinnedColumns)"
+            >
                 @for (
                     column of leftPinnedColumns;
                     track column.key;
@@ -26,35 +22,58 @@
                         leftPinnedColumns[leftPinnedColumnIndex + 1] ??
                         mainColumns[0];
 
-                    <ng-container
-                        *ngTemplateOutlet="
-                            columnTemplate;
-                            context: {
-                                column,
-                                nextColumn,
-                            }
+                    <div
+                        class="d-flex reorder-container"
+                        cdkDrag
+                        [cdkDragDisabled]="
+                            isReorderDisabled || column.isDisabled
                         "
-                    ></ng-container>
+                        (cdkDragStarted)="onReorderStart()"
+                    >
+                        <ng-container
+                            *ngTemplateOutlet="
+                                columnTemplate;
+                                context: {
+                                    column,
+                                    nextColumn,
+                                }
+                            "
+                        ></ng-container>
+                    </div>
                 }
             </div>
 
-            @for (
-                column of mainColumns;
-                track column.key;
-                let mainColumnIndex = $index
-            ) {
-                @let nextColumn = mainColumns[mainColumnIndex + 1];
+            <div
+                class="d-flex new-table--pinned-main"
+                cdkDropList
+                cdkDropListOrientation="horizontal"
+                (cdkDropListDropped)="onReorderEnd($event, mainColumns)"
+            >
+                @for (
+                    column of mainColumns;
+                    track column.key;
+                    let mainColumnIndex = $index
+                ) {
+                    @let nextColumn = mainColumns[mainColumnIndex + 1];
 
-                <ng-container
-                    *ngTemplateOutlet="
-                        columnTemplate;
-                        context: {
-                            column,
-                            nextColumn,
-                        }
-                    "
-                ></ng-container>
-            }
+                    <div
+                        class="d-flex reorder-container"
+                        cdkDrag
+                        [cdkDragDisabled]="isReorderDisabled"
+                        (cdkDragStarted)="onReorderStart()"
+                    >
+                        <ng-container
+                            *ngTemplateOutlet="
+                                columnTemplate;
+                                context: {
+                                    column,
+                                    nextColumn,
+                                }
+                            "
+                        ></ng-container>
+                    </div>
+                }
+            </div>
 
             <div class="d-flex new-table--pinned-right">
                 @for (column of rightPinnedColumns; track column.key) {
@@ -184,7 +203,8 @@
         @let firstCheckedIndex = column.columns | tableGroupLabelIndex;
         @let tableGroupClass = { column, isTableLocked } | tableGroupClass;
 
-        @let groupColumnHoverAction = column.label ?? column.columns[0].label;
+        @let groupColumnHoverAction =
+            column.label.length ? column.label : column.columns[0].label;
 
         @let isGroupHeadingHover =
             [column.label, column.columns[0].label].includes(
@@ -192,8 +212,13 @@
             );
 
         <div
+            cdkDropList
+            cdkDropListOrientation="horizontal"
             class="d-flex h-30 p-t-4 position-relative new-table--row-heading-group"
             [ngClass]="tableGroupClass"
+            (cdkDropListDropped)="
+                onReorderEnd($event, column.columns, column.key)
+            "
             (mouseenter)="onHeadingHover(null, groupColumnHoverAction)"
             (mouseleave)="onHeadingHover(null, null)"
         >
@@ -208,27 +233,37 @@
                 @let hasDoubleHeightBorder =
                     _lastColumn && !!nextColumn?.columns;
 
-                <ng-container
-                    *ngTemplateOutlet="
-                        columnDisplay;
-                        context: {
-                            column: _column,
-                            groupColumn: column,
-                            hasLabelTop,
-                            isGroup: true,
-                            isLastInGroup: _lastColumn,
-                            isAlignedRight,
-                            hasDoubleHeightBorder,
-                            isGroupHeadingHover,
-                        }
-                    "
-                ></ng-container>
+                <div
+                    class="d-flex reorder-container"
+                    cdkDrag
+                    [cdkDragDisabled]="isReorderDisabled || !column.label"
+                    (cdkDragStarted)="onReorderStart()"
+                >
+                    <ng-container
+                        *ngTemplateOutlet="
+                            columnDisplay;
+                            context: {
+                                column: _column,
+                                groupColumn: column,
+                                hasLabelTop,
+                                isGroup: true,
+                                isLastInGroup: _lastColumn,
+                                isAlignedRight,
+                                hasDoubleHeightBorder,
+                                isGroupHeadingHover,
+                            }
+                        "
+                    ></ng-container>
+                </div>
             }
 
             <!-- Hover Div -->
 
             @let isGroupColumnHover =
-                !isTableLocked && isGroupHeadingHover && !headingHoverId;
+                !isTableLocked &&
+                !isReorder &&
+                !headingHoverId &&
+                isGroupHeadingHover;
 
             @if (isGroupColumnHover) {
                 <div
@@ -277,6 +312,14 @@
                     isAlignedRight,
                 } | tableColumnClass;
 
+            @let headingHoverActionId =
+                hasLabelTop && !groupColumn.label.length ? null : column.id;
+
+            @let headingHoverActionLabel =
+                hasLabelTop && !groupColumn.label.length
+                    ? groupColumn.columns[0].label
+                    : null;
+
             <div
                 class="d-flex position-relative new-table--row-heading"
                 [ngClass]="tableColumnClass"
@@ -287,8 +330,16 @@
                 [maxWidth]="column.maxWidth"
                 [hasLabelTop]="hasLabelTop && groupColumn.label"
                 [hasDoubleHeightBorder]="hasDoubleHeightBorder"
+                (resizing)="onColumnResizing($event)"
                 (onColumnResize)="onColumnWidthResize($event)"
                 (click)="handleSortColumnClick(column)"
+                (mouseenter)="
+                    onHeadingHover(
+                        headingHoverActionId,
+                        headingHoverActionLabel
+                    )
+                "
+                (mouseleave)="onHeadingHover(null, null)"
             >
                 @if (hasLabelTop) {
                     <span
@@ -311,8 +362,6 @@
                 <div
                     class="d-flex align-items-end z-2 new-table--row-heading-inner"
                     [ngClass]="tableColumnInnerClass"
-                    (mouseenter)="onHeadingHover(column.id, null)"
-                    (mouseleave)="onHeadingHover(null, null)"
                 >
                     @let isPinned =
                         !isGroup ? column.pinned : groupColumn.pinned;
@@ -323,6 +372,7 @@
                             isTableLocked,
                             isPinned,
                             isHeadingHover,
+                            isGroupHeadingHover,
                             isGroup,
                             isLastInGroup,
                         } | tableColumnLabelWidth;
@@ -356,7 +406,8 @@
 
                     <!-- Pin, Remove Column Action -->
 
-                    @let hasActions = !isTableLocked && !column.isDisabled;
+                    @let hasActions =
+                        !isTableLocked && !column.isDisabled && !isReorder;
 
                     @if (hasActions) {
                         @let tableColumnActionClass =
@@ -372,6 +423,8 @@
                             class="d-flex position-relative right-0 new-table--row-heading-actions"
                             [ngClass]="tableColumnActionClass"
                         >
+                            <!-- Pin Column Action -->
+
                             @let hasPinAction = !isGroup || isLastInGroup;
 
                             @if (hasPinAction) {
@@ -386,7 +439,7 @@
                                     isLastInGroup ? groupColumn : column;
 
                                 <div
-                                    class="d-flex justfiy-content-center align-items-center m-r-2 c-pointer"
+                                    class="d-flex justfiy-content-center align-items-center m-r-2 c-pointer pin-action"
                                     ngbTooltip
                                     [mainTooltip]="pinColumnTooltip"
                                     [tooltipBackground]="eColor.BLACK"
@@ -409,6 +462,8 @@
                                 </div>
                             }
 
+                            <!-- Remove Column Action -->
+
                             @let hasRemoveColumnAction =
                                 !isGroup
                                     ? !isPinned
@@ -426,7 +481,7 @@
                                         : column.key;
 
                                 <div
-                                    class="d-flex justfiy-content-center align-items-center svg-fill-grey svg-hover-black c-pointer"
+                                    class="d-flex justfiy-content-center align-items-center svg-fill-grey svg-hover-black c-pointer remove-column-action"
                                     ngbTooltip
                                     [mainTooltip]="removeColumnTooltip"
                                     [tooltipBackground]="eColor.BLACK"
@@ -443,6 +498,17 @@
                                     ></svg-icon>
                                 </div>
                             }
+
+                            <!-- Reorder Column Action -->
+
+                            <div
+                                class="position-relative right--11 d-none reorder-action"
+                            >
+                                <svg-icon
+                                    class="svg-size-14"
+                                    [src]="sharedSvgRoutes.REORDER_COLUMN_ICON"
+                                ></svg-icon>
+                            </div>
                         </div>
                     } @else {
                         <!-- Sort Column Action -->
@@ -475,6 +541,7 @@
                     !isTableLocked &&
                     !column.isDisabled &&
                     !isLastInGroup &&
+                    !isReorder &&
                     isHeadingHover;
 
                 @if (isColumnHover) {

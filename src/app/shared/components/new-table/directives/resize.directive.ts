@@ -25,6 +25,7 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
     @Input() hasLabelTop: boolean = false;
     @Input() hasDoubleHeightBorder: boolean = false;
 
+    @Output() resizing = new EventEmitter<boolean>();
     @Output() onColumnResize = new EventEmitter<ITableResizeAction>();
 
     private isInitialized = false;
@@ -159,6 +160,8 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
         this.startX = event.clientX;
         this.startWidth = this.column.nativeElement.offsetWidth;
 
+        this.resizing.emit(true);
+
         this.mouseMoveListener = this.renderer.listen(
             'document',
             'mousemove',
@@ -181,5 +184,7 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
             this.mouseUpListener();
             this.mouseUpListener = null;
         }
+
+        this.resizing.emit(false);
     };
 }

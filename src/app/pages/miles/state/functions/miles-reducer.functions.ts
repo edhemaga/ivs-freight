@@ -7,6 +7,7 @@ import {
 import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
 import {
     ITableColumn,
+    ITableReorderAction,
     ITableResizeAction,
 } from '@shared/components/new-table/interface';
 
@@ -452,6 +453,24 @@ export function tableResizeChange(
         columns: resizedColumns,
     };
 }
+
+export function tableReorderChange(
+    state: IMilesState,
+    reorderAction: ITableReorderAction
+): IMilesState {
+    const { columns } = state;
+
+    const reorderedColumns = StoreFunctionsHelper.reorderColumns(
+        columns,
+        reorderAction
+    );
+
+    return {
+        ...state,
+        columns: reorderedColumns,
+    };
+}
+
 export function setInitalMinimalList(
     state: IMilesState,
     list: MilesByUnitMinimalListResponse,

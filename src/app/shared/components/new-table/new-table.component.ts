@@ -46,6 +46,7 @@ import { ResizableColumnDirective } from '@shared/components/new-table/directive
 // interfaces
 import {
     ITableColumn,
+    ITableReorderAction,
     ITableResizeAction,
 } from '@shared/components/new-table/interface';
 
@@ -96,6 +97,8 @@ export class NewTableComponent<T> {
     @Output() onSortingChange: EventEmitter<ITableColumn> = new EventEmitter();
     @Output() onColumnPinned: EventEmitter<ITableColumn> = new EventEmitter();
     @Output() onColumnResize: EventEmitter<ITableResizeAction> =
+        new EventEmitter();
+    @Output() onColumnReorder: EventEmitter<ITableReorderAction> =
         new EventEmitter();
 
     @Output() onRemoveColumn: EventEmitter<string> = new EventEmitter();
@@ -160,8 +163,10 @@ export class NewTableComponent<T> {
         columnId: number | null,
         groupLabel: string | null
     ): void {
-        this.headingHoverId = columnId;
-        this.groupHeadingHoverLabel = groupLabel;
+        if (!this.isTableLocked && !this.isReorder) {
+            this.headingHoverId = columnId;
+            this.groupHeadingHoverLabel = groupLabel;
+        }
     }
 
     public onRemoveColumnClick(columnKey: string): void {
@@ -172,20 +177,46 @@ export class NewTableComponent<T> {
         return this.expandedRows?.has(rowId);
     }
 
-    ////////////////////////////////////
-    timePeriods = [
-        'Bronze age',
-        'Iron age',
-        'Middle ages',
-        'Early modern period',
-        'Long nineteenth century',
-    ];
+    ////////////////////
 
-    drop(event: CdkDragDrop<string[]>) {
-        moveItemInArray(
-            this.timePeriods,
-            event.previousIndex,
-            event.currentIndex
-        );
+    public isResize: boolean = false;
+
+    public onColumnResizing(isResize: boolean): void {
+        this.isResize = isResize;
+    }
+
+    ////////////////////////////////////
+    public isReorder: boolean = false;
+
+    public onReorderStart(): void {
+        this.isReorder = true;
+    }
+
+    public onReorderEnd(
+        event: CdkDragDrop<string[]>,
+        selectedColumns: ITableColumn[],
+        groupColumnKey?: string
+    ): void {
+        const previousColumnKey = selectedColumns[event.previousIndex].key;
+        const currentColumnKey = selectedColumns[event.currentIndex].key;
+
+        const reorderAction = {
+            previousColumnKey,
+            currentColumnKey,
+            groupColumnKey,
+        };
+
+        this.onColumnReorder.emit(reorderAction);
+
+        const targetArray = groupColumnKey
+            ? [...selectedColumns]
+            : selectedColumns;
+
+        moveItemInArray(targetArray, event.previousIndex, event.currentIndex);
+
+        this.isReorder = false;
+
+        this.headingHoverId = null;
+        this.groupHeadingHoverLabel = null;
     }
 }
