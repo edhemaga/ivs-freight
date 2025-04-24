@@ -46,7 +46,6 @@ import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
@@ -168,6 +167,7 @@ import {
     CaInputDatetimePickerComponent,
     InputTestComponent,
     CaInputComponent,
+    CaTabSwitchComponent,
     CaInputDropdownTestComponent,
 } from 'ca-components';
 
@@ -187,7 +187,7 @@ import {
         // components
         TaAppTooltipV2Component,
         TaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaCustomCardComponent,
         TaCheckboxComponent,
         LoadModalStopComponent,
@@ -328,7 +328,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public stopItemsValid: boolean[] = [];
 
     // input configurations
-    public loadDispatchesTTDInputConfig: ITaInput;
+    public loadDispatchesTTDInputConfig: ICaInput;
     public loadBrokerInputConfig: ITaInput;
     public loadBrokerContactsInputConfig: ICaInput;
     public loadPickupShipperInputConfig: ITaInput;
@@ -861,7 +861,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             }
 
             if (
-                this.editData?.type === eGeneralActions.EDIT ||
+                this.editData?.type === eGeneralActions.EDIT_LOWERCASE ||
                 this.editData?.isEditMode
             ) {
                 this.isFormDirty = true;
@@ -1316,7 +1316,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     this.updateLoadTemplate(addNew);
                 else if (this.isConvertedToTemplate) this.saveLoadTemplate();
                 else
-                    this.editData?.type === eGeneralActions.EDIT
+                    this.editData?.type === eGeneralActions.EDIT_LOWERCASE
                         ? this.updateLoad(addNew)
                         : this.createNewLoad();
 
@@ -3978,7 +3978,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         setTimeout(() => (this.isCommenting = false), 400);
     }
 
-    public commentsCountChanged(): void {
+    public onCommentsCountChanged(): void {
         this.loadService
             .getLoadInsideListById(this.activeLoadModalData.id)
             .pipe(takeUntil(this.destroy$))
@@ -5415,6 +5415,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     lat: loadStop.latitude,
                     lng: loadStop.longitude,
                 },
+                id: index,
             };
 
             const routeMarker: IMapMarkers = {
@@ -5456,7 +5457,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.formService.checkFormChange(this.loadForm);
 
         if (
-            this.editData?.type === eGeneralActions.EDIT ||
+            this.editData?.type === eGeneralActions.EDIT_LOWERCASE ||
             this.editData?.isEditMode
         ) {
             this.isFormDirty = true;

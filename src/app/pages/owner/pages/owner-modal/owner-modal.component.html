@@ -6,12 +6,12 @@
 >
     <div class="new-modal" origin>
         <div class="divider divider--dark divider--small"></div>
-        <app-ta-tab-switch
+        <app-ca-tab-switch
             [tabs]="tabs"
             (switchClicked)="tabChange($event)"
             [type]="'type1-modal-popup'"
         >
-        </app-ta-tab-switch>
+        </app-ca-tab-switch>
 
         <form
             [formGroup]="ownerForm"

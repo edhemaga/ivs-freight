@@ -2,15 +2,42 @@
 
 .new-table {
     &--header {
-        max-width: calc(100vw - 80px);
+        max-width: calc(100vw - 85px);
     }
 
     &--row {
         &-heading {
-            &-group {
-                border-left: 1px solid $ta-light-grey-6;
+            // sort
+            &-sortable {
+                &:hover {
+                    .new-table--row-heading-arrow {
+                        display: flex !important;
+                    }
+                }
+            }
+
+            // resize
+            .resize-handler {
+                &:hover {
+                    transform: scaleX(2);
+                }
+
+                cursor:
+                    url('/assets/svg/common/resize-arrow-outline.svg') 8 32,
+                    col-resize;
             }
         }
+    }
+
+    &--pinned-left {
+        position: sticky;
+        left: 0;
+        background-color: inherit;
+    }
+    &--pinned-right {
+        position: sticky;
+        right: 0;
+        background-color: inherit;
     }
 
     &--toolbar {
@@ -93,4 +120,37 @@
             }
         }
     }
+
+    &--scroll-border {
+        position: absolute;
+        width: 8px;
+        height: 100%;
+
+        &-left {
+            background-image: linear-gradient(to right, $bw2, $bw-10);
+        }
+
+        &-right {
+            background-image: linear-gradient(to right, $bw-10, $bw2);
+        }
+    }
+}
+
+// SEARCH HIGHLIGHT
+.table-highlight-text-0 {
+    color: $special-filter-green;
+    background: $special-filter-green-bg;
+    @include text-selection($special-filter-green);
+}
+
+.table-highlight-text-1 {
+    color: $ta-yellow-2;
+    background: $special-filter-orange-bg;
+    @include text-selection($ta-yellow-2);
+}
+
+.table-highlight-text-2 {
+    color: $special-filter-purple-1;
+    background: $special-filter-purple-bg;
+    @include text-selection($special-filter-purple-1);
 }

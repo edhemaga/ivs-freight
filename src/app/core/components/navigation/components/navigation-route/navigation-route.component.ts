@@ -65,6 +65,7 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     @Input() message: number;
     @Input() files: number;
     @Input() class: string;
+    @Input() id: string;
     @Input() closeDropdownOnNavClose: boolean;
 
     @Input() isSettingsPanelOpen: boolean = false;

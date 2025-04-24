@@ -25,13 +25,11 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { tabsModalAnimation } from '@shared/animations';
 
 // Components
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 import {
-    CaInputComponent,
-    CaInputDropdownComponent,
     CaInputDropdownTestComponent,
     CaModalComponent,
+    CaTabSwitchComponent,
     InputTestComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -80,8 +78,7 @@ import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
         NgbTooltip,
 
         // Component
-        TaTabSwitchComponent,
-        CaInputComponent,
+        CaTabSwitchComponent,
         CaModalComponent,
         CaInputDropdownTestComponent,
         TaSpinnerComponent,
@@ -198,13 +195,6 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
 
     public tabChange(event: any): void {
         this.selectedTab = event.id;
-
-        this.tabs = this.tabs.map((item) => {
-            return {
-                ...item,
-                checked: item.id === event.id,
-            };
-        });
         const dotAnimation = document.querySelector('.animation-two-tabs');
 
         this.animationObject = {

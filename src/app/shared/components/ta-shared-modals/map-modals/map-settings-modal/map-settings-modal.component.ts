@@ -20,7 +20,7 @@ import { UpdateMapCommand } from 'appcoretruckassist';
 
 // components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { CaTabSwitchComponent } from 'ca-components';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
 // enums
@@ -39,7 +39,7 @@ import { eGeneralActions } from '@shared/enums';
 
         // Component
         TaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaInputComponent,
     ],
 })
@@ -102,7 +102,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
 
-        if (this.editData?.type === eGeneralActions.EDIT) {
+        if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE) {
             this.editMap(this.editData.id);
         }
     }
@@ -134,7 +134,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                if (this.editData?.type === eGeneralActions.EDIT) {
+                if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE) {
                     this.updateMap(this.editData.id);
                     this.modalService.setModalSpinner({
                         action: 'set-map-settings',
@@ -226,7 +226,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
     }
 
     private resetForm() {
-        if (this.editData?.type === eGeneralActions.EDIT) {
+        if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE) {
             this.editMap(this.editData.id);
         } else {
             this.mapSettingsForm.reset();

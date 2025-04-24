@@ -30,6 +30,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
             selectedDriver,
             trailerId,
             logoName,
+            isDisabled,
         } = args;
 
         let inputConfig: ICaInput;
@@ -91,7 +92,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     isRequired: true,
                     isDropdown: true,
                     isDisabled:
-                        editDataType === eGeneralActions.EDIT &&
+                        editDataType === eGeneralActions.EDIT_LOWERCASE &&
                         fuelTransactionTypeName !== 'Manual',
                     customClass: 'datetimeclass',
                 };
@@ -106,7 +107,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     isDropdown: true,
                     isRequired: true,
                     isDisabled:
-                        editDataType === eGeneralActions.EDIT &&
+                        editDataType === eGeneralActions.EDIT_LOWERCASE &&
                         fuelTransactionTypeName !== 'Manual',
                     customClass: 'datetimeclass',
                 };
@@ -153,6 +154,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     type: 'text',
                     label: 'Driver',
                     isDropdown: true,
+                    isDisabled,
                     dropdownWidthClass: truckTrailerDriverDropdownWidth,
                     dropdownImageInput: {
                         withText: true,

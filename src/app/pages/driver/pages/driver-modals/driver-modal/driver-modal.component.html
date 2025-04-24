@@ -8,13 +8,13 @@
     <div class="new-modal" origin>
         <!-- Tabs -->
 
-        <app-ta-tab-switch
+        <app-ca-tab-switch
             [tabs]="mainTabs"
             customClass="mt-0"
             [type]="'type1-modal-popup'"
             (switchClicked)="onTabChange($event)"
         >
-        </app-ta-tab-switch>
+        </app-ca-tab-switch>
 
         <!-- Form -->
 
@@ -48,7 +48,8 @@
                                     minLength: 2,
                                     maxLength: 26,
                                     autoFocus:
-                                        editData?.type !== eGeneralActions.EDIT,
+                                        editData?.type !==
+                                        eGeneralActions.EDIT_LOWERCASE,
                                 }"
                             ></ca-input-test>
 
@@ -185,11 +186,11 @@
                             [isCardOpen]="driverForm.get('isOwner').value"
                         >
                             <ng-container body>
-                                <app-ta-tab-switch
+                                <app-ca-tab-switch
                                     [tabs]="ownerTabs"
-                                    [type]="'type2-modal-popup'"
+                                    [type]="'type4-modal-popup'"
                                     (switchClicked)="onOwnerTabChange($event)"
-                                ></app-ta-tab-switch>
+                                ></app-ca-tab-switch>
 
                                 <div
                                     class="animation-checkbox-card-tabs"
@@ -250,14 +251,14 @@
                             <ng-container
                                 *ngIf="!driverForm.get('isOwner').value"
                             >
-                                <app-ta-tab-switch
+                                <app-ca-tab-switch
                                     [tabs]="payrollTabs"
-                                    [type]="'type2-modal-popup'"
+                                    [type]="'type4-modal-popup'"
                                     (switchClicked)="
                                         onPayrolltTabChange($event)
                                     "
                                 >
-                                </app-ta-tab-switch>
+                                </app-ca-tab-switch>
                             </ng-container>
 
                             <div

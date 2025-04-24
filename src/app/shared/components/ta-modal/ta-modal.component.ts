@@ -44,8 +44,12 @@ import { TaUploadDropzoneComponent } from '@shared/components/ta-upload-files/co
 import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { CaFilterComponent, CaFilterListDropdownComponent, CaFilterTimeDropdownComponent } from 'ca-components';
+import {
+    CaFilterComponent,
+    CaFilterListDropdownComponent,
+    CaFilterTimeDropdownComponent,
+    CaTabSwitchComponent,
+} from 'ca-components';
 
 // guards
 import { AuthGuard } from '@core/guards/authentication.guard';
@@ -90,7 +94,7 @@ import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/f
         TaUploadDropzoneComponent,
         TaAppTooltipV2Component,
         TaSpinnerComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         CaFilterComponent,
         CaFilterTimeDropdownComponent,
         CaFilterListDropdownComponent,
@@ -730,7 +734,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
             .subscribe(
                 (data: { action: string; status: boolean; close: boolean }) => {
                     switch (data.action) {
-                        case eGeneralActions.DELETE: {
+                        case eGeneralActions.DELETE_LOWERCASE: {
                             this.deleteSpinnerVisibility = data.status;
                             break;
                         }

@@ -86,6 +86,7 @@ export class TaCustomCardComponent implements OnInit {
     @Input() subTextClass: string = null;
     @Input() hasDivider: boolean = true;
     @Input() hasDarkDivider: boolean = false;
+    @Input() hasBlackDivider: boolean = false;
     @Input() hasSmallDivider: boolean = false;
     @Input() hasLikeDislike: boolean = false;
     @Input() hasScrollBody: boolean = false;
@@ -135,6 +136,7 @@ export class TaCustomCardComponent implements OnInit {
     @Input() isHeaderLightColor: boolean = false;
     @Input() isActionDisabled: boolean = false;
     @Input() doesFileExist: boolean = false;
+    @Input() isDetailsCardDropdown: boolean = false;
 
     @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
         new EventEmitter<{ check: boolean; action: string }>(null);
@@ -208,10 +210,10 @@ export class TaCustomCardComponent implements OnInit {
                 });
 
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.onActionEvent.emit({
                     check: true,
-                    action: eGeneralActions.DELETE,
+                    action: eGeneralActions.DELETE_LOWERCASE,
                 });
 
                 break;

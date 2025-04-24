@@ -50,6 +50,8 @@ export class PmCardComponent
     public isCardFlippedCheckInCards: number[] = [];
     public isAllCardsFlipp: boolean = false;
 
+    public eDropdownMenu = eDropdownMenu;
+
     constructor(
         // services
         protected modalService: ModalService,
@@ -113,8 +115,6 @@ export class PmCardComponent
            
                    this.accountBackFilter(this.backFilterQuery, true); */
     }
-
-    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

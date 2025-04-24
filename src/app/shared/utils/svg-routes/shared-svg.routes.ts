@@ -16,7 +16,7 @@ export class SharedSvgRoutes {
     static CLOSE_ICON_NORMAL: string = 'assets/svg/applicant/close-x.svg';
     static SORT_ICON: string = 'assets/svg/common/sortArrow_filter.svg';
     static SORT_ICON_ASC: string =
-        'assets/svg/common/routing/ic_keyboard_arrow_up.svg';
+        'assets/svg/common/sortArrow_filter_desc.svg';
     static MAP_ICON: string = 'assets/svg/common/load/ic_load_map.svg';
     static DETAILS_BACK_BUTTON: string =
         'assets/svg/common/ic_details-back-arrow.svg';
@@ -33,6 +33,14 @@ export class SharedSvgRoutes {
     static ARROW_LEFT_ICON: string = 'assets/svg/common/arrow-left-grey.svg';
     static ARROW_RIGHT_ICON: string = 'assets/svg/common/arrow-right-grey.svg';
     static DEACTIVATE_ICON: string = 'assets/svg/common/ic_deactivate.svg';
+    static CHECKMARK_ICON: string = 'assets/svg/common/ic_checkmark.svg';
+    static TEMPERATURE_ICON: string =
+        'assets/svg/common/load/ic_temperature.svg';
+    static WEIGHT_ICON: string = 'assets/svg/common/ic_weight.svg';
+    static LENGTH_ICON: string = 'assets/svg/common/load/ic_length.svg';
+    static HEIGHT_ICON: string = 'assets/svg/common/load/ic_height.svg';
+    static TARP_ICON: string = 'assets/svg/common/load/ic_tarp.svg';
+    static STACKABLE_ICON: string = 'assets/svg/common/load/ic_stackable.svg';
     static WEX_EFS: string = 'assets/svg/fuel/wex-efs.svg';
     static COMPANY_ICON: string = 'assets/svg/common/ic_company.svg';
     static TIME_ICON: string = 'assets/svg/common/ic_time.svg';
@@ -45,4 +53,38 @@ export class SharedSvgRoutes {
     static TOP_RIGHT_ARROW: string = 'assets/svg/common/arrow_top_right.svg';
     static TRUCK_PATH_BASE: string = 'assets/svg/common/trucks/';
     static PRIMARY_ARROW_UP: string = 'assets/svg/common/ic_arrow-up.svg';
+    static PRIMARY_ARROW_DOWN: string = 'assets/svg/common/fill_arrow_down.svg';
+    static LOAD_FILLED: string = 'assets/svg/common/load/load-filled.svg';
+    static LTLC_FILLED: string = 'assets/svg/common/load/ltlc-filled.svg';
+    static LTL_FILLED: string = 'assets/svg/common/load/ltl-filled.svg';
+    static ARROW_RIGHT: string = 'assets/svg/common/ic-arrow-right.svg';
+    static SELECT_TEMPLATE: string =
+        'assets/svg/common/load/ic_load_template_btn.svg';
+    static SEARCH_ICON = 'assets/svg/common/ic_search.svg';
+    static LIKE_ICON = 'assets/svg/common/ic_like.svg';
+    static DISLIKE_ICON = 'assets/svg/common/ic_dislike.svg';
+    static USER_AVATAR_NO_PROFILE: string =
+        'assets/svg/truckassist-table/user-avatar-no-profile.svg';
+    static SPEC_CONFIRM = 'assets/svg/ic_spec-confirm.svg';
+    static X_ICON_DARK: string = 'assets/svg/ic_x.svg';
+    public EDIT_HOVER: string =
+        'assets/svg/truckassist-table/dropdown/content/edit-hover.svg';
+    public DELETE_NEW_HOVER: string =
+        'assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg';
+    static CONFIRMATION_TRASH_MODAL_ICON: string =
+        'assets/svg/common/confirmation/ic_confirmation_modal_trash.svg';
+    static CONFIRMATION_DELETE_ICON: string =
+        'assets/svg/common/confirmation/ic_confirmation_delete.svg';
+    static CONFIRMATION_INFO_ICON: string =
+        'assets/svg/common/confirmation/ic_confirmation_info2.svg';
+    static CONFIRMATION_CHANGE_STATUS_ICON: string =
+        'assets/svg/common/confirmation/confirmation_change_status.svg';
+    static TABLE_LENGTH_ICON: string =
+        'assets/svg/truckassist-table/length-icon.svg';
+    // applicant
+    static BLUE_CHECKMARK: string = 'assets/svg/applicant/check.svg';
+    static HAZARDOUS_ICON: string = 'assets/svg/common/ic_hazardous.svg';
+    
+    // note
+    static NOTE_ICON: string = 'assets/svg/truckassist-table/note/Note.svg';
 }

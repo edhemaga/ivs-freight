@@ -13,7 +13,6 @@ import { ModalService } from '@shared/services/modal.service';
 import { DriverService } from '@pages/driver/services/driver.service';
 
 // Components
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
@@ -28,7 +27,7 @@ import { DriverOffDutyLocationCardComponent } from '@pages/driver/pages/driver-d
 import { DriverEmergencyContactCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-emergency-contact-card/driver-emergency-contact-card.component';
 import { DriverNotificationCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-notification-card/driver-notification-card.component';
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
-import { CaChartComponent } from 'ca-components';
+import { CaChartComponent, CaTabSwitchComponent } from 'ca-components';
 
 // Constants
 import { DriverDetailsCardSvgRoutes } from '@pages/driver/pages/driver-details/components/driver-details-card/utils/svg-routes/driver-details-card-svg-routes';
@@ -74,7 +73,7 @@ import {
         ReactiveFormsModule,
 
         // components
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,

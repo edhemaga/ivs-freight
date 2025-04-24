@@ -15,6 +15,7 @@ export * from './toolbar-variant.enum';
 export * from './modal-button-text.enum';
 export * from './common-element.enum';
 export * from './active-view-mode.enum';
+export * from './card-flip-view-mode.enum';
 
 export * from './general-actions.enum';
 export * from './string-placeholder.enum';
@@ -24,6 +25,8 @@ export * from './common-element.enum';
 export * from './business-status.enum';
 export * from './shared-string.enum';
 export * from './avatar-color.enum';
+export * from './date-time-format.enum';
+export * from './sort-direction.enum';
 
 // Files
 export * from './file/file-form-controls.enum';
@@ -38,3 +41,9 @@ export * from './plaid/plaid-event.enum';
 
 // Colors
 export * from './color.enum';
+
+// Cards
+export * from './table-card-view-data.enum';
+
+// Tabs
+export * from './status-tab.enum';

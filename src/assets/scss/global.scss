@@ -163,6 +163,11 @@ body {
     }
 }
 
+.overflow-y-scroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .text-left {
     text-align: left !important;
 }
@@ -173,6 +178,21 @@ body {
 
 .text-right {
     text-align: right !important;
+}
+
+.text-ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.text-line-clamp {
+    &-2 {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
 }
 
 html {
@@ -375,12 +395,6 @@ app-load-modal {
     gap: 4px;
 }
 
-.text-ellipsis {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
 .h-full {
     height: 100%;
 }
@@ -574,6 +588,8 @@ html ngb-modal-backdrop {
 }
 
 .modal-payroll-report {
+    width: 1410px !important;
+
     .modal-original-part {
         width: 100%;
     }
@@ -652,4 +668,25 @@ html ngb-modal-backdrop {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.line-0 {
+    line-height: 0;
+}
+
+.cards-icon {
+    svg {
+        display: flex;
+    }
+}
+
+ngb-modal-window.modal {
+    backdrop-filter: blur(0.0625rem);
+    background: $dark-3 !important;
+}
+
+.placeholder {
+    &-muted {
+        background: rgb(145 145 145 / 80%) !important;
+    }
 }

@@ -164,7 +164,9 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
-        this.activeAction = action;
+        if (this.medicalForm.valid && this.isFormDirty)
+            this.activeAction = action;
+
         switch (action) {
             case DriverMedicalModalStringEnum.CLOSE:
                 this.ngbActiveModal.close();

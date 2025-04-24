@@ -8,8 +8,11 @@ import { FuelService } from '@shared/services/fuel.service';
 
 // components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { CaChartComponent, IChartConfiguration } from 'ca-components';
+import {
+    CaChartComponent,
+    CaTabSwitchComponent,
+    IChartConfiguration,
+} from 'ca-components';
 
 // constants
 import {
@@ -36,7 +39,7 @@ import { FuelStopExpensesResponse, FuelStopResponse } from 'appcoretruckassist';
 
         // components
         TaCustomCardComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         CaChartComponent,
     ],
 })

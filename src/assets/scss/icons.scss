@@ -26,6 +26,12 @@
     }
 }
 
+@mixin svg-height($height) {
+    svg {
+        height: $height;
+    }
+}
+
 .svg {
     // Colors
     &-fill {
@@ -71,6 +77,10 @@
 
         &-blue-14 {
             @include svg-fill($ta-blue-14);
+        }
+
+        &-blue-15 {
+            @include svg-fill($ta-blue-15);
         }
 
         &-blue-17 {
@@ -128,9 +138,8 @@
         &-red-10 {
             @include svg-fill($ta-red-10);
         }
-
-        &-red-11 {
-            @include svg-fill($ta-red-11);
+        &-grey {
+            @include svg-fill($bw5);
         }
 
         &-red-14 {
@@ -144,10 +153,24 @@
         &-orange-4 {
             @include svg-fill($ta-orange-4);
         }
-        
+
         &-orange-5 {
             @include svg-fill($ta-orange-5);
         }
+        &-red-11 {
+            @include svg-fill($ta-red-11);
+        }
+        &-red-14 {
+            @include svg-fill($ta-red-14);
+        }
+        &-red-18 {
+            @include svg-fill($ta-red-18);
+        }
+
+        &-bw6-2 {
+            @include svg-fill($bw6-2);
+        }
+
     }
 
     // Hovers
@@ -165,6 +188,10 @@
 
         &-blue-15 {
             @include svg-hover($ta-blue-15);
+        }
+
+        &-blue-18 {
+            @include svg-hover($ta-blue-18);
         }
 
         &-bw6-2 {
@@ -190,6 +217,10 @@
             @include svg-size(12px, 12px);
         }
 
+        &-13 {
+            @include svg-size(13px, 13px);
+        }
+
         &-14 {
             @include svg-size(14px, 14px);
         }
@@ -208,6 +239,20 @@
 
         &-44-16 {
             @include svg-size(44px, 16px);
+        }
+
+        &-42-18 {
+            @include svg-size(42px, 18px);
+        }
+        
+        &-90 {
+            @include svg-size(90px, 90px);
+        }
+    }
+
+    &-height {
+        &-18 {
+            @include svg-height(18px);
         }
     }
 }

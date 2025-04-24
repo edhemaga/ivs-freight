@@ -1,21 +1,30 @@
 // Feature Enums
-import { eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode, eCardFlipViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 
 // Shared Models
 import { ITableData } from '@shared/models';
 
 // Interface
-import { IStateFilters } from '@shared/interfaces';
+import {
+    ICardValueData,
+    IMinimalListFilters,
+    IStateFilters,
+} from '@shared/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interface';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { ITableConfig } from '@shared/components/new-table/interface';
 
 // External Services or Models
+import { MilesStateFilterResponse, RoutingResponse } from 'appcoretruckassist';
 import {
-    MilesByUnitPaginatedStopsResponse,
-    MilesStateFilterResponse,
-} from 'appcoretruckassist';
-import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
-import { ITableConfig } from '@shared/components/new-table/interface';
+    IMilesDetailsFilters,
+    IMilesModel,
+    IMilesTabResults,
+    IMinimalListState,
+    IMinimalStopsState,
+} from '@pages/miles/interface';
+import { ICaMapProps } from 'ca-components';
 
 export interface IMilesState {
     items: IMilesModel[];
@@ -25,12 +34,21 @@ export interface IMilesState {
     activeViewMode: eActiveViewMode;
     filters: IStateFilters;
     states: MilesStateFilterResponse[];
-    selectedCount: number;
     columns: ITableColumn[];
-    hasAllItemsSelected: boolean;
+    cardFlipViewMode: eCardFlipViewMode;
+    toolbarDropdownMenuOptions: IDropdownMenuItem[];
+    isToolbarDropdownMenuColumnsActive: boolean;
+    page: number;
 
-    // Is used for next, prev icons to navigate throught list
-    details: MilesByUnitPaginatedStopsResponse;
-    unitsPagination: IMilesDetailsFilters;
+    tabResults: IMilesTabResults;
+
+    details: IMinimalStopsState;
+    isDetailsLoading: boolean;
     tableSettings: ITableConfig;
+    minimalList: IMinimalListState;
+    minimalListFilters: IMinimalListFilters;
+    unitMapRoutes: RoutingResponse;
+    unitMapData: ICaMapProps;
+    frontSideData: ICardValueData[];
+    backSideData: ICardValueData[];
 }

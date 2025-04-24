@@ -80,8 +80,8 @@ import {
     CaInputDatetimePickerComponent,
     eModalButtonClassType,
     eModalButtonSize,
+    CaTabSwitchComponent,
 } from 'ca-components';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
@@ -135,7 +135,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         // components
         TaAppTooltipV2Component,
         CaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         CaInputDropdownComponent,
         CaInputComponent,
         TaCustomCardComponent,
@@ -391,7 +391,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
-        this.activeAction = action;
+        if (
+            this.repairOrderForm.valid &&
+            this.isFormDirty &&
+            this.isEachRepairRowValid
+        )
+            this.activeAction = action;
 
         switch (action) {
             case TaModalActionEnum.CLOSE:

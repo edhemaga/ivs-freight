@@ -21,14 +21,26 @@
     }
     &-muted {
         background: $muted;
+
+        &-o20 {
+            background: rgb($muted, 0.2);
+        }
     }
 
     &-black {
         background: $ta-black;
+
+        &-2 {
+            background: $ta-black-2;
+        }
     }
 
     &-green {
         background: $ta-green;
+
+        &-7 {
+            background: $ta-green-7;
+        }
     }
 
     &-bw1 {
@@ -54,6 +66,10 @@
             background-color: $ta-light-grey-2;
         }
 
+        &-5 {
+            background-color: $ta-light-grey-5;
+        }
+
         &-6 {
             background-color: $ta-light-grey-6;
         }
@@ -69,6 +85,18 @@
 
     &-orange-5 {
         background-color: $ta-orange-5;
+    }
+
+    &-orange-8 {
+        background-color: $ta-orange-8;
+    }
+
+    &-red-10 {
+        background-color: $ta-red-10;
+
+        &-o20 {
+            background-color: rgb($ta-red-10, 0.2);
+        }
     }
 
     &-blue {
@@ -89,6 +117,16 @@
         }
     }
 
+    &-yellow {
+        &-1 {
+            background-color: $ta-yellow-1;
+
+            &-o20 {
+                background-color: rgb($ta-yellow-1, 0.2);
+            }
+        }
+    }
+
     &-hover {
         &-black {
             @include hover($ta-black);
@@ -102,6 +140,15 @@
             &-15 {
                 @include hover($ta-blue-15);
             }
+            &-16 {
+                @include hover($ta-blue-16);
+            }
+        }
+
+        &-red {
+            &-15 {
+                @include hover($ta-red-15);
+            }
         }
 
         &-bw2 {
@@ -110,6 +157,10 @@
 
         &-light-grey {
             @include hover($ta-light-grey);
+        }
+
+        &-bw-9 {
+            background-color: $bw-9;
         }
     }
 }

@@ -1,0 +1,61 @@
+@import 'src/assets/scss/mixins.scss';
+@import 'src/theme/variables';
+
+.load-stop-rows {
+    &-not-pending {
+        // Hot fix only for this table
+        @media (max-width: 1380px) {
+            gap: 3px;
+        }
+        @media (max-width: $small-max) {
+            gap: 0;
+        }
+        @include responsive-grid(
+            minmax(168px, 192px) 130px 140px 76px,
+            minmax(168px, 192px) 130px 140px 76px,
+            minmax(168px, 192px) 130px 140px 76px,
+            200px 220px 130px 140px 76px,
+            200px 220px 140px 130px 140px 76px
+        );
+    }
+    &-pending {
+        // Hot fix only for this table
+        @media (max-width: 1380px) {
+            gap: 3px;
+        }
+        @media (max-width: $small-max) {
+            gap: 0;
+        }
+        @include responsive-grid(
+            minmax(168px, 192px) 140px 76px,
+            168px 130px 65px,
+            minmax(168px, 220px) minmax(168px, 220px) 130px 65px,
+            200px 220px 140px 130px 76px,
+            200px 220px 140px 130px 76px
+        );
+    }
+
+    &-items {
+        grid-template-columns: 180px 74px 34px 50px 34px 34px 34px 34px 56px 80px 90px 60px 60px;
+    }
+}
+
+.stops-progres-bar {
+    &-closed-load {
+        &-status {
+            transition:
+                height $transitionDuration ease-in-out,
+                opacity $transitionDuration ease-in-out;
+
+            &:first-of-type {
+                border-top-left-radius: 2px;
+                border-bottom-left-radius: 2px;
+            }
+
+            &:last-of-type {
+                border-top-right-radius: 2px;
+                border-bottom-right-radius: 2px;
+            }
+        }
+    }
+}

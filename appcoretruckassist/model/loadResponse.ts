@@ -83,6 +83,7 @@ export interface LoadResponse {
     ageUnpaid?: number | null;
     agePaid?: number | null;
     daysToPay?: number | null;
+    paymentDueDate?: string | null;
     rpm?: number;
     totalLoadTime?: { [key: string]: number; } | null;
     firstPickupTime?: { [key: string]: number; } | null;

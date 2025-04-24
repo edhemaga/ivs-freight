@@ -1,5 +1,6 @@
 // enums
 import {
+    eCardFlipViewMode,
     eDropdownMenu,
     eDropdownMenuColumns,
     eGeneralActions,
@@ -12,8 +13,10 @@ import {
     DropdownMenuContentConditionalItemsHelper,
 } from '@shared/utils/helpers/dropdown-menu-helpers';
 
-// models
+// interfaces
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+
+// models
 import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
 import { IDropdownMenuLoadItem } from '@pages/accounting/pages/payroll/state/models';
 
@@ -441,22 +444,31 @@ export class DropdownMenuContentHelper {
     }
 
     // load
-    static getLoadDropdownContent(selectedTab: string): IDropdownMenuItem[] {
+    static getLoadDropdownContent(
+        selectedTab: string,
+        isDetailsPageDropdown: boolean = false
+    ): IDropdownMenuItem[] {
+        const isTemplateLoad = selectedTab === eDropdownMenu.TEMPLATE;
         const isPendingLoad = selectedTab === eDropdownMenu.PENDING;
         const isClosedLoad = selectedTab === eDropdownMenu.CLOSED;
+        const isTemplateOrPendingLoad = isTemplateLoad || isPendingLoad;
 
         const modifierItems =
             DropdownMenuContentConditionalItemsHelper.getLoadModifierItems(
-                isPendingLoad
+                isTemplateOrPendingLoad
             );
 
         // requested items
-        const requestedConditionalItems = [eDropdownMenu.CREATE_TEMPLATE];
+        const requestedConditionalItems = isTemplateLoad
+            ? [eDropdownMenu.CREATE_LOAD]
+            : [eDropdownMenu.CREATE_TEMPLATE];
 
         const requestedSharedItems = [
             eDropdownMenu.EDIT,
-            eDropdownMenu.VIEW_DETAILS,
-            isClosedLoad && eDropdownMenu.EXPORT_BATCH,
+            !isTemplateLoad &&
+                !isDetailsPageDropdown &&
+                eDropdownMenu.VIEW_DETAILS,
+            !isTemplateLoad && isClosedLoad && eDropdownMenu.EXPORT_BATCH,
             eDropdownMenu.SHARE,
             eDropdownMenu.PRINT,
             eDropdownMenu.DELETE,
@@ -476,10 +488,12 @@ export class DropdownMenuContentHelper {
                 modifierItems
             );
 
+        const sharedItemsStartIndex = isTemplateLoad ? 1 : isClosedLoad ? 3 : 2;
+
         return [
-            ...sharedItems.slice(0, isClosedLoad ? 3 : 2),
+            ...sharedItems.slice(0, sharedItemsStartIndex),
             ...conditionalItems,
-            ...sharedItems.slice(isClosedLoad ? 3 : 2),
+            ...sharedItems.slice(sharedItemsStartIndex),
         ];
     }
 
@@ -657,12 +671,7 @@ export class DropdownMenuContentHelper {
     ): IDropdownMenuItem[] {
         // requested items
         const requestedConditionalItems = isOpenPayroll
-            ? [
-                  eDropdownMenu.EDIT_LOAD,
-                  eDropdownMenu.EDIT_PAYROLL,
-                  eDropdownMenu.PREVIEW_REPORT,
-                  eDropdownMenu.DOWNLOAD,
-              ]
+            ? [eDropdownMenu.EDIT_LOAD, eDropdownMenu.EDIT_PAYROLL]
             : [
                   eDropdownMenu.RESEND_REPORT,
                   eDropdownMenu.PREVIEW_REPORT,
@@ -684,11 +693,13 @@ export class DropdownMenuContentHelper {
                 true
             );
 
-        return [
-            ...conditionalItems.slice(0, isOpenPayroll ? 2 : 1),
-            ...sharedItems,
-            ...conditionalItems.slice(-2),
-        ];
+        return isOpenPayroll
+            ? [...conditionalItems, ...sharedItems]
+            : [
+                  conditionalItems[0],
+                  ...sharedItems,
+                  ...conditionalItems.slice(1),
+              ];
     }
 
     // payroll select load
@@ -740,11 +751,51 @@ export class DropdownMenuContentHelper {
         return [...sharedItems];
     }
 
-    static getLoadToolbarColumnsDropdownContent(
-        loadColumnsList: IDropdownMenuItem[]
+    // toolbar
+    static getToolbarDropdownContent(
+        isTableLocked: boolean
     ): IDropdownMenuItem[] {
-        loadColumnsList = loadColumnsList ?? [];
+        const requestedSharedItems = [
+            eDropdownMenuColumns.COLUMNS,
+            isTableLocked
+                ? eDropdownMenuColumns.UNLOCK_TABLE
+                : eDropdownMenuColumns.LOCK_TABLE,
+            eDropdownMenuColumns.RESET_TABLE,
+        ];
 
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [...sharedItems];
+    }
+
+    // cards
+    static getCardToolbarDropdownContent(
+        cardFlipViewMode: eCardFlipViewMode
+    ): IDropdownMenuItem[] {
+        const requestedSharedItems = [
+            eDropdownMenuColumns.COLUMNS_CARD,
+            cardFlipViewMode === eCardFlipViewMode.FRONT
+                ? eDropdownMenuColumns.FLIP_ALL_CARDS
+                : eDropdownMenuColumns.FLIP_ALL_CARDS_BACK,
+        ];
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [...sharedItems];
+    }
+
+    // columns
+    static getToolbarColumnsDropdownContent(
+        columnsList: IDropdownMenuItem[]
+    ): IDropdownMenuItem[] {
         const requestedSharedItems = [eDropdownMenuColumns.COLUMNS_BACK];
 
         const conditionalItems =
@@ -753,7 +804,7 @@ export class DropdownMenuContentHelper {
                 true
             );
 
-        return [...conditionalItems, ...loadColumnsList];
+        return [...conditionalItems, ...columnsList];
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -767,7 +818,7 @@ export class DropdownMenuContentHelper {
         return [
             {
                 title: 'Edit',
-                name: eGeneralActions.EDIT,
+                name: eGeneralActions.EDIT_LOWERCASE,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
                     width: 18,

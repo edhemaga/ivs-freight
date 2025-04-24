@@ -15,13 +15,12 @@ import { FormatDatePipe } from '@shared/pipes';
 
 // Components
 import {
-    CaInputComponent,
     CaInputDatetimePickerComponent,
     CaInputDropdownTestComponent,
     CaModalComponent,
+    CaTabSwitchComponent,
     InputTestComponent,
 } from 'ca-components';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
@@ -78,8 +77,7 @@ import { ICaInput } from '@ca-shared/components/ca-input-test/config';
         NgbTooltipModule,
 
         CaModalComponent,
-        CaInputComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         CaInputDropdownTestComponent,
         TaCheckboxComponent,
         TaAppTooltipV2Component,

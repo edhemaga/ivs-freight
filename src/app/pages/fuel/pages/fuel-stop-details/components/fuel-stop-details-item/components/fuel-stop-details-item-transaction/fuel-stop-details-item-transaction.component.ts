@@ -151,7 +151,7 @@ export class FuelStopDetailsItemTransactionComponent
             .subscribe({
                 next: (res) => {
                     if (
-                        res?.type === eGeneralActions.DELETE &&
+                        res?.type === eGeneralActions.DELETE_LOWERCASE &&
                         res?.template === eFuelStopDetails.FUEL_TRANSACTION
                     )
                         this.resetIndexes();
@@ -303,8 +303,6 @@ export class FuelStopDetailsItemTransactionComponent
             eFuelDetailsSearchIndex.TRANSACTION_INDEX
         );
     }
-
-    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

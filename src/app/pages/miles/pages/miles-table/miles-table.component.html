@@ -1,24 +1,21 @@
 @let store =
     {
-        selectedCount: milesStoreService.selectedCountSelector$ | async,
         columns: milesStoreService.columns$ | async,
         miles: milesStoreService.miles$ | async,
-        hasAllItemsSelected:
-            milesStoreService.hasAllItemsSelectedSelector$ | async,
         tableSettings: milesStoreService.tableSettingsSelector$ | async,
+        selectedTab: milesStoreService.selectedTab$ | async,
+        tabResultsSelector: milesStoreService.tabResultsSelector$ | async,
+        filter: milesStoreService.filter$ | async,
     };
 
 @if (store) {
-    <app-new-table
-        [columns]="store.columns"
-        [rows]="store.miles"
-        [isTableLocked]="store.tableSettings.isTableLocked"
-        [headerTemplates]="{
-            select: selectHeaderTemplate,
+    @let headerTemplates =
+        {
             revenue: revenueHeaderTemplate,
-        }"
-        [templates]="{
-            select: loadSelectTemplate,
+        };
+
+    @let templates =
+        {
             unit: unitTemplate,
             truckType: truckTypeTemplate,
             stopsPickup: percentTemplate,
@@ -30,24 +27,42 @@
             towingCount: percentTemplate,
             fuelCost: fuelCostTemplate,
             revenue: revenueTemplate,
-        }"
+        };
+
+    @let selectedTabTotalDataCount =
+        store.selectedTab === eMileTabs?.ACTIVE
+            ? store.tabResultsSelector.activeTruckCount
+            : store.tabResultsSelector.inactiveTruckCount;
+
+    @let isTableLocked = store.tableSettings.isTableLocked;
+
+    <app-new-table
+        [columns]="store.columns"
+        [rows]="store.miles"
+        [isTableLocked]="isTableLocked"
+        [totalDataCount]="selectedTabTotalDataCount"
+        [headerTemplates]="headerTemplates"
+        [templates]="templates"
         (onColumnPinned)="onColumnPinned($event)"
         (onSortingChange)="onSortingChange($event)"
+        (onColumnResize)="onColumnResize($event)"
+        (onShowMore)="onShowMoreClick()"
+        (onRemoveColumn)="onRemoveColumn($event)"
     >
         <!-- Header Templates -->
 
-        <ng-template #selectHeaderTemplate>
-            <app-ca-checkbox-selected-count
-                [itemsTotalCount]="store.miles.length"
-                [itemsSelectedCount]="store.selectedCount"
-                (onCheckboxCountClick)="onCheckboxCountClick($event)"
-            ></app-ca-checkbox-selected-count>
-        </ng-template>
+        <ng-template
+            #revenueHeaderTemplate
+            let-data="data"
+            let-tableColumnClass="tableColumnClass"
+            let-tableColumnLabelWidth="tableColumnLabelWidth"
+        >
+            @let isEmptyTable = !store.miles.length;
 
-        <ng-template #revenueHeaderTemplate let-data="data">
-            <div class="d-flex align-self-end m-r-6">
+            <div class="d-flex" [ngClass]="tableColumnClass">
                 <span
-                    class="text-size-11 ta-font-bold color-inherit text-uppercase text-color-bw6-2"
+                    class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
+                    [ngStyle]="tableColumnLabelWidth"
                 >
                     Revenue
                 </span>
@@ -56,23 +71,30 @@
 
         <!-- Column Templates -->
 
-        <ng-template #loadSelectTemplate let-data="data">
-            @let name = 'miles-row' + data.id;
+        <!-- Unit Template -->
 
-            <app-ca-checkbox
-                [name]="name"
-                [isChecked]="data.isSelected"
-                [isRegularCheckbox]="false"
-                [itemIndex]="data.id"
-                (columnCheckAction)="selectRow(data)"
-            ></app-ca-checkbox>
+        <ng-template #unitTemplate let-data="data" let-column="column">
+            @let unitTemplateStyle = { 'max-width': column.width + eUnit.PX };
+
+            <div class="d-flex align-items-center">
+                <p
+                    ngbTooltip
+                    mainTooltip="Open Map"
+                    [tooltipBackground]="eColor.BLACK"
+                    [position]="ePosition.BOTTOM"
+                    class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 d-inline-block text-truncate"
+                    [ngStyle]="unitTemplateStyle"
+                    [innerHtml]="
+                        data.unit
+                            | tableHighlightSearchText
+                                : store.filter?.searchQuery
+                    "
+                    (click)="goToMilesDetailsPage(data.truckId)"
+                ></p>
+            </div>
         </ng-template>
 
-        <ng-template #unitTemplate let-data="data">
-            <p class="text-color-black ta-font-bold text-size-14">
-                {{ data.unit }}
-            </p>
-        </ng-template>
+        <!-- Truck Type Template -->
 
         <ng-template #truckTypeTemplate let-data="data">
             <app-ta-truck-trailer-icon
@@ -81,41 +103,48 @@
             ></app-ta-truck-trailer-icon>
         </ng-template>
 
-        <ng-template #percentTemplate let-data="data" let-key="key">
-            <p
-                class="text-size-14"
-                [class]="
-                    !!data[key]?.count
-                        ? 'text-color-black-2'
-                        : 'text-color-muted'
-                "
-            >
+        <!-- Percent Template -->
+
+        <ng-template
+            #percentTemplate
+            let-data="data"
+            let-key="key"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            @let percentValue = data[key]?.percent + eUnit.PERCENTAGE_SIGN;
+
+            <p class="text-size-14" [class]="cellColumnTextColorClass">
                 {{ data[key]?.count }}
 
                 <span class="text-color-muted text-size-11 ta-font-semi-bold">
-                    {{ data[key]?.percent }}%
+                    {{ percentValue }}
                 </span>
             </p>
         </ng-template>
 
-        <ng-template #fuelCostTemplate let-data="data">
-            <p
-                class="text-size-14"
-                [class]="
-                    !!data.fuelCost ? 'text-color-black-2' : 'text-color-muted'
-                "
-            >
+        <!-- Fuel Cost Template -->
+
+        <ng-template
+            #fuelCostTemplate
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <p class="text-size-14" [class]="cellColumnTextColorClass">
                 ${{ data.fuelCost }}
             </p>
         </ng-template>
 
-        <ng-template #revenueTemplate let-data="data">
+        <!-- Revenue Template -->
+
+        <ng-template
+            #revenueTemplate
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
             <div class="d-flex justify-content-end">
                 <p
                     class="text-size-14 ta-font-semi-bold"
-                    [class]="
-                        !!data.revenue ? 'text-color-black' : 'text-color-muted'
-                    "
+                    [class]="cellColumnTextColorClass"
                 >
                     ${{ (data.revenue | thousandSeparator) ?? 0 }}
                 </p>

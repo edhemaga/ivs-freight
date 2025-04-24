@@ -50,7 +50,6 @@ import { DropDownService } from '@shared/services/drop-down.service';
 import { AddressService } from '@shared/services/address.service';
 
 // components
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import {
     CaInputAddressDropdownComponent,
@@ -58,6 +57,7 @@ import {
     CaInputDropdownComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    CaTabSwitchComponent,
     eModalButtonClassType,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -109,7 +109,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputComponent,
         CaInputDropdownComponent,
         CaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaCheckboxCardComponent,
         CaInputAddressDropdownComponent,
         TaAppTooltipV2Component,
@@ -320,7 +320,7 @@ export class SettingsTerminalModalComponent
                     this.inputService.markInvalid(this.terminalForm);
                     return;
                 }
-                if (this.editData?.type === eGeneralActions.EDIT)
+                if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE)
                     this.updateTerminal(this.editData.id);
                 else this.addTerminal();
                 break;
@@ -680,7 +680,9 @@ export class SettingsTerminalModalComponent
                     this.payPeriods = res.payPeriod;
                     this.weeklyDays = res.dayOfWeek;
 
-                    if (this.editData?.type === eGeneralActions.EDIT) {
+                    if (
+                        this.editData?.type === eGeneralActions.EDIT_LOWERCASE
+                    ) {
                         this.editTerminalById(this.editData.id);
                     } else {
                         this.startFormChanges();

@@ -14,11 +14,13 @@ import { LoadBillingAdditionalCommand } from './loadBillingAdditionalCommand';
 import { LoadStatus } from './loadStatus';
 import { LoadPaymentPayCommand } from './loadPaymentPayCommand';
 import { LoadStatusHistoryCommand } from './loadStatusHistoryCommand';
+import { LoadType } from './loadType';
 import { CreateTagCommand } from './createTagCommand';
 
 
 export interface ApiLoadPostRequest { 
     Id?: number;
+    Type?: LoadType;
     DispatcherId?: number;
     DateCreated?: string;
     Status?: LoadStatus;

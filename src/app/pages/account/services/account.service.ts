@@ -187,7 +187,7 @@ export class AccountService {
                 );
 
                 this.tableService.sendActionAnimation({
-                    animation: eGeneralActions.DELETE,
+                    animation: eGeneralActions.DELETE_LOWERCASE,
                     id: accountId,
                 });
             })

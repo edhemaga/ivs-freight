@@ -18,7 +18,8 @@
             <div
                 class="d-flex align-items-center dashboard-performance-header-tabs"
             >
-                <app-ta-tab-switch
+                <app-ca-tab-switch
+                    [type]="'type4-modal-popup'"
                     [tabs]="performanceTabs"
                     [disableHeight]="true"
                     [subPeriodDropdownList]="subPeriodDropdownList"
@@ -33,7 +34,7 @@
                     "
                     (popoverClosedEmitter)="handleCustomPeriodRangeClose()"
                 >
-                </app-ta-tab-switch>
+                </app-ca-tab-switch>
             </div>
 
             <div class="dashboard-performance-header-border"></div>

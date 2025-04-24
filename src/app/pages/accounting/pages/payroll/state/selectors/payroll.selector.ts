@@ -86,7 +86,8 @@ export const selectPayrollReportMapData = createSelector(
                     loadStop.type.name.toLowerCase(),
                     false,
                     true,
-                    loadStop.loadNumber
+                    loadStop.loadNumber,
+                    true,
                 ),
                 label: loadStop.loadNumber,
             };

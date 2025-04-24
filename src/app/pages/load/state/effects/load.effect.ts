@@ -7,18 +7,26 @@ import {
     exhaustMap,
     filter,
     map,
+    mergeMap,
     of,
     tap,
     withLatestFrom,
 } from 'rxjs';
 
 // services
-import { LoadService as LoadLocalService } from '@shared/services/load.service';
-import { LoadService, UpdateLoadStatusCommand } from 'appcoretruckassist';
-import { CommentsService } from '@shared/services/comments.service';
-import { ModalService } from '@shared/services/modal.service';
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import {
+    LoadService,
+    UpdateCommentCommand,
+    UpdateLoadStatusCommand,
+} from 'appcoretruckassist';
+import {
+    LoadService as LoadLocalService,
+    ModalService,
+    CommentsService,
+    TruckassistTableService,
+} from '@shared/services';
 import { BrokerService } from '@pages/customer/services';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // store
 import * as LoadActions from '@pages/load/state/actions/load.action';
@@ -41,6 +49,7 @@ export class LoadEffect {
 
         // services
         private loadService: LoadLocalService,
+        private loadStoreService: LoadStoreService,
         private brokerService: BrokerService,
         private apiLoadService: LoadService,
         private commentService: CommentsService,
@@ -498,31 +507,53 @@ export class LoadEffect {
         )
     );
 
-    public createComment$ = createEffect(() =>
+    public deleteComment$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(LoadActions.createComment),
+            ofType(LoadActions.deleteCommentById),
             exhaustMap((action) => {
-                const { apiParam, metadata } = action || {};
-
-                return this.loadService.apiCreateComment(apiParam).pipe(
-                    exhaustMap((createResponse) => {
-                        const { id } = createResponse || {};
-
-                        return this.loadService.apiGetCommentById(id).pipe(
-                            map((getResponse) => {
-                                const { entityTypeId } = apiParam || {};
-
-                                return LoadActions.createCommentSuccess({
-                                    loadId: entityTypeId,
-                                    comment: getResponse,
-                                    metadata,
-                                });
-                            }),
-                            catchError((error) =>
-                                of(LoadActions.createCommentError({ error }))
+                const { apiParam, loadId } = action;
+                return this.commentService
+                    .deleteCommentById(apiParam, loadId)
+                    .pipe(
+                        map(() =>
+                            LoadActions.deleteCommentByIdSuccess({
+                                loadId,
+                                commentId: apiParam,
+                            })
+                        ),
+                        catchError((error) =>
+                            of(
+                                LoadActions.deleteCommentByIdError({
+                                    error,
+                                })
                             )
-                        );
-                    })
+                        )
+                    );
+            })
+        )
+    );
+
+    public updateComment$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.updateComment),
+            exhaustMap((action) => {
+                const { commentId, commentContent } = action?.apiParam;
+                const commentDTO: UpdateCommentCommand = {
+                    id: commentId,
+                    commentContent,
+                };
+                return this.commentService.updateComment(commentDTO).pipe(
+                    map(() => {
+                        return LoadActions.updateCommentSuccess({
+                            apiParam: {
+                                commentId,
+                                commentContent,
+                            },
+                        });
+                    }),
+                    catchError((error) =>
+                        of(LoadActions.updateCommentError({ error }))
+                    )
                 );
             })
         )
@@ -741,14 +772,14 @@ export class LoadEffect {
         )
     );
 
-    public deleteCommentById$ = createEffect(() =>
-        this.actions$.pipe(
+    public deleteCommentById$ = createEffect(() => {
+        return this.actions$.pipe(
             ofType(LoadActions.deleteCommentById),
             exhaustMap((action) => {
-                const { apiParam, loadId } = action || {};
+                const { apiParam, loadId } = action;
 
                 return this.commentService.deleteCommentById(apiParam).pipe(
-                    map(() => {
+                    tap(() => {
                         return LoadActions.deleteCommentByIdSuccess({
                             loadId,
                             commentId: apiParam,
@@ -759,8 +790,8 @@ export class LoadEffect {
                     )
                 );
             })
-        )
-    );
+        );
+    });
 
     public getDispatcherList$ = createEffect(() =>
         this.actions$.pipe(
@@ -773,6 +804,11 @@ export class LoadEffect {
                             details,
                         });
                     }),
+                    tap((data) =>
+                        this.loadStoreService.setLoadDetailsMapData(
+                            data.details.stops
+                        )
+                    ),
                     catchError((error) =>
                         of(LoadActions.getLoadDetailsError({ error }))
                     )
@@ -781,6 +817,26 @@ export class LoadEffect {
         )
     );
     // #endregion
+
+    public getLoadDetailsMapData$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.getLoadDetailsMapData),
+            exhaustMap((action) => {
+                const { mapLocations } = action || {};
+
+                return this.loadService.getRouting(mapLocations).pipe(
+                    map((mapRoutes) => {
+                        return LoadActions.getLoadDetailsMapDataSuccess({
+                            mapRoutes,
+                        });
+                    }),
+                    catchError((error) =>
+                        of(LoadActions.getLoadDetailsMapDataError({ error }))
+                    )
+                );
+            })
+        )
+    );
 
     public getLoadDetails$ = createEffect(() =>
         this.actions$.pipe(

@@ -23,12 +23,12 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 export abstract class ColumnsDropdownMenuActionsBase {
-    protected abstract modalService: ModalService;
-    protected abstract tableService: TruckassistTableService;
-    protected abstract confirmationResetService: ConfirmationResetService;
+    protected modalService: ModalService;
+    protected tableService: TruckassistTableService;
+    protected confirmationResetService: ConfirmationResetService;
     protected abstract destroy$: Subject<void>;
 
-    protected abstract updateToolbarDropdownMenuContent(action?: string): void;
+    protected updateToolbarDropdownMenuContent(action?: string): void {}
 
     protected handleColumnsDropdownMenuActions<T>(
         action: TableCardBodyActions<T>
@@ -40,7 +40,10 @@ export abstract class ColumnsDropdownMenuActionsBase {
                 this.updateToolbarDropdownMenuContent();
 
                 break;
+            case eDropdownMenuColumns.CLOSE_TYPE:
+                break;
             case eDropdownMenuColumns.COLUMNS_TYPE:
+            case eDropdownMenuColumns.COLUMNS_BACK_TYPE:
                 this.updateToolbarDropdownMenuContent(type);
 
                 break;
@@ -127,7 +130,7 @@ export abstract class ColumnsDropdownMenuActionsBase {
             ? JSON.parse(initialTableConfig)
             : DropdownMenuColumnsActionsHelper.getColumnDefinition(subType);
 
-        config = config.map((column: ITableColummn) =>
+        config = config?.map((column: ITableColummn) =>
             column.field === actionType || column.groupName === actionType
                 ? { ...column, hidden: !isChecked }
                 : column

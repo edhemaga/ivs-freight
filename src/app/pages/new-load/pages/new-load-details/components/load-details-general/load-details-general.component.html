@@ -1,10 +1,122 @@
-@let load = loadStoreService.resolveLoadDetails$ | async;
-@let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
-@let minimalList = loadStoreService.minimalListSelector$ | async;
+@let loadDetailsSelector = loadStoreService.loadDetailsSelector$ | async;
+@let load = loadDetailsSelector.data;
+@let isLoading = loadDetailsSelector.isLoading;
 @let isSpacingBottom = true;
+@let minimalListSelector = loadStoreService.minimalListSelector$ | async;
+@let loadNumberFormated = 'Load ' + load.loadNumber;
 
 <div class="background-white p-8 br-3">
-    <div class="d-flex flex-column px-1">
+    @if (isLoading) {
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <p class="placeholder-glow">
+                    <span
+                        class="placeholder placeholder-muted br-2 h-20 w-93"
+                    ></span>
+                </p>
+
+                <p class="placeholder-glow m-l-8">
+                    <span
+                        class="placeholder placeholder-muted rounded-circle h-18 w-18"
+                    ></span>
+                </p>
+            </div>
+
+            <div class="d-flex">
+                <div class="d-flex w-26 h-26 justify-content-center">
+                    <p class="placeholder-glow">
+                        <span
+                            class="placeholder placeholder-muted br-2 w-7 h-18"
+                        ></span>
+                    </p>
+                </div>
+
+                <div class="d-flex w-26 h-26 justify-content-center ml-1">
+                    <p class="placeholder-glow">
+                        <span
+                            class="placeholder placeholder-muted br-2 w-7 h-18"
+                        ></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    } @else {
+        <app-ca-details-title-card
+            #detailsTitleCard
+            [detailsTitleCardConfig]="{
+                title: loadNumberFormated,
+                tooltip: 'Search load',
+                placeholder: load.loadNumber,
+                width: '372px',
+                tooltipNext: 'Next',
+                tooltipPrevious: 'Previous',
+            }"
+            [dropdownTemplate]="titleDropdown"
+            [titleTemplate]="titleTemplate"
+            (onNextAction)="onNextAction()"
+            (onPreviousAction)="onPreviousAction()"
+        >
+        </app-ca-details-title-card>
+    }
+
+    <ng-template #titleDropdown>
+        <div
+            class="d-flex align-items-center justify-content-between ta-font-bold font-size-11 text-color-white dropdown-option add-new background-hover-black"
+            (click)="onAddNewItemAction()"
+        >
+            <div class="text-color-blue-19">ADD NEW</div>
+            <svg-icon
+                class="plus-icon svg-size-14 svg-fill-blue-13"
+                [src]="sharedIcons.PLUS_ICON"
+            ></svg-icon>
+        </div>
+
+        @for (
+            listItem of minimalListSelector.groupedByStatusTypeList | keyvalue;
+            track $index
+        ) {
+            <app-ta-custom-card
+                [cardName]="listItem.key"
+                [hasCounter]="listItem.value.length"
+                [disabledCard]="!listItem.value"
+                [bodyTemplate]="'card'"
+                [hasBlackDivider]="true"
+                [hasSmallDivider]="true"
+                [isDetailsCardDropdown]="true"
+                [animationMarginParams]="{
+                    marginTop: '6px',
+                    marginBottom: '6px',
+                }"
+            >
+                @for (item of listItem.value; track item.id; let i = $index) {
+                    <ng-container
+                        *ngTemplateOutlet="
+                            dropdownItem;
+                            context: {
+                                item,
+                            }
+                        "
+                    >
+                    </ng-container>
+                }
+            </app-ta-custom-card>
+        }
+    </ng-template>
+
+    <ng-template #titleTemplate>
+        <div class="d-flex">
+            <div class="d-flex text-color-black">
+                {{ loadNumberFormated }}
+            </div>
+            <svg-icon
+                [src]="sharedIcons.LTL_FILLED"
+                class="d-flex align-items-center svg-size-18 m-l-6 svg-fill-muted"
+            ></svg-icon>
+        </div>
+    </ng-template>
+
+    @let loadingMarginTop = isLoading ? 'm-t-20' : 'm-t-12';
+    <div class="d-flex flex-column px-1" [ngClass]="loadingMarginTop">
         <app-ca-skeleton
             [width]="223"
             [height]="16"
@@ -120,7 +232,7 @@
     </div>
 </div>
 
-<div class="m-t-8 background-white br-3 pb-2">
+<div class="m-t-8 background-white br-3 pb-1">
     @if (isLoading) {
         <ng-container
             *ngTemplateOutlet="
@@ -129,7 +241,46 @@
             "
         ></ng-container>
         <ng-container
-            *ngTemplateOutlet="skeletonPlaceholder; context: { width: 91 }"
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 91, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 202, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 116, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 49, isCircle: true, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 68, isCircle: true, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 80, isCircle: true, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 36, isCircle: true }
+            "
         ></ng-container>
     } @else {
         <div class="d-flex flex-column p-x-12 pt-1">
@@ -199,7 +350,7 @@
             <div class="divider divider--small divider--dark"></div>
         </div>
 
-        <div class="p-x-12">
+        <div class="p-x-12 m-b-8">
             <span
                 class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-2 d-flex align-items-center m-b-8"
             >
@@ -207,7 +358,7 @@
 
                 <svg-icon
                     [src]="sharedIcons.HALF_TIME_ICON"
-                    class="svg-size-18 m-l-4 svg-fill-muted"
+                    class="svg-size-18 m-l-6 svg-fill-muted"
                 ></svg-icon>
             </span>
 
@@ -267,12 +418,100 @@
 
         <ng-container
             *ngTemplateOutlet="
+                divider;
+                context: { isDividerVisible: true, isMarginTopDisabled: true }
+            "
+        ></ng-container>
+
+        <div class="p-x-12">
+            @let loadRequirements =
+                load.loadRequirements
+                    | loadRequirementsFormat
+                        : load.generalCommodity
+                        : load.weight;
+
+            <app-ta-custom-card
+                [cardName]="'Load Detail & Requirement'"
+                [isCardOpen]="!!loadRequirements"
+                [hasDivider]="false"
+                [disabledCard]="!loadRequirements"
+            >
+                @if (loadRequirements) {
+                    <div
+                        class="d-flex align-items-center flex-wrap row gutter-x-12 gutter-y-12"
+                    >
+                        @for (
+                            requirement of loadRequirements;
+                            track requirement.title
+                        ) {
+                            <div class="col-6">
+                                <div class="d-flex flex-column">
+                                    <div
+                                        class="text-size-11 text-color-black ta-font-bold m-b-2"
+                                    >
+                                        {{ requirement.title }}
+                                    </div>
+                                    <div
+                                        class="text-size-14 text-color-black-2"
+                                    >
+                                        {{ requirement.value }}
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </app-ta-custom-card>
+        </div>
+
+        <ng-container *ngTemplateOutlet="messageForDriver"></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                divider;
+                context: { isDividerVisible: true, isMarginTopDisabled: true }
+            "
+        ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="
                 billing;
                 context: {
                     data: load,
                 }
             "
         ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                divider;
+                context: { isDividerVisible: true, isMarginTopDisabled: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                payment;
+                context: {
+                    data: load,
+                }
+            "
+        ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="
+                divider;
+                context: { isDividerVisible: true, isMarginTopDisabled: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="invoiceAgeing; context: { data: load }"
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                divider;
+                context: { isDividerVisible: true, isMarginTopDisabled: true }
+            "
+        ></ng-container>
+
+        <ng-container *ngTemplateOutlet="noteCard"></ng-container>
     }
 </div>
 
@@ -292,7 +531,7 @@
     @if (isLoading || text || loadStatus) {
         <div
             class="d-flex align-items-center h-26"
-            [ngClass]="isSpacingBottom && 'mb-2'"
+            [ngClass]="isSpacingBottom && 'mb-1'"
             [class]="colWidth"
         >
             <app-ca-skeleton
@@ -363,17 +602,28 @@
     #skeletonPlaceholder
     let-width="width"
     let-isDividerVisible="isDividerVisible"
+    let-isCircle="isCircle"
 >
     <div class="d-flex align-items-center p-x-12 justify-content-between">
-        <p class="placeholder-glow">
-            <span
-                class="placeholder background-muted br-2 h-16"
-                [ngClass]="'w-' + width"
-            ></span>
-        </p>
+        <div class="d-flex align-items-center">
+            <p class="placeholder-glow">
+                <span
+                    class="placeholder placeholder-muted br-2 h-16"
+                    [ngClass]="'w-' + width"
+                ></span>
+            </p>
+
+            @if (isCircle) {
+                <p class="placeholder-glow m-l-8">
+                    <span
+                        class="placeholder placeholder-muted rounded-circle h-18 w-18"
+                    ></span>
+                </p>
+            }
+        </div>
 
         <p class="placeholder-glow">
-            <span class="placeholder background-muted br-2 h-7 w-18"></span>
+            <span class="placeholder placeholder-muted br-2 h-7 w-18"></span>
         </p>
     </div>
 
@@ -382,25 +632,53 @@
     ></ng-container>
 </ng-template>
 
-<ng-template #divider let-isDividerVisible="isDividerVisible">
+<ng-template
+    #divider
+    let-isDividerVisible="isDividerVisible"
+    let-isMarginTopDisabled="isMarginTopDisabled"
+>
     @if (isDividerVisible) {
-        <div class="p-x-6 mb-1 mt-1">
+        <div
+            class="p-x-6 mb-1"
+            [ngClass]="isMarginTopDisabled ? ' mt-0' : ' mt-1'"
+        >
             <div class="divider divider--small divider--dark"></div>
         </div>
     }
 </ng-template>
 
 <ng-template #billing let-data="data">
-    <div class="p-2" (click)="toggleBilling()">
+    @let cardSubText =
+        !isBillingExpanded
+            ? data?.tonuRate
+                ? (data?.tonuRate | currency: 'USD') + ' TONU'
+                : data?.revisedRate
+                  ? (data?.revisedRate | currency: 'USD') + ' REVISED'
+                  : eStringPlaceholder.EMPTY
+            : eStringPlaceholder.EMPTY;
+    @let cardSubTextClass =
+        !isBillingExpanded
+            ? data?.tonuRate
+                ? 'red'
+                : data?.revisedRate
+                  ? 'text-color-muted'
+                  : eStringPlaceholder.EMPTY
+            : eStringPlaceholder.EMPTY;
+
+    <div class="p-x-12">
         <app-ta-custom-card
             [cardName]="'Billing'"
             [hasCounter]="data?.billingCount"
             [disabledCard]="!data?.billingCount"
+            [subText]="cardSubText"
+            [subTextClass]="cardSubTextClass"
             [bodyTemplate]="'card'"
             [animationMarginParams]="{
                 marginTop: '6px',
                 marginBottom: '6px',
             }"
+            [hasDivider]="false"
+            (onOpenCard)="toggleBilling()"
         >
             <ng-container
                 *ngTemplateOutlet="
@@ -414,28 +692,32 @@
     </div>
 </ng-template>
 
+@let mutedColor = 'text-color-muted';
+@let blackColor = 'text-color-black';
+
 <ng-template
-    #billingRateItem
+    #cardItem
     let-label="label"
     let-value="value"
+    let-valueTextSize="valueTextSize"
     let-color="color"
-    let-isLineThrough="isLineThrough"
+    let-hasLineThrough="hasLineThrough"
+    let-fontWeight="fontWeight"
 >
-    @let mutedColor = 'text-color-muted';
-    @let blackColor = 'text-color-black';
-    <div
-        class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
-    >
+    <div class="d-flex justify-content-between align-items-center mb-1 h-26">
         <span
-            class="ta-font-medium"
-            [ngClass]="isLineThrough ? mutedColor : blackColor"
-            [class.text-decoration-line-through]="isLineThrough"
+            class="ta-font-{{ fontWeight ?? 'medium' }} text-size-14"
+            [ngClass]="hasLineThrough ? mutedColor : blackColor"
+            [class.text-decoration-line-through]="hasLineThrough"
         >
             {{ label }}
         </span>
         <span
-            [ngClass]="isLineThrough ? mutedColor : color"
-            [class.text-decoration-line-through]="isLineThrough"
+            [ngClass]="[
+                valueTextSize ? 'text-size-' + valueTextSize : 'text-size-14',
+                hasLineThrough ? mutedColor : color,
+            ]"
+            [class.text-decoration-line-through]="hasLineThrough"
         >
             {{ value | currency: 'USD' }}
         </span>
@@ -446,12 +728,12 @@
     @if (data?.baseRate) {
         <ng-container
             *ngTemplateOutlet="
-                billingRateItem;
+                cardItem;
                 context: {
                     label: 'Base Rate',
                     value: data?.baseRate,
                     color: data?.tonuRate ? mutedColor : 'text-color-black-2',
-                    isLineThrough:
+                    hasLineThrough:
                         data?.tonuRate ||
                         data?.revisedRate ||
                         data?.adjustedRate,
@@ -463,14 +745,14 @@
     @if (data?.adjustedRate) {
         <ng-container
             *ngTemplateOutlet="
-                billingRateItem;
+                cardItem;
                 context: {
                     label: 'Adjusted',
                     value: data?.adjustedRate,
                     color: data?.tonuRate
                         ? mutedColor
                         : 'text-color-special-filter-purple',
-                    lineThrough: data?.tonuRate,
+                    hasLineThrough: data?.tonuRate,
                 }
             "
         ></ng-container>
@@ -479,14 +761,14 @@
     @if (data?.revisedRate) {
         <ng-container
             *ngTemplateOutlet="
-                billingRateItem;
+                cardItem;
                 context: {
                     label: 'Revised',
                     value: data?.revisedRate,
                     color: data?.tonuRate
                         ? mutedColor
                         : 'text-color-special-filter-purple',
-                    isLineThrough: data?.tonuRate,
+                    hasLineThrough: data?.tonuRate,
                 }
             "
         ></ng-container>
@@ -496,14 +778,14 @@
         @if (item?.rate) {
             <ng-container
                 *ngTemplateOutlet="
-                    billingRateItem;
+                    cardItem;
                     context: {
                         label: item?.additionalBillingType?.name,
                         value: item?.rate,
                         color: data?.tonuRate
                             ? mutedColor
                             : 'text-color-black-2',
-                        lineThrough: data?.tonuRate,
+                        hasLineThrough: data?.tonuRate,
                     }
                 "
             ></ng-container>
@@ -512,13 +794,15 @@
 
     <ng-container
         *ngTemplateOutlet="
-            billingRateItem;
+            cardItem;
             context: {
                 label: 'TOTAL RATE',
                 value: data?.totalRate,
+                valueTextSize: 18,
                 color: data?.tonuRate ? mutedColor : 'text-color-black',
-                isLineThrough:
+                hasLineThrough:
                     data?.tonuRate || data?.revisedRate || data?.adjustedRate,
+                fontWeight: 'semi-bold',
             }
         "
     ></ng-container>
@@ -526,14 +810,16 @@
     @if (data?.totalAdjustedRate) {
         <ng-container
             *ngTemplateOutlet="
-                billingRateItem;
+                cardItem;
                 context: {
                     label: 'TOTAL ADJUSTED',
                     value: data?.totalAdjustedRate,
+                    valueTextSize: 18,
                     color: data?.tonuRate
                         ? mutedColor
                         : 'text-color-special-filter-purple',
-                    isLineThrough: false,
+                    hasLineThrough: false,
+                    fontWeight: 'semi-bold',
                 }
             "
         ></ng-container>
@@ -542,12 +828,14 @@
     @if (data?.driverRate) {
         <ng-container
             *ngTemplateOutlet="
-                billingRateItem;
+                cardItem;
                 context: {
                     label: 'DRIVER RATE',
                     value: data?.driverRate,
+                    valueTextSize: 18,
                     color: data?.tonuRate ? mutedColor : 'text-color-yellow-5',
-                    isLineThrough: data?.tonuRate,
+                    hasLineThrough: data?.tonuRate,
+                    fontWeight: 'semi-bold',
                 }
             "
         ></ng-container>
@@ -556,14 +844,270 @@
     @if (data?.tonuRate) {
         <ng-container
             *ngTemplateOutlet="
-                billingRateItem;
+                cardItem;
                 context: {
                     label: 'TONU RATE',
                     value: data?.tonuRate,
+                    valueTextSize: 18,
                     color: 'text-color-red-11',
-                    lineThrough: data?.tonuRate,
+                    hasLineThrough: data?.tonuRate,
+                    fontWeight: 'semi-bold',
                 }
             "
         ></ng-container>
     }
+</ng-template>
+
+<ng-template #payment let-data="data">
+    @let isDue = !!data?.totalDue;
+    @let cardSubTitle =
+        isDue ? 'DUE ' + (data?.totalDue | currency: 'USD') : 'PAID IN FULL';
+    @let cardSubClass =
+        !isPaymentExpanded
+            ? isDue
+                ? 'red'
+                : 'green'
+            : eStringPlaceholder.EMPTY;
+
+    <div class="p-x-12">
+        <app-ta-custom-card
+            [cardName]="'Payment'"
+            [hasCounter]="data?.paymentCount"
+            [disabledCard]="!!data?.paymentCount"
+            [subText]="!isPaymentExpanded && cardSubTitle"
+            [subTextClass]="cardSubClass"
+            [bodyTemplate]="'card'"
+            [animationMarginParams]="{
+                marginTop: '6px',
+                marginBottom: '6px',
+            }"
+            [hasDivider]="false"
+            (onOpenCard)="togglePayment()"
+        >
+            @if (data?.advancePay) {
+                <ng-container
+                    *ngTemplateOutlet="
+                        cardItem;
+                        context: {
+                            label: 'Advance',
+                            value: data?.advancePay,
+                            color: 'text-color-black',
+                            hasLineThrough: data?.tonuRate,
+                        }
+                    "
+                ></ng-container>
+            }
+            <div class="d-flex justify-content-between">
+                @for (item of data?.pays; track pay.id) {
+                    <span class="ta-font-medium text-size-14">
+                        {{ item?.paymentType?.name }}
+                        ({{ item?.paymentMethod?.name }})
+                    </span>
+                    <span class="text-size-14"> {{ item?.payDate }} </span>
+                    <span class="text-size-14">{{
+                        item?.pay | currency: 'USD'
+                    }}</span>
+                }
+            </div>
+            <ng-container
+                *ngTemplateOutlet="
+                    cardItem;
+                    context: {
+                        label: isDue ? 'DUE' : 'PAID IN FULL',
+                        value: isDue ? data?.totalDue : data?.totalPaid,
+                        valueTextSize: 18,
+                        color: isDue
+                            ? 'text-color-red-11'
+                            : 'text-color-green-2',
+                        hasLineThrough: false,
+                    }
+                "
+            ></ng-container>
+        </app-ta-custom-card>
+    </div>
+</ng-template>
+<ng-template #invoiceAgeing let-data="data">
+    @let cardSubTitle = '';
+    <div class="p-x-12">
+        <app-ta-custom-card
+            [cardName]="'Invoice Ageing'"
+            [disabledCard]="!data?.invoicedDate || !data?.invoiceDueDate"
+            [subText]="!isInvoiceAgeingExpanded && cardSubTitle"
+            [bodyTemplate]="'card'"
+            [animationMarginParams]="{
+                marginTop: '6px',
+                marginBottom: '6px',
+            }"
+            [hasDivider]="false"
+            (onOpenCard)="toggleInvoiceAgeing()"
+        >
+            @if (data?.invoicedDate && data?.invoiceDueDate) {
+                <div class="d-flex m-b-4">
+                    <div class="w-50">
+                        <div class="text-size-11 ta-font-bold">Invoiced</div>
+                        <div class="text-size-14 m-t-2">
+                            {{ data?.invoicedDate }}
+                        </div>
+                    </div>
+
+                    @let statusText = data?.isPaid ? 'Paid' : 'Due Date';
+                    <div class="w-50">
+                        <div class="text-size-11 text-color-black ta-font-bold">
+                            {{ statusText }}
+                        </div>
+                        <div class="text-size-14 m-t-2">
+                            {{ data?.invoiceDueDate }}
+                        </div>
+                    </div>
+                </div>
+                <ng-container
+                    *ngTemplateOutlet="
+                        invoiceAgeingProgressBar;
+                        context: {
+                            args: {
+                                label: data?.invoiceAgingProgressBar
+                                    ?.expirationInDays,
+                                payTerm: data?.broker?.payTerm?.name || 0,
+                                percent:
+                                    data?.invoiceAgingProgressBar?.percentage,
+                            },
+                        }
+                    "
+                ></ng-container>
+            }
+        </app-ta-custom-card>
+    </div>
+</ng-template>
+
+<ng-template #noteCard>
+    <div class="p-x-12" [formGroup]="cardForm">
+        <app-ta-input-note
+            formControlName="note"
+            [isVisibleNote]="
+                load?.note && load?.note !== 'null' ? load?.note : false
+            "
+            [note]="
+                load?.note && load?.note !== 'null'
+                    ? load?.note
+                    : eStringPlaceholder.EMPTY
+            "
+            [note]="load.note"
+            [noteType]="'details-card'"
+            [entityId]="load.id"
+            [entityType]="'Load'"
+            [isVisibleDivider]="false"
+        ></app-ta-input-note>
+    </div>
+</ng-template>
+
+<ng-template #messageForDriver>
+    @if (load.loadRequirements?.driverMessage) {
+        <ng-container
+            *ngTemplateOutlet="divider; context: { isDividerVisible: true }"
+        ></ng-container>
+        <div class="p-x-12" [formGroup]="cardForm">
+            <app-ta-input-note
+                formControlName="driverMessage"
+                [noteLabel]="'Driver Message'"
+                [isVisibleNote]="
+                    load.loadRequirements?.driverMessage &&
+                    load.loadRequirements?.driverMessage !== 'null'
+                        ? load.loadRequirements?.driverMessage
+                        : false
+                "
+                [note]="
+                    load.loadRequirements?.driverMessage &&
+                    load.loadRequirements?.driverMessage !== 'null'
+                        ? load.loadRequirements?.driverMessage
+                        : eStringPlaceholder.EMPTY
+                "
+                [isVisibleDivider]="false"
+            ></app-ta-input-note>
+        </div>
+    }
+</ng-template>
+
+<ng-template #dropdownItem let-item="item">
+    <div
+        class="d-flex align-items-center justify-content-between text-color-white background-hover-black ta-font-regular font-size-14 br-2 text-truncate dropdown-option dropdown-item"
+        (click)="onDropdownItemAction()"
+    >
+        <div class="dropdown-option-left-side d-flex">
+            <svg-icon
+                [src]="sharedIcons.LTL_FILLED"
+                class="d-flex align-items-center svg-size-18 m-r-4 svg-fill-muted"
+            ></svg-icon>
+            <div class="ta-font-regular text-size-14 m-r-10">
+                {{ item.loadNumber }}
+            </div>
+            <div
+                class="ta-font-regular text-color-light-grey-2 font-size-11 line-height-18 additional-text-default"
+            >
+                {{ item.referenceNumber }}
+            </div>
+            <div
+                class="ta-font-regular text-color-light-grey-2 font-size-11 line-height-18 additional-text-hover"
+            >
+                ${{ item?.totalBill }}K
+            </div>
+        </div>
+
+        <div class="dropdown-option-right-side">
+            <div class="right-side-default">
+                <app-ca-load-status
+                    [status]="{
+                        name: item.status?.statusString,
+                        id: item.status?.statusValue?.id,
+                    }"
+                    [isTitleCardDropdown]="true"
+                    [isDefaultHoverFocus]="true"
+                >
+                </app-ca-load-status>
+            </div>
+            <div
+                class="ta-font-regular text-color-light-grey-2 font-size-11 line-height-18 right-side-hover"
+            >
+                {{ item.brokerName }}
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #invoiceAgeingProgressBar let-args="args">
+    <div
+        class="d-flex flex-column justify-content-center gap-6 m-t-4 mb-1"
+        [ngClass]="args?.label ? 'h-40' : 'h-16'"
+    >
+        @if (args?.label) {
+            <div
+                class="d-flex stops-container align-items-center justify-content-between"
+            >
+                <div class="d-flex align-items-center">
+                    <div
+                        class="text-size-14 ta-font-semi-bold text-color-black"
+                    >
+                        {{ args?.label }}
+                    </div>
+                </div>
+                <div class="text-size-14 text-right text-color-black">
+                    {{ args?.payTerm }} Term
+                </div>
+            </div>
+        }
+
+        <div
+            class="h-8 w-100 d-inline-block br-2 background-light-grey overflow-hidden mb-1"
+        >
+            @let bgClass =
+                args?.data?.dueDate ? 'background-red-10' : 'background-muted';
+            @let isFullWidth = args?.isPaid || args?.isDue;
+            <div
+                class="h-8"
+                [ngStyle]="{
+                    width: (isFullWidth ? 100 : args?.percent) + '%',
+                }"
+                [ngClass]="args?.isPaid ? 'background-light-grey' : bgClass"
+            ></div>
+        </div>
+    </div>
 </ng-template>

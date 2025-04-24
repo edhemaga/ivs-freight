@@ -41,10 +41,6 @@ import { MapSettingsModalComponent } from '@shared/components/ta-shared-modals/m
 import { MapRouteModalComponent } from '@shared/components/ta-shared-modals/map-modals/map-route-modal/map-route-modal.component';
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 
 // enums
 import { eGeneralActions } from '@shared/enums';
@@ -64,10 +60,6 @@ import { eGeneralActions } from '@shared/enums';
         TaAppTooltipV2Component,
         NgbPopoverModule,
         NgbModule,
-        TaInputComponent,
-        TaTabSwitchComponent,
-        TaInputDropdownComponent,
-        TaCheckboxComponent,
     ],
 })
 export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
@@ -453,7 +445,7 @@ export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             { size: 'small' },
             {
                 ...this.activeTableData,
-                type: eGeneralActions.EDIT,
+                type: eGeneralActions.EDIT_LOWERCASE,
             }
         );
     }
@@ -727,7 +719,7 @@ export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             {
                 ...route,
                 mapId: this.activeTableData.id,
-                type: eGeneralActions.EDIT,
+                type: eGeneralActions.EDIT_LOWERCASE,
             }
         );
     }

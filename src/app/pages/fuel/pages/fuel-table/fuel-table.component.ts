@@ -1147,6 +1147,9 @@ export class FuelTableComponent
 
                     this.fuelData.pageIndex = 1;
 
+                    if (this.activeViewMode === TableStringEnum.MAP)
+                        this.handleMapFilters(currentFilter);
+
                     if (
                         !!currentFilter &&
                         (currentFilter?.filterName ===
@@ -1256,8 +1259,6 @@ export class FuelTableComponent
     public handleShowMoreAction(): void {
         this.fetchApiDataPaginated(true);
     }
-
-    public updateToolbarDropdownMenuContent(): void {}
 
     private openCreateModalBySelectedTab(): void {
         if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION)

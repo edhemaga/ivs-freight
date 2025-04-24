@@ -631,6 +631,10 @@ export class TaDetailsHeaderComponent<T> implements OnInit, OnChanges {
         this.multipleDetailsPopover.close();
     }
 
+    public toggleMultipleDetailsPopover(): void {
+        this.multipleDetailsPopover.toggle();
+    }
+
     public setFilterValue<T>(data: T): void {
         this.filterActions.emit(data);
     }

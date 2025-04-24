@@ -54,7 +54,6 @@ import {
 // components
 import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -65,6 +64,7 @@ import {
     CaInputDropdownComponent,
     CaInputNoteComponent,
     CaModalComponent,
+    CaTabSwitchComponent,
     InputTestComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -117,7 +117,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
         // components
         CaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         CaInputComponent,
         CaInputDropdownComponent,
         TaCheckboxCardComponent,
@@ -178,7 +178,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public selectedFuelType: any = null;
 
     public selectedTab: number = 1;
-    public tabs: Tabs[] = TruckModalConstants.truckModalTabs;
+    public tabs: Tabs[] = TruckModalConstants.truckModalTabs.map((tab) => ({
+        ...tab,
+    }));
 
     public commissionOptions: Options = TruckModalConstants.commissionOptions;
 
@@ -319,12 +321,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public tabChange(event: Tabs): void {
         this.selectedTab = event.id;
-        this.tabs = this.tabs?.map((item): Tabs => {
-            return {
-                ...item,
-                checked: item.id === event.id,
-            };
-        });
 
         const dotAnimation = document.querySelector('.animation-two-tabs');
         this.animationObject = {
@@ -1173,7 +1169,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     JSON.stringify(event.files)
                 );
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 const value = event.files.length
                     ? JSON.stringify(event.files)
                     : null;

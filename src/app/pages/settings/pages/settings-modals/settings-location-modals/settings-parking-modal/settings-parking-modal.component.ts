@@ -45,8 +45,8 @@ import {
     CaModalButtonComponent,
     CaInputAddressDropdownComponent,
     eModalButtonClassType,
+    CaTabSwitchComponent,
 } from 'ca-components';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -110,7 +110,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputComponent,
         CaInputDropdownComponent,
         CaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaCheckboxCardComponent,
         CaInputAddressDropdownComponent,
         TaCustomCardComponent,
@@ -330,7 +330,7 @@ export class SettingsParkingModalComponent
                     this.inputService.markInvalid(this.parkingForm);
                     return;
                 }
-                if (this.editData?.type === eGeneralActions.EDIT)
+                if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE)
                     this.updateParking(this.editData.id);
                 else this.addParking();
                 break;
@@ -617,7 +617,9 @@ export class SettingsParkingModalComponent
                     this.payPeriods = res.payPeriod;
                     this.weeklyDays = res.dayOfWeek;
 
-                    if (this.editData?.type === eGeneralActions.EDIT) {
+                    if (
+                        this.editData?.type === eGeneralActions.EDIT_LOWERCASE
+                    ) {
                         this.isCardAnimationDisabled = true;
                         this.editCompanyParkingById(this.editData.id);
                     } else {

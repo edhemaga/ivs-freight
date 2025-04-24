@@ -157,7 +157,9 @@
                     <div class="header-text-arrow-down">
                         <p
                             class="header-name disable-selection"
+                            [class.mouse-pointer]="hasMultipleDetailsSelectDropdown"
                             #t2="ngbPopover"
+                            (click)="hasMultipleDetailsSelectDropdown && toggleMultipleDetailsPopover()"
                             [ngbPopover]="eventsDatePopover"
                         >
                             {{ headerText }}
@@ -198,6 +200,8 @@
                         [countWidth]="'20px'"
                         [count]="counterData"
                         [customClass]="'circle_counter'"
+                        [class.mouse-pointer]="hasMultipleDetailsSelectDropdown"
+                        (click)="hasMultipleDetailsSelectDropdown && toggleMultipleDetailsPopover()"
                     >
                     </app-ta-counter>
 

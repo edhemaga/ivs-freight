@@ -1,0 +1,128 @@
+<app-ca-modal
+	[customClass]="'modal-container-XS'"
+	[customHeaderTemplate]="headerContent"
+	[footerTemplate]="footerTemplate"
+>
+    <div origin>
+        <div class="divider w-268"></div>
+        <div class="d-flex p-y-8">
+            <ng-container *ngTemplateOutlet="bodyTemplate"></ng-container>
+        </div>
+        <ng-container *ngTemplateOutlet="headerRightSideIcon"></ng-container>
+    </div>
+</app-ca-modal>
+
+<ng-template #headerContent>
+    <div class="d-flex align-items-center gap-6 p-y-2">
+        <ng-container *ngTemplateOutlet="headerSvgTemplate"></ng-container>
+        <p class="ta-font-extra-bold font-size-18 text-color-black line-height-1"> {{ modalData?.title }}</p>
+    </div>
+</ng-template>
+
+<ng-template #bodyTemplate>
+	<div class="d-flex flex-column w-264 gap-12">
+		<div class="d-flex p-y-4">
+			<div class="m-0 text-size-14 text-color-black ta-font-bold">
+				This status change requires manual truck location entry.
+			</div>
+		</div>
+	
+		<div class="d-flex flex-column">
+			<div class="d-flex align-items-center">
+				<div class="m-0 font-size-16 line-height-1 text-color-black ta-font-bold">
+					{{ modalData.loadNumber }}
+				</div>
+				<svg-icon
+					[src]="sharedSvgRoutes.LTL_FILLED"
+					class="d-flex align-items-center svg-size-18 m-l-6 svg-fill-muted"
+				></svg-icon>
+			</div>
+	
+			<div class="m-0 ta-font-medium text-color-muted text-size-14">
+				Unit {{ modalData.truckNumber }}
+			</div>
+		</div>
+	
+		<div
+			class="d-flex align-items-center flex-row m-b-12"
+		>
+			<div 
+				class="w-14 h-14 br-circle m-r-4" 
+				[ngClass]="modalData?.status?.statusValue?.id | loadStatusBackgroundColor : true"
+			></div>
+			<app-ca-load-status
+				[status]="{
+					name: modalData.status?.statusString,
+					id: modalData.status?.statusValue?.id,
+				}"
+				[isNoStyle]="true"
+				[fontSize]="14"
+			></app-ca-load-status>
+		</div>
+
+		<div
+			class="truck-location p-b-10"
+			[formGroup]="locationForm"
+		>
+			<app-ca-input-address-dropdown
+				formControlName="location"
+				[inputConfig]="changeStatusModalConfig.LOCATION_CONFIG"
+				[placeholderType]="'shortAddress'"
+				[activeAddress]="selectedAddress?.address"
+				[receivedAddressList]="addressList"
+				[receivedAddressData]="addressData"
+				(selectedAddress)="onHandleAddress($event)"
+				(sentAddressData)="onAddressChange($event)"
+				(sentAddressValue)="getAddressData($event)"
+			></app-ca-input-address-dropdown>
+		</div>
+		
+		<div class="p-y-4">
+			<p class="m-0 text-color-black text-size-14 ta-font-medium">
+				This action can be undone by reverting to previous
+				status, or canceling this change.
+			</p>
+		</div>
+	</div>
+
+</ng-template>
+
+<ng-template #footerTemplate>
+  <div class="modal-footer modal-footer-payroll">
+      <div class="divider m-0"></div>
+      <div class="d-flex gap-12 m-0 w-100">
+          	<button
+				class="ta-font-bold modal-cancel-btn active-cancel-btn"
+				type="button"
+				(click)="onModalAction()"
+            >
+                Cancel
+            </button>
+    
+            <button
+				class="ta-font-bold modal-delete-btn modal-gray-btn modal-confirmation-btn"
+				type="button"
+				[ngClass]="{ 'not-clickable': !isFormValid }"
+                (click)="onModalAction(true)"
+            >
+                Change Status
+            </button>
+      </div>
+  </div>
+</ng-template>
+
+<ng-template #headerRightSideIcon>
+	<div class="trash-icon-container position-absolute right-8 top--38 opacity-40">
+		<svg-icon
+			class="svg-size-90 p-l-10 background-white"
+			[src]="sharedSvgRoutes.CONFIRMATION_CHANGE_STATUS_ICON"
+		></svg-icon>
+	</div>
+</ng-template>
+
+<ng-template #headerSvgTemplate>
+	<svg-icon
+		class="d-flex svg-size-18 modal-header-svg"
+		[src]="sharedSvgRoutes.CONFIRMATION_INFO_ICON"
+	></svg-icon>
+</ng-template>

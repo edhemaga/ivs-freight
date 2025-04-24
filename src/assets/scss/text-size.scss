@@ -12,6 +12,16 @@
             line-height: 14px !important;
         }
 
+        &-12 {
+            font-size: 12px !important;
+            line-height: 14px !important;
+        }
+
+        &-13 {
+            font-size: 13px !important;
+            line-height: 15px !important;
+        }
+
         &-14 {
             font-size: 14px !important;
             line-height: 18px !important;
@@ -46,13 +56,30 @@
 
 .font {
     &-size {
+        &-11 {
+            font-size: 11px !important;
+        }
         &-14 {
             font-size: 14px !important;
+        }
+        &-16 {
+            font-size: 16px !important;
+        }
+        &-18 {
+            font-size: 18px !important;
         }
     }
 }
 
 .line-height {
+    &-1 {
+        line-height: 1;
+    }
+
+    &-18 {
+        line-height: 18px !important;
+    }
+    
     &-22 {
         line-height: 22px !important;
     }

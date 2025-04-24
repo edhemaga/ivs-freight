@@ -31,6 +31,7 @@ export interface PayrollDriverFlatRateClosedByIdResponse {
     salary?: number | null;
     rate?: string | null;
     flatPay?: number | null;
+    debt?: number | null;
     includedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
     totalDeduction?: number;
     includedCredits?: Array<PayrollCreditMinimalResponse> | null;

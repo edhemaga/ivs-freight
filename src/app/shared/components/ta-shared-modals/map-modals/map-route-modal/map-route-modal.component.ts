@@ -24,11 +24,13 @@ import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import {
+    CaInputDatetimePickerComponent,
+    CaTabSwitchComponent,
+} from 'ca-components';
 
 // enums
 import { eGeneralActions } from '@shared/enums';
-import { CaInputDatetimePickerComponent } from 'ca-components';
 
 @Component({
     selector: 'app-map-route-modal',
@@ -46,7 +48,7 @@ import { CaInputDatetimePickerComponent } from 'ca-components';
         TaInputComponent,
         TaInputDropdownComponent,
         TaCheckboxCardComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         CaInputDatetimePickerComponent,
     ],
 })
@@ -166,7 +168,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                if (this.editData?.type === eGeneralActions.EDIT) {
+                if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE) {
                     this.updateRoute(this.editData.id);
                     this.modalService.setModalSpinner({
                         action: 'create-map-route',
@@ -227,7 +229,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                 });
 
                 // Edit
-                if (this.editData?.type === eGeneralActions.EDIT) {
+                if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE) {
                     this.getRoute(this.editData.id);
                 }
             });
@@ -330,7 +332,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
     }
 
     private resetForm() {
-        if (this.editData?.type === eGeneralActions.EDIT) {
+        if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE) {
             this.getRoute(this.editData.id);
         } else {
             this.mapRouteForm.reset();

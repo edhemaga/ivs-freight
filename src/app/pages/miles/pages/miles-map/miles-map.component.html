@@ -1,8 +1,13 @@
-<div class="d-flex justify-content-between p-r-10 m-t-8">
+<div class="d-flex justify-content-between p-r-16 m-t-8">
     <app-miles-map-unit-list></app-miles-map-unit-list>
     <app-miles-map-unit-total></app-miles-map-unit-total>
 </div>
 
 <div class="map-container">
-    <app-ca-map [data]="mapData"></app-ca-map>
+    @let mapData = milesStoreService.unitMapDataSelector$ | async;
+
+    <app-ca-map
+        [data]="mapData"
+        (routingMarkerClick)="handleRoutingMarkerClick($event)"
+    ></app-ca-map>
 </div>

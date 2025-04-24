@@ -22,8 +22,10 @@ import {
     LoadResponse,
     LoadStatusResponse,
     LoadStatusType,
+    LoadStopResponse,
     LoadTemplateResponse,
     RevertLoadStatusCommand,
+    RoutingResponse,
     ShipperLoadModalResponse,
     UpdateLoadStatusCommand,
 } from 'appcoretruckassist';
@@ -37,7 +39,8 @@ import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants
 
 // enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
-import { eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode, eSortDirection } from '@shared/enums';
+import { ICaMapProps } from 'ca-components';
 
 // #region loadList
 export const getLoadsPayload = createAction(
@@ -500,6 +503,14 @@ export const createLoadTemplateError = createAction(
 );
 // #endregion
 
+export const sortLoadComments = createAction(
+    LoadStoreConstants.ACTION_SORT_COMMENTS,
+    props<{
+        loadId: number;
+        sortDirection: eSortDirection;
+    }>()
+);
+
 // #region createComment
 export const createComment = createAction(
     LoadStoreConstants.ACTION_CREATE_COMMENT,
@@ -523,6 +534,20 @@ export const createCommentError = createAction(
     props<{ error: Error }>()
 );
 // #endregion
+
+export const updateComment = createAction(
+    LoadStoreConstants.ACTION_UPDATE_COMMENT,
+    props<{ apiParam: { commentId: number; commentContent: string } }>()
+);
+
+export const updateCommentSuccess = createAction(
+    LoadStoreConstants.ACTION_UPDATE_COMMENT_SUCCESS,
+    props<{ apiParam: { commentId: number; commentContent: string } }>()
+);
+export const updateCommentError = createAction(
+    LoadStoreConstants.ACTION_UPDATE_COMMENT_ERROR,
+    props<{ error: Error }>()
+);
 
 // #region updateLoad
 export const updateLoad = createAction(
@@ -601,7 +626,7 @@ export const deleteCommentById = createAction(
 
 export const deleteCommentByIdSuccess = createAction(
     LoadStoreConstants.ACTION_DELETE_COMMENT_BY_ID_SUCCESS,
-    props<{ loadId: number; commentId: number }>()
+    props<{ commentId: number; loadId: number }>()
 );
 
 export const deleteCommentByIdError = createAction(
@@ -710,6 +735,22 @@ export const getLoadDetailsError = createAction(
     LoadStoreConstants.ACTION_GET_LOAD_DETAILS_BY_ID_ERROR,
     props<{ error: Error }>()
 );
+
+export const getLoadDetailsMapData = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_DETAILS_MAP_DATA,
+    props<{ mapLocations: string }>()
+);
+
+export const getLoadDetailsMapDataSuccess = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_DETAILS_MAP_DATA_SUCCESS,
+    props<{ mapRoutes: RoutingResponse }>()
+);
+
+export const getLoadDetailsMapDataError = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_DETAILS_MAP_DATA_ERROR,
+    props<{ error: Error }>()
+);
+
 // #endregion
 
 export const setLoadDetailsToUnload = createAction(

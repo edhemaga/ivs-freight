@@ -1,1 +1,206 @@
-<p>new-load-cards works!</p>
+@let store =
+    {
+        viewData: loadStoreService.loadsSelector$ | async,
+        selectedTabCountSelector:
+            loadStoreService.selectedTabCountSelector$ | async,
+        cardsFlipType: loadStoreService.cardFlipViewModeSelector$ | async,
+    };
+
+@let frontSideData = tabCardData[selectedTab].front;
+@let backSideData = tabCardData[selectedTab].back;
+
+@if (store.viewData) {
+    <ca-table-card-view
+        [viewData]="store.viewData"
+        [frontSide]="frontSide"
+        [backSide]="backSide"
+        [cardTitle]="
+            selectedTab === eSharedString.TEMPLATE
+                ? eSharedString.NAME
+                : eSharedString.LOAD_NUMBER
+        "
+        [totalDataCount]="store.selectedTabCountSelector"
+        [titleIcon]="loadType"
+        [cardsFlipType]="store.cardsFlipType"
+        (showMore)="onShowMoreClick()"
+        (selectCard)="onSelectLoad($event)"
+        (dropdownOptionEmitter)="onToggleDropdownMenuActions($event)"
+        (cardTitleClick)="navigateToLoadDetails($event)"
+    ></ca-table-card-view>
+
+    <ng-template #frontSide let-data="data">
+        @for (item of frontSideData; track $index) {
+            <ng-container
+                *ngTemplateOutlet="cardTemplate; context: { item, data }"
+            ></ng-container>
+        }
+    </ng-template>
+
+    <ng-template #backSide let-data="data">
+        @for (item of backSideData; track $index) {
+            <ng-container
+                *ngTemplateOutlet="cardTemplate; context: { item, data }"
+            ></ng-container>
+        }
+    </ng-template>
+
+    <ng-template #cardTemplate let-item="item" let-data="data">
+        @let template =
+            item.template === eTableCardViewData.DOUBLE_TEXT_PERCENT
+                ? doubleTextPercent
+                : item.template === eTableCardViewData.TEXT_WITH_IMAGE
+                  ? textWithImage
+                  : item.template === eTableCardViewData.LOAD_STATUS
+                    ? loadStatus
+                    : item.template === eTableCardViewData.PICKUP_DELIVERY
+                      ? pickupDelivery
+                      : textWithTitle;
+
+        @let text =
+            item.format === eTableCardViewData.DATA
+                ? data
+                : item.format === eTableCardViewData.CURRENCY
+                  ? ((data | getNestedValue: item.key | formatCurrency) ?? 0)
+                  : item.format === eTableCardViewData.NUMBER
+                    ? ((data | getNestedValue: item.key | thousandSeparator) ??
+                      0)
+                    : (data | getNestedValue: item.key);
+
+        @let percent =
+            item.percentKey ? (data | getNestedValue: item.percentKey) : null;
+
+        @let image = data | getNestedValue: item.image;
+
+        <ng-container
+            *ngTemplateOutlet="
+                template;
+                context: {
+                    title: item.title,
+                    text,
+                    percent,
+                    image,
+                }
+            "
+        ></ng-container>
+    </ng-template>
+
+    <ng-template #textWithTitle let-title="title" let-text="text">
+        <div class="d-flex flex-column px-1 gap-1">
+            <div class="text-size-11 text-color-black ta-font-bold">
+                {{ title }}
+            </div>
+            <div class="text-size-14 text-color-black-2 pb-1">{{ text }}</div>
+        </div>
+    </ng-template>
+
+    <ng-template
+        #textWithImage
+        let-title="title"
+        let-text="text"
+        let-data="data"
+        let-image="image"
+    >
+        <div class="d-flex flex-column px-1 gap-1">
+            <div class="text-size-11 text-color-black ta-font-bold">
+                {{ title }}
+            </div>
+            <div class="d-flex gap-1 pb-1">
+                <svg-icon
+                    [src]="sharedSvgRoutes.TRUCK_PATH_BASE + image"
+                    class="cards-icon svg-height-18"
+                ></svg-icon>
+                <div class="text-size-14 text-color-black-2">{{ text }}</div>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template
+        #doubleTextPercent
+        let-title="title"
+        let-text="text"
+        let-percent="percent"
+    >
+        <div class="d-flex flex-column px-1 gap-1">
+            <div class="text-size-11 text-color-black ta-font-bold">
+                {{ title }}
+            </div>
+            <div class="text-size-14 text-color-black-2 pb-1">
+                {{ text }}
+                <span class="text-size-11 text-color-grey ta-font-semi-bold"
+                    >{{ percent }}eStringPlaceholder.PERCENT</span
+                >
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template let-text="text" let-title="title" #loadStatus>
+        <div class="d-flex flex-column px-1">
+            <div class="text-size-11 text-color-black ta-font-bold">
+                {{ title }}
+            </div>
+            <span
+                class="ta-font-bold text-size-14 text-color-black w-172"
+                #ngbStatus="ngbPopover"
+                [autoClose]="true"
+                [ngbPopover]="statusPopover"
+                [placement]="ePosition.BOTTOM + ' ' + ePosition.TOP"
+                container="body"
+                popoverClass="table-status-popover"
+                triggers="manual"
+                (click)="onOpenChangeStatusDropdown(ngbStatus, text.id)"
+                (dropdownOptionEmitter)="
+                    onToggleDropdownMenuActions($event, text, selectedTab)
+                "
+            >
+                <div class="load-status-container">
+                    <app-ca-load-status
+                        [status]="{
+                            name: text.status?.statusString,
+                            id: text.status?.statusValue?.id,
+                        }"
+                        [isStatusCard]="true"
+                        [fontSize]="14"
+                        [height]="26"
+                    >
+                    </app-ca-load-status>
+                </div>
+            </span>
+        </div>
+    </ng-template>
+
+    <ng-template let-text="text" let-title="title" #pickupDelivery>
+        <div class="d-flex flex-column px-1 gap-1">
+            <div class="text-size-11 text-color-black ta-font-bold">
+                {{ title }}
+            </div>
+            <div class="d-flex align-items-center gap-1 pb-1">
+                <div
+                    class="d-flex justify-content-center align-items-center h-18 w-18 text-size-11 text-color-bw6-2 br-1 background-dark-2 ta-font-bold"
+                >
+                    {{ text?.pickup?.count }}
+                </div>
+                <div class="text-color-black-2 text-size-14">
+                    {{ text?.pickup?.location }}
+                </div>
+                <div class="text-color-grey text-size-11 ta-font-medium">
+                    {{ text?.pickup?.date | formatDateP }}
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #statusPopover>
+        @let possibleStatuses =
+            loadStoreService.changeDropdownpossibleStatusesSelector$ | async;
+
+        <app-ca-status-change-dropdown
+            [statuses]="possibleStatuses"
+            (onNextStatus)="onNextStatus($event)"
+            (onPreviousStatus)="onPreviousStatus($event)"
+        ></app-ca-status-change-dropdown>
+    </ng-template>
+
+    <ng-template let-data="data" let-text="text" #loadType>
+        <app-load-type [loadType]="data.loadType" [isTextVisible]="text" />
+    </ng-template>
+}

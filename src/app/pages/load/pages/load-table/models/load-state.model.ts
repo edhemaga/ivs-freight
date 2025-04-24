@@ -8,6 +8,7 @@ import {
     LoadModalResponse,
     LoadPossibleStatusesResponse,
     LoadResponse,
+    RoutingResponse,
 } from 'appcoretruckassist';
 import { IActiveLoadModalData } from '@pages/load/models/active-load-modal-data.model';
 import { IFilterDropdownList } from 'ca-components';
@@ -15,6 +16,9 @@ import { IFilterDropdownList } from 'ca-components';
 // enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 import { eActiveViewMode } from '@shared/enums';
+
+// interface
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 export interface ILoadState {
     data: ILoadGridItem[] | ILoadTemplateGridItem[]; // list entity data
@@ -37,6 +41,7 @@ export interface ILoadState {
 
     details: LoadResponse;
     isLoadDetailsLoaded: boolean;
+    mapRoutes: RoutingResponse;
 
     selectLoadCount: number;
     selectLoadRateSum: number;
@@ -44,4 +49,6 @@ export interface ILoadState {
     hasAllLoadsSelected: boolean;
     isLoadDetailsMapOpen: boolean;
     minimalList: LoadMinimalListResponse;
+
+    tableColumns: ITableColumn[];
 }

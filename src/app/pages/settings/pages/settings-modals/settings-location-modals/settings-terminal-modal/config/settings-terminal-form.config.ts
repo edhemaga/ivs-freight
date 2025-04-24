@@ -11,7 +11,7 @@ export class SettingsTerminalConfig {
             label: 'Terminal Name',
             isRequired: true,
             textTransform: 'uppercase',
-            autoFocus: type !== eGeneralActions.EDIT,
+            autoFocus: type !== eGeneralActions.EDIT_LOWERCASE,
             minLength: 1,
             maxLength: 64,
         };

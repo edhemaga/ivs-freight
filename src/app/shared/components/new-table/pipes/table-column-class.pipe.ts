@@ -8,25 +8,51 @@ import { SortOrder } from 'appcoretruckassist';
     standalone: true,
 })
 export class TableColumnClassPipe<
-    T extends { sort?: string; direction?: SortOrder | null },
+    T extends {
+        hasSort: string;
+        direction?: SortOrder | null;
+    },
 > implements PipeTransform
 {
-    transform(args: {
+    transform({
+        column,
+        isTableLocked,
+        isGroup,
+        isEmptyTable,
+        isAlignedRight,
+        isTableColumnInnerClass,
+        hasLabelTop,
+    }: {
         column: T;
         isTableLocked: boolean;
         isGroup: boolean;
+        isEmptyTable: boolean;
+        isAlignedRight: boolean;
+        isTableColumnInnerClass: boolean;
+        hasLabelTop: boolean;
     }): object {
-        const { column, isTableLocked, isGroup } = args;
-
-        return {
-            'c-pointer new-table--row-heading-sortable':
-                column.sort && !isTableLocked,
-            'new-table--row-heading-sorting-active':
-                column.direction && !isTableLocked,
-            'new-table--row-heading-unlocked c-pointer justify-content-between':
-                isTableLocked,
-            'flex-column align-items-start mt-auto': isGroup,
-            'align-items-end': !isGroup,
-        };
+        return isTableColumnInnerClass
+            ? {
+                  'justify-content-between': !isTableLocked,
+                  'justify-content-end': isAlignedRight,
+                  'position-relative bottom-10': !isTableLocked && hasLabelTop,
+              }
+            : {
+                  'text-color-bw6-2': !column?.hasSort || !column?.direction,
+                  'text-hover-black svg-fill-black':
+                      column?.hasSort &&
+                      isTableLocked &&
+                      !isEmptyTable &&
+                      !column?.direction,
+                  'c-pointer new-table--row-heading-sortable':
+                      column?.hasSort && isTableLocked && !isEmptyTable,
+                  'text-color-blue-18 text-hover-blue-15 svg-fill-blue-13 svg-hover-blue-18':
+                      column?.direction && isTableLocked,
+                  'flex-column align-items-start mt-auto':
+                      isGroup && !isAlignedRight,
+                  'align-items-end': !isGroup,
+                  'disable-text-selection': !isTableLocked,
+                  'order-2 m-l-4': isAlignedRight && isTableLocked,
+              };
     }
 }

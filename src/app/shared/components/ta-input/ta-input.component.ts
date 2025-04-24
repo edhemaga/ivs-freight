@@ -1808,7 +1808,7 @@ export class TaInputComponent
                                 !this._inputConfig.dropdownLabelNew &&
                                 this._inputConfig.name !==
                                     'Input Dropdown Bank Name'
-                                    ? eGeneralActions.EDIT
+                                    ? eGeneralActions.EDIT_LOWERCASE
                                     : 'new',
                         });
                         break;

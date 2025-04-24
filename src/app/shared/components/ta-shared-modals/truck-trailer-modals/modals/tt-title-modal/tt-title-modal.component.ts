@@ -194,7 +194,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
-            case eGeneralActions.DELETE: {
+            case eGeneralActions.DELETE_LOWERCASE: {
                 this.ttTitleForm
                     .get(eFileFormControls.FILES)
                     .patchValue(

@@ -1,5 +1,6 @@
 export interface Navigation {
     id: number;
+    qaId?: string;
     name: string;
     image: string;
     route: any;

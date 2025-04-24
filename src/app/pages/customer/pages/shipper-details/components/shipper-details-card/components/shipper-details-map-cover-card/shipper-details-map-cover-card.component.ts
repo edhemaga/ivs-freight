@@ -4,9 +4,14 @@ import { Router } from '@angular/router';
 
 // components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { CaMapComponent, ICaMapProps, IMapMarkers, MapMarkerIconService } from 'ca-components';
+import {
+    CaMapComponent,
+    CaTabSwitchComponent,
+    ICaMapProps,
+    IMapMarkers,
+    MapMarkerIconService,
+} from 'ca-components';
 
 // constants
 import { RepairShopDetailsCardConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/utils/constants';
@@ -33,7 +38,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 
         // components
         TaCustomCardComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaUploadFilesComponent,
         CaMapComponent,
     ],
@@ -57,7 +62,7 @@ export class ShipperDetailsMapCoverCardComponent implements AfterViewInit {
     constructor(
         private router: Router,
         private mapsService: MapsService,
-        private markerIconService: MapMarkerIconService,
+        private markerIconService: MapMarkerIconService
     ) {}
 
     private createMapCoverCardData(data: ShipperResponse): void {

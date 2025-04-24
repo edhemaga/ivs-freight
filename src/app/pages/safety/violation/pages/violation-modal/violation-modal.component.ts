@@ -40,12 +40,14 @@ import {
 
 // components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { CaInputDatetimePickerComponent } from 'ca-components';
+import {
+    CaInputDatetimePickerComponent,
+    CaTabSwitchComponent,
+} from 'ca-components';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -79,7 +81,7 @@ import {
 
         // components
         TaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaInputComponent,
         TaInputDropdownComponent,
         TaCustomCardComponent,
@@ -416,7 +418,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                     .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.violationForm
                     .get(eFileFormControls.FILES)
                     .patchValue(

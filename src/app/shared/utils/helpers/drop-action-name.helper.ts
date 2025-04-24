@@ -5,7 +5,7 @@ export class DropActionNameHelper {
     static dropActionNameDriver(any: any, action: string) {
         let dropAction: string;
 
-        if (any.type === eGeneralActions.EDIT) {
+        if (any.type === eGeneralActions.EDIT_LOWERCASE) {
             switch (action) {
                 case 'cdl': {
                     dropAction = 'edit-licence';
@@ -109,7 +109,7 @@ export class DropActionNameHelper {
     static dropActionNameTrailerTruck(any: any, action: string) {
         let dropAction: string;
 
-        if (any.type === eGeneralActions.EDIT) {
+        if (any.type === eGeneralActions.EDIT_LOWERCASE) {
             switch (action) {
                 case 'registration': {
                     dropAction = 'edit-registration';

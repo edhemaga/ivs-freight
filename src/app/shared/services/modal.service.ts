@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, TemplateRef } from '@angular/core';
 
 import { Subject } from 'rxjs';
 
 // bootstrap
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 // models
 import { ConfirmationReset } from '@shared/components/ta-shared-modals/confirmation-reset-modal/models/confirmation-reset.model';
@@ -128,7 +128,7 @@ export class ModalService {
                                 data.payload.key
                             ),
                             type: data.type,
-                            storageData: true
+                            storageData: true,
                         }
                     );
                     this.encryptionDecryptionService.removeItem(
@@ -174,5 +174,30 @@ export class ModalService {
         };
 
         return modal.result;
+    }
+
+    public openModalNew(component: any, modalData?: any): NgbModalRef {
+        const options = {
+            keyboard: true,
+            backdropClass: 'myDropback',
+        };
+
+        const modal = this.ngbModal.open(component, options);
+
+        if (modalData) modal.componentInstance.modalData = modalData;
+
+        const instance = (modal as any)._windowCmptRef.instance;
+        setTimeout(() => {
+            instance.windowClass = 'modal-animation';
+        });
+
+        const fx = (modal as any)._removeModalElements.bind(modal);
+
+        (modal as any)._removeModalElements = () => {
+            instance.windowClass = eStringPlaceholder.EMPTY;
+            setTimeout(fx, 100);
+        };
+
+        return modal;
     }
 }

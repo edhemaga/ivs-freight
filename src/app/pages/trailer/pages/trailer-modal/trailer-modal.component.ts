@@ -50,7 +50,6 @@ import {
 // components
 import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -62,6 +61,7 @@ import {
     CaInputNoteComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    CaTabSwitchComponent,
     eModalButtonClassType,
     eModalButtonSize,
 } from 'ca-components';
@@ -118,7 +118,6 @@ import { ICaInput } from '@ca-shared/components/ca-input/config';
 
         // components
         CaModalComponent,
-        TaTabSwitchComponent,
         TaCheckboxCardComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
@@ -129,7 +128,7 @@ import { ICaInput } from '@ca-shared/components/ca-input/config';
         TaAppTooltipV2Component,
         CaInputDatetimePickerComponent,
         CaModalButtonComponent,
-
+        CaTabSwitchComponent,
         // Pipes
         FormatDatePipe,
         TrailerModalInputConfigPipe,
@@ -417,7 +416,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
-        this.activeAction = action;
+        if (this.trailerForm.valid && this.isFormDirty)
+            this.activeAction = action;
+
         if (action === TaModalActionEnum.CLOSE) {
             if (this.editData?.canOpenModal)
                 switch (this.editData?.key) {
@@ -507,12 +508,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
     public tabChange(event: any): void {
         this.selectedTab = event.id;
-        this.tabs = this.tabs.map((item) => {
-            return {
-                ...item,
-                checked: item.id === event.id,
-            };
-        });
         let dotAnimation = document.querySelector('.animation-two-tabs');
 
         this.animationObject = {
@@ -998,7 +993,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.trailerForm
                     .get(eFileFormControls.FILES)
                     .patchValue(

@@ -27,7 +27,6 @@ import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzo
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
@@ -38,6 +37,7 @@ import {
     CaInputAddressDropdownComponent,
     InputTestComponent,
     CaInputDatetimePickerComponent,
+    CaTabSwitchComponent,
 } from 'ca-components';
 
 // Animations
@@ -104,7 +104,6 @@ import {
     UpdateDivisionCompanyCommand,
     BankResponse,
     EnumValue,
-    AccessTokenResponse,
     AccountDetailsResponse,
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
@@ -140,7 +139,7 @@ import { SettingsBankAccountStatusPipe } from '@pages/settings/pages/settings-co
         TaInputDropdownComponent,
         TaModalComponent,
         TaCheckboxComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaCheckboxCardComponent,
         TaNgxSliderComponent,
         CaInputAddressDropdownComponent,
@@ -619,11 +618,11 @@ export class SettingsBasicModalComponent
                 }
 
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 if (!this.editData.company?.divisions.length) {
                     this.deleteCompanyDivisionById(this.editData.company.id);
                     this.modalService.setModalSpinner({
-                        action: eGeneralActions.DELETE,
+                        action: eGeneralActions.DELETE_LOWERCASE,
                         status: true,
                         close: false,
                     });
@@ -1434,8 +1433,7 @@ export class SettingsBasicModalComponent
             factorByDefault: additionalInfo.factorByDefault,
             customerCredit: additionalInfo.customerCredit,
             truckInspectionMonths: additionalInfo.truckInspectionMonths,
-            trailerInspectionMonths:
-                additionalInfo.trailerInspectionMonths,
+            trailerInspectionMonths: additionalInfo.trailerInspectionMonths,
         });
 
         this.selectedAddress = this.editData.company.address;
@@ -1636,14 +1634,14 @@ export class SettingsBasicModalComponent
             .subscribe({
                 next: () => {
                     this.modalService.setModalSpinner({
-                        action: eGeneralActions.DELETE,
+                        action: eGeneralActions.DELETE_LOWERCASE,
                         status: true,
                         close: true,
                     });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
-                        action: eGeneralActions.DELETE,
+                        action: eGeneralActions.DELETE_LOWERCASE,
                         status: false,
                         close: false,
                     });
@@ -2410,7 +2408,7 @@ export class SettingsBasicModalComponent
     }
 
     public handleDeleteClick(event: any): void {
-        if (event.action === eGeneralActions.DELETE) {
+        if (event.action === eGeneralActions.DELETE_LOWERCASE) {
             this.hasDisplayUploadZone = true;
 
             this.companyForm.get(ESettingsFormControls.LOGO).patchValue(null);

@@ -1027,8 +1027,6 @@ export class UserTableComponent
         this.userBackFilter(this.backFilterQuery, true);
     }
 
-    public updateToolbarDropdownMenuContent(): void {}
-
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
         this.resizeObserver.disconnect();
