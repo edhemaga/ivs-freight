@@ -267,7 +267,7 @@
 
             @if (isGroupColumnHover) {
                 <div
-                    class="h-30 position-absolute left--4 bottom--2 br-2 shadow-100 hover-element"
+                    class="h-30 position-absolute left--4 bottom--2 br-2 shadow-100 background-bw2 hover-element"
                 ></div>
             }
         </div>
@@ -343,7 +343,7 @@
             >
                 @if (hasLabelTop) {
                     <span
-                        class="text-size-9 ta-font-extra-bold text-color-light-grey-2 text-uppercase"
+                        class="text-size-9 ta-font-extra-bold text-color-light-grey-2 z-2 text-uppercase"
                     >
                         {{ groupColumn.label }}
                     </span>
@@ -546,7 +546,7 @@
 
                 @if (isColumnHover) {
                     <div
-                        class="h-18 position-absolute left--4 br-2 shadow-100 hover-element"
+                        class="h-18 position-absolute left--4 br-2 shadow-100 background-bw2 hover-element"
                         [class]="hasLabelTop ? 'bottom-2' : 'bottom--2'"
                     ></div>
                 }

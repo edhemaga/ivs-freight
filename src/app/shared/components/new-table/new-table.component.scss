@@ -9,6 +9,11 @@
 /* Reorder */
 
 .cdk-drag-preview {
+    &:not(:has(.hover-element)) {
+        box-shadow: 0px 0px 4px 0px #00000033 !important;
+        background: $bw2 !important;
+    }
+
     background: transparent !important;
 
     width: fit-content !important;
@@ -28,7 +33,6 @@
 
     .hover-element {
         width: calc(100% + 9px) !important;
-        background: $bw2 !important;
     }
 }
 

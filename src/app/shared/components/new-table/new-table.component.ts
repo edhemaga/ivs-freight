@@ -112,6 +112,9 @@ export class NewTableComponent<T> {
     public headingHoverId: number = null;
     public groupHeadingHoverLabel: string = null;
 
+    public isResize: boolean = false;
+    public isReorder: boolean = false;
+
     // enums
     public ePosition = ePosition;
     public eColor = eColor;
@@ -126,7 +129,6 @@ export class NewTableComponent<T> {
     constructor() {}
 
     private processColumns(columns: ITableColumn[]): void {
-        console.log('columns', columns);
         this.leftPinnedColumns = columns.filter(
             (col) => col.pinned === ePosition.LEFT
         );
@@ -155,14 +157,15 @@ export class NewTableComponent<T> {
         this.onShowMore.emit();
     }
 
+    public onColumnResizing(isResize: boolean): void {
+        this.isResize = isResize;
+    }
+
     public onColumnWidthResize(resizeAction: ITableResizeAction): void {
         this.onColumnResize.emit(resizeAction);
     }
 
-    public onHeadingHover(
-        columnId: number | null,
-        groupLabel: string | null
-    ): void {
+    public onHeadingHover(columnId: number, groupLabel: string): void {
         if (!this.isTableLocked && !this.isReorder) {
             this.headingHoverId = columnId;
             this.groupHeadingHoverLabel = groupLabel;
@@ -172,21 +175,6 @@ export class NewTableComponent<T> {
     public onRemoveColumnClick(columnKey: string): void {
         this.onRemoveColumn.emit(columnKey);
     }
-
-    public isRowExpanded(rowId: number): boolean {
-        return this.expandedRows?.has(rowId);
-    }
-
-    ////////////////////
-
-    public isResize: boolean = false;
-
-    public onColumnResizing(isResize: boolean): void {
-        this.isResize = isResize;
-    }
-
-    ////////////////////////////////////
-    public isReorder: boolean = false;
 
     public onReorderStart(): void {
         this.isReorder = true;
@@ -218,5 +206,10 @@ export class NewTableComponent<T> {
 
         this.headingHoverId = null;
         this.groupHeadingHoverLabel = null;
+    }
+
+    //TODO documents drawer
+    public isRowExpanded(rowId: number): boolean {
+        return this.expandedRows?.has(rowId);
     }
 }
