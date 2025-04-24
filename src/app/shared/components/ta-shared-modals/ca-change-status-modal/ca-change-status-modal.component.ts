@@ -95,14 +95,8 @@ export class CaChangeStatusModalComponent
         return this.locationForm.get('location');
     }
 
-    public get isStatusUnassigned(): boolean {
-        return (
-            this.modalData.status?.statusValue?.id === LoadStatusEnum.Unassigned
-        );
-    }
-
     ngOnInit(): void {
-        if (!this.isStatusUnassigned) this.initLocationForm();
+        this.initLocationForm();
     }
 
     public initLocationForm(): void {
@@ -112,8 +106,7 @@ export class CaChangeStatusModalComponent
     }
 
     public onModalAction(isDoAction?: boolean): void {
-        if (this.isStatusUnassigned) this.ngbActiveModal.close(isDoAction);
-        else if (isDoAction) this.ngbActiveModal.close(this.selectedAddress);
+        if (isDoAction) this.ngbActiveModal.close(this.selectedAddress);
         else this.ngbActiveModal.close(isDoAction);
     }
 

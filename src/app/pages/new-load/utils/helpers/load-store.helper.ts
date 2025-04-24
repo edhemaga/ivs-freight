@@ -3,15 +3,20 @@ import { ILoadState, IMappedLoad } from '@pages/new-load/interfaces';
 
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
+import { LoadStatusEnum } from '@shared/enums';
 
 // Models
 import {
     LoadMinimalListResponse,
     LoadResponse,
+    LoadStatus,
+    LoadStatusResponse,
     LoadStopResponse,
     RoutingResponse,
+    UpdateLoadStatusCommand,
 } from 'appcoretruckassist';
 import { ITableData } from '@shared/models';
+import { AddressData } from '@ca-shared/components/ca-input-address-dropdown/models/address-data.model';
 
 // Ca components
 import {
@@ -26,7 +31,6 @@ export class LoadStoreHelper {
     static groupedByStatusTypeList(
         minimalList: LoadMinimalListResponse
     ): Record<string, LoadMinimalListResponse[]> {
-        console.log('groupedByStatusTypeList');
         let groupedByStatusType;
         const data = minimalList?.pagination?.data;
 
@@ -48,7 +52,6 @@ export class LoadStoreHelper {
         isLoading: boolean,
         mapRoutes: ICaMapProps
     ): ILoadState {
-        console.log('setLoadDetailsState');
         const stops = data?.stops || [];
 
         const isFirstStopDeadhead = stops[0]?.stopType?.id === 0;
@@ -152,5 +155,67 @@ export class LoadStoreHelper {
 
             return tab;
         });
+    }
+
+    static isOpenChangeStatusLocationModal(
+        currentStatus: LoadStatusResponse,
+        nextStatus: LoadStatusResponse
+    ): boolean {
+        const statusesWithLocation = [
+            LoadStatusEnum.RepairDispatched,
+            LoadStatusEnum.RepairLoaded,
+            LoadStatusEnum.RepairOffloaded,
+        ];
+
+        const canceledStatusesWithLocation = [
+            LoadStatusEnum.RepairDispatched,
+            LoadStatusEnum.Dispatched,
+        ];
+
+        const lCanceledStatusesWithLocation = [
+            LoadStatusEnum.Loaded,
+            LoadStatusEnum.Offloaded,
+            LoadStatusEnum.RepairLoaded,
+            LoadStatusEnum.RepairOffloaded,
+        ];
+
+        const canceledStatusesWithLocationCondition =
+            canceledStatusesWithLocation.includes(
+                currentStatus.statusValue.id
+            ) && nextStatus.statusValue.id === LoadStatusEnum.Cancelled;
+        const lCanceledStatusesWithLocationCondition =
+            lCanceledStatusesWithLocation.includes(
+                currentStatus.statusValue.id
+            ) && nextStatus.statusValue.id === LoadStatusEnum.LoadCanceled;
+
+        const statusesWithLocationCondition = statusesWithLocation.includes(
+            nextStatus.statusValue.id
+        );
+
+        const result =
+            canceledStatusesWithLocationCondition ||
+            lCanceledStatusesWithLocationCondition ||
+            statusesWithLocationCondition;
+
+        return result;
+    }
+
+    static composeUpdateLoadStatusCommand(
+        value: AddressData,
+        status: LoadStatusResponse,
+        loadId: number
+    ): UpdateLoadStatusCommand {
+        const { address, longLat } = value || {};
+        const { longitude, latitude } = longLat || {};
+
+        const updateLoadStatusComand: UpdateLoadStatusCommand = {
+            id: loadId,
+            status: status.statusValue.name as LoadStatus,
+            repairLocation: address,
+            longitude,
+            latitude,
+        };
+
+        return updateLoadStatusComand;
     }
 }

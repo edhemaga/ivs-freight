@@ -1,11 +1,9 @@
 <div class="main_inside" [class.filled]="dispatchResponse?.truck">
     <ng-container *ngIf="dispatchResponse?.truck">
-        <div
-            class="padding-inside"
-            [class.hovering]="
-                isDispatchBoardLocked && isHoveringRowIndex === rowIndex
-            "
-        >
+        @let isHoveringRow =
+            isDispatchBoardLocked && isHoveringRowIndex === rowIndex;
+
+        <div class="padding-inside" [class.hovering]="isHoveringRow">
             <div class="info-item w-100 c-pointer p-0">
                 <app-ca-pickup-delivery-block
                     [loads]="{
@@ -15,6 +13,7 @@
                     }"
                     [dispatchResponse]="dispatchResponse"
                     [columnWidth]="_columnWidth"
+                    [isHoveringRow]="isHoveringRow"
                 ></app-ca-pickup-delivery-block>
             </div>
         </div>
