@@ -69,6 +69,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 // Configs
 import { SettingsFactoringInputConfig } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-factoring-modal/utils/configs';
+import { valid } from 'overlayscrollbars';
 
 @Component({
     selector: 'app-settings-factoring-modal',
@@ -114,7 +115,7 @@ export class SettingsFactoringModalComponent
 
     public factoringForm: UntypedFormGroup;
 
-    public selectedAddress: AddressEntity = null;
+    public selectedAddress: any = null;
 
     public isFormDirty: boolean;
 
@@ -150,7 +151,9 @@ export class SettingsFactoringModalComponent
     public company: FactoringCompany;
 
     // Address
-    public addressTabData: Tabs[] = [...SettingsFactoringModalConstants.ADDRESS_TABS];
+    public addressTabData: Tabs[] = [
+        ...SettingsFactoringModalConstants.ADDRESS_TABS,
+    ];
     public selectedAddressTab: number = 1;
 
     constructor(
@@ -172,6 +175,7 @@ export class SettingsFactoringModalComponent
             this.isCardAnimationDisabled = true;
             this.editFactoringCompany(this.editData.company);
         } else {
+            this.setAddressValidations(this.selectedAddressTab, true);
             this.startFormChanges();
         }
     }
@@ -182,9 +186,9 @@ export class SettingsFactoringModalComponent
             phone: [null, phoneFaxRegex],
             email: [null],
             address: [null, [Validators.required, ...addressValidation]],
-            poBoxAddress: [null, [Validators.required, ...addressValidation]],
+            poBoxAddress: [null, [...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
-            poBox: [null, Validators.required],
+            poBox: [null],
             noticeOfAssigment: [null, Validators.required],
             note: [null],
         });
@@ -247,7 +251,8 @@ export class SettingsFactoringModalComponent
         if (this.selectedAddress) {
             this.selectedAddress = {
                 ...this.selectedAddress,
-                addressUnit: addressUnit,
+                addressUnit: this.selectedAddressTab === 1 ? addressUnit : null,
+                poBox: this.selectedAddressTab === 2 ? poBox : null,
             };
         }
 
@@ -256,10 +261,11 @@ export class SettingsFactoringModalComponent
             name,
             phone,
             email,
-            address: this.selectedAddress,
             noticeOfAssigment,
             note,
-            poBox,
+            ...(this.selectedAddressTab === 1
+                ? { address: this.selectedAddress }
+                : { poBox: this.selectedAddress }),
         };
         this.settingsCompanyService
             .updateFactoringCompany(newData)
@@ -287,20 +293,26 @@ export class SettingsFactoringModalComponent
     private editFactoringCompany(company: any) {
         this.company = company;
 
+        let addressPoBox = company.factoringCompany.poBox;
+
+        const address = addressPoBox
+            ? addressPoBox.city + ', ' + addressPoBox.state
+            : company.factoringCompany.address.address;
+
+        if (addressPoBox) addressPoBox = { ...addressPoBox, address };
+
         this.factoringForm.patchValue({
             name: company.factoringCompany.name,
             phone: company.factoringCompany.phone,
             email: company.factoringCompany.email,
-            address: company.factoringCompany.poBox
-                ? company.factoringCompany.address
+            address: !addressPoBox
+                ? company.factoringCompany.address.address
                 : null,
-            poBoxAddress: company.factoringCompany.poBox
-                ? company.factoringCompany.address
-                : null,
+            poBoxAddress: addressPoBox ? address : null,
             addressUnit: company.factoringCompany.address.addressUnit,
             noticeOfAssigment: company.factoringCompany.noticeOfAssigment,
             note: company.factoringCompany.note,
-            poBox: company.factoringCompany.poBox,
+            poBox: company.factoringCompany.poBox?.poBox,
         });
 
         this.selectedAddressTab = company.factoringCompany.poBox ? 2 : 1;
@@ -313,8 +325,8 @@ export class SettingsFactoringModalComponent
         });
 
         this.onHandleAddress({
-            address: company.factoringCompany.address,
-            valid: company.factoringCompany.address.address ? true : false,
+            address: addressPoBox ?? company.factoringCompany.address,
+            valid: address ? true : false,
         });
 
         setTimeout(() => {
@@ -374,6 +386,10 @@ export class SettingsFactoringModalComponent
             eSharedString.PO_BOX_ADDRESS
         );
 
+        const poBoxControl = this.factoringForm.get(
+            eSharedString.PO_BOX
+        );
+
         if (isTabChanged) {
             this.selectedAddress = null;
             this.addressList = null;
@@ -390,8 +406,17 @@ export class SettingsFactoringModalComponent
             poBoxAddressControl.clearValidators();
             poBoxAddressControl.setErrors(null);
             poBoxAddressControl.setValue(null);
+
+            poBoxControl.clearValidators();
+            poBoxControl.setErrors(null);
+            poBoxControl.setValue(null);
         } else {
             poBoxAddressControl.setValidators([
+                Validators.required,
+                ...addressValidation,
+            ]);
+
+            poBoxControl.setValidators([
                 Validators.required,
                 ...addressValidation,
             ]);
@@ -403,6 +428,7 @@ export class SettingsFactoringModalComponent
 
         addressControl.updateValueAndValidity();
         poBoxAddressControl.updateValueAndValidity();
+        poBoxControl.updateValueAndValidity();
     }
 
     ngOnDestroy(): void {

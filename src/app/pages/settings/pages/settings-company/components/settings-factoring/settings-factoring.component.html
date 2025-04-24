@@ -8,7 +8,7 @@
 
         <div
             [ngClass]="{
-                'no-factoring-data': !factoringData?.factoringCompany?.name
+                'no-factoring-data': !factoringData?.factoringCompany?.name,
             }"
             class="settings-header-buttons"
             *ngIf="factoringData.email"
@@ -23,7 +23,7 @@
                             type: factoringData.factoringCompany?.name
                                 ? 'edit'
                                 : 'new',
-                            company: factoringData
+                            company: factoringData,
                         })
                     "
                 ></svg-icon>
@@ -91,18 +91,23 @@
                     >
                     </app-ta-copy>
                 </div>
-                <div
-                    class="single-item"
-                    *ngIf="factoringData?.factoringCompany?.address?.address"
-                >
-                    <svg-icon
-                        class="mr-3 svg-fill-light-grey-2"
-                        src="assets/svg/truckassist-table/location-icon.svg"
-                    ></svg-icon>
-                    <span class="single-item-address">{{
-                        factoringData?.factoringCompany?.address?.address
-                    }}</span>
-                </div>
+                @if (
+                    factoringData?.factoringCompany?.address?.address ||
+                    factoringData?.factoringCompany?.poBox
+                ) {
+                    <div class="single-item">
+                        <svg-icon
+                            class="mr-3 svg-fill-light-grey-2"
+                            src="assets/svg/truckassist-table/location-icon.svg"
+                        ></svg-icon>
+                        <span class="single-item-address">{{
+                            factoringData?.factoringCompany?.address?.address ??
+                                factoringData?.factoringCompany?.poBox.city +
+                                    ', ' +
+                                    factoringData?.factoringCompany?.poBox.state
+                        }}</span>
+                    </div>
+                }
             </div>
             <app-ta-custom-card
                 [cardName]="'Notice of Assigment'"
