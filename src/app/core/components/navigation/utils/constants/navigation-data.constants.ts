@@ -217,7 +217,6 @@ export class NavigationDataConstants {
             arrow: 'assets/svg/common/ic_arrow-down.svg',
             isRouteActive: false,
             isSubrouteActive: false,
-            construction: environment.staging,
             qaId: 'navbar_tools',
             route: [
                 {
@@ -225,7 +224,6 @@ export class NavigationDataConstants {
                     route: '/tools/miles',
                     qaId: 'navbar_tools_miles',
                     activeRouteFlegId: 6,
-                    construction: environment.staging,
                 },
                 {
                     name: 'Calendar',
