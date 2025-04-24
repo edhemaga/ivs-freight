@@ -1,24 +1,35 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 // modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// base classes
+import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
 
 // services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 import { ModalService } from '@shared/services';
 
 // components
-import { CaTableCardViewComponent } from 'ca-components';
+import {
+    CaTableCardViewComponent,
+    CaStatusChangeDropdownComponent,
+    ePosition,
+} from 'ca-components';
 import { CardColumnsModalComponent } from '@shared/components/card-columns-modal/card-columns-modal.component';
+import { LoadTypeComponent } from '@pages/new-load/components/load-type/load-type.component';
 
 // pipes
 import {
     FormatCurrencyPipe,
     ThousandSeparatorPipe,
     GetNestedValuePipe,
+    FormatDatePipe,
 } from '@shared/pipes';
+import { CaLoadStatusComponent } from 'ca-components';
 
 // configs
 import {
@@ -31,14 +42,20 @@ import {
 
 // interfaces
 import { ICardValueData } from '@shared/interfaces';
+import { IMappedLoad } from '@pages/new-load/interfaces';
 
 // enums
 import {
+    eDropdownMenu,
     eSharedString,
     eStringPlaceholder,
     eTableCardViewData,
     TableStringEnum,
 } from '@shared/enums';
+
+// models
+import { TableCardBodyActions } from '@shared/models';
+import { LoadStatusResponse } from 'appcoretruckassist';
 
 // svg-routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -51,19 +68,29 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     imports: [
         CommonModule,
         AngularSvgIconModule,
+        NgbPopover,
 
         // components
         CaTableCardViewComponent,
+        CaStatusChangeDropdownComponent,
+        LoadTypeComponent,
+        CaLoadStatusComponent,
 
         // pipes
         FormatCurrencyPipe,
         ThousandSeparatorPipe,
         GetNestedValuePipe,
+        FormatDatePipe,
     ],
 })
-export class NewLoadCardsComponent implements OnInit, OnDestroy {
+export class NewLoadCardsComponent
+    extends LoadDropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
     // destroy
-    private destroy$ = new Subject<void>();
+    protected destroy$ = new Subject<void>();
+
+    public changeStatusPopover: NgbPopover;
 
     // data (this will be changed when store is implemented)
     public tabCardData: {
@@ -91,7 +118,8 @@ export class NewLoadCardsComponent implements OnInit, OnDestroy {
     };
 
     // enums
-    public tableCardViewEnums = eTableCardViewData;
+    public eTableCardViewData = eTableCardViewData;
+    public eDropdownMenu = eDropdownMenu;
 
     // svg-routes
     public sharedSvgRoutes = SharedSvgRoutes;
@@ -102,11 +130,14 @@ export class NewLoadCardsComponent implements OnInit, OnDestroy {
     // enums
     public eSharedString = eSharedString;
     public eStringPlaceholder = eStringPlaceholder;
+    public ePosition = ePosition;
 
     constructor(
-        private modalService: ModalService,
+        protected modalService: ModalService,
         public loadStoreService: LoadStoreService
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.loadStoreService.selectedTabSelector$
@@ -114,6 +145,12 @@ export class NewLoadCardsComponent implements OnInit, OnDestroy {
             .subscribe((tab) => {
                 this.selectedTab = tab;
             });
+
+        this.initChangeStatusDropdownListener();
+    }
+
+    private navigateToLoadDetails(id: number): void {
+        this.loadStoreService.navigateToLoadDetails(id);
     }
 
     public openColumnsModal(): void {
@@ -155,6 +192,48 @@ export class NewLoadCardsComponent implements OnInit, OnDestroy {
 
     public onSelectLoad(id: number): void {
         this.loadStoreService.onSelectLoad(id);
+    }
+
+    public onToggleDropdownMenuActions(
+        action: TableCardBodyActions<IMappedLoad>
+    ): void {
+        const { type, id } = action;
+
+        // this is because we have load and new load - it will be removed
+        if (type === eDropdownMenu.VIEW_DETAILS_TYPE) {
+            this.navigateToLoadDetails(id);
+
+            return;
+        }
+        this.handleDropdownMenuActions(
+            action,
+            eDropdownMenu.LOAD,
+            this.selectedTab
+        );
+    }
+
+    public onNextStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchUpdateLoadStatus(status);
+    }
+
+    public onPreviousStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchRevertLoadStatus(status);
+    }
+
+    public onOpenChangeStatusDropdown(
+        tooltip: NgbPopover,
+        loadId: number
+    ): void {
+        this.changeStatusPopover = tooltip;
+        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
+    }
+
+    public initChangeStatusDropdownListener(): void {
+        this.loadStoreService.changeDropdownpossibleStatusesSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) this.changeStatusPopover.open();
+            });
     }
 
     ngOnDestroy(): void {

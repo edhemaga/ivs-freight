@@ -1,6 +1,9 @@
 // Store
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
+// Enums
+import { eCardFlipViewMode } from '@shared/enums';
+
 // Intefaces
 import { ILoadState } from '@pages/new-load/interfaces';
 
@@ -71,6 +74,11 @@ export const filtersSelector = createSelector(
     (state: ILoadState) => state.filters
 );
 
+export const searchStringsSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.filters.searchQuery
+);
+
 export const pageSelector = createSelector(
     selectLoadState,
     (state: ILoadState) => state.currentPage
@@ -83,6 +91,19 @@ export const tableColumnsSelector = createSelector(selectLoadState, (state) => {
     const { tableColumns } = state;
     return tableColumns;
 });
+
+export const isTypeColumnCheckedSelector = createSelector(
+    tableColumnsSelector,
+    (columns) => {
+        const typeColumn = columns.find((col) => col.key === 'loadType');
+        return typeColumn?.isChecked ?? false;
+    }
+);
+
+export const getSortableColumn = createSelector(
+    tableColumnsSelector,
+    (columns) => columns.filter((col) => col.hasSort)
+);
 
 export const totalSumSelector = createSelector(
     selectLoadState,
@@ -152,4 +173,20 @@ export const loadIdLoadStatusChangeSelector = createSelector(
     selectLoadState,
     (state: ILoadState) => state.loadIdLoadStatusChange
 );
+
+export const selectedLoadForStatusChangeSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => {
+        const loadForChange = state.loads.find(load => load.id === state.loadIdLoadStatusChange)
+        return loadForChange;
+    }
+);
 //#endRegion
+
+export const cardFlipViewModeSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => {
+        const { cardFlipViewMode } = state || {};
+        return eCardFlipViewMode[cardFlipViewMode];
+    }
+);

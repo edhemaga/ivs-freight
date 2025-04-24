@@ -1,5 +1,13 @@
 @import 'src/theme/variables.scss';
 
+.hover-text-color {
+    transition: color $transitionDuration ease;
+}
+
+.hover-text-color:hover {
+    color: var(--hover-color) !important;
+}
+
 .truckassist-icon {
     svg-icon {
         display: flex;

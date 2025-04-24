@@ -1,6 +1,7 @@
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
+import { eSharedString } from '@shared/enums';
 
 // Interfaces
 import { IMappedLoad } from '@pages/new-load/interfaces';
@@ -37,7 +38,16 @@ export class LoadHelper {
                 miles,
                 billing,
                 invoicedDate,
-                generalCommodity
+                generalCommodity,
+                note,
+                loadType,
+                type,
+                loadRequirements,
+                company,
+                dispatch,
+                pickup,
+                delivery,
+                totalMiles,
             } = load;
 
             const mapped: IMappedLoad = {
@@ -54,19 +64,39 @@ export class LoadHelper {
                         selectedTab
                     ),
                 totalDue,
+                loadType: loadType?.name ?? type?.name,
                 broker,
-                templateCreated: MethodsCalculationsHelper.convertDateFromBackend(load.dateCreated),
-                generalCommodity,
+                brokerContact: broker?.contact,
+                templateCreated:
+                    MethodsCalculationsHelper.convertDateFromBackend(
+                        load.dateCreated
+                    ),
+                commodity: loadDetails?.generalCommodityName ?? generalCommodity?.name,
                 brokerBusinessName: broker?.businessName,
-                driverInfo: driver,
+                driverInfo: driver ? driver : dispatch?.driver,
                 assignedDriverTruckNumber: driver?.truckNumber,
                 assignedDriverTrailerNumber: driver?.trailerNumber,
                 milesLoaded: miles?.loadedMiles,
                 milesEmpty: miles?.emptyMiles,
-                milesTotal: miles?.totalMiles,
+                milesTotal: miles?.totalMiles ?? totalMiles,
                 billingRatePerMile: billing?.rpm,
                 billingRate: billing?.rate,
+                companyName: company?.companyName,
                 invoicedDate,
+                note,
+                requirementTruck: loadRequirements?.truckType,
+                requirementTrailer: loadRequirements?.trailerType,
+                requirementLength:
+                    loadRequirements?.trailerLength?.name?.replace(/\D/g, ''),
+                requirementDoor: loadRequirements?.doorType?.name,
+                requirementSuspension: loadRequirements?.suspension?.name,
+                requirementYear: loadRequirements?.year,
+                requirementLiftgate: loadRequirements?.liftgate
+                    ? eSharedString.YES
+                    : eSharedString.EMPTY_STRING_PLACEHOLDER,
+                driverMessage: loadRequirements?.driverMessage,
+                pickup,
+                delivery,
             };
             return mapped;
         });

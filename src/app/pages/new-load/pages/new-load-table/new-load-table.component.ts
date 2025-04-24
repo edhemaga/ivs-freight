@@ -30,6 +30,9 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 import { CaProfileImageComponent } from 'ca-components';
 import { SvgIconComponent } from 'angular-svg-icon';
+import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
+import { LoadTypeComponent } from '@pages/new-load/components/load-type/load-type.component';
+import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
 
 // Services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
@@ -45,6 +48,10 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 // Models
 import { LoadStatusResponse } from 'appcoretruckassist';
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Pipes
+import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
+import { ThousandSeparatorPipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-new-load-table',
@@ -66,6 +73,14 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaProfileImageComponent,
         SvgIconComponent,
         TaAppTooltipV2Component,
+        TaNoteComponent,
+        LoadTypeComponent,
+        TaTruckTrailerIconComponent,
+
+        // Pipes
+        TableHighlightSearchTextPipe,
+        ThousandSeparatorPipe
+        
     ],
 })
 export class NewLoadTableComponent

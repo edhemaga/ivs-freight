@@ -60,24 +60,22 @@
 			></app-ca-load-status>
 		</div>
 
-		@if(!isStatusUnassigned) {
-			<div
-				class="truck-location p-b-10"
-				[formGroup]="locationForm"
-			>
-				<app-ca-input-address-dropdown
-					formControlName="location"
-					[inputConfig]="changeStatusModalConfig.LOCATION_CONFIG"
-					[placeholderType]="'shortAddress'"
-					[activeAddress]="selectedAddress?.address"
-					[receivedAddressList]="addressList"
-					[receivedAddressData]="addressData"
-					(selectedAddress)="onHandleAddress($event)"
-					(sentAddressData)="onAddressChange($event)"
-					(sentAddressValue)="getAddressData($event)"
-				></app-ca-input-address-dropdown>
-			</div>
-		}
+		<div
+			class="truck-location p-b-10"
+			[formGroup]="locationForm"
+		>
+			<app-ca-input-address-dropdown
+				formControlName="location"
+				[inputConfig]="changeStatusModalConfig.LOCATION_CONFIG"
+				[placeholderType]="'shortAddress'"
+				[activeAddress]="selectedAddress?.address"
+				[receivedAddressList]="addressList"
+				[receivedAddressData]="addressData"
+				(selectedAddress)="onHandleAddress($event)"
+				(sentAddressData)="onAddressChange($event)"
+				(sentAddressValue)="getAddressData($event)"
+			></app-ca-input-address-dropdown>
+		</div>
 		
 		<div class="p-y-4">
 			<p class="m-0 text-color-black text-size-14 ta-font-medium">

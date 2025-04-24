@@ -18,6 +18,7 @@ import * as Functions from '@pages/miles/state/functions/miles-reducer.functions
 
 // configs
 import { MilesTableColumnsConfig } from '@pages/miles/utils/config';
+import { MilesCardDataConfig } from '@pages/miles/pages/miles-card/utils/configs/miles-card-data.config';
 
 // helpers
 import { MilesDropdownMenuHelper } from '@pages/miles/utils/helpers';
@@ -63,6 +64,7 @@ export const initialState: IMilesState = {
         isTableLocked: true,
         sortKey: null,
         sortDirection: null,
+        label: '',
     },
 
     minimalList: {
@@ -81,6 +83,9 @@ export const initialState: IMilesState = {
 
     unitMapRoutes: null,
     unitMapData: null,
+
+    frontSideData: MilesCardDataConfig.FRONT_SIDE_DATA,
+    backSideData: MilesCardDataConfig.BACK_SIDE_DATA,
 };
 
 export const milesReducer = createReducer(
@@ -127,6 +132,9 @@ export const milesReducer = createReducer(
     // #region Table filters
     on(MilesAction.changeFilters, (state, { filters }) =>
         Functions.updateFilters(state, filters)
+    ),
+    on(MilesAction.onSeachFilterChange, (state, { query }) =>
+        Functions.onSeachFilterChange(state, query)
     ),
     on(MilesAction.setStates, (state, { states }) => ({ ...state, states })),
     // #endregion
@@ -196,5 +204,11 @@ export const milesReducer = createReducer(
         Functions.setMapSelectedStop(state, unitStopData)
     ),
 
-    on(MilesAction.setUnitMapData, (state) => Functions.setUnitMapData(state))
+    on(MilesAction.setUnitMapData, (state) => Functions.setUnitMapData(state)),
+
+    on(
+        MilesAction.setColumnsModalResult,
+        (state, { frontSideData, backSideData }) =>
+            Functions.setColumnsModalResult(state, frontSideData, backSideData)
+    )
 );

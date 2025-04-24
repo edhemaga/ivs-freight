@@ -68,6 +68,9 @@
         &-26 {
             margin-top: 26px;
         }
+        &-40 {
+            margin-top: 40px;
+        }
     }
     &-r {
         &-4 {
@@ -242,6 +245,10 @@
 
 .w-fit-content {
     width: fit-content;
+}
+
+.m-w-fit-content {
+    max-width: fit-content;
 }
 
 @for $i from -40 through 100 {

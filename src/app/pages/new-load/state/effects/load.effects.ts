@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import {
     catchError,
     exhaustMap,
+    filter,
     map,
     switchMap,
     withLatestFrom,
 } from 'rxjs/operators';
-import { forkJoin, Observable, of } from 'rxjs';
+import { EMPTY, forkJoin, Observable, of } from 'rxjs';
 
 // ngrx
 import { Store } from '@ngrx/store';
@@ -27,6 +28,7 @@ import * as LoadSelectors from '@pages/new-load/state/selectors/load.selectors';
 
 // Components
 import { NewLoadModalComponent } from '@pages/new-load/pages/new-load-modal/new-load-modal.component';
+import { CaChangeStatusModalComponent } from '@shared/components/ta-shared-modals/ca-change-status-modal/ca-change-status-modal.component';
 
 // Models
 import {
@@ -38,17 +40,24 @@ import {
     LoadStatus,
     LoadSortBy,
     SortOrder,
+    LoadDriverInfo,
 } from 'appcoretruckassist';
 
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import { eLoadRouting } from '@pages/new-load/enums';
+import { eLoadRouting, eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Interfaces
 import { IStateFilters } from '@shared/interfaces';
 
 // Selectors
-import { loadIdLoadStatusChangeSelector } from '@pages/new-load/state/selectors/load.selectors';
+import {
+    loadIdLoadStatusChangeSelector,
+    selectedLoadForStatusChangeSelector,
+} from '@pages/new-load/state/selectors/load.selectors';
+
+// Helpers
+import { LoadStoreHelper } from '@pages/new-load/utils/helpers';
 
 @Injectable()
 export class LoadEffect {
@@ -112,7 +121,6 @@ export class LoadEffect {
                 this.store.select(LoadSelectors.tableSettingsSelector)
             ),
             exhaustMap(([action, mode, filters, page, tableSettings]) => {
-                console.log('getLoadsOnPageChange');
                 return this.getLoadData(
                     mode,
                     true,
@@ -279,8 +287,11 @@ export class LoadEffect {
             withLatestFrom(
                 this.store.select(LoadSelectors.selectedTabSelector)
             ),
+            filter(
+                ([_, selectedTab]) =>
+                    selectedTab !== eLoadStatusStringType.TEMPLATE
+            ),
             switchMap(([_, selectedTab]) => {
-                console.log('refreshFilters$');
                 return forkJoin({
                     dispatcherFilters:
                         this.loadService.getDispatcherFilters(selectedTab),
@@ -417,19 +428,22 @@ export class LoadEffect {
         )
     );
 
-    public updateLoadStatus$ = createEffect(() =>
+    public updateLoadStatusRegular$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(LoadActions.updateLoadStatus),
-            withLatestFrom(this.store.select(loadIdLoadStatusChangeSelector)),
+            ofType(LoadActions.updateLoadStatusRegular),
+            withLatestFrom(
+                this.store.select(LoadSelectors.loadIdLoadStatusChangeSelector)
+            ),
             exhaustMap(([action, loadId]) => {
                 const { status } = action || {};
-                const updateLoadStatusComand: UpdateLoadStatusCommand = {
-                    status: status.statusValue.name as LoadStatus,
-                    id: loadId,
-                };
+                const updateLoadStatusCommand: UpdateLoadStatusCommand =
+                    action.updateLoadStatusCommand ?? {
+                        status: status.statusValue.name as LoadStatus,
+                        id: loadId,
+                    };
 
                 return this.loadService
-                    .apiUpdateLoadStatus(updateLoadStatusComand)
+                    .apiUpdateLoadStatus(updateLoadStatusCommand)
                     .pipe(
                         exhaustMap((response) => {
                             return this.loadService.apiGetLoadById(loadId).pipe(
@@ -453,19 +467,83 @@ export class LoadEffect {
         )
     );
 
+    public updateLoadStatus$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.updateLoadStatus),
+            withLatestFrom(
+                this.store.select(
+                    LoadSelectors.selectedLoadForStatusChangeSelector
+                ),
+                this.store.select(LoadSelectors.selectedTabSelector)
+            ),
+            exhaustMap(([action, load, selectedTab]) => {
+                const { status } = action || {};
+                const driverInfo = load.driverInfo as LoadDriverInfo;
+                const currentStatus = load.status;
+                const isActiveTab = selectedTab === eLoadStatusStringType.ACTIVE
+
+                const shouldOpenModal =
+                    LoadStoreHelper.isOpenChangeStatusLocationModal(
+                        currentStatus,
+                        status
+                    );
+
+                if (shouldOpenModal && isActiveTab) {
+                    const modalRef = this.modalService.openModalNew(
+                        CaChangeStatusModalComponent,
+                        {
+                            ...load,
+                            truckNumber: driverInfo?.truckNumber,
+                            title: 'Change Status',
+                            status,
+                        }
+                    );
+
+                    return modalRef.closed.pipe(
+                        exhaustMap((value) => {
+                            if (value) {
+                                const updateLoadStatusCommand: UpdateLoadStatusCommand =
+                                    LoadStoreHelper.composeUpdateLoadStatusCommand(
+                                        value,
+                                        status,
+                                        load.id
+                                    );
+
+                                return of(
+                                    LoadActions.updateLoadStatusRegular({
+                                        status,
+                                        updateLoadStatusCommand,
+                                    })
+                                );
+                            } else {
+                                return EMPTY;
+                            }
+                        })
+                    );
+                } else {
+                    return of(
+                        LoadActions.updateLoadStatusRegular({
+                            status,
+                        })
+                    );
+                }
+            })
+        )
+    );
+
     public revertLoadStatus$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.revertLoadStatus),
             withLatestFrom(this.store.select(loadIdLoadStatusChangeSelector)),
             exhaustMap(([action, loadId]) => {
                 const { status } = action || {};
-                const updateLoadStatusComand: UpdateLoadStatusCommand = {
+                const updateLoadStatusCommand: UpdateLoadStatusCommand = {
                     status: status.statusValue.name as LoadStatus,
                     id: loadId,
                 };
 
                 return this.loadService
-                    .apiRevertLoadStatus(updateLoadStatusComand)
+                    .apiRevertLoadStatus(updateLoadStatusCommand)
                     .pipe(
                         exhaustMap((response) => {
                             return this.loadService.apiGetLoadById(loadId).pipe(

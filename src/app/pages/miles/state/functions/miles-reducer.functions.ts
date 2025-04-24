@@ -4,7 +4,11 @@ import {
     IMilesState,
     IMinimalListState,
 } from '@pages/miles/interface';
-import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
+import {
+    ICardValueData,
+    IMinimalListFilters,
+    IStateFilters,
+} from '@shared/interfaces';
 import {
     ITableColumn,
     ITableReorderAction,
@@ -121,6 +125,20 @@ export const updateFilters = function (
         filters,
     };
 };
+
+export function onSeachFilterChange(
+    state: IMilesState,
+    searchQuery: string[]
+): IMilesState {
+    return {
+        ...state,
+        page: 1,
+        filters: {
+            ...state.filters,
+            searchQuery,
+        },
+    };
+}
 
 export const updateTabSelection = function (
     state: IMilesState,
@@ -315,10 +333,8 @@ export function tableSortingChange(
     state: IMilesState,
     column: ITableColumn
 ): IMilesState {
-    const { columns, sortKey, sortDirection } = StoreFunctionsHelper.toggleSort(
-        column,
-        state.columns
-    );
+    const { columns, sortKey, sortDirection, label } =
+        StoreFunctionsHelper.toggleSort(column, state.columns);
 
     return {
         ...state,
@@ -327,6 +343,7 @@ export function tableSortingChange(
             ...state.tableSettings,
             sortDirection,
             sortKey,
+            label,
         },
     };
 }
@@ -375,6 +392,7 @@ export function resetTable(state: IMilesState): IMilesState {
             isTableLocked: true,
             sortKey: null,
             sortDirection: null,
+            label: '',
         },
         toolbarDropdownMenuOptions:
             MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
@@ -536,5 +554,17 @@ function getTruckNavigationMeta(
         isLast,
         prevId,
         nextId,
+    };
+}
+
+export function setColumnsModalResult(
+    state: IMilesState,
+    frontSideData: ICardValueData[],
+    backSideData: ICardValueData[]
+): IMilesState {
+    return {
+        ...state,
+        frontSideData,
+        backSideData,
     };
 }

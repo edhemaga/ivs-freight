@@ -22,6 +22,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { SharedService } from '@shared/services/shared.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
+// interfaces
+import { ICustomScrollEvent } from '@shared/components/ta-custom-scrollbar/interfaces';
+
 let hasTablePageHeight = false;
 @Component({
     selector: 'app-ta-custom-scrollbar',
@@ -34,7 +37,7 @@ export class TaCustomScrollbarComponent
     implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
     @ViewChild('bar', { static: false }) private bar: ElementRef;
-    @Output() scrollEvent: EventEmitter<any> = new EventEmitter();
+    @Output() scrollEvent: EventEmitter<ICustomScrollEvent> = new EventEmitter();
     @Input() scrollBarOptions: any;
     @Input() horizontalScrollHeight: number;
     @Input() isOverflowUnset?: boolean = false;

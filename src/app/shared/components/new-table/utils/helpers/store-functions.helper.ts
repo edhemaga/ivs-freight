@@ -69,8 +69,9 @@ export class StoreFunctionsHelper {
         columns: ITableColumn[];
         sortKey: string;
         sortDirection: SortOrder | null;
+        label: string;
     } {
-        const { sortName, key } = column;
+        const { sortName, key, label } = column;
 
         let updatedSortKey = sortName;
         let updatedSortDirection: SortOrder | null = SortOrder.Ascending;
@@ -105,6 +106,7 @@ export class StoreFunctionsHelper {
             columns: updatedColumns,
             sortKey: updatedSortDirection ? updatedSortKey : null,
             sortDirection: updatedSortDirection,
+            label,
         };
     }
 

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 
@@ -17,7 +17,6 @@ import {
 import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
-import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
 
 // base classes
 import { DropdownMenuActionsBase } from '@shared/base-classes';
@@ -70,8 +69,6 @@ export class MilesComponent
     extends DropdownMenuActionsBase
     implements OnInit, OnDestroy
 {
-    @ViewChild(MilesCardComponent) milesCardComponent!: MilesCardComponent;
-
     protected destroy$ = new Subject<void>();
 
     private filter: IStateFilters = {};
@@ -188,6 +185,10 @@ export class MilesComponent
         }
     }
 
+    private openColumnsModal(): void {
+        this.milesStoreService.dispatchOpenColumnsModal();
+    }
+
     public onTableEmptyBtnClick(btnClickType: string): void {
         switch (btnClickType) {
             case eTableEmpty.ADD_CLICK:
@@ -206,8 +207,7 @@ export class MilesComponent
     }
 
     public onSearchQueryChange(query: string[]): void {
-        // TODO remove, for easier emitted data preview
-        console.log(query);
+        this.milesStoreService.dispatchSearchChange(query);
     }
 
     public onToolbarDropdownMenuActions<T>(action: TableCardBodyActions<T>) {
@@ -246,7 +246,7 @@ export class MilesComponent
 
                 break;
             case eDropdownMenuColumns.COLUMNS_CARD_TYPE:
-                this.milesCardComponent.openColumnsModal();
+                this.openColumnsModal();
 
                 break;
             default:

@@ -26,6 +26,8 @@ import {
     minimalListFiltersSelector,
     detailsLoadingSelector,
     milesUnitMapDataSelector,
+    frontSideDataSelector,
+    backSideDataSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // models
@@ -58,7 +60,11 @@ import {
 } from '@shared/components/new-table/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { ICaMapProps, IFilterAction } from 'ca-components';
-import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
+import {
+    ICardValueData,
+    IMinimalListFilters,
+    IStateFilters,
+} from '@shared/interfaces';
 import { IMilesModel, IMilesTabResults } from '@pages/miles/interface';
 
 @Injectable({
@@ -139,6 +145,12 @@ export class MilesStoreService {
     public unitMapDataSelector$: Observable<ICaMapProps> = this.store.pipe(
         select(milesUnitMapDataSelector)
     );
+
+    public frontSideDataSelector$: Observable<ICardValueData[]> =
+        this.store.pipe(select(frontSideDataSelector));
+
+    public backSideDataSelector$: Observable<ICardValueData[]> =
+        this.store.pipe(select(backSideDataSelector));
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({
@@ -323,6 +335,19 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_GET_MAP_STOP_DATA,
             stopId,
+        });
+    }
+
+    public dispatchSearchChange(query: string[]): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
+            query,
+        });
+    }
+
+    public dispatchOpenColumnsModal(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_OPEN_COLUMNS_MODAL,
         });
     }
 }

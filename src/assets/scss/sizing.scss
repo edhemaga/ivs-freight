@@ -11,6 +11,7 @@ $sizes-height: (
     26,
     30,
     34,
+    37,
     40,
     42,
     44,
@@ -24,6 +25,7 @@ $sizes-height: (
 $sizes-width: (
     2,
     7,
+    8,
     10,
     15,
     18,
@@ -57,15 +59,18 @@ $sizes-width: (
     126,
     144,
     155,
+    172,
     179,
     202,
     223,
     264,
     268,
+    277,
     334,
     442,
     462,
-    612
+    612,
+    620
 );
 
 @mixin size-classes($class, $property, $sizes) {
@@ -95,5 +100,11 @@ $sizes-width: (
 .w {
     &-33 {
         width: 33%;
+    }
+    &-40p {
+        width: 40%;
+    }
+    &-90p {
+        width: 90%;
     }
 }

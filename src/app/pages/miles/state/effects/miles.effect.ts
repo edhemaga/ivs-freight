@@ -20,6 +20,9 @@ import {
     from,
 } from 'rxjs';
 
+// components
+import { CardColumnsModalComponent } from '@shared/components/card-columns-modal/card-columns-modal.component';
+
 // functions
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 
@@ -29,14 +32,17 @@ import {
     MilesStopSortBy,
     RoutingService,
 } from 'appcoretruckassist';
+import { ModalService } from '@shared/services';
 
 // selectors
 import {
     activeUnitIdSelector,
     activeViewModeSelector,
+    backSideDataSelector,
     currentPageSelector,
     currentStopsPageSelector,
     filterSelector,
+    frontSideDataSelector,
     minimalListSelector,
     pageSelector,
     searchTextSelector,
@@ -52,11 +58,18 @@ import {
 import { MilesHelper } from '@pages/miles/utils/helpers';
 
 // enums
-import { eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode, TableStringEnum } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
+import { eMilesCardData } from '@pages/miles/pages/miles-card/enums';
+
+// interfaces
+import { ICardValueData } from '@shared/interfaces';
 
 // constants
 import { MilesStoreConstants } from '@pages/miles/utils/constants';
+
+// configs
+import { MilesCardDataConfig } from '@pages/miles/pages/miles-card/utils/configs/miles-card-data.config';
 
 @Injectable()
 export class MilesEffects {
@@ -64,6 +77,7 @@ export class MilesEffects {
         private actions$: Actions,
         private milesService: MilesService,
         private routingService: RoutingService,
+        private modalService: ModalService,
         private store: Store,
         private router: Router
     ) {}
@@ -77,6 +91,7 @@ export class MilesEffects {
             take(1),
             switchMap(([selectedTab, filters, tableSettings]) => {
                 const tabValue = Number(selectedTab === eMileTabs.ACTIVE);
+                const searchQuery = filters.searchQuery ?? [];
 
                 return this.milesService
                     .apiMilesListGet(
@@ -92,7 +107,10 @@ export class MilesEffects {
                         null,
                         null,
                         tableSettings.sortDirection,
-                        tableSettings.sortKey as MilesStopSortBy
+                        tableSettings.sortKey as MilesStopSortBy,
+                        searchQuery[0],
+                        searchQuery[1],
+                        searchQuery[2]
                     )
                     .pipe(
                         switchMap((response) => {
@@ -151,7 +169,8 @@ export class MilesEffects {
             ofType(
                 MilesAction.milesTabChange,
                 MilesAction.changeFilters,
-                MilesAction.tableSortingChange
+                MilesAction.tableSortingChange,
+                MilesAction.onSeachFilterChange
             ),
             exhaustMap(() =>
                 this.store.select(activeViewModeSelector).pipe(
@@ -467,6 +486,56 @@ export class MilesEffects {
                         catchError(() => of(MilesAction.getLoadsPayloadError()))
                     )
             )
+        )
+    );
+
+    public openColumnsModal$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.openColumnsModal),
+            withLatestFrom(
+                this.store.select(frontSideDataSelector),
+                this.store.select(backSideDataSelector),
+                this.store.select(selectSelectedTab)
+            ),
+            switchMap(([_, frontSideData, backSideData, selectSelectedTab]) => {
+                const title =
+                    selectSelectedTab === eMileTabs.ACTIVE
+                        ? eMilesCardData.MILES_ACTIVE_TRUCK
+                        : eMilesCardData.MILES_INACTIVE_TRUCK;
+
+                const action = {
+                    data: {
+                        cardsAllData: MilesCardDataConfig.CARD_ALL_DATA,
+                        front_side: frontSideData,
+                        back_side: backSideData,
+                        numberOfRows: frontSideData.length,
+                        checked: true,
+                    },
+                    title,
+                };
+
+                return from(
+                    this.modalService.openModal(
+                        CardColumnsModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        action
+                    )
+                ).pipe(
+                    filter((result) => !!result),
+                    map((result) =>
+                        MilesAction.setColumnsModalResult({
+                            frontSideData: result.selectedColumns.front_side
+                                .slice(0, result.selectedColumns.numberOfRows)
+                                .map(
+                                    (front: ICardValueData) => front.inputItem
+                                ),
+                            backSideData: result.selectedColumns.back_side
+                                .slice(0, result.selectedColumns.numberOfRows)
+                                .map((back: ICardValueData) => back.inputItem),
+                        })
+                    )
+                );
+            })
         )
     );
 }

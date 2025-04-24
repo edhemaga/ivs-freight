@@ -112,6 +112,7 @@ export class LoadModalHelper {
                 isEdit,
                 loadRequirements
             ),
+            invoicedDate: new UntypedFormControl(load?.invoicedDate),
         });
     }
 

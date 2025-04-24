@@ -8,12 +8,18 @@
     tooltipColor="#ffff"
     tooltipTextAlign="center"
 >
-    <svg-icon
-        [class]="icon.className"
-        [src]="icon.icon"
-        [svgStyle]="{
-            'width.px': 44,
-            'height.px': 16
-        }"
-    ></svg-icon>
+    @if (unitNumber) {
+        <div class="text-color-black-2 text-size-14 hover-text-color" [ngStyle]="icon.className ? { '--hover-color': icon.color } : null">
+            {{ unitNumber }}
+        </div>
+    } @else {
+        <svg-icon
+            [class]="icon.className"
+            [src]="icon.icon"
+            [svgStyle]="{
+                'width.px': 44,
+                'height.px': 16,
+            }"
+        ></svg-icon>
+    }
 </div>
