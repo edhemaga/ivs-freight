@@ -8,7 +8,7 @@ import { AngularSvgIconModule, SvgIconComponent } from 'angular-svg-icon';
 import { UserStoreService } from '@pages/new-user/state/services/user-store.service';
 
 // interfaces
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // Enums
 import { eStatusTab } from '@shared/enums';

@@ -2,7 +2,7 @@
 import { MilesStopSortBy } from 'appcoretruckassist';
 
 // interfaces
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 export class MilesTableColumnsConfig {
     static columnsConfig: ITableColumn[] = [

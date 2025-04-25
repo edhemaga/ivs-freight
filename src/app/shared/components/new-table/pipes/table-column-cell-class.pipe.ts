@@ -20,6 +20,6 @@ export class TableColumnCellClassPipe implements PipeTransform {
             ? hasValue
                 ? 'text-color-black-2'
                 : 'text-color-muted'
-            : { 'p-l-6': hasPaddingLeft, 'm-r-7': hasMarginRight };
+            : { 'p-l-7': hasPaddingLeft, 'm-r-7': hasMarginRight };
     }
 }

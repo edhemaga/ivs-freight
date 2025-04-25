@@ -1,5 +1,48 @@
+@import 'src/theme/variables';
+
 .table-container {
     .cdk-virtual-scrollable {
         overflow: unset !important;
     }
+}
+
+/* Reorder */
+
+.cdk-drag-preview {
+    &:not(:has(.hover-element)) {
+        box-shadow: 0px 0px 4px 0px #00000033 !important;
+        background: $bw2 !important;
+    }
+
+    background: transparent !important;
+
+    width: fit-content !important;
+    height: fit-content !important;
+
+    padding: 0 6px 4px 6px;
+
+    .pin-action,
+    .remove-column-action,
+    .resize-handler {
+        display: none !important;
+    }
+
+    .reorder-action {
+        display: flex !important;
+    }
+
+    .hover-element {
+        width: calc(100% + 9px) !important;
+    }
+}
+
+.cdk-drag-placeholder {
+    opacity: 0;
+}
+
+.cdk-drag-animating,
+.new-table--header
+    .cdk-drop-list-dragging
+    .reorder-container:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

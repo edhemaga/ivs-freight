@@ -8,6 +8,12 @@ import {
     Output,
     TemplateRef,
 } from '@angular/core';
+import {
+    CdkDragDrop,
+    CdkDrag,
+    CdkDropList,
+    moveItemInArray,
+} from '@angular/cdk/drag-drop';
 
 // modules
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -43,8 +49,9 @@ import { ResizableColumnDirective } from '@shared/components/new-table/directive
 // interfaces
 import {
     ITableColumn,
+    ITableReorderAction,
     ITableResizeAction,
-} from '@shared/components/new-table/interface';
+} from '@shared/components/new-table/interfaces';
 import { ICustomScrollEvent } from '@shared/components/ta-custom-scrollbar/interfaces';
 
 // helpers
@@ -76,6 +83,10 @@ import { TableScrollHelper } from '@shared/components/new-table/utils/helpers';
 
         // directives
         ResizableColumnDirective,
+
+        // drag & drop
+        CdkDropList,
+        CdkDrag,
     ],
 })
 export class NewTableComponent<T> {
@@ -95,6 +106,8 @@ export class NewTableComponent<T> {
     @Output() onColumnPinned: EventEmitter<ITableColumn> = new EventEmitter();
     @Output() onColumnResize: EventEmitter<ITableResizeAction> =
         new EventEmitter();
+    @Output() onColumnReorder: EventEmitter<ITableReorderAction> =
+        new EventEmitter();
 
     @Output() onRemoveColumn: EventEmitter<string> = new EventEmitter();
 
@@ -107,6 +120,10 @@ export class NewTableComponent<T> {
 
     // actions
     public headingHoverId: number = null;
+    public groupHeadingHoverLabel: string = null;
+
+    public isResize: boolean = false;
+    public isReorder: boolean = false;
 
     // enums
     public ePosition = ePosition;
@@ -140,7 +157,6 @@ export class NewTableComponent<T> {
 
         this.hasActiveLeftPinnedColumns =
             TableScrollHelper.countCheckedColumns(this.leftPinnedColumns) > 0;
-
         this.hasActiveRightPinnedColumns =
             TableScrollHelper.countCheckedColumns(this.rightPinnedColumns) > 0;
 
@@ -167,18 +183,58 @@ export class NewTableComponent<T> {
         this.onShowMore.emit();
     }
 
+    public onColumnResizing(isResize: boolean): void {
+        this.isResize = isResize;
+    }
+
     public onColumnWidthResize(resizeAction: ITableResizeAction): void {
         this.onColumnResize.emit(resizeAction);
     }
 
-    public onColumnHeadingHover(columnId: number): void {
-        this.headingHoverId = columnId;
+    public onHeadingHover(columnId: number, groupLabel: string): void {
+        if (!this.isTableLocked && !this.isReorder) {
+            this.headingHoverId = columnId;
+            this.groupHeadingHoverLabel = groupLabel;
+        }
     }
 
     public onRemoveColumnClick(columnKey: string): void {
         this.onRemoveColumn.emit(columnKey);
     }
 
+    public onReorderStart(): void {
+        this.isReorder = true;
+    }
+
+    public onReorderEnd(
+        event: CdkDragDrop<string[]>,
+        selectedColumns: ITableColumn[],
+        groupColumnKey?: string
+    ): void {
+        const previousColumnKey = selectedColumns[event.previousIndex].key;
+        const currentColumnKey = selectedColumns[event.currentIndex].key;
+
+        const reorderAction = {
+            previousColumnKey,
+            currentColumnKey,
+            groupColumnKey,
+        };
+
+        this.onColumnReorder.emit(reorderAction);
+
+        const targetArray = groupColumnKey
+            ? [...selectedColumns]
+            : selectedColumns;
+
+        moveItemInArray(targetArray, event.previousIndex, event.currentIndex);
+
+        this.isReorder = false;
+
+        this.headingHoverId = null;
+        this.groupHeadingHoverLabel = null;
+    }
+
+    //TODO documents drawer
     public isRowExpanded(rowId: number): boolean {
         return this.expandedRows?.has(rowId);
     }
@@ -204,6 +260,7 @@ export class NewTableComponent<T> {
             const elements = document.getElementsByClassName(
                 eCustomScroll.SCROLLABLE_COLUMNS
             );
+
             Array.from(elements).forEach((element) => {
                 element.scrollLeft = scrollEvent.scrollPosition;
             });

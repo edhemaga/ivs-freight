@@ -82,6 +82,11 @@ import { DispatchProgressBarData } from '@pages/dispatch/pages/dispatch/componen
 import { DispatchResizedColumnsModel } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 import { IGpsProgress } from 'ca-components/lib/components/ca-progress-bar/models';
 
+// store
+import { Store } from '@ngrx/store';
+// actions
+import * as LoadActions from '@pages/load/state/actions/load.action';
+
 @Component({
     selector: 'app-dispatch-table',
     templateUrl: './dispatch-table.component.html',
@@ -219,7 +224,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         private dispatcherService: DispatcherService,
         private parkingService: ParkingService,
         private dispatchHubService: DispatchHubService,
-        private loadService: LoadService
+        private loadService: LoadService,
+        // store
+        private store: Store
     ) {}
 
     set checkEmptySet(value: string) {
@@ -609,6 +616,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                         value
                     );
                     this.dispatcherService.updateModalList();
+                    this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
 
                     this.isDispatchBoardChangeInProgress = false;
                     this.checkEmptySet = DispatchTableStringEnum.EMPTY_STRING;
@@ -633,6 +641,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                         value
                     );
                     this.dispatcherService.updateModalList();
+                    this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
 
                     this.isDispatchBoardChangeInProgress = false;
                     this.checkEmptySet = DispatchTableStringEnum.EMPTY_STRING;
@@ -646,6 +655,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             .pipe(
                 takeUntil(this.destroy$),
                 tap(() => {
+                    this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                     this.isDispatchBoardChangeInProgress = false;
                     this.checkEmptySet = DispatchTableStringEnum.EMPTY_STRING;
 
@@ -882,6 +892,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 )
             )
             .subscribe(() => {
+                this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                 this.isDispatchBoardChangeInProgress = false;
             });
     }
@@ -941,6 +952,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 )
             )
             .subscribe(() => {
+                this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                 this.isDispatchBoardChangeInProgress = false;
             });
     }

@@ -1,19 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-// types
-import { SortOrder } from 'appcoretruckassist';
+// interfaces
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 @Pipe({
     name: 'tableColumnClass',
     standalone: true,
 })
-export class TableColumnClassPipe<
-    T extends {
-        hasSort: string;
-        direction?: SortOrder | null;
-    },
-> implements PipeTransform
-{
+export class TableColumnClassPipe implements PipeTransform {
     transform({
         column,
         isTableLocked,
@@ -23,7 +17,7 @@ export class TableColumnClassPipe<
         isTableColumnInnerClass,
         hasLabelTop,
     }: {
-        column: T;
+        column: ITableColumn;
         isTableLocked: boolean;
         isGroup: boolean;
         isEmptyTable: boolean;
@@ -35,7 +29,9 @@ export class TableColumnClassPipe<
             ? {
                   'justify-content-between': !isTableLocked,
                   'justify-content-end': isAlignedRight,
-                  'position-relative bottom-10': !isTableLocked && hasLabelTop,
+                  'position-relative bottom-4': !isTableLocked && hasLabelTop,
+                  'h-18': !isTableLocked && !isAlignedRight,
+                  'aligned-right': isTableLocked && isAlignedRight,
               }
             : {
                   'text-color-bw6-2': !column?.hasSort || !column?.direction,
@@ -53,6 +49,7 @@ export class TableColumnClassPipe<
                   'align-items-end': !isGroup,
                   'disable-text-selection': !isTableLocked,
                   'order-2 m-l-4': isAlignedRight && isTableLocked,
+                  'cursor-grab': !isTableLocked && !column.isDisabled,
               };
     }
 }
