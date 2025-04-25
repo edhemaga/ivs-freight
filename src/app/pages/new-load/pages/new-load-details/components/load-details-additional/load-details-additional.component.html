@@ -23,7 +23,9 @@
                 </p>
             </div>
             <p class="placeholder-glow">
-                <span class="placeholder placeholder-muted h-7 w-18 br-3"></span>
+                <span
+                    class="placeholder placeholder-muted h-7 w-18 br-3"
+                ></span>
             </p>
         </div>
 
@@ -37,7 +39,9 @@
                 ></span>
             </p>
             <p class="placeholder-glow">
-                <span class="placeholder placeholder-muted triangle-skeleton"></span>
+                <span
+                    class="placeholder placeholder-muted br-5 rotate-45 w-15 h-15"
+                ></span>
             </p>
         </div>
     } @else {
@@ -59,7 +63,7 @@
                     </div>
                     <div
                         class="d-flex justify-content-center align-items-center h-26 w-26 background-hover-light-grey br-2 mx-1 c-pointer"
-                        (click)="toggleIsSearchActive()"
+                        (click)="onToggleIsSearchActive()"
                     >
                         <svg-icon
                             class="d-flex svg-size-16"
@@ -72,7 +76,7 @@
         </div>
         <div
             class="d-flex justify-content-center align-items-center h-26 w-26 background-hover-light-grey br-2 mx-1 c-pointer"
-            (click)="addNewComment(load.id)"
+            (click)="onAddNewComment(load.id)"
         >
             <svg-icon
                 class="d-flex svg-size-16"

@@ -181,11 +181,11 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
         this.commentFilter = searchHighlightValue;
     }
 
-    public toggleIsSearchActive(): void {
+    public onToggleIsSearchActive(): void {
         this.isSearchActive = !this.isSearchActive;
     }
 
-    public addNewComment(loadId: number): void {
+    public onAddNewComment(loadId: number): void {
         const comment: CreateCommentCommand =
             CommentHelper.createCommentCommand(loadId);
         const dateNow = moment().format(eDateTimeFormat.MM_DD_YY);
