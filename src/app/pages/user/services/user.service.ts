@@ -6,6 +6,7 @@ import { Observable, of, tap } from 'rxjs';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // store
+import { Store } from '@ngrx/store';
 import { UserActiveStore } from '@pages/user/state/user-active-state/user-active.store';
 import { UserActiveQuery } from '@pages/user/state/user-active-state/user-active.query';
 import { UserInactiveStore } from '@pages/user/state/user-inactive-state/user-inactive.store';
@@ -29,6 +30,9 @@ import {
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { eGeneralActions } from '@shared/enums';
 
+// actions
+import * as LoadActions from '@pages/load/state/actions/load.action';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -43,13 +47,14 @@ export class UserService {
         private userActiveStore: UserActiveStore,
         private userActiveQuery: UserActiveQuery,
         private userInactiveStore: UserInactiveStore,
-        private userInactiveQuery: UserInactiveQuery
+        private userInactiveQuery: UserInactiveQuery,
+        private store: Store
     ) {}
 
     // Get User List
     public getUsers(
         active?: number,
-        pageIndex?: number,
+        pageIndex?: number, 
         pageSize?: number,
         companyId?: number,
         sort?: string,
@@ -149,6 +154,7 @@ export class UserService {
         // leave this any for now
         return this.userService.apiCompanyuserIdDelete(userId).pipe(
             tap(() => {
+                this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                 const userCount = JSON.parse(
                     localStorage.getItem(TableStringEnum.USER_TABLE_COUNT)
                 );
@@ -312,6 +318,7 @@ export class UserService {
             .apiCompanyuserStatusPut({ id: userId, activate: activate })
             .pipe(
                 tap(() => {
+                    this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                     const userCount = JSON.parse(
                         localStorage.getItem(TableStringEnum.USER_TABLE_COUNT)
                     );

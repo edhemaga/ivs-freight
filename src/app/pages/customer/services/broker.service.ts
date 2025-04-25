@@ -265,6 +265,8 @@ export class BrokerService {
                         brokerShipperCount.broker--;
                     });
 
+                    this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
+
                     localStorage.setItem(
                         'brokerShipperTableCount',
                         JSON.stringify({
@@ -281,6 +283,7 @@ export class BrokerService {
     public deleteBrokerByIdDetails(brokerId: number): Observable<any> {
         return this.brokerService.apiBrokerIdDelete(brokerId).pipe(
             tap(() => {
+                this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                 this.brokerStore.remove(({ id }) => id === brokerId);
                 this.brokerMinimalStore.remove(({ id }) => id === brokerId);
                 this.bls.remove(({ id }) => id === brokerId);
@@ -320,6 +323,7 @@ export class BrokerService {
     public deleteBrokerById(brokerId: number): Observable<any> {
         return this.brokerService.apiBrokerIdDelete(brokerId).pipe(
             tap(() => {
+                this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                 this.brokerStore.remove(({ id }) => id === brokerId);
                 this.brokerMinimalStore.remove(({ id }) => id === brokerId);
                 this.bls.remove(({ id }) => id === brokerId);
@@ -355,6 +359,9 @@ export class BrokerService {
                     this.getBrokerInvoiceAging(brokerId, false),
                 ]).subscribe({
                     next: ([broker, paidInvoiceAging, unpaidInvoiceAging]) => {
+                        this.store.dispatch(
+                            LoadActions.getEditLoadModalOnlyData()
+                        );
                         this.brokerStore.remove(({ id }) => id === brokerId);
                         this.brokerMinimalStore.remove(
                             ({ id }) => id === brokerId
@@ -755,6 +762,9 @@ export class BrokerService {
                     this.getBrokerList().subscribe({
                         next: (brokersList) => {
                             brokersList.pagination.data.map((broker) => {
+                                this.store.dispatch(
+                                    LoadActions.getEditLoadModalOnlyData()
+                                );
                                 this.brokerStore.remove(
                                     ({ id }) => id === broker.id
                                 );
