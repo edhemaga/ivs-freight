@@ -388,7 +388,7 @@
             >
                 @if (hasLabelTop) {
                     <span
-                        class="text-size-9 ta-font-extra-bold text-color-light-grey-2 z-2 text-uppercase"
+                        class="text-size-9 ta-font-extra-bold text-color-light-grey-2 z-1 text-uppercase"
                     >
                         {{ groupColumn.label }}
                     </span>
@@ -405,7 +405,7 @@
                 @let isHeadingHover = headingHoverId === column.id;
 
                 <div
-                    class="d-flex align-items-end z-2 new-table--row-heading-inner"
+                    class="d-flex align-items-end z-1 new-table--row-heading-inner"
                     [ngClass]="tableColumnInnerClass"
                 >
                     @let isPinned =
