@@ -123,6 +123,7 @@ export class UserService {
             tap(() => {
                 const subUser = this.getUserByid(data.id).subscribe({
                     next: (user: any) => {
+                        this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                         this.userActiveStore.remove(({ id }) => id === data.id);
 
                         user = {
@@ -131,7 +132,7 @@ export class UserService {
                                 name: user.firstName + ' ' + user.lastName,
                             },
                         };
-
+ 
                         this.userActiveStore.add(user);
 
                         this.tableService.sendActionAnimation({
