@@ -83,6 +83,27 @@
                             "sourceMap": false,
                             "outputHashing": "all"
                         },
+                        "beta": {
+                            "optimization": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "21mb",
+                                    "maximumError": "25mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "21mb",
+                                    "maximumError": "25mb"
+                                }
+                            ],
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.beta.ts"
+                                }
+                            ]
+                        },
                         "staging": {
                             "optimization": true,
                             "budgets": [
@@ -140,10 +161,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                          "buildTarget": "carrierassist-fe:build:production"
+                            "buildTarget": "carrierassist-fe:build:production"
                         },
                         "development": {
-                          "buildTarget": "carrierassist-fe:build:development"
+                            "buildTarget": "carrierassist-fe:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -151,7 +172,7 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                      "buildTarget": "carrierassist-fe:build"
+                        "buildTarget": "carrierassist-fe:build"
                     }
                 },
                 "test": {

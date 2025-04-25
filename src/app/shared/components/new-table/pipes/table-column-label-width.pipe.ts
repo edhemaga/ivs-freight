@@ -13,6 +13,7 @@ export class TableColumnLabelWidthPipe implements PipeTransform {
         isTableLocked,
         isPinned,
         isHeadingHover,
+        isGroupHeadingHover,
         isGroup,
         isLastInGroup,
     }: {
@@ -20,16 +21,21 @@ export class TableColumnLabelWidthPipe implements PipeTransform {
         isTableLocked: boolean;
         isPinned: boolean;
         isHeadingHover: boolean;
+        isGroupHeadingHover: boolean;
         isGroup: boolean;
         isLastInGroup: boolean;
     }): object {
         const extraWidth = isPinned || (isGroup && !isLastInGroup) ? 25 : 50;
 
+        const isFullMaxWidth =
+            isTableLocked ||
+            (!isLastInGroup && !isHeadingHover) ||
+            (isLastInGroup && !isGroupHeadingHover);
+
         return {
-            'max-width':
-                isTableLocked || !isHeadingHover
-                    ? '100%'
-                    : `calc(${columnWidth}${eUnit.PX} - ${extraWidth}${eUnit.PX})`,
+            'max-width': isFullMaxWidth
+                ? '100%'
+                : `calc(${columnWidth}${eUnit.PX} - ${extraWidth}${eUnit.PX})`,
         };
     }
 }

@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // interfaces
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 @Pipe({
     name: 'tableGroupClass',
@@ -22,6 +22,7 @@ export class TableGroupClassPipe implements PipeTransform {
         return {
             'p-l-6': !isAlignedRight && isTableLocked,
             'border-left-light-grey-6': hasCheckedColumn && isTableLocked,
+            'cursor-grab': !isTableLocked,
         };
     }
 }

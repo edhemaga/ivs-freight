@@ -23,158 +23,15 @@
     <!-- File Header Actions -->
 
     <!-- Review Actions -->
-    <div *ngIf="isReview" class="ta-upload-file-header-review">
-        <div
-            *ngIf="reviewMode === 'REVIEW_MODE'"
-            ngbTooltip
-            mainTooltip="Download"
-            tooltipBackground="#6c6c6c"
-            position="top"
-            class="ta-upload-action-download-review"
-            (click)="onAction('download')"
-        >
-            <svg-icon src="assets/svg/common/ic_download.svg"></svg-icon>
-        </div>
-
-        <div
-            *ngIf="reviewMode === 'REVIEW_MODE'"
-            ngbTooltip
-            [mainTooltip]="
-                file?.incorrect && isIncorrectMarkHover
-                    ? 'Unmark'
-                    : 'Mark Incorrect'
-            "
-            [tooltipBackground]="
-                file?.incorrect && isIncorrectMarkHover ? '#6c6c6c' : '#EF5350'
-            "
-            position="top"
-            class=" {{
-                file?.incorrect && isIncorrectMarkHover
-                    ? 'ta-upload-action-mark-correct'
-                    : 'ta-upload-action-mark-incorrect'
-            }}"
-            [ngClass]="{ incorrect: file?.incorrect }"
-            (click)="
-                onAction(
-                    file?.incorrect && isIncorrectMarkHover
-                        ? 'mark-correct'
-                        : 'mark-incorrect'
-                )
-            "
-            (mouseenter)="isIncorrectMarkHover = true"
-            (mouseleave)="isIncorrectMarkHover = false"
-        >
-            <svg-icon
-                src="{{
-                    file?.incorrect && isIncorrectMarkHover
-                        ? 'assets/svg/common/ic_confirm.svg'
-                        : 'assets/svg/ic_x.svg'
-                }}"
-            ></svg-icon>
-        </div>
-
-        <!-- Review Message -->
-        <!--  <div
-            class="review-feedback-container"
-            (mouseenter)="annotationHover = true"
-            (mouseleave)="annotationHover = false"
-            *ngIf="
-                reviewMode === 'REVIEW_MODE' || reviewMode === 'FEEDBACK_MODE'
-            "
-        >
-            <app-applicant-review-feedback
-                [formControl]="documentReviewInputControl"
-                [displayAnnotationButton]="
-                    file?.incorrect && !documentReviewInputVisible
-                "
-                [displayAnnotationTextArea]="
-                    file?.incorrect && documentReviewInputVisible
-                "
-                [isFeedback]="reviewMode === 'FEEDBACK_MODE'"
-                [feedbackText]="feedbackText"
-                (annotationBtnClickEvent)="getAnnotationReviewEvent($event)"
-            ></app-applicant-review-feedback>
-        </div> -->
-    </div>
-
-    <!-- No Review Actions -->
-    <div
-        *ngIf="
-            !isFileDelete &&
-            (!isReview || (isReview && reviewMode === 'FEEDBACK_MODE'))
-        "
-        class="ta-upload-file-header"
-    >
-        <!-- Left Side -->
-        <div
-            class="rightside_bar"
-            *ngIf="customClassName == 'company-documents'"
-        ></div>
-        <div
-            *ngIf="customClassName != 'company-documents'"
-            class="ta-upload-file-action-leftside"
-            [ngClass]="{
-                'no-action-tag': !hasTagsDropdown,
-                active: t2?.isOpen()
-            }"
-            #t2="ngbPopover"
-            [ngbPopover]="tagsPopover"
-            [popoverClass]="'tags_popover'"
-            [placement]="'left-top left-bottom'"
-            autoclose="outside"
-            [container]="'body'"
-            triggers="'manual'"
-        >
-            <div
-                ngbTooltip
-                mainTooltip="Tag"
-                tooltipBackground="#2F2F2F"
-                position="top"
-                class="ta-upload-action-tag"
-                (click)="onAction('tag')"
-            >
-                <svg-icon src="assets/svg/common/ic_tag.svg"></svg-icon>
-            </div>
-        </div>
-        <!-- Right Side -->
-
-        <ng-container *ngIf="!isActionsHidden">
-            <div
-                class="ta-upload-file-action-rightside"
-                [ngClass]="{
-                    'feedback-mode': isReview && reviewMode === 'FEEDBACK_MODE',
-                    small:
-                        type == 'details' ||
-                        type == 'todo' ||
-                        reviewMode == 'REVIEW_MODE',
-                    'vertical-mode': customClassName == 'company-documents'
-                }"
-            >
-                <div
-                    *ngIf="customClassName == 'company-documents'"
-                    #t2="ngbPopover"
-                    [ngbPopover]="tagsPopover"
-                    [popoverClass]="'tags_popover_vertical'"
-                    [placement]="'bottom-left'"
-                    autoclose="outside"
-                    [container]="'body'"
-                    triggers="'manual'"
-                    ngbTooltip
-                    mainTooltip="Tag"
-                    tooltipBackground="#2F2F2F"
-                    position="top"
-                    class="ta-upload-action-tag"
-                    [ngClass]="{ active: t2?.isOpen() }"
-                    (click)="onAction('tag')"
-                >
-                    <svg-icon src="assets/svg/common/ic_tag.svg"></svg-icon>
-                </div>
+    @if (isReview) {
+        <div class="ta-upload-file-header-review">
+            @if (reviewMode === 'REVIEW_MODE') {
                 <div
                     ngbTooltip
                     mainTooltip="Download"
-                    tooltipBackground="#2F2F2F"
+                    tooltipBackground="#6c6c6c"
                     position="top"
-                    class="ta-upload-action-download"
+                    class="ta-upload-action-download-review"
                     (click)="onAction('download')"
                 >
                     <svg-icon
@@ -183,35 +40,193 @@
                 </div>
                 <div
                     ngbTooltip
-                    mainTooltip="Delete"
-                    tooltipBackground="#EF5350"
+                    [mainTooltip]="
+                        file?.incorrect && isIncorrectMarkHover
+                            ? 'Unmark'
+                            : 'Mark Incorrect'
+                    "
+                    [tooltipBackground]="
+                        file?.incorrect && isIncorrectMarkHover
+                            ? '#6c6c6c'
+                            : '#EF5350'
+                    "
                     position="top"
-                    class="ta-upload-action-delete"
-                    (click)="openDeletePopup(file?.fileName)"
-                    *ngIf="
+                    class=" {{
+                        file?.incorrect && isIncorrectMarkHover
+                            ? 'ta-upload-action-mark-correct'
+                            : 'ta-upload-action-mark-incorrect'
+                    }}"
+                    [ngClass]="{ incorrect: file?.incorrect }"
+                    (click)="
+                        onAction(
+                            file?.incorrect && isIncorrectMarkHover
+                                ? 'mark-correct'
+                                : 'mark-incorrect'
+                        )
+                    "
+                    (mouseenter)="isIncorrectMarkHover = true"
+                    (mouseleave)="isIncorrectMarkHover = false"
+                >
+                    <svg-icon
+                        src="{{
+                            file?.incorrect && isIncorrectMarkHover
+                                ? 'assets/svg/common/ic_confirm.svg'
+                                : 'assets/svg/ic_x.svg'
+                        }}"
+                    ></svg-icon>
+                </div>
+            }
+
+            <!-- Review Message -->
+            <!--  <div
+                class="review-feedback-container"
+                (mouseenter)="annotationHover = true"
+                (mouseleave)="annotationHover = false"
+                *ngIf="
+                    reviewMode === 'REVIEW_MODE' || reviewMode === 'FEEDBACK_MODE'
+                "
+            >
+                <app-applicant-review-feedback
+                    [formControl]="documentReviewInputControl"
+                    [displayAnnotationButton]="
+                        file?.incorrect && !documentReviewInputVisible
+                    "
+                    [displayAnnotationTextArea]="
+                        file?.incorrect && documentReviewInputVisible
+                    "
+                    [isFeedback]="reviewMode === 'FEEDBACK_MODE'"
+                    [feedbackText]="feedbackText"
+                    (annotationBtnClickEvent)="getAnnotationReviewEvent($event)"
+                ></app-applicant-review-feedback>
+            </div> -->
+        </div>
+    }
+
+    <!-- No Review Actions -->
+    @if (
+        !isFileDelete &&
+        (!isReview || (isReview && reviewMode === 'FEEDBACK_MODE'))
+    ) {
+        <div class="ta-upload-file-header">
+            <!-- Left Side -->
+            @if (customClassName == 'company-documents') {
+                <div class="rightside_bar"></div>
+            } @else {
+                <div
+                    class="ta-upload-file-action-leftside"
+                    [ngClass]="{
+                        'no-action-tag': !hasTagsDropdown,
+                        active: t2?.isOpen(),
+                    }"
+                    #t2="ngbPopover"
+                    [ngbPopover]="tagsPopover"
+                    [popoverClass]="'tags_popover'"
+                    [placement]="'left-top left-bottom'"
+                    autoclose="outside"
+                    [container]="'body'"
+                    triggers="'manual'"
+                >
+                    <div
+                        ngbTooltip
+                        mainTooltip="Tag"
+                        tooltipBackground="#2F2F2F"
+                        position="top"
+                        class="ta-upload-action-tag"
+                        (click)="onAction('tag')"
+                    >
+                        <svg-icon src="assets/svg/common/ic_tag.svg"></svg-icon>
+                    </div>
+                </div>
+            }
+
+            <!-- Right Side -->
+
+            @if (!isActionsHidden) {
+                <div
+                    class="ta-upload-file-action-rightside"
+                    [ngClass]="{
+                        'feedback-mode':
+                            isReview && reviewMode === 'FEEDBACK_MODE',
+                        small:
+                            type == 'details' ||
+                            type == 'todo' ||
+                            reviewMode == 'REVIEW_MODE',
+                        'vertical-mode': customClassName == 'company-documents',
+                    }"
+                >
+                    @if (customClassName == 'company-documents') {
+                        <div
+                            #t2="ngbPopover"
+                            [ngbPopover]="tagsPopover"
+                            [popoverClass]="'tags_popover_vertical'"
+                            [placement]="'bottom-left'"
+                            autoclose="outside"
+                            [container]="'body'"
+                            triggers="'manual'"
+                            ngbTooltip
+                            mainTooltip="Tag"
+                            tooltipBackground="#2F2F2F"
+                            position="top"
+                            class="ta-upload-action-tag"
+                            [ngClass]="{ active: t2?.isOpen() }"
+                            (click)="onAction('tag')"
+                        >
+                            <svg-icon
+                                src="assets/svg/common/ic_tag.svg"
+                            ></svg-icon>
+                        </div>
+                    }
+
+                    <div
+                        ngbTooltip
+                        mainTooltip="Download"
+                        tooltipBackground="#2F2F2F"
+                        position="top"
+                        class="ta-upload-action-download"
+                        (click)="onAction('download')"
+                    >
+                        <svg-icon
+                            src="assets/svg/common/ic_download.svg"
+                        ></svg-icon>
+                    </div>
+
+                    @if (
                         type != 'details' &&
                         type != 'todo' &&
                         reviewMode != 'REVIEW_MODE'
-                    "
-                >
-                    <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                    ) {
+                        <div
+                            ngbTooltip
+                            mainTooltip="Delete"
+                            tooltipBackground="#EF5350"
+                            position="top"
+                            class="ta-upload-action-delete"
+                            (click)="openDeletePopup(file?.fileName)"
+                        >
+                            <svg-icon
+                                src="assets/svg/common/ic_trash.svg"
+                            ></svg-icon>
+                        </div>
+                    }
                 </div>
-            </div>
-        </ng-container>
-        <div
-            *ngIf="isReview && reviewMode === 'FEEDBACK_MODE'"
-            ngbTooltip
-            mainTooltip="Marked Incorrect"
-            tooltipBackground="#EF5350"
-            position="top"
-            class="ta-upload-action-feedback-incorrect-mark"
-            (click)="onAction('feedback-mark-incorrect')"
-        >
-            <svg-icon
-                src="assets/svg/common/ic_feedback_mark_incorrect.svg"
-            ></svg-icon>
+            }
+
+            @if (isReview && reviewMode === 'FEEDBACK_MODE') {
+                <div
+                    ngbTooltip
+                    mainTooltip="Marked Incorrect"
+                    tooltipBackground="#EF5350"
+                    position="top"
+                    class="ta-upload-action-feedback-incorrect-mark"
+                    (click)="onAction('feedback-mark-incorrect')"
+                >
+                    <svg-icon
+                        src="assets/svg/common/ic_feedback_mark_incorrect.svg"
+                    ></svg-icon>
+                </div>
+            }
         </div>
-    </div>
+    }
 
     <!-- File Content -->
     <div class="ta-upload-file-content  {{ customClassName }}">
@@ -237,161 +252,178 @@
 
         <!-- Image Content -->
         <div class="image_main_holder {{ customClassName }}">
-            <img
-                class="ta-upload-file-image"
-                [class.details_image]="type == 'details' || type == 'todo'"
-                *ngIf="
-                    file?.extension?.toLowerCase() != 'pdf' &&
-                    fileExtension != 'pdf'
-                "
-                [src]="file?.url"
-                [alt]="file?.fileName"
-            />
-            <div class="spinner" *ngIf="documentLoading">
-                <app-ta-spinner
-                    [size]="'small'"
-                    [color]="'blueDark'"
-                ></app-ta-spinner>
-            </div>
+            @if (
+                file?.extension?.toLowerCase() != 'pdf' &&
+                fileExtension != 'pdf'
+            ) {
+                <img
+                    class="ta-upload-file-image"
+                    [class.details_image]="type == 'details' || type == 'todo'"
+                    [src]="file?.url"
+                    [alt]="file?.fileName"
+                />
+            }
+
+            @if (documentLoading) {
+                <div class="spinner">
+                    <app-ta-spinner
+                        [size]="'small'"
+                        [color]="'blueDark'"
+                    ></app-ta-spinner>
+                </div>
+            }
         </div>
 
         <!-- Tag Content -->
-        <div
-            *ngIf="
-                (hasTagsDropdown ||
-                    customClassName == 'table-details' ||
-                    customClassName == 'driver-card-pdf') &&
-                file?.tags &&
-                file?.tags != '' &&
-                file?.tags != 'No Tag'
-            "
-            class="ta-upload-file-tag"
-            [class.default]="!file?.tagGeneratedByUser"
-        >
-            <span>{{
-                file?.tags ? file?.tags : categoryTag ? categoryTag : ''
-            }}</span>
-        </div>
+        @if (
+            (hasTagsDropdown ||
+                customClassName == 'table-details' ||
+                customClassName == 'driver-card-pdf') &&
+            file?.tags &&
+            file?.tags != '' &&
+            file?.tags != 'No Tag'
+        ) {
+            <div
+                class="ta-upload-file-tag"
+                [class.default]="!file?.tagGeneratedByUser"
+            >
+                <span>{{
+                    file?.tags ? file?.tags : categoryTag ? categoryTag : ''
+                }}</span>
+            </div>
+        }
     </div>
 
     <!-- File Delete Template -->
-    <div
-        *ngIf="isFileDelete"
-        class="ta-upload-file-delete-template  {{ customClassName }}"
-    >
-        <div class="ta-upload-file-delete-text">
-            Are you sure you want to delete file?
+    @if (isFileDelete) {
+        <div class="ta-upload-file-delete-template  {{ customClassName }}">
+            <div class="ta-upload-file-delete-text">
+                Are you sure you want to delete file?
+            </div>
+            <div
+                class="ta-upload-file-btn ta-upload-file-btn-delete"
+                (click)="onAction('delete')"
+            >
+                Delete
+            </div>
+            <div
+                class="ta-upload-file-btn ta-upload-file-btn-cancel"
+                (click)="onAction('cancel')"
+            >
+                Cancel
+            </div>
         </div>
-        <div
-            class="ta-upload-file-btn ta-upload-file-btn-delete"
-            (click)="onAction('delete')"
-        >
-            Delete
-        </div>
-        <div
-            class="ta-upload-file-btn ta-upload-file-btn-cancel"
-            (click)="onAction('cancel')"
-        >
-            Cancel
-        </div>
-    </div>
+    }
 
     <!-- File Footer Information -->
-    <div
-        class="ta-upload-file-footer"
-        [ngClass]="{ 'edit-mode': editFile }"
-        (click)="onEditFile()"
-        *ngIf="!isFooterHidden"
-    >
-        <!-- No edit mode -->
-        <div class="footer_info">
-            <div
-                class="ta-upload-file-ext ta-upload-file-ext-{{
-                    file?.extension
-                        ? file?.extension
-                        : (fileExtension | lowercase)
-                }}"
-                [ngClass]="{ 'no-tag': !file?.tags }"
-            >
-                <div *ngIf="file?.extension">
-                    {{ file?.extension | uppercase }}
-                </div>
-                <div *ngIf="!file?.extension">
-                    {{ file?.url | urlExtension }}
-                </div>
-            </div>
-            <div class="document_info_hold">
-                <div class="pdf_page_size" *ngIf="numberOfFilePages">
-                    {{ numberOfFilePages }}
-                </div>
-                <div
-                    class="file_size"
-                    [class.has_pages]="numberOfFilePages"
-                    *ngIf="!file?.realFile"
-                >
-                    {{ file?.fileSize | byteConvert }}
-                </div>
-                <div
-                    class="file_size"
-                    [class.has_pages]="numberOfFilePages"
-                    *ngIf="file?.realFile"
-                >
-                    {{ file?.size | byteConvert }}
-                </div>
-            </div>
-        </div>
-        <p
-            *ngIf="!editFile"
-            class="ta-upload-file-name"
-            [class.details_title]="type == 'details'"
-            [class.todo_title]="type == 'todo'"
+    @if (!isFooterHidden) {
+        <div
+            class="ta-upload-file-footer"
+            [ngClass]="{ 'edit-mode': editFile }"
+            (click)="onEditFile()"
         >
-            {{ file?.fileName }}
-        </p>
-        <!-- Edit mode -->
-        <app-ta-input
-            *ngIf="editFile"
-            [formControl]="fileNewName"
-            [inputConfig]="{
-                name: 'File Name',
-                type: 'text',
-                label: null,
-                placeholder: 'Type File Name',
-                blackInput: true,
-                hideClear: true
-            }"
-            (blurInput)="onBlurInput($event)"
-        ></app-ta-input>
-    </div>
+            <!-- No edit mode -->
+            <div class="footer_info">
+                <div
+                    class="ta-upload-file-ext ta-upload-file-ext-{{
+                        file?.extension
+                            ? file?.extension
+                            : (fileExtension | lowercase)
+                    }}"
+                    [ngClass]="{ 'no-tag': !file?.tags }"
+                >
+                    @if (file?.extension) {
+                        <div>
+                            {{ file?.extension | uppercase }}
+                        </div>
+                    } @else {
+                        <div>
+                            {{ file?.url | urlExtension }}
+                        </div>
+                    }
+                </div>
+                <div class="document_info_hold">
+                    @if (numberOfFilePages) {
+                        <div class="pdf_page_size">
+                            {{ numberOfFilePages }}
+                        </div>
+                    }
+
+                    @if (!file?.realFile) {
+                        <div
+                            class="file_size"
+                            [class.has_pages]="numberOfFilePages"
+                        >
+                            {{ file?.fileSize | byteConvert }}
+                        </div>
+                    } @else {
+                        <div
+                            class="file_size"
+                            [class.has_pages]="numberOfFilePages"
+                        >
+                            {{ file?.size | byteConvert }}
+                        </div>
+                    }
+                </div>
+            </div>
+            @if (!editFile) {
+                <p
+                    class="ta-upload-file-name"
+                    [class.details_title]="type == 'details'"
+                    [class.todo_title]="type == 'todo'"
+                >
+                    {{ file?.fileName }}
+                </p>
+            }
+
+            <!-- Edit mode -->
+            @if (editFile) {
+                <app-ta-input
+                    [formControl]="fileNewName"
+                    [inputConfig]="{
+                        name: 'File Name',
+                        type: 'text',
+                        label: null,
+                        placeholder: 'Type File Name',
+                        blackInput: true,
+                        hideClear: true,
+                    }"
+                    (blurInput)="onBlurInput($event)"
+                ></app-ta-input>
+            }
+        </div>
+    }
 </div>
 
 <ng-template #tagsPopover let-data="data">
     <div class="tags_main_holder">
-        <div
-            class="remove_tag_holder"
-            *ngIf="file?.tags?.length"
-            (click)="removeTag()"
-        >
-            <div class="remove_tag">Remove Tag</div>
-        </div>
-        <div class="remove_tag_border_holder" *ngIf="file?.tags?.length">
-            <div class="remove_tag_border"></div>
-        </div>
-        <div
-            class="tags_inner_holder"
-            *ngFor="let tag of tagsOptions; index as i"
-            [class.firstRow]="i == 0"
-            [class.lastRow]="i == tagsOptions?.length - 1"
-            (click)="selectTag(tag?.tagName)"
-        >
-            <div class="tag_options_holder">
-                <div class="tag_name" [class.checked]="tag.checked">
-                    {{ tag.tagName }}
-                </div>
-                <div class="checked_icon" [class.shown]="tag.checked">
-                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+        @if (file?.tags?.length) {
+            <div class="remove_tag_holder" (click)="removeTag()">
+                <div class="remove_tag">Remove Tag</div>
+            </div>
+            <div class="remove_tag_border_holder">
+                <div class="remove_tag_border"></div>
+            </div>
+        }
+
+        @for (tag of tagsOptions; let i = $index; track $index) {
+            <div
+                class="tags_inner_holder"
+                [class.firstRow]="i == 0"
+                [class.lastRow]="i == tagsOptions?.length - 1"
+                (click)="selectTag(tag?.tagName)"
+            >
+                <div class="tag_options_holder">
+                    <div class="tag_name" [class.checked]="tag.checked">
+                        {{ tag.tagName }}
+                    </div>
+                    <div class="checked_icon" [class.shown]="tag.checked">
+                        <svg-icon
+                            src="assets/svg/common/ic_confirm.svg"
+                        ></svg-icon>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 </ng-template>

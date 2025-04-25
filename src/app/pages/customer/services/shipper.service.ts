@@ -18,6 +18,7 @@ import {
 } from 'appcoretruckassist';
 
 // store
+import { Store } from '@ngrx/store';
 import { ShipperStore } from '@pages/customer/state/shipper-state/shipper.store';
 import { ShipperMinimalListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.store';
 import { ShipperDetailsListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.store';
@@ -32,6 +33,9 @@ import { ShipperService as ShipperMainService } from 'appcoretruckassist';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { eGeneralActions } from '@shared/enums';
+
+// actions
+import * as LoadActions from '@pages/load/state/actions/load.action';
 
 @Injectable({
     providedIn: 'root',
@@ -53,7 +57,8 @@ export class ShipperService {
         private shipperMinimalStore: ShipperMinimalListStore,
         private sListStore: ShipperDetailsListStore,
         private shipperDetailsStore: ShipperDetailsStore,
-        private shipperMinimalQuery: ShipperMinimalListQuery
+        private shipperMinimalQuery: ShipperMinimalListQuery,
+        private store: Store
     ) {}
 
     // Create Shipper
@@ -63,6 +68,8 @@ export class ShipperService {
             tap((res: any) => {
                 const subShipper = this.getShipperById(res.id).subscribe({
                     next: (shipper: any) => {
+                        // UPDATE LOAD MODAL AFTER ADDING A NEW SHIPPER
+                        this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                         this.shipperStore.add(shipper);
                         this.shipperMinimalStore.add(shipper);
                         const brokerShipperCount = JSON.parse(
@@ -107,6 +114,7 @@ export class ShipperService {
                 };
                 const subShipper = this.getShipperById(data.id).subscribe({
                     next: (shipper: any) => {
+                        this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                         this.shipperStore.remove(({ id }) => id === data.id);
                         this.shipperMinimalStore.remove(
                             ({ id }) => id === data.id
@@ -205,6 +213,7 @@ export class ShipperService {
     public deleteShipperList(ids: number[]): Observable<void> {
         return this.shipperService.apiShipperListDelete(ids).pipe(
             tap(() => {
+                this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                 const storeShippers = this.shipperMinimalQuery.getAll();
 
                 storeShippers.map((shipper: any) => {
@@ -238,6 +247,7 @@ export class ShipperService {
     public deleteShipperByIdDetails(shipperId: number): Observable<any> {
         return this.shipperService.apiShipperIdDelete(shipperId).pipe(
             tap(() => {
+                this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                 this.shipperStore.remove(({ id }) => id === shipperId);
                 this.shipperMinimalStore.remove(({ id }) => id === shipperId);
                 this.sListStore.remove(({ id }) => id === shipperId);
@@ -279,6 +289,7 @@ export class ShipperService {
     public deleteShipperById(shipperId: number): Observable<any> {
         return this.shipperService.apiShipperIdDelete(shipperId).pipe(
             tap(() => {
+                this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                 this.shipperStore.remove(({ id }) => id === shipperId);
                 this.shipperMinimalStore.remove(({ id }) => id === shipperId);
                 this.sListStore.remove(({ id }) => id === shipperId);
@@ -315,6 +326,7 @@ export class ShipperService {
                 };
                 const subShipper = this.getShipperById(shipperId).subscribe({
                     next: (shipper) => {
+                        this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                         this.shipperStore.remove(({ id }) => id === shipperId);
                         this.shipperMinimalStore.remove(
                             ({ id }) => id === shipperId
@@ -637,6 +649,7 @@ export class ShipperService {
         return this.shipperService.apiShipperStatusIdPut(id).pipe(
             switchMap(() => this.getShipperById(id)),
             tap((shipper) => {
+                this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                 const shipperId = id;
                 const shipperData = {
                     ...this.shipperDetailsStore?.getValue()?.entities[
@@ -669,6 +682,7 @@ export class ShipperService {
                 tap(() => {
                     this.getShippersList().subscribe({
                         next: (shippersList) => {
+                            this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                             shippersList.pagination.data.map((shipper) => {
                                 const shipperId = shipper.id;
                                 const shipperData = {
