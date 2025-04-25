@@ -1,12 +1,22 @@
 @import 'src/theme/variables';
 
 .new-table {
-    &--header {
-        max-width: calc(100vw - 85px);
-    }
-
     &--row {
         &-heading {
+            &-inner {
+                width: calc(100% - 9px);
+
+                &.aligned-right {
+                    width: calc(100% - 4px);
+                }
+            }
+
+            // hover
+            &-group .hover-element,
+            .hover-element {
+                width: calc(100% - 6px);
+            }
+
             // sort
             &-sortable {
                 &:hover {
@@ -29,15 +39,24 @@
         }
     }
 
-    &--pinned-left {
-        position: sticky;
-        left: 0;
-        background-color: inherit;
-    }
+    &--pinned-left,
     &--pinned-right {
         position: sticky;
-        right: 0;
-        background-color: inherit;
+    }
+
+    &--scroll-border {
+        &-left {
+            background-image: linear-gradient(to right, $bw2, $bw-10);
+        }
+
+        &-right {
+            background-image: linear-gradient(to right, $bw-10, $bw2);
+        }
+    }
+
+    &--toolbar-container,
+    &--table-container {
+        max-width: calc(100vw - 85px);
     }
 
     &--toolbar {
@@ -118,20 +137,6 @@
                     padding: 12px;
                 }
             }
-        }
-    }
-
-    &--scroll-border {
-        position: absolute;
-        width: 8px;
-        height: 100%;
-
-        &-left {
-            background-image: linear-gradient(to right, $bw2, $bw-10);
-        }
-
-        &-right {
-            background-image: linear-gradient(to right, $bw-10, $bw2);
         }
     }
 }

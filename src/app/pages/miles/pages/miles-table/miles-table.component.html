@@ -46,6 +46,7 @@
         (onColumnPinned)="onColumnPinned($event)"
         (onSortingChange)="onSortingChange($event)"
         (onColumnResize)="onColumnResize($event)"
+        (onColumnReorder)="onColumnReorder($event)"
         (onShowMore)="onShowMoreClick()"
         (onRemoveColumn)="onRemoveColumn($event)"
     >
@@ -57,8 +58,6 @@
             let-tableColumnClass="tableColumnClass"
             let-tableColumnLabelWidth="tableColumnLabelWidth"
         >
-            @let isEmptyTable = !store.miles.length;
-
             <div class="d-flex" [ngClass]="tableColumnClass">
                 <span
                     class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"

@@ -11,11 +11,11 @@
                     'medium',
                     'large',
                     'small',
-                    'extralarge'
-                ].includes(this.customClass?.toLowerCase())
+                    'extralarge',
+                ].includes(this.customClass?.toLowerCase()),
             }"
             [ngStyle]="{
-                transform: 'translateX(' + translateXMultipleSlides + 'px)'
+                transform: 'translateX(' + translateXMultipleSlides + 'px)',
             }"
         >
             <ng-content></ng-content>
@@ -24,17 +24,17 @@
 
     <!-- Carousel Button Tabs -->
 
-    <div
-        *ngIf="hasCarouselBottomTabs && files?.length > 1"
-        class="carousel-tabs-control"
-    >
-        <div
-            *ngFor="let len of files; let ind = index; trackBy: identity"
-            class="carousel-tab"
-            (click)="slideToFile(ind)"
-            [ngClass]="{ 'active-tab': currentSlide === ind }"
-        ></div>
-    </div>
+    @if (hasCarouselBottomTabs && files?.length > 1) {
+        <div class="carousel-tabs-control">
+            @for (len of files; let ind = $index; track $index) {
+                <div
+                    class="carousel-tab"
+                    (click)="slideToFile(ind)"
+                    [ngClass]="{ 'active-tab': currentSlide === ind }"
+                ></div>
+            }
+        </div>
+    }
 
     <!-- Carousel Buttons Left & Right -->
     <div

@@ -1,8 +1,11 @@
 // enums
-import { MilesStopSortBy, SortOrder } from 'appcoretruckassist';
+import { SortOrder } from 'appcoretruckassist';
 
 // interfaces
-import { ITableColumn } from '@shared/components/new-table/interface';
+import {
+    ITableColumn,
+    ITableReorderAction,
+} from '@shared/components/new-table/interfaces';
 
 export class StoreFunctionsHelper {
     static mapColumnsVisibility(
@@ -135,5 +138,63 @@ export class StoreFunctionsHelper {
 
             return col;
         });
+    }
+
+    static reorderColumns(
+        columns: ITableColumn[],
+        reorderAction: ITableReorderAction
+    ): ITableColumn[] {
+        const { previousColumnKey, currentColumnKey, groupColumnKey } =
+            reorderAction;
+
+        const swapItems = (
+            array: ITableColumn[],
+            fromIndex: number,
+            toIndex: number
+        ): ITableColumn[] =>
+            array.map((column, index) =>
+                index === fromIndex
+                    ? array[toIndex]
+                    : index === toIndex
+                      ? array[fromIndex]
+                      : column
+            );
+
+        if (groupColumnKey) {
+            return columns.map((column) => {
+                if (column.key !== groupColumnKey) return column;
+
+                const groupColumns = column.columns ?? [];
+
+                const previousIndex = groupColumns.findIndex(
+                    (col) => col.key === previousColumnKey
+                );
+                const currentIndex = groupColumns.findIndex(
+                    (col) => col.key === currentColumnKey
+                );
+
+                return previousIndex > -1 && currentIndex > -1
+                    ? {
+                          ...column,
+                          columns: swapItems(
+                              groupColumns,
+                              previousIndex,
+                              currentIndex
+                          ),
+                      }
+                    : column;
+            });
+        }
+
+        const previousIndex = columns.findIndex(
+            (col) => col.key === previousColumnKey
+        );
+        const currentIndex = columns.findIndex(
+            (col) => col.key === currentColumnKey
+        );
+
+        return previousIndex > -1 && currentIndex > -1
+            ? swapItems(columns, previousIndex, currentIndex)
+            : columns;
     }
 }

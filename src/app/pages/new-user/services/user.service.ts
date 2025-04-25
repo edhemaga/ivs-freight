@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ITableConfig } from '@shared/components/new-table/interface';
+import { ITableConfig } from '@shared/components/new-table/interfaces';
 import { IStateFilters } from '@shared/interfaces';
 
 // Models

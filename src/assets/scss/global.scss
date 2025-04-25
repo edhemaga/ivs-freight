@@ -685,6 +685,15 @@ ngb-modal-window.modal {
     background: $dark-3 !important;
 }
 
+// cursors
+.cursor-grab {
+    cursor: grab;
+}
+
+.cursor-grabbing {
+    cursor: grabbing;
+}
+
 .placeholder {
     &-muted {
         background: rgb(145 145 145 / 80%) !important;

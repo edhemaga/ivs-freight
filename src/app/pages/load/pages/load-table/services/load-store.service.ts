@@ -86,7 +86,7 @@ import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eLoadModalActions, eLoadRouting } from '@pages/new-load/enums';
 
 import { ICaMapProps, IFilterDropdownList } from 'ca-components';
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
 // Service

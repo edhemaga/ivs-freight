@@ -27,7 +27,7 @@ import { IMappedUser, IUserDeleteModal } from '@pages/new-user/interfaces';
 import {
     ITableColumn,
     ITableConfig,
-} from '@shared/components/new-table/interface';
+} from '@shared/components/new-table/interfaces';
 
 // Services
 import { ModalService } from '@shared/services';

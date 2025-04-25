@@ -121,6 +121,11 @@ export const loadReducer = createReducer(
     on(LoadActions.getLoadByIdError, (state) => ({ ...state })),
 
     on(LoadActions.getEditLoadModalData, (state) => ({ ...state })),
+
+    on(LoadActions.getEditLoadModalOnlyDataSuccess, (state, { modal }) =>
+        Functions.getLoadModalOnlyDataSuccessResult(state, modal)
+    ), // leave as any for now
+
     on(
         LoadActions.getEditLoadModalDataSuccess,
         (state, { load, modal, possibleStatuses }) =>

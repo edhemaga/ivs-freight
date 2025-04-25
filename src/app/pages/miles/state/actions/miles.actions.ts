@@ -22,8 +22,9 @@ import { IMilesModel } from '@pages/miles/interface';
 import { ICardValueData, IStateFilters } from '@shared/interfaces';
 import {
     ITableColumn,
+    ITableReorderAction,
     ITableResizeAction,
-} from '@shared/components/new-table/interface';
+} from '@shared/components/new-table/interfaces';
 
 export const getLoadsPayloadSuccess = createAction(
     MilesStoreConstants.LOAD_MILES_SUCCESS,
@@ -133,6 +134,11 @@ export const tableSortingChange = createAction(
 export const tableResizeChange = createAction(
     MilesStoreConstants.ACTION_RESIZE_CHANGE,
     props<{ resizeAction: ITableResizeAction }>()
+);
+
+export const tableReorderChange = createAction(
+    MilesStoreConstants.ACTION_REORDER_CHANGE,
+    props<{ reorderAction: ITableReorderAction }>()
 );
 
 export const pageChanges = createAction(
