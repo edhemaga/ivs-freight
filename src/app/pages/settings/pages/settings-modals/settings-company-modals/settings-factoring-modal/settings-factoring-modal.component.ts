@@ -265,7 +265,17 @@ export class SettingsFactoringModalComponent
             note,
             ...(this.selectedAddressTab === 1
                 ? { address: this.selectedAddress }
-                : { poBox: this.selectedAddress }),
+                : {
+                      poBox: {
+                          ...this.selectedAddress,
+                          city:
+                              this.selectedAddress.city +
+                              ', ' +
+                              this.selectedAddress.stateShortName +
+                              ', ' +
+                              this.selectedAddress.country,
+                      },
+                  }),
         };
         this.settingsCompanyService
             .updateFactoringCompany(newData)
@@ -296,7 +306,7 @@ export class SettingsFactoringModalComponent
         let addressPoBox = company.factoringCompany.poBox;
 
         const address = addressPoBox
-            ? addressPoBox.city + ', ' + addressPoBox.state
+            ? addressPoBox.city
             : company.factoringCompany.address.address;
 
         if (addressPoBox) addressPoBox = { ...addressPoBox, address };
@@ -386,9 +396,7 @@ export class SettingsFactoringModalComponent
             eSharedString.PO_BOX_ADDRESS
         );
 
-        const poBoxControl = this.factoringForm.get(
-            eSharedString.PO_BOX
-        );
+        const poBoxControl = this.factoringForm.get(eSharedString.PO_BOX);
 
         if (isTabChanged) {
             this.selectedAddress = null;
