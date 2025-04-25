@@ -386,6 +386,18 @@ export const initializeLoadGridItem = function (
     };
 };
 
+export const getLoadModalOnlyDataSuccessResult = function (
+    state: ILoadState,
+    modal: LoadModalResponse
+): ILoadState {
+    const result: ILoadState = {
+        ...state,
+        modal
+    };
+
+    return result;
+};
+
 export const getLoadModalDataSuccessResult = function (
     state: ILoadState,
     modal: LoadModalResponse,
