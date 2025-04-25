@@ -20,6 +20,11 @@ export class LoadStoreConstants {
     static ACTION_GET_EDIT_LOAD_MODAL_DATA_SUCCESS = `${this.COMPONENT_NAME_KEY} Get Edit Load Modal Data Success`;
     static ACTION_GET_EDIT_LOAD_MODAL_DATA_ERROR = `${this.COMPONENT_NAME_KEY} Get Edit Load Modal Data Error`;
 
+    // Only Load Modal
+    static ACTION_GET_EDIT_LOAD_MODAL_ONLY_DATA = `${this.COMPONENT_NAME_KEY} Get Edit Load Modal Only Data`;
+    static ACTION_GET_EDIT_LOAD_MODAL_ONLY_DATA_SUCCESS = `${this.COMPONENT_NAME_KEY} Get Edit Load Modal Only Data Success`;
+
+
     static ACTION_GET_EDIT_LOAD_TEMPLATE_MODAL_DATA = `${this.COMPONENT_NAME_KEY} Get Edit Load Template Modal Data`;
     static ACTION_GET_EDIT_LOAD_TEMPLATE_MODAL_DATA_SUCCESS = `${this.COMPONENT_NAME_KEY} Get Edit Load Template Modal Data Success`;
     static ACTION_GET_EDIT_LOAD_TEMPLATE_MODAL_DATA_ERROR = `${this.COMPONENT_NAME_KEY} Get Edit Load Template Modal Data Error`;
