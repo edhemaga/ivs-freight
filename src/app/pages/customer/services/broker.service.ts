@@ -398,6 +398,9 @@ export class BrokerService {
                     this.getBrokerInvoiceAging(brokerId, false),
                 ]).subscribe({
                     next: ([broker, paidInvoiceAging, unpaidInvoiceAging]) => {
+                        this.store.dispatch(
+                            LoadActions.getEditLoadModalOnlyData()
+                        );
                         this.brokerStore.remove(({ id }) => id === brokerId);
                         this.brokerMinimalStore.remove(
                             ({ id }) => id === brokerId
@@ -430,6 +433,9 @@ export class BrokerService {
             tap(() => {
                 this.getBrokerList().subscribe({
                     next: (brokersList) => {
+                        this.store.dispatch(
+                            LoadActions.getEditLoadModalOnlyData()
+                        );
                         brokersList.pagination.data.map((broker) => {
                             this.brokerStore.remove(
                                 ({ id }) => id === broker.id
@@ -464,6 +470,9 @@ export class BrokerService {
                     this.getBrokerInvoiceAging(brokerId, false),
                 ]).subscribe({
                     next: ([broker, paidInvoiceAging, unpaidInvoiceAging]) => {
+                        this.store.dispatch(
+                            LoadActions.getEditLoadModalOnlyData()
+                        );
                         this.brokerStore.remove(({ id }) => id === brokerId);
                         this.brokerMinimalStore.remove(
                             ({ id }) => id === brokerId
@@ -496,6 +505,9 @@ export class BrokerService {
             tap(() => {
                 this.getBrokerList().subscribe({
                     next: (brokersList) => {
+                        this.store.dispatch(
+                            LoadActions.getEditLoadModalOnlyData()
+                        );
                         brokersList.pagination.data.map((broker) => {
                             this.brokerStore.remove(
                                 ({ id }) => id === broker.id
@@ -704,6 +716,9 @@ export class BrokerService {
                     this.getBrokerInvoiceAging(brokerId, false),
                 ]).subscribe({
                     next: ([broker, paidInvoiceAging, unpaidInvoiceAging]) => {
+                        this.store.dispatch(
+                            LoadActions.getEditLoadModalOnlyData()
+                        );
                         this.brokerStore.remove(({ id }) => id === brokerId);
                         this.brokerMinimalStore.remove(
                             ({ id }) => id === brokerId
