@@ -115,6 +115,7 @@ export class BrokerService {
         this.formDataService.extractFormDataFromFunction(data);
         return this.brokerService.apiBrokerPut().pipe(
             tap(() => {
+                this.store.dispatch(LoadActions.getEditLoadModalOnlyData());
                 forkJoin([
                     this.getBrokerById(data.id),
                     this.getBrokerInvoiceAging(data.id, true),
