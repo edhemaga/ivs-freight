@@ -21,7 +21,7 @@ export class CreateLoadAdditionalInfoDropdownOptionsPipe
         dropdownOptions = [
             {
                 id: 1,
-                title: eLoadDetailsGeneral.COMMENTS,
+                title: eLoadDetailsGeneral.COMMENT,
                 count: load.commentsCount,
                 isSelected: false,
             },

@@ -32,6 +32,7 @@ import {
     CaDetailsTitleCardComponent,
     LoadStatusColorsPipe,
 } from 'ca-components';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 
 @Component({
     selector: 'app-load-details-general',
@@ -57,6 +58,7 @@ import {
         TaCustomCardComponent,
         TaInputNoteComponent,
         CaDetailsTitleCardComponent,
+        TaUploadFilesComponent,
     ],
 })
 export class LoadDetailsGeneralComponent {

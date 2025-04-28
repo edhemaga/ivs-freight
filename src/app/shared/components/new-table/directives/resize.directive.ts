@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 
 // interfaces
-import { ITableResizeAction } from '@shared/components/new-table/interface';
+import { ITableResizeAction } from '@shared/components/new-table/interfaces';
 
 @Directive({
     selector: '[appResizableColumn]',
@@ -25,7 +25,8 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
     @Input() hasLabelTop: boolean = false;
     @Input() hasDoubleHeightBorder: boolean = false;
 
-    @Output() onColumnResize = new EventEmitter<ITableResizeAction>();
+    @Output() resizing = new EventEmitter<boolean>();
+    @Output() columnWidthResize = new EventEmitter<ITableResizeAction>();
 
     private isInitialized = false;
 
@@ -84,12 +85,13 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
         const classesToAdd = [
             'resize-handler',
             'pos-absolute',
-            this.hasLabelTop ? 'bottom-10' : 'bottom-0',
+            this.hasLabelTop ? 'bottom-4' : 'bottom-0',
             'end-0',
             'w-2',
             this.hasDoubleHeightBorder ? 'h-26' : 'h-14',
             'm-r-6',
             'br-1',
+            'z-1',
             'background-muted',
             'background-hover-black',
         ];
@@ -120,14 +122,14 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
         if (!this.resizer) return;
 
         // remove the old dynamic classes
-        const classesToRemove = ['bottom-10', 'bottom-0', 'h-26', 'h-14'];
+        const classesToRemove = ['bottom-4', 'bottom-0', 'h-26', 'h-14'];
         classesToRemove.forEach((cls) =>
             this.renderer.removeClass(this.resizer, cls)
         );
 
         // add the correct ones
         const classesToAdd = [
-            this.hasLabelTop ? 'bottom-10' : 'bottom-0',
+            this.hasLabelTop ? 'bottom-4' : 'bottom-0',
             this.hasDoubleHeightBorder ? 'h-26' : 'h-14',
         ];
         classesToAdd.forEach((cls) =>
@@ -150,13 +152,15 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
                 newWidth,
             };
 
-            this.onColumnResize.emit(resizeAction);
+            this.columnWidthResize.emit(resizeAction);
         }
     };
 
     private onMouseDown(event: MouseEvent): void {
         this.startX = event.clientX;
         this.startWidth = this.column.nativeElement.offsetWidth;
+
+        this.resizing.emit(true);
 
         this.mouseMoveListener = this.renderer.listen(
             'document',
@@ -180,5 +184,7 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
             this.mouseUpListener();
             this.mouseUpListener = null;
         }
+
+        this.resizing.emit(false);
     };
 }

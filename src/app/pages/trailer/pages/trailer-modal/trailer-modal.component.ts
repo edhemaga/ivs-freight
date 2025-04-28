@@ -573,7 +573,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             this.documents
                 .filter((item) => item.realFile)
                 .map((item) => {
-                    documents.push(item.realFile);
+                    return item.realFile;
                 }) ?? [];
 
         const newData: any = {

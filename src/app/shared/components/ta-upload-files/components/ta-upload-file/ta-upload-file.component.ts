@@ -51,7 +51,6 @@ import { eGeneralActions } from '@shared/enums';
     selector: 'app-ta-upload-file',
     templateUrl: './ta-upload-file.component.html',
     styleUrls: ['./ta-upload-file.component.scss'],
-    encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [UrlExtensionPipe],
     standalone: true,
@@ -74,7 +73,15 @@ export class TaUploadFileComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @ViewChild(TaInputComponent) inputRef: TaInputComponent;
     @Input() customClassName: string;
-    @Input() file: UploadFile;
+
+    _file: UploadFile;
+    get file() {
+        return this._file;
+    }
+
+    @Input() set file(file: UploadFile) {
+        this._file = {...file};
+    }
     @Input() hasTagsDropdown: boolean = false;
     @Input() hasNumberOfPages: boolean = false;
     @Input() activePage: number = 1;

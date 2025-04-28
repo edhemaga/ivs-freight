@@ -27,7 +27,11 @@ import { UserCardsComponent } from '@pages/new-user/pages/user-cards/user-cards.
 import { TableCardBodyActions, TableToolbarActions } from '@shared/models';
 
 // Enums
-import { eGeneralActions, eStatusTab } from '@shared/enums';
+import {
+    eGeneralActions,
+    eStatusTab,
+    eDropdownMenuColumns,
+} from '@shared/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -105,7 +109,25 @@ export class UserComponent {
         this.userStoreService.dispatchSearchChange(query);
     }
 
-    public onToolbarDropdownMenuActions<T>(action: TableCardBodyActions<T>) {}
+    public onToolbarDropdownMenuActions<T>(action: TableCardBodyActions<T>) {
+        const { type, isActive } = action;
+        switch (type) {
+            case eDropdownMenuColumns.OPEN_TYPE:
+                break;
+            case eDropdownMenuColumns.CLOSE_TYPE:
+                this.setToolbarDropdownMenuColumnsActive(false);
+                break;
+            case eDropdownMenuColumns.COLUMNS_TYPE:
+                this.setToolbarDropdownMenuColumnsActive(true);
+                break;
+            case eDropdownMenuColumns.COLUMNS_BACK_TYPE:
+                this.setToolbarDropdownMenuColumnsActive(false);
+                break;
+            default:
+                this.toggleColumnVisibility(type, isActive);
+                break;
+        }
+    }
 
     public onDeleteUserList(users: IMappedUser[]): void {
         this.userStoreService.dispatchDeleteUsers(
@@ -132,6 +154,19 @@ export class UserComponent {
     private onViewModeChange(viewMode: string): void {
         this.userStoreService.dispatchViewModeChange(
             viewMode as eCommonElement
+        );
+    }
+
+    private setToolbarDropdownMenuColumnsActive(isActive: boolean): void {
+        this.userStoreService.dispatchSetToolbarDropdownMenuColumnsActive(
+            isActive
+        );
+    }
+
+    private toggleColumnVisibility(columnType: string, isChecked): void {
+        this.userStoreService.dispatchToggleColumnsVisiblity(
+            columnType,
+            isChecked
         );
     }
 }

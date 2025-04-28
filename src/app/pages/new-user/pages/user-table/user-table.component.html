@@ -52,12 +52,13 @@
                 @if (store.selectedTab === eStatusTab.ACTIVE) {
                     <app-ca-profile-image
                         [name]="user?.fullName"
-                        [size]="'small'"
                         [type]="'user'"
                         [withTooltip]="true"
                         [size]="18"
                         [isDispatch]="true"
                         [avatarImg]="user?.avatar"
+                        [isHoverEffect]="true"
+                        [textShortName]="user?.fullName | nameInitials"
                     >
                     </app-ca-profile-image>
                 } @else {

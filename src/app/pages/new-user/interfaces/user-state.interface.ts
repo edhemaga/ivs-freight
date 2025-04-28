@@ -3,8 +3,9 @@ import { IMappedUser } from '@pages/new-user/interfaces';
 import {
     ITableColumn,
     ITableConfig,
-} from '@shared/components/new-table/interface';
+} from '@shared/components/new-table/interfaces';
 import { IStateFilters } from '@shared/interfaces';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // Models
 import { ITableData } from '@shared/models';
@@ -32,4 +33,8 @@ export interface IUserState {
 
     // Table
     tableColumns: ITableColumn[];
+
+    // Hamburger menu options
+    toolbarDropdownMenuOptions: IDropdownMenuItem[];
+    isToolbarDropdownMenuColumnsActive: boolean;
 }

@@ -15,7 +15,7 @@ import {
 } from 'appcoretruckassist';
 
 // Interface
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 import { IMappedUser } from '@pages/new-user/interfaces';
 
 //#region List
@@ -46,6 +46,19 @@ export const getLoadsOnPageChange = createAction(
     UserStoreConstants.ACTION_GET_NEW_PAGE_RESULTS
 );
 //#endregion
+
+//#region Toolbar Hamburger Menu
+export const setToolbarDropdownMenuColumnsActive = createAction(
+    UserStoreConstants.ACTION_SET_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE,
+    props<{ isActive: boolean }>()
+);
+
+export const toggleColumnVisibility = createAction(
+    UserStoreConstants.ACTION_TOGGLE_COLUMN_VISIBILITY,
+    props<{ columnKey: string; isActive: boolean }>()
+);
+//#endregion
+
 
 //#region Tabs
 export const onTabTypeChange = createAction(

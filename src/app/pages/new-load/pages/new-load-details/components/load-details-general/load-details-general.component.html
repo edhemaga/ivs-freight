@@ -504,6 +504,18 @@
         <ng-container
             *ngTemplateOutlet="invoiceAgeing; context: { data: load }"
         ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="
+                divider;
+                context: { isDividerVisible: true, isMarginTopDisabled: true }
+            "
+        ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="document; context: { data: load }"
+        ></ng-container>
+
         <ng-container
             *ngTemplateOutlet="
                 divider;
@@ -975,6 +987,31 @@
                     "
                 ></ng-container>
             }
+        </app-ta-custom-card>
+    </div>
+</ng-template>
+
+<ng-template #document let-data="data">
+    <div class="p-x-12">
+        <app-ta-custom-card
+            [cardName]="'Document'"
+            [hasCounter]="data?.fileCount"
+            [disabledCard]="!data?.fileCount"
+            [bodyTemplate]="'card'"
+            [hasDivider]="false"
+            [animationMarginParams]="{
+                marginTop: '6px',
+                marginBottom: '6px',
+            }"
+        >
+            <app-ta-upload-files
+                [files]="data?.files"
+                [customClassName]="'driver-card-pdf'"
+                [hasCarouselBottomTabs]="true"
+                [type]="'details'"
+                [slideWidth]="428"
+                [reviewMode]="'REVIEW_MODE'"
+            ></app-ta-upload-files>
         </app-ta-custom-card>
     </div>
 </ng-template>
