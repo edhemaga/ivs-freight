@@ -462,10 +462,7 @@ export class RepairShopModalComponent
                 [Validators.required, ...repairShopValidation],
             ],
             [RepairShopModalStringEnum.PINNED]: [null],
-            [RepairShopModalStringEnum.PHONE]: [
-                null,
-                [Validators.required, phoneFaxRegex],
-            ],
+            [RepairShopModalStringEnum.PHONE]: [null, [phoneFaxRegex]],
             [RepairShopModalStringEnum.PHONE_EXT]: [null, [...phoneExtension]],
             [RepairShopModalStringEnum.EMAIL]: [null],
             [RepairShopModalStringEnum.ADDRESS]: [
