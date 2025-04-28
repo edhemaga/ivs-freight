@@ -24,10 +24,9 @@ import { eCommonElement, eStatusTab } from '@shared/enums';
 
 // Interface
 import { IMappedUser, IUserDeleteModal } from '@pages/new-user/interfaces';
-import {
-    ITableColumn,
-    ITableConfig,
-} from '@shared/components/new-table/interfaces';
+import { ITableColumn, ITableConfig } from '@shared/components/new-table/interfaces';
+
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // Services
 import { ModalService } from '@shared/services';
@@ -48,6 +47,11 @@ export class UserStoreService {
 
     public userListSelector$: Observable<IMappedUser[]> = this.store.pipe(
         select(UserSelector.userListSelector)
+    );
+    public toolbarDropdownMenuOptionsSelector$: Observable<
+        IDropdownMenuItem[]
+    > = this.store.pipe(
+        select(UserSelector.toolbarDropdownMenuOptionsSelector)
     );
 
     public departmentListSelector$: Observable<DepartmentFilterResponse[]> =
@@ -88,6 +92,26 @@ export class UserStoreService {
     public searchStringsSelector$: Observable<string[]> = this.store.pipe(
         select(UserSelector.searchStringsSelector)
     );
+
+    public dispatchSetToolbarDropdownMenuColumnsActive(
+        isActive: boolean
+    ): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_SET_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE,
+            isActive,
+        });
+    }
+
+    public dispatchToggleColumnsVisiblity(
+        columnKey: string,
+        isActive: boolean
+    ) {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_TOGGLE_COLUMN_VISIBILITY,
+            columnKey,
+            isActive,
+        });
+    }
 
     public dispatchLoadInitialList(): void {
         this.store.dispatch({

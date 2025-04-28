@@ -26,6 +26,8 @@ import {
 
 // Pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
+import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
+
 
 @Component({
     selector: 'app-user-table',
@@ -47,6 +49,7 @@ import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes
 
         // Pipes
         TableHighlightSearchTextPipe,
+        NameInitialsPipe
     ],
 })
 export class UserTableComponent {
