@@ -40,7 +40,7 @@ import { eGeneralActions, eSharedString } from '@shared/enums';
     selector: 'app-ta-upload-files',
     templateUrl: './ta-upload-files.component.html',
     styleUrls: ['./ta-upload-files.component.scss'],
-    encapsulation: ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.ShadowDom,
     standalone: true,
     imports: [
         //Modules
