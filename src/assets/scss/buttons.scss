@@ -23,11 +23,13 @@
         background: $bw2;
     }
 
-    &:hover {
-        background: $ta-blue-15;
+    &:not(.dispatch-table-driver_locked) {
+        &:hover {
+            background: $ta-blue-15;
 
-        svg path {
-            fill: $white !important;
+            svg path {
+                fill: $white !important;
+            }
         }
     }
 }

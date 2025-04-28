@@ -20,4 +20,14 @@
             fill: $ta-blue-13;
         }
     }
+
+    &_locked {
+        cursor: default;
+
+        svg {
+            path {
+                fill: $ta-light-grey-6;
+            }
+        }
+    }
 }
