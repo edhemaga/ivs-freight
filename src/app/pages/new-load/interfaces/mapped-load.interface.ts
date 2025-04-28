@@ -27,7 +27,6 @@ export interface IMappedLoad {
     broker: LoadBrokerInfo;
     driverInfo?: LoadDriverInfo | DriverMinimalResponse;
     templateName: string;
-    templateCreated: string;
     commodity?: string;
     brokerBusinessName: string;
     assignedDriverTruckNumber: string;
@@ -49,6 +48,8 @@ export interface IMappedLoad {
     requirementYear: string;
     requirementLiftgate: string;
     driverMessage: string;
+    companyName: string;
     pickup?: LoadPickup;
     delivery?: LoadDelivery;
+    dateCreated: string;
 }

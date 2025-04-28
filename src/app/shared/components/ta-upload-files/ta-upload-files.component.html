@@ -13,7 +13,7 @@
         'ta-upload-large-threefiles':
             _files?.length && _files?.length >= 3 && size === 'large',
         'ta-upload-review-mode': isReview,
-        documents: hasSlider
+        documents: hasSlider,
     }"
 >
     <!-- Carousel Files -->
@@ -27,9 +27,7 @@
         [slideWidth]="slideWidth"
         (hoverArrowEmit)="hoverArrow($event)"
     >
-        <ng-container
-            *ngFor="let file of _files; let ind = index; trackBy: identity"
-        >
+        @for (file of _files; let index = $index; track $index) {
             <div class="ta-upload-carousel-container">
                 <div>
                     <app-ta-upload-file
@@ -54,7 +52,7 @@
                     ></app-ta-upload-file>
                 </div>
             </div>
-        </ng-container>
+        }
     </app-ta-upload-files-carousel>
 
     <div class="documents_holder" *ngIf="hasSlider">

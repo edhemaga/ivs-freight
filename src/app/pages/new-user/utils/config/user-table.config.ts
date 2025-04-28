@@ -1,5 +1,5 @@
 // Interface
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // Models
 import { CompanyUserSortBy } from 'appcoretruckassist/model/companyUserSortBy';

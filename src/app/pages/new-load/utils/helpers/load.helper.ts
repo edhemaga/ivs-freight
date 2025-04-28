@@ -43,10 +43,13 @@ export class LoadHelper {
                 loadType,
                 type,
                 loadRequirements,
+                company,
                 dispatch,
                 pickup,
                 delivery,
                 totalMiles,
+                dateCreated,
+                createdAt,
             } = load;
 
             const mapped: IMappedLoad = {
@@ -66,11 +69,8 @@ export class LoadHelper {
                 loadType: loadType?.name ?? type?.name,
                 broker,
                 brokerContact: broker?.contact,
-                templateCreated:
-                    MethodsCalculationsHelper.convertDateFromBackend(
-                        load.dateCreated
-                    ),
-                commodity: loadDetails?.generalCommodityName ?? generalCommodity?.name,
+                commodity:
+                    loadDetails?.generalCommodityName ?? generalCommodity?.name,
                 brokerBusinessName: broker?.businessName,
                 driverInfo: driver ? driver : dispatch?.driver,
                 assignedDriverTruckNumber: driver?.truckNumber,
@@ -80,6 +80,7 @@ export class LoadHelper {
                 milesTotal: miles?.totalMiles ?? totalMiles,
                 billingRatePerMile: billing?.rpm,
                 billingRate: billing?.rate,
+                companyName: company?.companyName,
                 invoicedDate,
                 note,
                 requirementTruck: loadRequirements?.truckType,
@@ -95,6 +96,11 @@ export class LoadHelper {
                 driverMessage: loadRequirements?.driverMessage,
                 pickup,
                 delivery,
+                dateCreated: MethodsCalculationsHelper.convertDateFromBackend(
+                    selectedTab === eLoadStatusStringType.TEMPLATE
+                        ? dateCreated
+                        : createdAt
+                ),
             };
             return mapped;
         });

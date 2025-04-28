@@ -719,6 +719,7 @@ export class UserModalComponent
             startDate,
             base,
             commission,
+            personalEmail,
             ...form
         } = this.userForm.value;
 
@@ -754,6 +755,7 @@ export class UserModalComponent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(base)
                 : null,
             commission: commission ? parseFloat(commission) : null,
+            personalEmail: personalEmail || null,
         };
 
         this.companyUserService
@@ -816,7 +818,7 @@ export class UserModalComponent
                         address: res.address,
                         addressUnit: res.address?.addressUnit,
                         personalPhone: res.personalPhone,
-                        personalEmail: res.personalEmail,
+                        personalEmail: res.personalEmail || null,
                         departmentId: res.department ? res.department.id : null,
                         companyOfficeId: res.companyOffice
                             ? res.companyOffice.id
@@ -825,7 +827,7 @@ export class UserModalComponent
                         isAdmin: res.isAdmin,
                         phone: res.phone,
                         extensionPhone: res.extensionPhone,
-                        email: res.email,
+                        email: res.email ?? null,
                         includeInPayroll: res.includeInPayroll ? true : false,
                         paymentType: res.paymentType
                             ? res.paymentType.name
@@ -964,6 +966,7 @@ export class UserModalComponent
                         this.isCardAnimationDisabled = true;
                         this.getUserById(this.editData.id);
                     }
+
                     if (this.editData?.data && !this.editData?.id) {
                         this.userForm.patchValue({
                             firstName: this.editData.data.firstName,
@@ -972,7 +975,8 @@ export class UserModalComponent
                             addressUnit:
                                 this.editData.data.address?.addressUnit ?? null,
                             personalPhone: this.editData.data.personalPhone,
-                            personalEmail: this.editData.data.personalEmail,
+                            personalEmail:
+                                this.editData.data.personalEmail || null,
                             departmentId: this.editData.data.departmentId
                                 ? this.departments[
                                       this.editData.data.departmentId - 1

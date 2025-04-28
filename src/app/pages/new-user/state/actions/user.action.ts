@@ -15,7 +15,7 @@ import {
 } from 'appcoretruckassist';
 
 // Interface
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 import { IMappedUser } from '@pages/new-user/interfaces';
 
 //#region List

@@ -1,6 +1,6 @@
 // Interfaces
 import { IMappedUser, IUserState } from '@pages/new-user/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // Models
 import {

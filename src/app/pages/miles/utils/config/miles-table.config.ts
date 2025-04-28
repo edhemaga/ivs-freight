@@ -2,7 +2,7 @@
 import { MilesStopSortBy } from 'appcoretruckassist';
 
 // interfaces
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 export class MilesTableColumnsConfig {
     static columnsConfig: ITableColumn[] = [
@@ -12,8 +12,8 @@ export class MilesTableColumnsConfig {
             label: 'Unit',
             labelToolbar: 'Unit No',
             pinned: 'left',
-            width: 80,
-            minWidth: 80,
+            width: 88,
+            minWidth: 88,
             maxWidth: 200,
             isResizable: true,
             isDisabled: true,

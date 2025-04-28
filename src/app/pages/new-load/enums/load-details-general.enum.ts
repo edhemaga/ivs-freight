@@ -11,7 +11,7 @@ export enum eLoadDetailsGeneral {
     LIFTGATE = 'Liftgate',
     DRIVER_ASSIST = 'Driver Assist',
     DRIVER_MESSAGE = 'Driver Message',
-    COMMENTS = 'Comments',
+    COMMENT = 'Comment',
     STATUS_LOG = 'Status Log',
 
     YES = 'Yes',

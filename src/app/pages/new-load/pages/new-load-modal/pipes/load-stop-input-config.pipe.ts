@@ -8,6 +8,7 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // Enum
 import { eLoadModalStopsForm } from '@pages/new-load/pages/new-load-modal/enums';
+import { ICaInput } from 'ca-components';
 
 @Pipe({
     name: 'loadStopInputConfig',
@@ -18,10 +19,10 @@ export class LoadStopInputConfigPipe implements PipeTransform {
         configType,
         isDateRange,
         isAppointment,
-    }: ILoadModalStopsConfigPipeArgs): ITaInput {
+    }: ILoadModalStopsConfigPipeArgs): ICaInput {
         console.log('Calling pipe for: ', configType);
 
-        let config: ITaInput;
+        let config: ICaInput;
 
         switch (configType) {
             case eLoadModalStopsForm.SHIPPER_ID:
@@ -48,6 +49,7 @@ export class LoadStopInputConfigPipe implements PipeTransform {
                         labels: ['Contact', 'Phone'],
                         customClass: 'load-broker-contact',
                     },
+                    searchinGroupIndex: 'contacts',
                     isDropdown: true,
                     blackInput: false,
                     textTransform: 'capitalize',
