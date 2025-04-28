@@ -2,7 +2,7 @@
     width: 168px;
     height: 194px;
     border-radius: 2px;
-    display: grid;
+    display: grid !important;
     grid-template-rows: 160px 1fr;
     row-gap: 7px;
     align-items: center;
