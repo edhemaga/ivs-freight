@@ -17,7 +17,10 @@ import * as Functions from '@pages/new-user/state/functions/user-reducer.functio
 import { UserTableColumnsConfig } from '@pages/new-user/utils/config';
 
 // Enums
-import { eCommonElement, eStatusTab } from '@shared/enums';
+import { eCommonElement, eStatusTab, eCardFlipViewMode } from '@shared/enums';
+
+// Helpers
+import { DropdownMenuToolbarContentHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 export const initialState: IUserState = {
     users: [],
@@ -40,6 +43,15 @@ export const initialState: IUserState = {
     activeViewMode: eCommonElement.LIST,
 
     tableColumns: UserTableColumnsConfig.getTableColumns(),
+
+    toolbarDropdownMenuOptions:
+        DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
+            eCommonElement.LIST,
+            true,
+            eCardFlipViewMode.FRONT,
+            false
+        ),
+    isToolbarDropdownMenuColumnsActive: false,
 };
 
 export const userReducer = createReducer(
@@ -95,6 +107,15 @@ export const userReducer = createReducer(
         UserActions.onDeleteUsersSuccess,
         (state, { users, isIncreaseInOtherTab }) =>
             Functions.onDeleteUsersSuccess(state, users, isIncreaseInOtherTab)
+    ),
+    //#endregion
+
+    //#region Toolbar hamburger menu
+    on(UserActions.setToolbarDropdownMenuColumnsActive, (state, { isActive }) =>
+        Functions.setToolbarDropdownMenuColumnsActive(state, isActive)
+    ),
+    on(UserActions.toggleColumnVisibility, (state, { columnKey, isActive }) =>
+        Functions.toggleColumnVisibility(state, columnKey, isActive)
     )
     //#endregion
 );
