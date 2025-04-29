@@ -193,7 +193,6 @@
             <div
                 class="d-flex gap-1 align-items-center text-color-black-2 text-size-14"
                 [class]="cellColumnTextColorClass"
-                [ngSwitch]="user?.userStatus"
             >
                 @switch (user?.userStatus) {
                     @case (eStringPlaceholder.ZERO) {}
