@@ -237,8 +237,10 @@
                             user?.userStatus !== eSharedString.EXPIRED,
                     }"
                     [innerHtml]="
-                        user?.userStatus
-                            | tableHighlightSearchText: store.searchStrings
+                        user?.userStatus === eStringPlaceholder.ZERO
+                            ? eStringPlaceholder.NA_UPPERCASE
+                            : (user?.userStatus
+                              | tableHighlightSearchText: store.searchStrings)
                     "
                 >
                 </span>
@@ -246,5 +248,12 @@
         </ng-template>
 
         <!-- #region END OF USER STATUS COLUMN -->
+
+        <!-- tableActivity: data.lastLogin
+                ? this.activityTimePipe.transform(
+                      data.lastLogin,
+                      TableStringEnum.ACTIVITY
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER, -->
     </app-new-table>
 }
