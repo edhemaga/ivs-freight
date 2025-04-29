@@ -32,6 +32,7 @@ import {
     CaSearchMultipleStates2Component,
     CaCheckboxSelectedCountComponent,
     IFilterAction,
+    CaSortingCardDropdownComponent,
 } from 'ca-components';
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
 import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
@@ -44,6 +45,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Interface
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 import { IMappedLoad } from '@pages/new-load/interfaces';
+import { ITableColumn } from '@ca-shared/interfaces/table/table-column.interface';
 
 @Component({
     selector: 'app-new-load',
@@ -67,6 +69,7 @@ import { IMappedLoad } from '@pages/new-load/interfaces';
         CaSearchMultipleStates2Component,
         SvgIconComponent,
         CaCheckboxSelectedCountComponent,
+        CaSortingCardDropdownComponent
     ],
 })
 export class NewLoadComponent<T> {
@@ -219,6 +222,12 @@ export class NewLoadComponent<T> {
         this.loadStoreService.dispatchToggleColumnsVisiblity(
             columnType,
             isChecked
+        );
+    }
+
+    public onSelectSortItem(column: ITableColumn): void {
+        this.loadStoreService.dispatchSortingChange(
+            column
         );
     }
 }
