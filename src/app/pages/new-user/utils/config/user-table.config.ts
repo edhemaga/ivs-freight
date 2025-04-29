@@ -16,10 +16,7 @@ export class UserTableColumnsConfig {
             UserTableColumnsConfig.activityColumn,
             UserTableColumnsConfig.bankDetailGroup,
             UserTableColumnsConfig.payrollDetailGroup,
-            UserTableColumnsConfig.dateHiredColumn,
-            UserTableColumnsConfig.dateDeactivatedColumn,
-            UserTableColumnsConfig.dateAddedColumn,
-            UserTableColumnsConfig.dateEditedColumn,
+            UserTableColumnsConfig.datesColumn,
         ];
     }
 
@@ -319,8 +316,8 @@ export class UserTableColumnsConfig {
         ],
     };
 
-    static dateHiredColumn: ITableColumn = {
-        key: 'dateHiredColumnGroup',
+    static datesColumn: ITableColumn = {
+        key: 'datesColumnGroup',
         label: '',
         labelToolbar: '',
         pinned: null,
@@ -338,19 +335,10 @@ export class UserTableColumnsConfig {
                 hasSort: true,
                 sortName: CompanyUserSortBy.Hired,
             },
-        ],
-    };
-
-    static dateDeactivatedColumn: ITableColumn = {
-        key: 'dateDeactivatedColumnGroup',
-        label: '',
-        labelToolbar: '',
-        pinned: null,
-        columns: [
             {
                 id: 20,
                 key: 'dateDeactivated',
-                label: 'Deactivated',
+                label: 'Deact',
                 labelToolbar: 'Date Deactivated',
                 width: 88,
                 minWidth: 88,
@@ -360,15 +348,6 @@ export class UserTableColumnsConfig {
                 hasSort: true,
                 sortName: CompanyUserSortBy.DateDeactivated,
             },
-        ],
-    };
-
-    static dateAddedColumn: ITableColumn = {
-        key: 'dateAddedColumnGroup',
-        label: '',
-        labelToolbar: '',
-        pinned: null,
-        columns: [
             {
                 id: 21,
                 key: 'dateAdded',
@@ -382,14 +361,6 @@ export class UserTableColumnsConfig {
                 hasSort: true,
                 sortName: CompanyUserSortBy.DateCreated,
             },
-        ],
-    };
-    static dateEditedColumn: ITableColumn = {
-        key: 'dateEditedColumnGroup',
-        label: '',
-        labelToolbar: '',
-        pinned: null,
-        columns: [
             {
                 id: 22,
                 key: 'dateEdited',
