@@ -1,23 +1,25 @@
-<div class="dispatch-table-driver d-flex justify-content-center align-items-center">
-    <ng-container *ngIf="!isButtonDisabled">
+<div
+    class="dispatch-table-driver d-flex justify-content-center align-items-center"
+>
+    @if (!isButtonDisabled) {
         <div
+            class="dispatch-table-driver_hover"
             [ngClass]="{
-                ' dispatch-table-driver_unassigned': isButtonDisabled,
-                ' dispatch-table-driver_hover': !isButtonDisabled,
-                hovering: isHoveringRow
+                'dispatch-table-driver_locked': !isUnlockable,
+                hovering: isHoveringRow,
             }"
         >
             <div
                 class="d-flex align-items-center justify-content-center"
-                [mainTooltip]="'Assign Load'"
+                [mainTooltip]="isUnlockable ? 'Assign Load' : 'Assign on Board'"
                 [tooltipBackground]="'#424242'"
                 ngbTooltip
                 position="bottom"
                 tooltipMarginTop="5px"
-                (click)="onLoadIconClick()"
+                (click)="isUnlockable && onLoadIconClick()"
             >
                 <svg-icon [src]="svgRoutes.assignLoad"> </svg-icon>
             </div>
         </div>
-    </ng-container>
+    }
 </div>
