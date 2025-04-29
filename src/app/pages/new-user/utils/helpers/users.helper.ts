@@ -60,13 +60,28 @@ export class UsersHelper {
 
     static usersMapper(users: CompanyUserListItemResponse[]): IMappedUser[] {
         return users.map((user) => {
-            const { firstName, lastName, avatar, id, department, email, companyOffice, extensionPhone, phone, personalPhone, personalEmail, address, userStatus } = user;
+            const {
+                firstName,
+                lastName,
+                avatarFile,
+                id,
+                department,
+                email,
+                companyOffice,
+                extensionPhone,
+                phone,
+                personalPhone,
+                personalEmail,
+                address,
+                userStatus,
+                lastLogin,
+            } = user;
 
             const mapped: IMappedUser = {
                 id,
                 isSelected: false,
                 fullName: `${firstName} ${lastName}`,
-                avatar,
+                avatar: avatarFile?.url,
                 department,
                 companyOffice,
                 email,
@@ -75,7 +90,8 @@ export class UsersHelper {
                 personalPhone,
                 personalEmail,
                 address,
-                userStatus
+                userStatus,
+                lastLogin,
             };
 
             return mapped;

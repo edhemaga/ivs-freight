@@ -24,6 +24,7 @@
             personalEmail,
             personalAddress,
             status,
+            activity,
         };
     @let headerTemplates =
         {
@@ -183,21 +184,22 @@
             <div
                 class="text-color-black-2 text-size-14"
                 [innerHtml]="
-                    user?.address?.address | tableHighlightSearchText: store.searchStrings
+                    user?.fullAddress
+                        | tableHighlightSearchText: store.searchStrings
                 "
             ></div>
         </ng-template> -->
 
         <!-- #endregion END OF PERSONAL DETAILS GROUP -->
 
-        <!-- #region USER STATUS COLUMN -->
+        <!-- #region STATUS COLUMN -->
         <ng-template
             #status
             let-user="data"
             let-cellColumnTextColorClass="cellColumnTextColorClass"
         >
             <div
-                class="d-flex gap-1 text-color-black-2 text-size-14 align-items-center"
+                class="d-flex gap-1 align-items-center text-color-black-2 text-size-14"
                 [class]="cellColumnTextColorClass"
                 [ngSwitch]="user?.userStatus"
             >
@@ -235,14 +237,14 @@
                     ></svg-icon>
                 </ng-container>
 
+                @let userStatusInvitedOrExpired =
+                    user?.userStatus === eSharedString.INVITED ||
+                    user?.userStatus === eSharedString.EXPIRED;
+
                 <span
+                    class="text-color-black ta-font-bold text-size-11 text-uppercase"
                     [ngClass]="{
-                        'text-color-black ta-font-bold text-size-11 text-uppercase opacity-60 ':
-                            user?.userStatus === eSharedString.INVITED ||
-                            user?.userStatus === eSharedString.EXPIRED,
-                        'text-color-black ta-font-bold text-size-11 text-uppercase':
-                            user?.userStatus !== eSharedString.INVITED ||
-                            user?.userStatus !== eSharedString.EXPIRED,
+                        'opacity-60': userStatusInvitedOrExpired,
                     }"
                     [innerHtml]="
                         user?.userStatus === eStringPlaceholder.ZERO
@@ -255,7 +257,9 @@
             </div>
         </ng-template>
 
-        <!-- #region END OF USER STATUS COLUMN -->
+        <!-- #region END OF STATUS COLUMN -->
+
+        <!-- #region ACTIVITY COLUMN -->
 
         <!-- tableActivity: data.lastLogin
                 ? this.activityTimePipe.transform(
@@ -263,5 +267,17 @@
                       TableStringEnum.ACTIVITY
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER, -->
+
+        <!-- <ng-template
+            #activity
+            let-user="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div class="text-color-black-2 text-size-14">
+                {{ user?.lastlogin | activityTime: 'activity' }}
+            </div>
+        </ng-template> -->
+
+        <!-- #region END OF ACTIVITY COLUMN -->
     </app-new-table>
 }

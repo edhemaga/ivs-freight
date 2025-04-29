@@ -11,7 +11,7 @@ import { UserStoreService } from '@pages/new-user/state/services/user-store.serv
 import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // Enums
-import { eSharedString, eStatusTab, eStringPlaceholder } from '@shared/enums';
+import { eSharedString, eStatusTab, eStringPlaceholder, TableStringEnum } from '@shared/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -26,8 +26,7 @@ import {
 
 // Pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
-import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
-
+import { ActivityTimePipe, NameInitialsPipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-user-table',
@@ -49,6 +48,7 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
         // Pipes
         TableHighlightSearchTextPipe,
+        ActivityTimePipe,
         NameInitialsPipe
     ],
 })
@@ -57,9 +57,12 @@ export class UserTableComponent {
     public eStatusTab = eStatusTab;
     public eSharedString = eSharedString;
     public eStringPlaceholder = eStringPlaceholder;
-    
+
     // Svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
+
+    // pipes
+    // public activityTimePipe: ActivityTimePipe;
 
     constructor(public userStoreService: UserStoreService) {}
 

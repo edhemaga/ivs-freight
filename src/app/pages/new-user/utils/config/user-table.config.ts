@@ -39,7 +39,7 @@ export class UserTableColumnsConfig {
         key: 'name',
         label: 'Name',
         labelToolbar: 'Name',
-        pinned: null,
+        pinned: 'left',
         width: 234,
         minWidth: 234,
         maxWidth: 234,

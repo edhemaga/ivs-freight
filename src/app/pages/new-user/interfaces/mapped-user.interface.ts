@@ -14,4 +14,5 @@ export interface IMappedUser {
     personalEmail: string | null;
     address: AddressEntity;
     userStatus: string | null;
+    lastLogin: string | null;
 }
