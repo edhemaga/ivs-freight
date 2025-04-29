@@ -89,4 +89,12 @@ export class SharedSvgRoutes {
 
     // note
     static NOTE_ICON: string = 'assets/svg/truckassist-table/note/Note.svg';
+
+    // user status
+    static USER_STATUS_ADMIN_ICON: string = 'assets/svg/common/user-status-admin-icon.svg'
+    static USER_STATUS_OWNER_ICON: string = 'assets/svg/common/user-status-owner-icon.svg'
+    static USER_STATUS_EXPIRED_ICON: string = 'assets/svg/common/user-status-expired-icon.svg'
+    static USER_STATUS_INVITED_ICON: string = 'assets/svg/common/user-status-invited-icon.svg'
+
+
 }

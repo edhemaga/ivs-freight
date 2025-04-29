@@ -12,7 +12,19 @@
 
 @if (store) {
     @let isTableLocked = store.tableSettings.isTableLocked;
-    @let templates = { select, name, department };
+    @let templates =
+        {
+            select,
+            name,
+            department,
+            employeePhone,
+            employeeOffice,
+            employeeEmail,
+            personalPhone,
+            personalEmail,
+            personalAddress,
+            status,
+        };
     @let headerTemplates =
         {
             select: selectHeaderTemplate,
@@ -47,6 +59,7 @@
             ></app-ca-checkbox>
         </ng-template>
 
+        <!-- #region NAME COLUMN -->
         <ng-template let-user="data" #name>
             <div class="d-flex gap-1">
                 @if (store.selectedTab === eStatusTab.ACTIVE) {
@@ -77,7 +90,9 @@
                 ></div>
             </div>
         </ng-template>
+        <!-- #endregion END OF NAME COLUMN -->
 
+        <!-- #region DEPARTMENT NAME COLUMN -->
         <ng-template let-user="data" #department>
             <div
                 class="text-color-black-2 text-size-14"
@@ -87,5 +102,149 @@
                 "
             ></div>
         </ng-template>
+        <!-- #endregion END OF DEPARTMENT NAME COLUMN -->
+
+        <!-- #region EMPLOYEE GROUP -->
+        <ng-template let-user="data" #employeeOffice>
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    user?.companyOffice
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template
+            #employeePhone
+            let-user="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div class="text-size-14" [class]="cellColumnTextColorClass">
+                <span class="text-color-black-2">{{ user?.phone }} </span>
+                @if (user?.extensionPhone) {
+                    <span class="text-color-muted"
+                        >x {{ user?.extensionPhone }}
+                    </span>
+                }
+            </div>
+        </ng-template>
+
+        <ng-template let-user="data" #employeeEmail>
+            <p
+                class="text-color-black-2 text-size-14 text-truncate"
+                [innerHtml]="
+                    user?.email | tableHighlightSearchText: store.searchStrings
+                "
+            ></p>
+        </ng-template>
+        <!-- #endregion END OF EMPLOYEE GROUP -->
+
+        <!-- #region PERSONAL DETAILS GROUP -->
+        <ng-template let-user="data" #personalPhone>
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    user?.personalPhone
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template let-user="data" #personalEmail>
+            <p
+                class="text-color-black-2 text-size-14 text-truncate"
+                [innerHtml]="
+                    user?.personalEmail
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></p>
+        </ng-template>
+
+        <!-- I left this in comment because I don't know if we will simply use adress property
+          or we will show the address in this order streetNumber street + "," + city + "," + stateShortName zipCode-->
+
+        <!-- {
+            "city": "Antioch",
+            "state": "Illinois",
+            "county": "Lake County",
+            "address": "936 Carney Court, Antioch, IL, US",
+            "street": "Carney Court",
+            "streetNumber": "936",
+            "country": "US",
+            "zipCode": "60002",
+            "stateShortName": "IL",
+            "addressUnit": null
+
+            streetNumber street + "," + city + "," + stateShortName zipCode
+        } -->
+
+        <!-- <ng-template let-user="data" #personalAddress>
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    user?.address?.address | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template> -->
+
+        <!-- #endregion END OF PERSONAL DETAILS GROUP -->
+
+        <!-- #region USER STATUS COLUMN -->
+        <ng-template
+            #status
+            let-user="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div
+                class="d-flex gap-1 text-color-black-2 text-size-14 align-items-center"
+                [class]="cellColumnTextColorClass"
+            >
+                @if (user?.userStatus === eSharedString.OWNER) {
+                    <svg-icon
+                        [src]="sharedSvgRoutes.USER_STATUS_OWNER_ICON"
+                        class="svg-size-14"
+                    ></svg-icon>
+                } @else if (user?.userStatus === eSharedString.ADMIN) {
+                    <svg-icon
+                        [src]="sharedSvgRoutes.USER_STATUS_ADMIN_ICON"
+                        class="svg-size-14"
+                    ></svg-icon>
+                } @else if (user?.userStatus === eSharedString.INVITED) {
+                    <svg-icon
+                        [src]="sharedSvgRoutes.USER_STATUS_INVITED_ICON"
+                        class="svg-size-14 text-color-grey opacity-60"
+                    ></svg-icon>
+                } @else if (user?.userStatus === eSharedString.EXPIRED) {
+                    <svg-icon
+                        [src]="sharedSvgRoutes.USER_STATUS_EXPIRED_ICON"
+                        class="svg-size-14 text-color-grey opacity-60"
+                    ></svg-icon>
+                } @else {
+                    <svg-icon
+                        [src]="sharedSvgRoutes.USER_CIRCLE_ICON"
+                        class="svg-size-14"
+                    ></svg-icon>
+                }
+
+                <span
+                    [ngClass]="{
+                        'text-color-black ta-font-bold text-size-11 text-uppercase opacity-60 ':
+                            user?.userStatus === eSharedString.INVITED ||
+                            user?.userStatus === eSharedString.EXPIRED,
+                        'text-color-black ta-font-bold text-size-11 text-uppercase':
+                            user?.userStatus !== eSharedString.INVITED ||
+                            user?.userStatus !== eSharedString.EXPIRED,
+                    }"
+                    [innerHtml]="
+                        user?.userStatus
+                            | tableHighlightSearchText: store.searchStrings
+                    "
+                >
+                </span>
+            </div>
+        </ng-template>
+
+        <!-- #region END OF USER STATUS COLUMN -->
     </app-new-table>
 }

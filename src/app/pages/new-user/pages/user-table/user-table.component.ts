@@ -11,7 +11,7 @@ import { UserStoreService } from '@pages/new-user/state/services/user-store.serv
 import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // Enums
-import { eStatusTab } from '@shared/enums';
+import { eSharedString, eStatusTab } from '@shared/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -58,6 +58,8 @@ export class UserTableComponent {
 
     // Svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
+
+    public eSharedString = eSharedString;
 
     constructor(public userStoreService: UserStoreService) {}
 
