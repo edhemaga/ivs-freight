@@ -99,6 +99,7 @@ import * as LoadActions from '@pages/load/state/actions/load.action';
 export class DispatchTableComponent implements OnInit, OnDestroy {
     @ViewChildren('columnField') columnFieldElements: QueryList<ElementRef>;
     @ViewChild('tableBodyRow') tableBodyRow: ElementRef;
+    @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLElement>;
 
     @Input() set dispatchTableData(data: DispatchBoardResponse) {
         this.initDispatchData(data);
@@ -178,6 +179,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public isTrailerAddNewHidden = false;
     public isDriverEndorsementActive: boolean = false;
     public isDisplayingAddressInput: boolean = true;
+    public isMaxScroll: boolean = false;
 
     public hasAdditionalFieldTruck: boolean = false;
     public hasAdditionalFieldTrailer: boolean = false;
@@ -212,7 +214,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     private previousDragIndex: number;
     private previousDragTrailerTypeId: number;
-
     constructor(
         private cdRef: ChangeDetectorRef,
 
@@ -247,6 +248,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.getColumnWidths();
 
         this.manageDispatchHubListeners();
+    }
+
+    ngAfterViewInit(): void {
+        this.checkForScroll();
     }
 
     public getLoadInformationForSignleDispatchResponse(item: DispatchResponse) {
@@ -1396,6 +1401,19 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.initDispatchData(this.dispatchData);
 
         this.cdRef.detectChanges();
+    }
+
+    public onHorizontalScroll(event: Event & { target: HTMLElement }): void {
+        const scrollLeft = event.target.scrollLeft;
+        const scrollWidth = event.target.scrollWidth;
+        const clientWidth = event.target.clientWidth;
+
+        this.isMaxScroll = scrollLeft + clientWidth >= scrollWidth - 1;
+    }
+
+    public checkForScroll(): void {
+        const el = this.scrollContainer.nativeElement;
+        this.isMaxScroll = el.scrollWidth >= el.clientWidth;
     }
 
     ngOnDestroy(): void {
