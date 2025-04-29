@@ -21,6 +21,7 @@ import {
     CaInputDropdownTestComponent,
     CaTabSwitchComponent,
 } from 'ca-components';
+import { LoadModalStopComponent } from './components/load-modal-stop/load-modal-stop.component';
 
 // Enum
 import { eLoadModalStopsForm } from '@pages/new-load/pages/new-load-modal/enums';
@@ -48,6 +49,7 @@ import {
         CaTabSwitchComponent,
         CaInputDropdownTestComponent,
         CaInputDatetimePickerComponent,
+        LoadModalStopComponent,
 
         // Pipes
         LoadStopInputConfigPipe,
@@ -67,6 +69,9 @@ export class NewLoadModalStopsComponent implements OnInit {
     public stopTabs = LoadModalStopsHelper.stopTabs;
 
     public stopsForm: UntypedFormGroup;
+
+    public selectedShippers: { [index: number]: any } = {};
+    public activeCardIndex: number | null = null;
 
     get stopsFormArray(): FormArray {
         return this.stopsForm.get('stops') as FormArray;
@@ -112,5 +117,17 @@ export class NewLoadModalStopsComponent implements OnInit {
         });
 
         this.stopsFormArray.push(newStop);
+    }
+
+    public onSelectShipper(shipper: any, index: number): void {
+        this.selectedShippers = {
+            ...this.selectedShippers,
+            [index]: shipper,
+        };
+        console.log('selectedShippers', this.selectedShippers);
+    }
+
+    public handleCardOpened(opened: boolean, index: number): void {
+        this.activeCardIndex = opened ? index : null;
     }
 }

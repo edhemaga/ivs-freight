@@ -46,8 +46,6 @@ export class DispatchTableAssignLoadComponent implements OnInit, OnDestroy {
     ngOnInit(): void {}
 
     public get isButtonDisabled(): boolean {
-        if (!this.isUnlockable) return true;
-
         if (!this.driver) return true;
 
         if (!this.truck) return true;

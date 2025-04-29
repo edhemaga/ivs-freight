@@ -11,12 +11,14 @@
     (cdkDropListDropped)="dragEndRow($event)"
 >
     <div
+        #scrollContainer
         class="table-container-dispatch scrollable"
         [class.flex-column]="
             !dispatchData?.dispatches?.length &&
             !isAllBoardsList &&
             isDispatchBoardLocked
         "
+        (scroll)="onHorizontalScroll($event)"
     >
         @if (isDispatchBoardChangeInProgress) {
             <div
@@ -855,14 +857,17 @@
                                 </td>
                             }
 
-                            <td class="box-item">
+                            <td
+                                class="box-item assign-load-field"
+                            >
                                 <div
-                                    class="main_inside"
-                                    [class.filled]="
-                                        item.driver &&
-                                        item.truck &&
-                                        _isUnlockable
-                                    "
+                                    class="scroll-border"
+                                    [class.opacity-0]="isMaxScroll"
+                                ></div>
+
+                                <div
+                                    class="main_inside position-relative z-2"
+                                    [class.filled]="item.driver && item.truck"
                                 >
                                     <div class="padding-inside p-0">
                                         <app-dispatch-table-assign-load

@@ -244,6 +244,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public isTemplateSelected: boolean = false;
 
     public loadNumber: string;
+    public editDispatchid: number;
 
     // tabs
     public tabs: LoadModalTab[] = [];
@@ -4496,7 +4497,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             dispatchId:
                 statusType === TableStringEnum.CLOSED_2
                     ? null
-                    : this.getIdOrNull(this.selectedDispatch),
+                    : this.getIdOrNull(this.selectedDispatch) ||
+                      this.editDispatchid,
             dispatch:
                 statusType === TableStringEnum.CLOSED_2
                     ? null
@@ -4798,6 +4800,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             id,
             statusType,
         } = loadModalData;
+
+        this.editDispatchid = dispatch?.id;
 
         // DeadHead Stop
         if (loadModalData?.stops?.[0]?.id === 0)
