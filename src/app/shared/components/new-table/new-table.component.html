@@ -5,7 +5,8 @@
 <app-ta-custom-scrollbar
     [scrollBarOptions]="{
         showHorizontalScrollBar: true,
-        dataLength: 25,
+        dataLength: rows?.length,
+        hasShowMore: displayedDataCount < totalDataCount,
     }"
     (scrollEvent)="onHorizontalScroll($event)"
 >
@@ -111,8 +112,11 @@
                 <!-- Left Scroll Border -->
 
                 <div
-                    class="position-absolute w-8 h-full new-table--scroll-border new-table--scroll-border-left"
-                    [ngStyle]="{ left: leftPinnedBorderWidth + eUnit.PX }"
+                    class="position-absolute w-8 new-table--scroll-border new-table--scroll-border-left"
+                    [ngStyle]="{
+                        left: leftPinnedBorderWidth + eUnit.PX,
+                        height: 'calc( 100% - 18px )',
+                    }"
                     [class.hidden]="
                         !isLeftScrollLineShown || !hasActiveLeftPinnedColumns
                     "
@@ -121,8 +125,11 @@
                 <!-- Right Scroll Border -->
 
                 <div
-                    class="position-absolute w-8 h-full new-table--scroll-border new-table--scroll-border-right"
-                    [ngStyle]="{ right: rightPinnedBorderWidth + eUnit.PX }"
+                    class="position-absolute w-8 new-table--scroll-border new-table--scroll-border-right"
+                    [ngStyle]="{
+                        right: rightPinnedBorderWidth + eUnit.PX,
+                        height: 'calc( 100% - 18px )',
+                    }"
                     [class.hidden]="
                         !isRightScrollLineShown || !hasActiveRightPinnedColumns
                     "
