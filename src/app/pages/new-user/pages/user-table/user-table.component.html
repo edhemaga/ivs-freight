@@ -162,33 +162,25 @@
             ></p>
         </ng-template>
 
-        <!-- I left this in comment because I don't know if we will simply use adress property
-          or we will show the address in this order streetNumber street + "," + city + "," + stateShortName zipCode-->
+        <ng-template let-user="data" #personalAddress>
+            @let fullAddress =
+                (user?.address?.streetNumber
+                    ? user.address.streetNumber + ' '
+                    : '') +
+                (user?.address?.street ?? '') +
+                (user?.address?.city ? ', ' + user.address.city : '') +
+                (user?.address?.stateShortName
+                    ? ', ' + user.address.stateShortName
+                    : '') +
+                (user?.address?.zipCode ? ' ' + user.address.zipCode : '');
 
-        <!-- {
-            "city": "Antioch",
-            "state": "Illinois",
-            "county": "Lake County",
-            "address": "936 Carney Court, Antioch, IL, US",
-            "street": "Carney Court",
-            "streetNumber": "936",
-            "country": "US",
-            "zipCode": "60002",
-            "stateShortName": "IL",
-            "addressUnit": null
-
-            streetNumber street + "," + city + "," + stateShortName zipCode
-        } -->
-
-        <!-- <ng-template let-user="data" #personalAddress>
             <div
-                class="text-color-black-2 text-size-14"
+                class="text-color-black-2 text-size-14 text-truncate"
                 [innerHtml]="
-                    user?.fullAddress
-                        | tableHighlightSearchText: store.searchStrings
+                    fullAddress | tableHighlightSearchText: store.searchStrings
                 "
             ></div>
-        </ng-template> -->
+        </ng-template>
 
         <!-- #endregion END OF PERSONAL DETAILS GROUP -->
 
