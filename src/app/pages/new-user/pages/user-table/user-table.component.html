@@ -199,33 +199,41 @@
             <div
                 class="d-flex gap-1 text-color-black-2 text-size-14 align-items-center"
                 [class]="cellColumnTextColorClass"
+                [ngSwitch]="user?.userStatus"
             >
-                @if (user?.userStatus === eSharedString.OWNER) {
+                <ng-container *ngSwitchCase="eStringPlaceholder.ZERO">
+                    <!-- no icon for ZERO status -->
+                </ng-container>
+                <ng-container *ngSwitchCase="eSharedString.OWNER">
                     <svg-icon
                         [src]="sharedSvgRoutes.USER_STATUS_OWNER_ICON"
                         class="svg-size-14"
                     ></svg-icon>
-                } @else if (user?.userStatus === eSharedString.ADMIN) {
+                </ng-container>
+                <ng-container *ngSwitchCase="eSharedString.ADMIN">
                     <svg-icon
                         [src]="sharedSvgRoutes.USER_STATUS_ADMIN_ICON"
                         class="svg-size-14"
                     ></svg-icon>
-                } @else if (user?.userStatus === eSharedString.INVITED) {
+                </ng-container>
+                <ng-container *ngSwitchCase="eSharedString.INVITED">
                     <svg-icon
                         [src]="sharedSvgRoutes.USER_STATUS_INVITED_ICON"
                         class="svg-size-14 text-color-grey opacity-60"
                     ></svg-icon>
-                } @else if (user?.userStatus === eSharedString.EXPIRED) {
+                </ng-container>
+                <ng-container *ngSwitchCase="eSharedString.EXPIRED">
                     <svg-icon
                         [src]="sharedSvgRoutes.USER_STATUS_EXPIRED_ICON"
                         class="svg-size-14 text-color-grey opacity-60"
                     ></svg-icon>
-                } @else {
+                </ng-container>
+                <ng-container *ngSwitchDefault>
                     <svg-icon
                         [src]="sharedSvgRoutes.USER_CIRCLE_ICON"
                         class="svg-size-14"
                     ></svg-icon>
-                }
+                </ng-container>
 
                 <span
                     [ngClass]="{
