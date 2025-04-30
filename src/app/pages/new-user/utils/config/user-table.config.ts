@@ -119,6 +119,7 @@ export class UserTableColumnsConfig {
         label: 'Personal',
         labelToolbar: 'Personal Detail',
         pinned: null,
+        isChecked: false,
         columns: [
             {
                 id: 7,
@@ -167,6 +168,7 @@ export class UserTableColumnsConfig {
         label: '',
         labelToolbar: '',
         pinned: null,
+        isChecked: true,
         columns: [
             {
                 id: 10,
@@ -189,6 +191,7 @@ export class UserTableColumnsConfig {
         label: '',
         labelToolbar: '',
         pinned: null,
+        isChecked: true,
         columns: [
             {
                 id: 11,
@@ -258,7 +261,7 @@ export class UserTableColumnsConfig {
         key: 'payrollDetailGroup',
         label: 'Payroll',
         labelToolbar: 'Payroll Detail',
-        isChecked: false,
+        isChecked: true,
         pinned: null,
         columns: [
             {
@@ -321,6 +324,7 @@ export class UserTableColumnsConfig {
         label: '',
         labelToolbar: '',
         pinned: null,
+        isChecked: false,
         columns: [
             {
                 id: 19,
