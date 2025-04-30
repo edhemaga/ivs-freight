@@ -163,21 +163,12 @@
         </ng-template>
 
         <ng-template let-user="data" #personalAddress>
-            @let fullAddress =
-                (user?.address?.streetNumber
-                    ? user.address.streetNumber + eStringPlaceholder.WHITESPACE
-                    : eStringPlaceholder.EMPTY) +
-                (user?.address?.street ?? eStringPlaceholder.EMPTY) +
-                (user?.address?.city ? eStringPlaceholder.COMMA_WHITESPACE + user.address.city : eStringPlaceholder.EMPTY) +
-                (user?.address?.stateShortName
-                    ? eStringPlaceholder.COMMA_WHITESPACE + user.address.stateShortName
-                    : eStringPlaceholder.EMPTY) +
-                (user?.address?.zipCode ? eStringPlaceholder.WHITESPACE + user.address.zipCode : eStringPlaceholder.EMPTY);
+            @let fullAddress = user?.address | addressFullname;
 
             <div
                 class="text-color-black-2 text-size-14 text-truncate"
                 [innerHtml]="
-                    fullAddress | tableHighlightSearchText: store.searchStrings
+                    test | tableHighlightSearchText: store.searchStrings
                 "
             ></div>
         </ng-template>
@@ -227,7 +218,6 @@
                         ></svg-icon>
                     }
                 }
-
 
                 @let userStatusInvitedOrExpired =
                     user?.userStatus === eSharedString.INVITED ||
