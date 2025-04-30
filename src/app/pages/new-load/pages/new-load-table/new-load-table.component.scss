@@ -1,0 +1,12 @@
+.comments {
+    &-count {
+        top: 25%;
+        left: 30%;
+        pointer-events: none;
+    }
+
+    &-component {
+        top: 2px;
+        right: -28px;
+    }
+}

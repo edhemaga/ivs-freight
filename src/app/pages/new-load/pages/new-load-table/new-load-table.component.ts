@@ -25,6 +25,7 @@ import {
     CaLoadStatusComponent,
     CaCheckboxSelectedCountComponent,
     ePosition,
+    CaCommentsComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
@@ -76,11 +77,11 @@ import { ThousandSeparatorPipe } from '@shared/pipes';
         TaNoteComponent,
         LoadTypeComponent,
         TaTruckTrailerIconComponent,
+        CaCommentsComponent,
 
         // Pipes
         TableHighlightSearchTextPipe,
-        ThousandSeparatorPipe
-        
+        ThousandSeparatorPipe,
     ],
 })
 export class NewLoadTableComponent
@@ -100,6 +101,8 @@ export class NewLoadTableComponent
     public ePosition = ePosition;
     public eDropdownMenu = eDropdownMenu;
     public eDateTimeFormat = eDateTimeFormat;
+
+    public selectedCommentsLoadId: number | null = null;
 
     constructor(
         protected router: Router,
@@ -194,6 +197,11 @@ export class NewLoadTableComponent
 
     public onSortingChange(column: ITableColumn): void {
         this.loadStoreService.dispatchSortingChange(column);
+    }
+
+    public onToggleComments(id: number): void {
+        this.selectedCommentsLoadId =
+            this.selectedCommentsLoadId === id ? null : id;
     }
 
     ngOnDestroy(): void {

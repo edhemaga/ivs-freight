@@ -1014,6 +1014,16 @@ export class LoadTableColumnsConfig {
             sortName: LoadSortBy.EditedDate,
         },
         {
+            key: 'comments',
+            label: '',
+            width: 26,
+            minWidth: 26,
+            isResizable: false,
+            isDisabled: false,
+            isChecked: true,
+            hasSort: false,
+        },
+        {
             key: 'note',
             label: 'Note',
             width: 26,

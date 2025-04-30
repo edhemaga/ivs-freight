@@ -13,6 +13,7 @@ import { LoadDelivery, LoadPickup } from '@pages/load/pages/load-table/models';
 
 // interfaces
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { IComment } from 'ca-components';
 
 export interface IMappedLoad {
     id: number;
@@ -28,6 +29,7 @@ export interface IMappedLoad {
     driverInfo?: LoadDriverInfo | DriverMinimalResponse;
     templateName: string;
     commodity?: string;
+    comments: IComment;
     brokerBusinessName: string;
     assignedDriverTruckNumber: string;
     assignedDriverTrailerNumber: string;

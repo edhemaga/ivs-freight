@@ -89,4 +89,5 @@ export class SharedSvgRoutes {
 
     // note
     static NOTE_ICON: string = 'assets/svg/truckassist-table/note/Note.svg';
+    static COMMENT_ICON: string = 'assets/svg/comment.svg';
 }

@@ -50,6 +50,7 @@ export class LoadHelper {
                 totalMiles,
                 dateCreated,
                 createdAt,
+                comments,
             } = load;
 
             const mapped: IMappedLoad = {
@@ -69,6 +70,7 @@ export class LoadHelper {
                 loadType: loadType?.name ?? type?.name,
                 broker,
                 brokerContact: broker?.contact,
+                comments,
                 commodity:
                     loadDetails?.generalCommodityName ?? generalCommodity?.name,
                 brokerBusinessName: broker?.businessName,

@@ -38,6 +38,7 @@
             referenceNumber,
             brokerBusinessName,
             brokerContact,
+            comments,
             note,
             requirementTruck,
             requirementTrailer,
@@ -464,6 +465,40 @@
                 "
             >
             </ca-dropdown-menu>
+        </ng-template>
+
+        <ng-template let-data="data" #comments>
+            @let loadId = data?.id;
+            @let isSelected = loadId === selectedCommentsLoadId;
+            <div
+                class="w-26 h-26 d-flex align-items-center justify-items-center c-pointer br-2 m-t-1"
+                [class.background-black]="isSelected"
+                (click)="onToggleComments(loadId)"
+            >
+                <div
+                    class="position-relative d-flex align-items-center justify-items-center m-auto"
+                >
+                    <span
+                        class="comments-count z-0 position-absolute text-color-white text-size-9 ta-font-semi-bold"
+                        >{{ data?.comments?.length }}</span
+                    >
+                    <svg-icon
+                        class="svg-fill-grey svg-size-16"
+                        [src]="sharedSvgRoutes.COMMENT_ICON"
+                    ></svg-icon>
+                </div>
+            </div>
+            @if (isSelected) {
+                <div class="position-absolute z-1">
+                    <div class="position-relative">
+                        <div class="comments-component position-absolute">
+                            <ca-comments
+                                [comments]="data?.comments"
+                            ></ca-comments>
+                        </div>
+                    </div>
+                </div>
+            }
         </ng-template>
 
         <ng-template let-data="data" #note>
