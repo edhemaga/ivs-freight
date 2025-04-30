@@ -160,10 +160,8 @@ export class NewTableComponent<T> {
 
         this.mainColumns = columns.filter((col) => !col.pinned);
 
-        this.hasActiveLeftPinnedColumns =
-            TableScrollHelper.countCheckedColumns(this.leftPinnedColumns) > 0;
-        this.hasActiveRightPinnedColumns =
-            TableScrollHelper.countCheckedColumns(this.rightPinnedColumns) > 0;
+        this.hasActiveLeftPinnedColumns = this.leftPinnedColumns?.length > 0;
+        this.hasActiveRightPinnedColumns = this.rightPinnedColumns?.length > 0;
 
         this.leftPinnedBorderWidth =
             TableScrollHelper.getTotalColumnWidth(this.leftPinnedColumns) + 8;
@@ -263,11 +261,20 @@ export class NewTableComponent<T> {
                 }
             });
 
+            const isLeftBorderCurrentlyShown = this.isLeftScrollLineShown;
+            const isRightBorderCurrentlyShown = this.isRightScrollLineShown;
+
             if (scrollEvent.scrollPosition) {
                 this.isLeftScrollLineShown = true;
 
                 this.isRightScrollLineShown = !isMaxScroll;
             } else this.isLeftScrollLineShown = false;
+
+            if (
+                isLeftBorderCurrentlyShown !== this.isLeftScrollLineShown ||
+                isRightBorderCurrentlyShown !== this.isRightScrollLineShown
+            )
+                this.cdr.detectChanges();
         } else if (
             scrollEvent.eventAction === eCustomScroll.IS_SCROLL_SHOWING
         ) {

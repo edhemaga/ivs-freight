@@ -37,8 +37,8 @@ export class TableColumnActionClassPipe implements PipeTransform {
             (isGroupHeadingHover && isLastInGroup);
 
         return {
-            'visible opacity-100': hasVisibleActions,
-            'invisible opacity-0 w-2': !hasVisibleActions,
+            'd-flex': hasVisibleActions,
+            'hidden': !hasVisibleActions,
             'top-4': !isLastInGroup,
             'bottom-6': isLastInGroup,
         };
