@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { eStringPlaceholder } from '@shared/enums';
 import moment from 'moment';
 
 @Pipe({
@@ -11,6 +12,8 @@ export class ActivityTimePipe implements PipeTransform {
         const currentTime = moment().unix();
         const diffInSeconds = currentTime - backendTime;
 
+        if(!value) return eStringPlaceholder.EMPTY;
+        
         if (type === 'activity') if (diffInSeconds < 600) return 'Online';
 
         if (diffInSeconds < 3600) {

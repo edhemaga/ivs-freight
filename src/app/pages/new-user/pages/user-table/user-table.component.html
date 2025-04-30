@@ -242,24 +242,15 @@
         <!-- #region END OF STATUS COLUMN -->
 
         <!-- #region ACTIVITY COLUMN -->
-
-        <!-- tableActivity: data.lastLogin
-                ? this.activityTimePipe.transform(
-                      data.lastLogin,
-                      TableStringEnum.ACTIVITY
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER, -->
-
-        <!-- <ng-template
+        <ng-template
             #activity
             let-user="data"
             let-cellColumnTextColorClass="cellColumnTextColorClass"
         >
             <div class="text-color-black-2 text-size-14">
-                {{ user?.lastlogin | activityTime: 'activity' }}
+                {{ user?.lastLogin | activityTime: 'activity' }}
             </div>
-        </ng-template> -->
-
+        </ng-template>
         <!-- #region END OF ACTIVITY COLUMN -->
     </app-new-table>
 }

@@ -63,9 +63,6 @@ export class UserTableComponent {
     // Svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
 
-    // pipes
-    // public activityTimePipe: ActivityTimePipe;
-
     constructor(public userStoreService: UserStoreService) {}
 
     public onShowMoreClick(): void {
