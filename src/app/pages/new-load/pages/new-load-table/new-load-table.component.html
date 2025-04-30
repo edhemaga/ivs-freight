@@ -470,6 +470,7 @@
         <ng-template let-data="data" #comments>
             @let loadId = data?.id;
             @let isSelected = loadId === selectedCommentsLoadId;
+            @let commentCount = data?.comments?.length;
             <div
                 class="w-26 h-26 d-flex align-items-center justify-items-center c-pointer br-2 m-t-1"
                 [class.background-black]="isSelected"
@@ -480,7 +481,7 @@
                 >
                     <span
                         class="comments-count z-0 position-absolute text-color-white text-size-9 ta-font-semi-bold"
-                        >{{ data?.comments?.length }}</span
+                        >{{ commentCount }}</span
                     >
                     <svg-icon
                         class="svg-fill-grey svg-size-16"
@@ -494,6 +495,7 @@
                         <div class="comments-component position-absolute">
                             <ca-comments
                                 [comments]="data?.comments"
+                                [commentCount]="commentCount"
                             ></ca-comments>
                         </div>
                     </div>
