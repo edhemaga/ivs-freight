@@ -25,6 +25,9 @@
             personalAddress,
             status,
             activity,
+            bankName,
+            bankRouting,
+            bankAccount,
         };
     @let headerTemplates =
         {
@@ -252,5 +255,45 @@
             </div>
         </ng-template>
         <!-- #region END OF ACTIVITY COLUMN -->
+
+        <!-- #region BANK DETAILS GROUP -->
+        <ng-template
+            #bankName
+            let-user="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    user?.bankName
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template
+            #bankRouting
+            let-user="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div
+                class="text-color-black-2 text-size-14 text-truncate"
+                [innerHtml]="
+                    user?.routingNumber
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template
+            #bankAccount
+            let-user="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <app-ta-password-account-hidden-characters
+                [passwordOrAccount]="user?.accountNumber"
+            ></app-ta-password-account-hidden-characters>
+        </ng-template>
+        <!-- #region END OF BANK DETAILS GROUP -->
     </app-new-table>
 }

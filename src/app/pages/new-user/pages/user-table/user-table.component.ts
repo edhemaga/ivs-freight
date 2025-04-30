@@ -28,6 +28,7 @@ import {
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
 import { ActivityTimePipe, NameInitialsPipe } from '@shared/pipes';
 import { AddressFullnamePipe } from '@shared/pipes/address-fullname.pipe';
+import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 
 @Component({
     selector: 'app-user-table',
@@ -46,6 +47,7 @@ import { AddressFullnamePipe } from '@shared/pipes/address-fullname.pipe';
         CaCheckboxSelectedCountComponent,
         CaProfileImageComponent,
         SvgIconComponent,
+        TaPasswordAccountHiddenCharactersComponent,
 
         // Pipes
         TableHighlightSearchTextPipe,

@@ -75,6 +75,9 @@ export class UsersHelper {
                 address,
                 userStatus,
                 lastLogin,
+                bank,
+                routingNumber,
+                accountNumber
             } = user;
 
             const mapped: IMappedUser = {
@@ -92,6 +95,9 @@ export class UsersHelper {
                 address,
                 userStatus,
                 lastLogin,
+                bankName: bank?.name,
+                routingNumber,
+                accountNumber
             };
 
             return mapped;

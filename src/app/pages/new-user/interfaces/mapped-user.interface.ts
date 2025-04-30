@@ -1,4 +1,4 @@
-import { AddressEntity } from "appcoretruckassist";
+import { AddressEntity, BankResponse } from "appcoretruckassist";
 
 export interface IMappedUser {
     fullName: string;
@@ -12,7 +12,10 @@ export interface IMappedUser {
     extensionPhone: string | null;
     personalPhone: string | null;
     personalEmail: string | null;
-    address: AddressEntity;
+    address: AddressEntity | null;
     userStatus: string | null;
     lastLogin: string | null;
+    bankName: string | null;
+    routingNumber: string | null;
+    accountNumber: string | null;
 }
