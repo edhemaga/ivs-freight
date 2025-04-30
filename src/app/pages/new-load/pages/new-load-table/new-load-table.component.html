@@ -11,62 +11,131 @@
             loadStoreService.isTypeColumnCheckedSelector$ | async,
         searchStrings: loadStoreService.searchStringsSelector$ | async,
     };
+
 @if (store) {
     @let headerTemplates =
         {
             select: selectHeaderTemplate,
-            requirementLength: lengthHeaderTemplate,
+            weight: weightHeaderTemplate,
+            requirementLength: requirementLengthHeaderTemplate,
+            billingRate: alignRightHeaderTemplate,
             note: noteHeaderTemplate,
         };
+
     @let templates =
         {
-            loadNumber,
-            loadInvoice,
-            loadDispatcher,
-            loadStatus,
             select,
-            edit,
-            action,
-            loadStatus,
             templateName,
-            commodity,
-            billingRate,
-            invoicedDate,
-            assignedDriver,
-            brokerPhone,
             loadType,
-            referenceNumber,
+            loadDispatcher,
+            companyName,
             brokerBusinessName,
             brokerContact,
-            note,
-            requirementTruck,
-            requirementTrailer,
+            brokerPhone,
+            referenceNumber,
+            commodity,
+            assignedDriver,
             assignedDriverTruckNumber,
             assignedDriverTrailerNumber,
+            requirementTruck,
+            requirementTrailer,
             driverMessage,
-            companyName,
             milesLoaded,
             milesEmpty,
             milesTotal,
+            billingRatePerMile: currencyTemplate,
+            billingLayover: currencyTemplate,
+            billinglumper: currencyTemplate,
+            billingFuelSurcharge: currencyTemplate,
+            billingEscort: currencyTemplate,
+            billingDetention: currencyTemplate,
+
+            loadNumber,
+            loadStatus,
+
+            edit,
+            action,
+            note,
+
+            billingRate,
+            invoicedDate,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
+
     <app-new-table
         [columns]="store.columns"
         [rows]="store.viewData"
-        [headerTemplates]="headerTemplates"
-        [totalDataCount]="store.selectedTabCountSelector"
-        [templates]="templates"
         [isTableLocked]="isTableLocked"
+        [totalDataCount]="store.selectedTabCountSelector"
+        [headerTemplates]="headerTemplates"
+        [templates]="templates"
         (onSortingChange)="onSortingChange($event)"
         (onShowMore)="onShowMoreClick()"
     >
+        <!-- Header Templates -->
+
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox-selected-count
                 [itemsTotalCount]="store.viewData.length"
                 [itemsSelectedCount]="store.selectedCount"
                 (onCheckboxCountClick)="onCheckboxCountClick($event)"
             ></app-ca-checkbox-selected-count>
+        </ng-template>
+
+        <ng-template #weightHeaderTemplate>
+            <div class="d-flex">
+                <span
+                    class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
+                >
+                    Weight
+
+                    <span
+                        class="text-size-11 ta-font-semi-bold text-color-muted text-lowercase"
+                    >
+                        lbs.
+                    </span>
+                </span>
+            </div>
+        </ng-template>
+
+        <ng-template
+            #requirementLengthHeaderTemplate
+            let-data="data"
+            let-tableColumnClass="tableColumnClass"
+            let-tableColumnLabelWidth="tableColumnLabelWidth"
+        >
+            <div class="d-flex" [ngClass]="tableColumnClass">
+                <svg-icon
+                    [src]="sharedSvgRoutes.TABLE_LENGTH_ICON"
+                    class="d-flex svg-fill-bw6-2 svg-size-14 m-r-4"
+                >
+                </svg-icon>
+
+                <span
+                    class="text-size-11 ta-font-semi-bold text-color-muted text-truncate d-inline-block"
+                    [ngStyle]="tableColumnLabelWidth"
+                >
+                    ft
+                </span>
+            </div>
+        </ng-template>
+
+        <ng-template
+            #alignRightHeaderTemplate
+            let-data="data"
+            let-tableColumnClass="tableColumnClass"
+            let-tableColumnLabelWidth="tableColumnLabelWidth"
+            let-label="label"
+        >
+            <div class="d-flex" [ngClass]="tableColumnClass">
+                <span
+                    class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
+                    [ngStyle]="tableColumnLabelWidth"
+                >
+                    {{ label }}
+                </span>
+            </div>
         </ng-template>
 
         <ng-template
@@ -82,29 +151,11 @@
             </div>
         </ng-template>
 
-        <ng-template
-            #lengthHeaderTemplate
-            let-data="data"
-            let-tableColumnClass="tableColumnClass"
-            let-tableColumnLabelWidth="tableColumnLabelWidth"
-        >
-            <div class="d-flex" [ngClass]="">
-                <svg-icon
-                    [src]="sharedSvgRoutes.TABLE_LENGTH_ICON"
-                    class="d-flex svg-fill-bw6-2 svg-size-14 m-r-4"
-                >
-                </svg-icon>
-                <span
-                    class="text-size-11 ta-font-semi-bold text-color-muted text-truncate d-inline-block"
-                    [ngStyle]="tableColumnLabelWidth"
-                >
-                    ft
-                </span>
-            </div>
-        </ng-template>
+        <!-- Column Templates -->
 
         <ng-template let-data="data" #select>
             @let loadName = 'Load-' + data.id;
+
             <app-ca-checkbox
                 [isChecked]="data.isSelected"
                 [isRegularCheckbox]="false"
@@ -115,6 +166,7 @@
         </ng-template>
 
         <!-- #region LOAD NUMBER COLUMN -->
+
         <ng-template
             #loadNumber
             let-data="data"
@@ -144,11 +196,13 @@
                 </span>
             </div>
         </ng-template>
+
         <!-- #endregion END OF LOAD NUMBER COLUMN -->
 
         <!-- #region TEMPLATE NAME COLUMN -->
+
         <ng-template let-data="data" #templateName>
-            <div class="d-flex gap-1 align-items-center h-full">
+            <div class="d-flex gap-1">
                 @if (!store.isTypeColumnCheckedSelector) {
                     <app-load-type
                         [loadType]="data.loadType"
@@ -156,20 +210,25 @@
                     >
                     </app-load-type>
                 }
+
                 <div class="text-color-black text-size-14 ta-font-bold">
                     {{ data.templateName }}
                 </div>
             </div>
         </ng-template>
+
         <!-- #endregion END OF TEMPLATE NAME COLUMN -->
 
         <!-- #region TYPE COLUMN -->
+
         <ng-template let-data="data" #loadType>
             <app-load-type [loadType]="data.loadType" [isTextVisible]="true" />
         </ng-template>
+
         <!-- #endregion END OF TYPE COLUMN -->
 
         <!-- #region DISPATCHER COLUMN -->
+
         <ng-template let-data="data" #loadDispatcher>
             <div class="d-flex gap-1">
                 <app-ca-profile-image
@@ -188,24 +247,28 @@
                 ></div>
             </div>
         </ng-template>
+
         <!-- #endregion END OF DISPATCHER COLUMN -->
 
         <!-- #region COMPANY NAME COLUMN -->
+
         <ng-template let-data="data" #companyName>
             <div
-                class="text-color-black text-size-14"
+                class="text-color-black-2 text-size-14"
                 [innerHtml]="
                     data.companyName
                         | tableHighlightSearchText: store.searchStrings
                 "
             ></div>
         </ng-template>
+
         <!-- #endregion END OF COMPANY NAME COLUMN -->
 
         <!-- #region BROKER GROUP -->
+
         <ng-template let-data="data" #brokerBusinessName>
             <div
-                class="text-color-black text-size-14"
+                class="text-color-black-2 text-size-14"
                 [innerHtml]="
                     data.brokerBusinessName
                         | tableHighlightSearchText: store.searchStrings
@@ -228,20 +291,23 @@
             let-data="data"
             let-cellColumnTextColorClass="cellColumnTextColorClass"
         >
-            <div class="text-size-14" [class]="cellColumnTextColorClass">
-                <span class="text-color-black-2"
-                    >{{ data.broker?.phone }}
+            <div [class]="cellColumnTextColorClass">
+                <span class="text-color-black-2 text-size-14"
+                    >{{ data?.brokerPhone }}
                 </span>
-                @if (data.broker?.phoneExt) {
-                    <span class="text-color-muted"
-                        >x {{ data.broker?.phoneExt }}
+
+                @if (data.brokerPhoneExt) {
+                    <span class="text-color-muted text-size-14"
+                        >x {{ data.brokerPhoneExt }}
                     </span>
                 }
             </div>
         </ng-template>
+
         <!-- #endregion END OF BROKER GROUP -->
 
         <!-- #region REF NO ; COMMODITY ; WEIGHT GROUP -->
+
         <ng-template let-data="data" #referenceNumber>
             <div
                 class="text-color-black-2 text-size-14 text-truncate"
@@ -257,49 +323,47 @@
             let-data="data"
             let-cellColumnTextColorClass="cellColumnTextColorClass"
         >
-            <div
-                class="text-color-black-2 text-size-14 align-items-center"
-                [class]="cellColumnTextColorClass"
-            >
+            <div class="align-items-center" [class]="cellColumnTextColorClass">
                 @if (data.commodity === eSharedString.HAZARDOUS) {
                     <svg-icon
-                        [src]="sharedSvgRoutes.HAZARDOUS_ICON"
                         class="svg-size-18"
+                        [src]="sharedSvgRoutes.HAZARDOUS_ICON"
                     ></svg-icon>
                 }
-                <span class="text-color-black text-size-14">
+
+                <span class="text-color-black-2 text-size-14">
                     {{ data.commodity }}
                 </span>
             </div>
         </ng-template>
+
         <!-- #endregion END OF REF NO ; COMMODITY ; WEIGHT GROUP -->
 
         <!-- #region ASSIGNED GROUP -->
+
         <ng-template
             #assignedDriver
             let-cellColumnTextColorClass="cellColumnTextColorClass"
             let-data="data"
         >
             <div class="d-flex gap-1">
+                @let driverFullName =
+                    data.assignedDriver?.firstName +
+                    eStringPlaceholder.WHITESPACE +
+                    data.assignedDriver?.lastName;
+
                 <app-ca-profile-image
-                    [name]="
-                        data.driverInfo?.firstName + data.driverInfo?.lastName
-                    "
+                    [name]="driverFullName"
                     [isRound]="false"
                     [size]="18"
-                    [avatarImg]="data.driverInfo?.avatarFile?.url"
+                    [avatarImg]="data.assignedDriver?.avatarFile?.url"
                 >
                 </app-ca-profile-image>
-
-                @let driverDisplayName =
-                    data.driverInfo?.firstName +
-                    ' ' +
-                    data.driverInfo?.lastName;
 
                 <div
                     class="text-color-black-2 text-size-14"
                     [innerHtml]="
-                        driverDisplayName
+                        driverFullName
                             | tableHighlightSearchText: store.searchStrings
                     "
                 ></div>
@@ -307,45 +371,29 @@
         </ng-template>
 
         <ng-template let-data="data" #assignedDriverTruckNumber>
-            @if (data.requirementTruck) {
-                <!-- truck number is searchable field but [innerHtml] is missing for app-ta-truck-trailer-icon -->
-                <app-ta-truck-trailer-icon
-                    iconType="truck"
-                    [inputData]="data.requirementTruck"
-                    [unitNumber]="data.assignedDriverTruckNumber"
-                ></app-ta-truck-trailer-icon>
-            } @else {
-                <div
-                    class="text-color-black text-size-14"
-                    [innerHtml]="
-                        data.assignedDriverTruckNumber
-                            | tableHighlightSearchText: store.searchStrings
-                    "
-                ></div>
-            }
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    data.assignedDriverTruckNumber
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
         </ng-template>
 
         <ng-template let-data="data" #assignedDriverTrailerNumber>
-            @if (data.requirementTrailer) {
-                <!-- trailer number is searchable field but [innerHtml] is missing for app-ta-truck-trailer-icon -->
-                <app-ta-truck-trailer-icon
-                    iconType="trailer"
-                    [inputData]="data.requirementTrailer"
-                    [unitNumber]="data.assignedDriverTrailerNumber"
-                ></app-ta-truck-trailer-icon>
-            } @else {
-                <div
-                    class="text-color-black text-size-14"
-                    [innerHtml]="
-                        data.assignedDriverTrailerNumber
-                            | tableHighlightSearchText: store.searchStrings
-                    "
-                ></div>
-            }
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    data.assignedDriverTrailerNumber
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
         </ng-template>
+
         <!-- #endregion END OF ASSIGNED GROUP -->
 
         <!-- #region STATUS ; PICKUP ; DELIVERY GROUP -->
+
         <ng-template let-data="data" #loadStatus>
             <span
                 class="ta-font-bold text-size-14 text-color-black"
@@ -370,9 +418,11 @@
                 </app-ca-load-status>
             </span>
         </ng-template>
+
         <!-- #endregion END OF STATUS ; PICKUP ; DELIVERY GROUP -->
 
         <!-- #region REQUIREMENT GROUP -->
+
         <ng-template #requirementTruck let-data="data">
             @if (data.requirementTruck) {
                 <app-ta-truck-trailer-icon
@@ -390,9 +440,11 @@
                 ></app-ta-truck-trailer-icon>
             }
         </ng-template>
-        <!-- #endregion END OF REQUIREMENT GROU -->
+
+        <!-- #endregion END OF REQUIREMENT GROUP -->
 
         <!-- #region DRIVER MESSAGE COLUMN -->
+
         <ng-template
             #driverMessage
             let-cellColumnTextColorClass="cellColumnTextColorClass"
@@ -404,9 +456,11 @@
                 [innerHtml]="data.driverMessage"
             ></div>
         </ng-template>
+
         <!-- #endregion END OF DRIVER MESSAGE COLUMN -->
 
         <!-- #region MILES GROUP -->
+
         <ng-template let-data="data" #milesLoaded>
             <p class="text-color-black-2 text-size-14">
                 {{ data.milesLoaded | thousandSeparator }}
@@ -424,21 +478,39 @@
                 {{ data.milesTotal | thousandSeparator }}
             </p>
         </ng-template>
+
         <!-- #endregion END OF MILES GROUP -->
 
         <!-- #region BILLING GROUP -->
-        <ng-template
-            #billingRate
-            let-data="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
-            <span
-                class="ta-font-bold text-size-14 text-color-black"
-                [class]="cellColumnTextColorClass"
-            >
-                {{ data.billingRate | currency }}
-            </span>
+
+        <ng-template #currencyTemplate let-data="data" let-key="key">
+            @if (data[key]?.value) {
+                <p class="text-color-black-2 text-size-14">
+                    @let currencyTemplateValue = data[key]?.value | currency;
+
+                    {{ currencyTemplateValue }}
+                </p>
+            }
         </ng-template>
+
+        <ng-template #billingRate let-data="data">
+            @if (data.billingRate) {
+                <div class="d-flex flex-column align-items-end">
+                    <p
+                        class="ta-font-semi-bold text-size-14 text-color-black position-relative top-2"
+                    >
+                        {{ data.billingRate | currency }}
+                    </p>
+
+                    <span
+                        class="ta-font-bold text-size-11 text-color-purple-4 position-relative bottom-2"
+                    >
+                        {{ data.billingAdjustedRate | currency }}
+                    </span>
+                </div>
+            }
+        </ng-template>
+
         <!-- #endregion END OF BILLING GROUP -->
 
         <ng-template

@@ -13,33 +13,27 @@ import { LoadDelivery, LoadPickup } from '@pages/load/pages/load-table/models';
 
 // interfaces
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { ISingleValue } from '@shared/interfaces';
 
 export interface IMappedLoad {
     id: number;
-    edit: boolean;
     isSelected: boolean;
-    loadNumber: string;
-    status: LoadStatusResponse;
-    dispatcher: CompanyUserShortResponse;
-    referenceNumber: string;
-    tableDropdownContent: IDropdownMenuItem[];
-    totalDue: number;
-    broker: LoadBrokerInfo;
-    driverInfo?: LoadDriverInfo | DriverMinimalResponse;
+
+    /////////////////////////////////////// TEMPLATE
     templateName: string;
-    commodity?: string;
+    loadType: EnumValue;
+    dispatcher: CompanyUserShortResponse;
+    companyName: string;
     brokerBusinessName: string;
+    brokerContact: string;
+    brokerPhone: string;
+    brokerPhoneExt: string;
+    referenceNumber: string;
+    commodity: string;
+    weight: string;
+    assignedDriver: LoadDriverInfo | DriverMinimalResponse;
     assignedDriverTruckNumber: string;
     assignedDriverTrailerNumber: string;
-    milesLoaded: number;
-    milesEmpty: number;
-    milesTotal: number;
-    billingRatePerMile: number;
-    billingRate: number;
-    invoicedDate: string;
-    note: string;
-    brokerContact: string;
-    loadType: EnumValue;
     requirementTruck: TruckTypeResponse;
     requirementTrailer: TrailerTypeResponse;
     requirementLength: string;
@@ -48,8 +42,34 @@ export interface IMappedLoad {
     requirementYear: string;
     requirementLiftgate: string;
     driverMessage: string;
-    companyName: string;
-    pickup?: LoadPickup;
-    delivery?: LoadDelivery;
+    milesLoaded: number;
+    milesEmpty: number;
+    milesTotal: number;
+
+    billingRatePerMile: ISingleValue;
+    billingLayover: ISingleValue;
+    billinglumper: ISingleValue;
+    billingFuelSurcharge: ISingleValue;
+    billingEscort: ISingleValue;
+    billingDetention: ISingleValue;
+    billingRate: number;
+    billingAdjustedRate: number;
+
+    ////////////////////////////////////////////////////////////
+
+    edit: boolean;
+
+    loadNumber: string;
+    status: LoadStatusResponse;
+
+    tableDropdownContent: IDropdownMenuItem[];
+    totalDue: number;
+    broker: LoadBrokerInfo;
+
+    invoicedDate: string;
+    note: string;
+
+    pickup: LoadPickup;
+    delivery: LoadDelivery;
     dateCreated: string;
 }

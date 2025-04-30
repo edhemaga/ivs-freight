@@ -13,7 +13,9 @@
         <div>
             <!-- Header -->
 
-            <div class="d-flex m-b-6 p-x-8 new-table--header">
+            <div
+                class="d-flex m-b-6 p-x-8 prevent-text-selection new-table--header"
+            >
                 <div
                     class="d-flex background-inherit left-0 new-table--pinned-left"
                     cdkDropList
@@ -31,24 +33,26 @@
                             leftPinnedColumns[leftPinnedColumnIndex + 1] ??
                             mainColumns[0];
 
-                        <div
-                            class="d-flex reorder-container"
-                            cdkDrag
-                            [cdkDragDisabled]="
-                                isReorderDisabled || column.isDisabled
-                            "
-                            (cdkDragStarted)="onReorderStart()"
-                        >
-                            <ng-container
-                                *ngTemplateOutlet="
-                                    columnTemplate;
-                                    context: {
-                                        column,
-                                        nextColumn,
-                                    }
+                        @if (column.isChecked) {
+                            <div
+                                class="d-flex reorder-container"
+                                cdkDrag
+                                [cdkDragDisabled]="
+                                    isReorderDisabled || column.isDisabled
                                 "
-                            ></ng-container>
-                        </div>
+                                (cdkDragStarted)="onReorderStart()"
+                            >
+                                <ng-container
+                                    *ngTemplateOutlet="
+                                        columnTemplate;
+                                        context: {
+                                            column,
+                                            nextColumn,
+                                        }
+                                    "
+                                ></ng-container>
+                            </div>
+                        }
                     }
                 </div>
 
@@ -70,22 +74,24 @@
                     ) {
                         @let nextColumn = mainColumns[mainColumnIndex + 1];
 
-                        <div
-                            class="d-flex reorder-container"
-                            cdkDrag
-                            [cdkDragDisabled]="isReorderDisabled"
-                            (cdkDragStarted)="onReorderStart()"
-                        >
-                            <ng-container
-                                *ngTemplateOutlet="
-                                    columnTemplate;
-                                    context: {
-                                        column,
-                                        nextColumn,
-                                    }
-                                "
-                            ></ng-container>
-                        </div>
+                        @if (column.isChecked) {
+                            <div
+                                class="d-flex reorder-container"
+                                cdkDrag
+                                [cdkDragDisabled]="isReorderDisabled"
+                                (cdkDragStarted)="onReorderStart()"
+                            >
+                                <ng-container
+                                    *ngTemplateOutlet="
+                                        columnTemplate;
+                                        context: {
+                                            column,
+                                            nextColumn,
+                                        }
+                                    "
+                                ></ng-container>
+                            </div>
+                        }
                     }
                 </div>
 
@@ -161,12 +167,11 @@
                                 <!-- Main Columns -->
 
                                 <div
-                                    class="d-flex not-pined-columns overflow-hidden scrollable-columns"
+                                    class="d-flex align-items-center not-pined-columns overflow-hidden scrollable-columns"
                                 >
                                     @for (
                                         column of mainColumns;
-                                        track column.key;
-                                        let mainColumnIndex = $index
+                                        track column.key
                                     ) {
                                         <ng-container
                                             *ngTemplateOutlet="
@@ -174,7 +179,6 @@
                                                 context: {
                                                     column,
                                                     row,
-                                                    mainColumnIndex,
                                                 }
                                             "
                                         ></ng-container>
@@ -242,10 +246,11 @@
 <!-- Templates -->
 
 <ng-template #columnTemplate let-column="column" let-nextColumn="nextColumn">
-    @let isAlignedRight = column.isAlignedRight;
+    @let isGroupAlignedRight = column.isAlignedRight;
 
     @if (column.columns?.length) {
-        @let firstCheckedIndex = column.columns | tableGroupLabelIndex;
+        @let firstCheckedIndex =
+            { columns: column.columns } | tableGroupLabelIndex;
         @let tableGroupClass = { column, isTableLocked } | tableGroupClass;
 
         @let groupColumnHoverAction =
@@ -278,6 +283,8 @@
                 @let hasDoubleHeightBorder =
                     _lastColumn && !!nextColumn?.columns;
 
+                @let isColumnAlignedRight = _column.isAlignedRight;
+
                 <div
                     class="d-flex reorder-container"
                     cdkDrag
@@ -293,7 +300,8 @@
                                 hasLabelTop,
                                 isGroup: true,
                                 isLastInGroup: _lastColumn,
-                                isAlignedRight,
+                                isGroupAlignedRight,
+                                isColumnAlignedRight,
                                 hasDoubleHeightBorder,
                                 isGroupHeadingHover,
                             }
@@ -324,7 +332,7 @@
                 columnDisplay;
                 context: {
                     column,
-                    isAlignedRight,
+                    isGroupAlignedRight,
                     hasDoubleHeightBorder,
                     isGroupHeadingHover,
                 }
@@ -339,7 +347,8 @@
         let-hasLabelTop="hasLabelTop"
         let-isGroup="isGroup"
         let-isLastInGroup="isLastInGroup"
-        let-isAlignedRight="isAlignedRight"
+        let-isGroupAlignedRight="isGroupAlignedRight"
+        let-isColumnAlignedRight="isColumnAlignedRight"
         let-hasDoubleHeightBorder="hasDoubleHeightBorder"
         let-isGroupHeadingHover="isGroupHeadingHover"
     >
@@ -354,7 +363,8 @@
                     isTableLocked,
                     isGroup,
                     isEmptyTable,
-                    isAlignedRight,
+                    isGroupAlignedRight,
+                    isColumnAlignedRight,
                 } | tableColumnClass;
 
             @let headingHoverActionId =
@@ -397,7 +407,8 @@
                 @let tableColumnInnerClass =
                     {
                         isTableLocked,
-                        isAlignedRight,
+                        isGroupAlignedRight,
+                        isColumnAlignedRight,
                         isTableColumnInnerClass: true,
                         hasLabelTop: hasLabelTop && groupColumn.label,
                     } | tableColumnClass;
@@ -430,6 +441,7 @@
                                 headerTemplates[column.key];
                                 context: {
                                     data: column,
+                                    label: column.label,
                                     tableColumnClass,
                                     tableColumnLabelWidth,
                                 }
@@ -600,22 +612,19 @@
     </ng-template>
 </ng-template>
 
-<ng-template
-    #cellTemplate
-    let-column="column"
-    let-row="row"
-    let-mainColumnIndex="mainColumnIndex"
->
+<ng-template #cellTemplate let-column="column" let-row="row">
     @if (column.columns?.length) {
         @for (
             _column of column.columns;
             track _column.key;
             let _columnIndex = $index
         ) {
+            @let lastCheckedIndex =
+                { columns: column.columns, isLastCheckedIndex: true }
+                    | tableGroupLabelIndex;
+
             @let hasMarginRight =
-                isTableLocked &&
-                _columnIndex === column.columns.length - 1 &&
-                mainColumnIndex !== mainColumns.length - 1;
+                isTableLocked && _columnIndex === lastCheckedIndex;
 
             <ng-container
                 *ngTemplateOutlet="
@@ -649,7 +658,7 @@
 
             <div
                 [ngClass]="tableColumnCellClass"
-                [style.min-width]="column.width + eUnit.PX"
+                [style.min-width]="column.minWidth + eUnit.PX"
                 [style.width]="column.width + eUnit.PX"
             >
                 @let tableColumnCellColorClass =

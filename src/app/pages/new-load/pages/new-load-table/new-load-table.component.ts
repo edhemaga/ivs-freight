@@ -11,6 +11,7 @@ import {
     eDateTimeFormat,
     eDropdownMenu,
     eGeneralActions,
+    eStringPlaceholder,
 } from '@shared/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
@@ -79,8 +80,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes';
 
         // Pipes
         TableHighlightSearchTextPipe,
-        ThousandSeparatorPipe
-        
+        ThousandSeparatorPipe,
     ],
 })
 export class NewLoadTableComponent
@@ -100,6 +100,7 @@ export class NewLoadTableComponent
     public ePosition = ePosition;
     public eDropdownMenu = eDropdownMenu;
     public eDateTimeFormat = eDateTimeFormat;
+    public eStringPlaceholder = eStringPlaceholder;
 
     constructor(
         protected router: Router,

@@ -9,7 +9,7 @@ import { IMappedLoad } from '@pages/new-load/interfaces';
 // Models
 import { ITableData } from '@shared/models';
 
-// Modesl
+// Models
 import {
     LoadListDto,
     LoadListResponse,
@@ -26,63 +26,70 @@ export class LoadHelper {
         selectedTab: eLoadStatusStringType
     ): IMappedLoad[] {
         return loads.map((load) => {
+            console.log(selectedTab + ' LOAD', load);
             const {
                 id,
-                loadNumber,
-                status,
-                dispatcher,
-                loadDetails,
-                totalDue,
-                broker,
-                driver,
-                miles,
-                billing,
-                invoicedDate,
-                generalCommodity,
-                note,
+                name,
                 loadType,
                 type,
-                loadRequirements,
+                dispatcher,
                 company,
+                broker,
+                brokerContact,
+                referenceNumber,
+                loadDetails,
+                generalCommodity,
+                weight,
+                driver,
                 dispatch,
+                loadRequirements,
+                miles,
+                totalMiles,
+                billing,
+                rpm,
+                additionalBillingRates,
+                totalRate,
+                totalAdjustedRate,
+
+                loadNumber,
+                status,
+
+                totalDue,
+
+                invoicedDate,
+
+                note,
+
                 pickup,
                 delivery,
-                totalMiles,
+
                 dateCreated,
                 createdAt,
             } = load;
 
             const mapped: IMappedLoad = {
                 id,
-                edit: true,
                 isSelected: false,
-                loadNumber,
-                templateName: load.name,
-                status,
-                dispatcher,
-                referenceNumber: loadDetails?.referenceNumber,
-                tableDropdownContent:
-                    DropdownMenuContentHelper.getLoadDropdownContent(
-                        selectedTab
-                    ),
-                totalDue,
+
+                ///////////////////////////////////////
+                templateName: name,
                 loadType: loadType?.name ?? type?.name,
-                broker,
-                brokerContact: broker?.contact,
-                commodity:
-                    loadDetails?.generalCommodityName ?? generalCommodity?.name,
-                brokerBusinessName: broker?.businessName,
-                driverInfo: driver ? driver : dispatch?.driver,
-                assignedDriverTruckNumber: driver?.truckNumber,
-                assignedDriverTrailerNumber: driver?.trailerNumber,
-                milesLoaded: miles?.loadedMiles,
-                milesEmpty: miles?.emptyMiles,
-                milesTotal: miles?.totalMiles ?? totalMiles,
-                billingRatePerMile: billing?.rpm,
-                billingRate: billing?.rate,
+                dispatcher,
                 companyName: company?.companyName,
-                invoicedDate,
-                note,
+                brokerBusinessName: broker?.businessName,
+                brokerContact: brokerContact?.contactName ?? broker?.contact,
+                brokerPhone: broker?.phone,
+                brokerPhoneExt: broker?.phoneExt,
+                referenceNumber:
+                    referenceNumber ?? loadDetails?.referenceNumber,
+                commodity:
+                    generalCommodity?.name ?? loadDetails?.generalCommodityName,
+                weight: weight ?? loadDetails?.weight,
+                assignedDriver: driver ?? dispatch?.driver,
+                assignedDriverTruckNumber:
+                    driver?.truckNumber ?? dispatch?.truck?.truckNumber,
+                assignedDriverTrailerNumber:
+                    driver?.trailerNumber ?? dispatch?.trailer?.trailerNumber,
                 requirementTruck: loadRequirements?.truckType,
                 requirementTrailer: loadRequirements?.trailerType,
                 requirementLength:
@@ -92,8 +99,58 @@ export class LoadHelper {
                 requirementYear: loadRequirements?.year,
                 requirementLiftgate: loadRequirements?.liftgate
                     ? eSharedString.YES
-                    : eSharedString.EMPTY_STRING_PLACEHOLDER,
+                    : null,
                 driverMessage: loadRequirements?.driverMessage,
+                milesLoaded: miles?.loadedMiles ?? totalMiles,
+                milesEmpty: miles?.emptyMiles,
+                milesTotal: miles?.totalMiles ?? totalMiles,
+                billingRatePerMile: {
+                    value: billing?.rpm ?? rpm,
+                },
+                billingLayover: {
+                    value:
+                        additionalBillingRates &&
+                        additionalBillingRates[0]?.rate,
+                },
+                billinglumper: {
+                    value:
+                        additionalBillingRates &&
+                        additionalBillingRates[1]?.rate,
+                },
+                billingFuelSurcharge: {
+                    value:
+                        additionalBillingRates &&
+                        additionalBillingRates[2]?.rate,
+                },
+                billingEscort: {
+                    value:
+                        additionalBillingRates &&
+                        additionalBillingRates[3]?.rate,
+                },
+                billingDetention: {
+                    value:
+                        additionalBillingRates &&
+                        additionalBillingRates[4]?.rate,
+                },
+                billingRate: totalRate,
+                billingAdjustedRate: totalAdjustedRate,
+
+                ////////////////////////////////////////////////
+                edit: true,
+                loadNumber,
+                status,
+
+                tableDropdownContent:
+                    DropdownMenuContentHelper.getLoadDropdownContent(
+                        selectedTab
+                    ),
+                totalDue,
+
+                broker,
+
+                invoicedDate,
+                note,
+
                 pickup,
                 delivery,
                 dateCreated: MethodsCalculationsHelper.convertDateFromBackend(
@@ -102,6 +159,9 @@ export class LoadHelper {
                         : createdAt
                 ),
             };
+
+            console.log('MAPPED TEMPLATE LOAD', mapped);
+
             return mapped;
         });
     }

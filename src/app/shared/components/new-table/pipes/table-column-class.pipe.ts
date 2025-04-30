@@ -13,7 +13,8 @@ export class TableColumnClassPipe implements PipeTransform {
         isTableLocked,
         isGroup,
         isEmptyTable,
-        isAlignedRight,
+        isGroupAlignedRight,
+        isColumnAlignedRight,
         isTableColumnInnerClass,
         hasLabelTop,
     }: {
@@ -21,17 +22,26 @@ export class TableColumnClassPipe implements PipeTransform {
         isTableLocked: boolean;
         isGroup: boolean;
         isEmptyTable: boolean;
-        isAlignedRight: boolean;
+        isGroupAlignedRight: boolean;
+        isColumnAlignedRight: boolean;
         isTableColumnInnerClass: boolean;
         hasLabelTop: boolean;
     }): object {
+        console.log('column', column);
+        console.log('isGroup', isGroup);
+        console.log('isGroupAlignedRight', isGroupAlignedRight);
+        console.log('isColumnAlignedRight', isColumnAlignedRight);
+
         return isTableColumnInnerClass
             ? {
                   'justify-content-between': !isTableLocked,
-                  'justify-content-end': isAlignedRight,
+                  'justify-content-end':
+                      isGroupAlignedRight || isColumnAlignedRight,
                   'position-relative bottom-4': !isTableLocked && hasLabelTop,
-                  'h-18': !isTableLocked && !isAlignedRight,
-                  'aligned-right': isTableLocked && isAlignedRight,
+                  'h-18': !isTableLocked && !isGroupAlignedRight,
+                  'aligned-right':
+                      isTableLocked &&
+                      (isGroupAlignedRight || isColumnAlignedRight),
               }
             : {
                   'text-color-bw6-2': !column?.hasSort || !column?.direction,
@@ -45,10 +55,13 @@ export class TableColumnClassPipe implements PipeTransform {
                   'text-color-blue-18 text-hover-blue-15 svg-fill-blue-13 svg-hover-blue-18':
                       column?.direction && isTableLocked,
                   'flex-column align-items-start mt-auto':
-                      isGroup && !isAlignedRight,
-                  'align-items-end': !isGroup,
+                      isGroup && !isGroupAlignedRight,
+                  'align-items-end':
+                      !isGroup || (isGroup && isColumnAlignedRight),
                   'disable-text-selection': !isTableLocked,
-                  'order-2 m-l-4': isAlignedRight && isTableLocked,
+                  'order-2 m-l-4':
+                      (isGroupAlignedRight || isColumnAlignedRight) &&
+                      isTableLocked,
                   'cursor-grab': !isTableLocked && !column.isDisabled,
               };
     }

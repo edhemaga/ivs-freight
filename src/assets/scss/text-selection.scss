@@ -114,9 +114,9 @@
             @include text-selection($ta-orange-1);
         }
 
-        &-purple {
-            color: $ta-purple-1 !important;
-            @include text-selection($ta-purple-1);
+        &-purple-4 {
+            color: $ta-purple-4 !important;
+            @include text-selection($ta-purple-4);
         }
 
         &-special-filter-purple {
