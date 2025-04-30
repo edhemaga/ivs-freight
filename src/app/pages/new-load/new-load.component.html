@@ -17,6 +17,8 @@
     };
 
 @if (store) {
+    @let isFilterDisabled = !store.viewData.length;
+
     <app-new-table-toolbar
         [title]="'Load'"
         [leftSide]="leftSide"
@@ -148,6 +150,17 @@
             <ng-container *ngTemplateOutlet="divider"></ng-container>
 
             @if (store?.activeViewMode === eCommonElement.CARD) {
+                @let getSortableColumn = store.getSortableColumnSelector;
+
+                <div class="m-r-8">
+                    <app-ca-sorting-card-dropdown
+                        [options]="getSortableColumn"
+                        [isDisabled]="isFilterDisabled"
+                        (onSortChange)="onSelectSortItem($event)"
+                        (onSelectItem)="onSelectSortItem($event)"
+                    ></app-ca-sorting-card-dropdown>
+                </div>
+
                 <app-ca-checkbox-selected-count
                     [itemsTotalCount]="store.viewData.length"
                     [itemsSelectedCount]="store.selectedCount"

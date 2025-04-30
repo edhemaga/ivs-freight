@@ -21,4 +21,5 @@ export interface ITableColumn {
     isChecked?: boolean;
     labelToolbar?: string;
     sortName?: string;
+    removeSort?: boolean;
 }

@@ -110,6 +110,61 @@ export class StoreFunctionsHelper {
         };
     }
 
+    static toggleSortCard(
+        column: ITableColumn,
+        columns: ITableColumn[]
+    ): {
+        columns: ITableColumn[];
+        sortKey: string;
+        sortDirection: SortOrder | null;
+        label: string;
+    } {
+        const { sortName, key, label, removeSort } = column;
+
+        let updatedSortKey = sortName;
+        let updatedSortDirection: SortOrder | null = SortOrder.Descending;
+
+        function toggleSortCard(cols: ITableColumn[]): ITableColumn[] {
+            return cols.map((col) => {
+                if (col.key === key) {
+                    if (removeSort) {
+                        updatedSortDirection = null;
+                    } else {
+                        if (col.direction === SortOrder.Ascending) {
+                            updatedSortDirection = SortOrder.Descending;
+                        } else if (col.direction === SortOrder.Descending) {
+                            updatedSortDirection = SortOrder.Ascending;
+                        } else {
+                            updatedSortDirection = SortOrder.Descending;
+                        }
+                    }
+
+                    return {
+                        ...col,
+                        direction: updatedSortDirection,
+                        removeSort: null,
+                    };
+                }
+
+                return {
+                    ...col,
+                    direction: null,
+                    ...(col.columns && {
+                        columns: toggleSortCard(col.columns),
+                    }),
+                };
+            });
+        }
+
+        const updatedColumns = toggleSortCard(columns);
+        return {
+            columns: updatedColumns,
+            sortKey: updatedSortDirection ? updatedSortKey : null,
+            sortDirection: updatedSortDirection,
+            label,
+        };
+    }
+
     static updateColumnWidth(
         columns: ITableColumn[],
         columnId: number,
