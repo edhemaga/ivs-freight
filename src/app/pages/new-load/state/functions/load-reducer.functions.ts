@@ -13,6 +13,7 @@ import {
     LoadStatusResponse,
     LoadTemplateListResponse,
     RoutingResponse,
+    SortOrder,
 } from 'appcoretruckassist';
 
 // Enums
@@ -167,8 +168,20 @@ export function onTableSortingChange(
     state: ILoadState,
     column: ITableColumn
 ): ILoadState {
-    const { columns, sortKey, sortDirection, label } =
-        StoreFunctionsHelper.toggleSort(column, state.tableColumns);
+    let sortItem: {
+        columns: ITableColumn[];
+        sortKey: string;
+        sortDirection: SortOrder | null;
+        label: string;
+    };
+
+    if (state.activeViewMode === eCommonElement.CARD) {
+        sortItem = StoreFunctionsHelper.toggleSortCard(column, state.tableColumns);
+    } else {
+        sortItem = StoreFunctionsHelper.toggleSort(column, state.tableColumns);
+    }
+
+    const { columns, sortKey, sortDirection, label } = sortItem;
 
     return {
         ...state,

@@ -28,6 +28,7 @@ import {
     milesUnitMapDataSelector,
     frontSideDataSelector,
     backSideDataSelector,
+    getSortableColumn,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // models
@@ -145,6 +146,9 @@ export class MilesStoreService {
     public unitMapDataSelector$: Observable<ICaMapProps> = this.store.pipe(
         select(milesUnitMapDataSelector)
     );
+
+    public getSortableColumnSelector$: Observable<ITableColumn[]> =
+        this.store.pipe(select(getSortableColumn));
 
     public frontSideDataSelector$: Observable<ICardValueData[]> =
         this.store.pipe(select(frontSideDataSelector));
