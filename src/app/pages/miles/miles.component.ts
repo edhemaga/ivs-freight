@@ -46,7 +46,7 @@ import { TableCardBodyActions } from '@shared/models';
 // interfaces
 import { IStateFilters } from '@shared/interfaces';
 import { IMilesModel } from '@pages/miles/interface';
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 @Component({
     selector: 'app-miles',
