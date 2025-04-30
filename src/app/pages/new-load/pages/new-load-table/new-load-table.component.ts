@@ -45,10 +45,12 @@ import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+import { UserHelper } from '@shared/utils/helpers';
 
 // Models
 import { LoadStatusResponse } from 'appcoretruckassist';
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { User } from '@shared/models';
 
 // Pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
@@ -103,6 +105,8 @@ export class NewLoadTableComponent
     public eDateTimeFormat = eDateTimeFormat;
 
     public selectedCommentsLoadId: number | null = null;
+
+    public currentUser: User = UserHelper.getUserFromLocalStorage();
 
     constructor(
         protected router: Router,
