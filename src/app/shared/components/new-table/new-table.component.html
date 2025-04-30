@@ -54,6 +54,7 @@
                 </div>
 
                 <div
+                    #scrollableColumns
                     id="table-not-pined-scroll-container"
                     class="d-flex not-pined-columns scrollable-columns"
                     [ngClass]="{
@@ -115,7 +116,6 @@
                     class="position-absolute w-8 new-table--scroll-border new-table--scroll-border-left"
                     [ngStyle]="{
                         left: leftPinnedBorderWidth + eUnit.PX,
-                        height: 'calc( 100% - 18px )',
                     }"
                     [class.hidden]="
                         !isLeftScrollLineShown || !hasActiveLeftPinnedColumns
@@ -128,7 +128,6 @@
                     class="position-absolute w-8 new-table--scroll-border new-table--scroll-border-right"
                     [ngStyle]="{
                         right: rightPinnedBorderWidth + eUnit.PX,
-                        height: 'calc( 100% - 18px )',
                     }"
                     [class.hidden]="
                         !isRightScrollLineShown || !hasActiveRightPinnedColumns
@@ -168,6 +167,7 @@
                                 <!-- Main Columns -->
 
                                 <div
+                                    #scrollableColumns
                                     class="d-flex not-pined-columns overflow-hidden scrollable-columns"
                                 >
                                     @for (
