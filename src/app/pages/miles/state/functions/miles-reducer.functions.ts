@@ -4,14 +4,22 @@ import {
     IMilesState,
     IMinimalListState,
 } from '@pages/miles/interface';
-import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
+import {
+    ICardValueData,
+    IMinimalListFilters,
+    IStateFilters,
+} from '@shared/interfaces';
 import {
     ITableColumn,
+    ITableReorderAction,
     ITableResizeAction,
-} from '@shared/components/new-table/interface';
+} from '@shared/components/new-table/interfaces';
 
 // enums
-import { eActiveViewMode, eCardFlipViewMode } from '@shared/enums';
+import {
+    eActiveViewMode,
+    eCardFlipViewMode,
+} from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 import { eSharedString } from '@shared/enums';
 
@@ -21,6 +29,7 @@ import {
     MilesByUnitPaginatedStopsResponse,
     MilesStopDetailsResponse,
     RoutingResponse,
+    SortOrder,
 } from 'appcoretruckassist';
 import {
     ICaMapProps,
@@ -328,6 +337,19 @@ export function tableSortingChange(
     state: IMilesState,
     column: ITableColumn
 ): IMilesState {
+    let sortItem: {
+        columns: ITableColumn[];
+        sortKey: string;
+        sortDirection: SortOrder | null;
+        label: string;
+    };
+
+    if (state.activeViewMode === eActiveViewMode.Card) {
+        sortItem = StoreFunctionsHelper.toggleSortCard(column, state.columns);
+    } else {
+        sortItem = StoreFunctionsHelper.toggleSort(column, state.columns);
+    }
+
     const { columns, sortKey, sortDirection, label } =
         StoreFunctionsHelper.toggleSort(column, state.columns);
 
@@ -466,6 +488,24 @@ export function tableResizeChange(
         columns: resizedColumns,
     };
 }
+
+export function tableReorderChange(
+    state: IMilesState,
+    reorderAction: ITableReorderAction
+): IMilesState {
+    const { columns } = state;
+
+    const reorderedColumns = StoreFunctionsHelper.reorderColumns(
+        columns,
+        reorderAction
+    );
+
+    return {
+        ...state,
+        columns: reorderedColumns,
+    };
+}
+
 export function setInitalMinimalList(
     state: IMilesState,
     list: MilesByUnitMinimalListResponse,
@@ -531,5 +571,17 @@ function getTruckNavigationMeta(
         isLast,
         prevId,
         nextId,
+    };
+}
+
+export function setColumnsModalResult(
+    state: IMilesState,
+    frontSideData: ICardValueData[],
+    backSideData: ICardValueData[]
+): IMilesState {
+    return {
+        ...state,
+        frontSideData,
+        backSideData,
     };
 }

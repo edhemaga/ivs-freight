@@ -7,7 +7,9 @@ import {
     EnumValue,
     TruckTypeResponse,
     TrailerTypeResponse,
+    DriverMinimalResponse,
 } from 'appcoretruckassist';
+import { LoadDelivery, LoadPickup } from '@pages/load/pages/load-table/models';
 
 // interfaces
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
@@ -23,10 +25,9 @@ export interface IMappedLoad {
     tableDropdownContent: IDropdownMenuItem[];
     totalDue: number;
     broker: LoadBrokerInfo;
-    driverInfo: LoadDriverInfo;
+    driverInfo?: LoadDriverInfo | DriverMinimalResponse;
     templateName: string;
-    templateCreated: string;
-    generalCommodity?: EnumValue;
+    commodity?: string;
     brokerBusinessName: string;
     assignedDriverTruckNumber: string;
     assignedDriverTrailerNumber: string;
@@ -46,4 +47,9 @@ export interface IMappedLoad {
     requirementSuspension: string;
     requirementYear: string;
     requirementLiftgate: string;
+    driverMessage: string;
+    companyName: string;
+    pickup?: LoadPickup;
+    delivery?: LoadDelivery;
+    dateCreated: string;
 }

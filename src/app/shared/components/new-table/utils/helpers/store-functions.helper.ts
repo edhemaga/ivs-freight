@@ -1,8 +1,11 @@
 // enums
-import { MilesStopSortBy, SortOrder } from 'appcoretruckassist';
+import { SortOrder } from 'appcoretruckassist';
 
 // interfaces
-import { ITableColumn } from '@shared/components/new-table/interface';
+import {
+    ITableColumn,
+    ITableReorderAction,
+} from '@shared/components/new-table/interfaces';
 
 export class StoreFunctionsHelper {
     static mapColumnsVisibility(
@@ -107,6 +110,61 @@ export class StoreFunctionsHelper {
         };
     }
 
+    static toggleSortCard(
+        column: ITableColumn,
+        columns: ITableColumn[]
+    ): {
+        columns: ITableColumn[];
+        sortKey: string;
+        sortDirection: SortOrder | null;
+        label: string;
+    } {
+        const { sortName, key, label, removeSort } = column;
+
+        let updatedSortKey = sortName;
+        let updatedSortDirection: SortOrder | null = SortOrder.Descending;
+
+        function toggleSortCard(cols: ITableColumn[]): ITableColumn[] {
+            return cols.map((col) => {
+                if (col.key === key) {
+                    if (removeSort) {
+                        updatedSortDirection = null;
+                    } else {
+                        if (col.direction === SortOrder.Ascending) {
+                            updatedSortDirection = SortOrder.Descending;
+                        } else if (col.direction === SortOrder.Descending) {
+                            updatedSortDirection = SortOrder.Ascending;
+                        } else {
+                            updatedSortDirection = SortOrder.Descending;
+                        }
+                    }
+
+                    return {
+                        ...col,
+                        direction: updatedSortDirection,
+                        removeSort: null,
+                    };
+                }
+
+                return {
+                    ...col,
+                    direction: null,
+                    ...(col.columns && {
+                        columns: toggleSortCard(col.columns),
+                    }),
+                };
+            });
+        }
+
+        const updatedColumns = toggleSortCard(columns);
+        return {
+            columns: updatedColumns,
+            sortKey: updatedSortDirection ? updatedSortKey : null,
+            sortDirection: updatedSortDirection,
+            label,
+        };
+    }
+
     static updateColumnWidth(
         columns: ITableColumn[],
         columnId: number,
@@ -135,5 +193,63 @@ export class StoreFunctionsHelper {
 
             return col;
         });
+    }
+
+    static reorderColumns(
+        columns: ITableColumn[],
+        reorderAction: ITableReorderAction
+    ): ITableColumn[] {
+        const { previousColumnKey, currentColumnKey, groupColumnKey } =
+            reorderAction;
+
+        const swapItems = (
+            array: ITableColumn[],
+            fromIndex: number,
+            toIndex: number
+        ): ITableColumn[] =>
+            array.map((column, index) =>
+                index === fromIndex
+                    ? array[toIndex]
+                    : index === toIndex
+                      ? array[fromIndex]
+                      : column
+            );
+
+        if (groupColumnKey) {
+            return columns.map((column) => {
+                if (column.key !== groupColumnKey) return column;
+
+                const groupColumns = column.columns ?? [];
+
+                const previousIndex = groupColumns.findIndex(
+                    (col) => col.key === previousColumnKey
+                );
+                const currentIndex = groupColumns.findIndex(
+                    (col) => col.key === currentColumnKey
+                );
+
+                return previousIndex > -1 && currentIndex > -1
+                    ? {
+                          ...column,
+                          columns: swapItems(
+                              groupColumns,
+                              previousIndex,
+                              currentIndex
+                          ),
+                      }
+                    : column;
+            });
+        }
+
+        const previousIndex = columns.findIndex(
+            (col) => col.key === previousColumnKey
+        );
+        const currentIndex = columns.findIndex(
+            (col) => col.key === currentColumnKey
+        );
+
+        return previousIndex > -1 && currentIndex > -1
+            ? swapItems(columns, previousIndex, currentIndex)
+            : columns;
     }
 }

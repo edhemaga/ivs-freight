@@ -168,6 +168,7 @@ import {
     InputTestComponent,
     CaInputComponent,
     CaTabSwitchComponent,
+    CaInputDropdownTestComponent,
 } from 'ca-components';
 
 @Component({
@@ -203,6 +204,7 @@ import {
         CaInputDropdownComponent,
         CaInputDatetimePickerComponent,
         InputTestComponent,
+        CaInputDropdownTestComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -242,6 +244,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public isTemplateSelected: boolean = false;
 
     public loadNumber: string;
+    public editDispatchid: number;
 
     // tabs
     public tabs: LoadModalTab[] = [];
@@ -4054,7 +4057,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         : this.selectedCompany,
                 dispatch: this.selectedDispatch,
                 broker: this.selectedBroker,
-                brokerContactId: this.selectedBrokerContact.id,
+                brokerContactId: this.selectedBrokerContact?.id,
                 referenceNumber: form.referenceNumber,
                 generalCommodity: this.selectedGeneralCommodity,
                 weight: form.weight,
@@ -4494,7 +4497,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             dispatchId:
                 statusType === TableStringEnum.CLOSED_2
                     ? null
-                    : this.getIdOrNull(this.selectedDispatch),
+                    : this.getIdOrNull(this.selectedDispatch) ||
+                      this.editDispatchid,
             dispatch:
                 statusType === TableStringEnum.CLOSED_2
                     ? null
@@ -4796,6 +4800,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             id,
             statusType,
         } = loadModalData;
+
+        this.editDispatchid = dispatch?.id;
 
         // DeadHead Stop
         if (loadModalData?.stops?.[0]?.id === 0)

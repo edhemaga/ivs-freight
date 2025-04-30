@@ -41,7 +41,7 @@ import { ModalService } from '@shared/services';
 
 // interfaces
 import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
@@ -52,6 +52,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
+import { ThousandSeparatorPipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-new-load-table',
@@ -79,6 +80,8 @@ import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes
 
         // Pipes
         TableHighlightSearchTextPipe,
+        ThousandSeparatorPipe
+        
     ],
 })
 export class NewLoadTableComponent

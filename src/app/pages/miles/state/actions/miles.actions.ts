@@ -19,11 +19,12 @@ import {
 import { IMilesModel } from '@pages/miles/interface';
 
 // interfaces
-import { IStateFilters } from '@shared/interfaces';
+import { ICardValueData, IStateFilters } from '@shared/interfaces';
 import {
     ITableColumn,
+    ITableReorderAction,
     ITableResizeAction,
-} from '@shared/components/new-table/interface';
+} from '@shared/components/new-table/interfaces';
 
 export const getLoadsPayloadSuccess = createAction(
     MilesStoreConstants.LOAD_MILES_SUCCESS,
@@ -135,6 +136,11 @@ export const tableResizeChange = createAction(
     props<{ resizeAction: ITableResizeAction }>()
 );
 
+export const tableReorderChange = createAction(
+    MilesStoreConstants.ACTION_REORDER_CHANGE,
+    props<{ reorderAction: ITableReorderAction }>()
+);
+
 export const pageChanges = createAction(
     MilesStoreConstants.ACTION_GET_NEW_PAGE_RESULTS
 );
@@ -186,4 +192,16 @@ export const getMinimalListError = createAction(
 
 export const fetchNextStopsPage = createAction(
     MilesStoreConstants.ACTION_FETCH_NEXT_STOPS_PAGE
+);
+
+export const openColumnsModal = createAction(
+    MilesStoreConstants.ACTION_OPEN_COLUMNS_MODAL
+);
+
+export const setColumnsModalResult = createAction(
+    MilesStoreConstants.ACTION_SET_COLUMNS_MODAL_RESULT,
+    props<{
+        frontSideData: ICardValueData[];
+        backSideData: ICardValueData[];
+    }>()
 );

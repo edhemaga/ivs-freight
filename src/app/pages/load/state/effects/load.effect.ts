@@ -41,6 +41,7 @@ import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 
 // helpers
 import { LoadStoreEffectsHelper } from '@pages/load/pages/load-table/utils/helpers';
+import { getEditLoadModalOnlyDataSuccess } from '../actions/load.action';
 
 @Injectable()
 export class LoadEffect {
@@ -144,6 +145,24 @@ export class LoadEffect {
                     ),
                     catchError((error) =>
                         of(LoadActions.getLoadByIdError({ error }))
+                    )
+                );
+            })
+        )
+    );
+
+    public getLoadModalOnlyData = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.getEditLoadModalOnlyData),
+            exhaustMap(() => {
+                return this.loadService.apiGetLoadModal().pipe(
+                    map((response) => {
+                        return LoadActions.getEditLoadModalOnlyDataSuccess({
+                            modal: response,
+                        });
+                    }),
+                    catchError((error) =>
+                        of(LoadActions.getCreateLoadModalDataError({ error }))
                     )
                 );
             })

@@ -18,7 +18,6 @@ export class RepairShopConfig {
             name: 'Phone',
             type: 'text',
             label: 'Phone',
-            isRequired: true,
             placeholderIcon: 'phone',
             mask: '(000) 000-0000',
             maxLength: 14,

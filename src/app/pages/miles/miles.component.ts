@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 
@@ -13,11 +13,11 @@ import {
     IFilterAction,
     CaFilterStateDropdownComponent,
     CaFilterTimeDropdownComponent,
+    CaSortingCardDropdownComponent,
 } from 'ca-components';
 import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
-import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
 
 // base classes
 import { DropdownMenuActionsBase } from '@shared/base-classes';
@@ -46,6 +46,7 @@ import { TableCardBodyActions } from '@shared/models';
 // interfaces
 import { IStateFilters } from '@shared/interfaces';
 import { IMilesModel } from '@pages/miles/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 @Component({
     selector: 'app-miles',
@@ -64,14 +65,13 @@ import { IMilesModel } from '@pages/miles/interface';
         CaFilterStateDropdownComponent,
         CaFilterTimeDropdownComponent,
         TaTableEmptyComponent,
+        CaSortingCardDropdownComponent,
     ],
 })
 export class MilesComponent
     extends DropdownMenuActionsBase
     implements OnInit, OnDestroy
 {
-    @ViewChild(MilesCardComponent) milesCardComponent!: MilesCardComponent;
-
     protected destroy$ = new Subject<void>();
 
     private filter: IStateFilters = {};
@@ -188,6 +188,10 @@ export class MilesComponent
         }
     }
 
+    private openColumnsModal(): void {
+        this.milesStoreService.dispatchOpenColumnsModal();
+    }
+
     public onTableEmptyBtnClick(btnClickType: string): void {
         switch (btnClickType) {
             case eTableEmpty.ADD_CLICK:
@@ -245,7 +249,7 @@ export class MilesComponent
 
                 break;
             case eDropdownMenuColumns.COLUMNS_CARD_TYPE:
-                this.milesCardComponent.openColumnsModal();
+                this.openColumnsModal();
 
                 break;
             default:
@@ -253,6 +257,10 @@ export class MilesComponent
 
                 break;
         }
+    }
+
+    public onSelectSortItem(column: ITableColumn): void {
+        this.milesStoreService.dispatchSortingChange(column);
     }
 
     ngOnDestroy(): void {

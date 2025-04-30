@@ -2,9 +2,18 @@
     {
         cardsFlipType: milesStoreService.cardFlipViewModeSelector$ | async,
         miles: milesStoreService.miles$ | async,
+        frontSideData: milesStoreService.frontSideDataSelector$ | async,
+        backSideData: milesStoreService.backSideDataSelector$ | async,
+        tabResultsSelector: milesStoreService.tabResultsSelector$ | async,
+        selectedTab: milesStoreService.selectedTab$ | async,
     };
 
 @if (store.miles) {
+    @let selectedTabTotalDataCount =
+        store.selectedTab === eMileTabs?.ACTIVE
+            ? store.tabResultsSelector.activeTruckCount
+            : store.tabResultsSelector.inactiveTruckCount;
+
     <ca-table-card-view
         [viewData]="store.miles"
         [frontSide]="frontSide"
@@ -12,12 +21,13 @@
         [cardTitle]="'unit'"
         [isDropdownMenuHidden]="true"
         [isSelectHidden]="true"
+        [totalDataCount]="selectedTabTotalDataCount"
         [cardsFlipType]="store.cardsFlipType"
         (showMore)="onShowMoreClick()"
     ></ca-table-card-view>
 
     <ng-template #frontSide let-data="data">
-        @for (item of frontSideData; track $index) {
+        @for (item of store.frontSideData; track $index) {
             <ng-container
                 *ngTemplateOutlet="cardTemplate; context: { item, data }"
             ></ng-container>
@@ -25,7 +35,7 @@
     </ng-template>
 
     <ng-template #backSide let-data="data">
-        @for (item of backSideData; track $index) {
+        @for (item of store.backSideData; track $index) {
             <ng-container
                 *ngTemplateOutlet="cardTemplate; context: { item, data }"
             ></ng-container>
@@ -34,16 +44,16 @@
 
     <ng-template #cardTemplate let-item="item" let-data="data">
         @let template =
-            item.template === tableCardViewEnums.DOUBLE_TEXT_PERCENT
+            item.template === eTableCardViewData.DOUBLE_TEXT_PERCENT
                 ? doubleTextPercent
-                : item.template === tableCardViewEnums.TEXT_WITH_IMAGE
+                : item.template === eTableCardViewData.TEXT_WITH_IMAGE
                   ? textWithImage
                   : textWithTitle;
 
         @let text =
-            item.format === tableCardViewEnums.CURRENCY
+            item.format === eTableCardViewData.CURRENCY
                 ? ((data | getNestedValue: item.key | formatCurrency) ?? 0)
-                : item.format === tableCardViewEnums.NUMBER
+                : item.format === eTableCardViewData.NUMBER
                   ? ((data | getNestedValue: item.key | thousandSeparator) ?? 0)
                   : (data | getNestedValue: item.key);
 

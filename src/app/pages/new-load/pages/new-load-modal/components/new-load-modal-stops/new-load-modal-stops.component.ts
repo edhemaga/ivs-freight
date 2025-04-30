@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
     FormArray,
     FormBuilder,
+    FormGroup,
     ReactiveFormsModule,
     UntypedFormGroup,
 } from '@angular/forms';
@@ -20,6 +21,20 @@ import {
     CaInputDropdownTestComponent,
     CaTabSwitchComponent,
 } from 'ca-components';
+import { LoadModalStopComponent } from './components/load-modal-stop/load-modal-stop.component';
+
+// Enum
+import { eLoadModalStopsForm } from '@pages/new-load/pages/new-load-modal/enums';
+
+// Pipes
+import { LoadStopInputConfigPipe } from '@pages/new-load/pages/new-load-modal/pipes/load-stop-input-config.pipe';
+
+// Models
+import {
+    EnumValue,
+    ShipperContactGroupResponse,
+    ShipperLoadModalResponse,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-new-load-modal-stops',
@@ -34,19 +49,31 @@ import {
         CaTabSwitchComponent,
         CaInputDropdownTestComponent,
         CaInputDatetimePickerComponent,
+        LoadModalStopComponent,
+
+        // Pipes
+        LoadStopInputConfigPipe,
     ],
     templateUrl: './new-load-modal-stops.component.html',
     styleUrl: './new-load-modal-stops.component.scss',
 })
 export class NewLoadModalStopsComponent implements OnInit {
+    @Input() shippers: ShipperLoadModalResponse[] = [];
+    @Input() shipperContacts: ShipperContactGroupResponse[] = [];
     public LoadModalConfig = LoadModalConfig;
+    // Enums
+    public eLoadModalStopsForm = eLoadModalStopsForm;
 
     // Each stop will have it's own tabs
     public tabs = LoadModalStopsHelper.tabs;
+    public stopTabs = LoadModalStopsHelper.stopTabs;
 
     public stopsForm: UntypedFormGroup;
 
-    get stops(): FormArray {
+    public selectedShippers: { [index: number]: any } = {};
+    public activeCardIndex: number | null = null;
+
+    get stopsFormArray(): FormArray {
         return this.stopsForm.get('stops') as FormArray;
     }
 
@@ -57,17 +84,50 @@ export class NewLoadModalStopsComponent implements OnInit {
     }
 
     public createForm(): void {
+        const stopsArray = this.fb.array(
+            [
+                LoadModalStopsHelper.createStop(this.fb, {
+                    stopType: 1,
+                }),
+                LoadModalStopsHelper.createStop(this.fb, {
+                    stopType: 2,
+                }),
+            ],
+            [LoadModalStopsHelper.minStopsValidator(2)]
+        );
+
         this.stopsForm = this.fb.group({
-            stops: this.fb.array([
-                LoadModalStopsHelper.createStop(this.fb, {
-                    stopType: 'PICKUP',
-                    shipperId: 101,
-                }),
-                LoadModalStopsHelper.createStop(this.fb, {
-                    stopType: 'DELIVERY',
-                    shipperId: 102,
-                }),
-            ]),
+            stops: stopsArray,
         });
+    }
+
+    public onAddDateTo(index: number): void {
+        const stopGroup = this.stopsFormArray.at(index) as FormGroup;
+        LoadModalStopsHelper.addDateToControl(stopGroup);
+    }
+
+    public onTabChange(tab: EnumValue, i: number): void {
+        const group = this.stopsFormArray.at(i) as FormGroup;
+        LoadModalStopsHelper.updateTimeValidators(group, tab);
+    }
+
+    public onAddNewStop(): void {
+        const newStop = LoadModalStopsHelper.createStop(this.fb, {
+            stopType: 1,
+        });
+
+        this.stopsFormArray.push(newStop);
+    }
+
+    public onSelectShipper(shipper: any, index: number): void {
+        this.selectedShippers = {
+            ...this.selectedShippers,
+            [index]: shipper,
+        };
+        console.log('selectedShippers', this.selectedShippers);
+    }
+
+    public handleCardOpened(opened: boolean, index: number): void {
+        this.activeCardIndex = opened ? index : null;
     }
 }

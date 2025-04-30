@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 // modules
 import { CommonModule } from '@angular/common';
@@ -13,15 +14,22 @@ import { LoadStoreService } from '@pages/new-load/state/services/load-store.serv
 import { ModalService } from '@shared/services';
 
 // components
-import { CaTableCardViewComponent } from 'ca-components';
+import {
+    CaTableCardViewComponent,
+    CaStatusChangeDropdownComponent,
+    ePosition,
+} from 'ca-components';
 import { CardColumnsModalComponent } from '@shared/components/card-columns-modal/card-columns-modal.component';
+import { LoadTypeComponent } from '@pages/new-load/components/load-type/load-type.component';
 
 // pipes
 import {
     FormatCurrencyPipe,
     ThousandSeparatorPipe,
     GetNestedValuePipe,
+    FormatDatePipe,
 } from '@shared/pipes';
+import { CaLoadStatusComponent } from 'ca-components';
 
 // configs
 import {
@@ -47,6 +55,7 @@ import {
 
 // models
 import { TableCardBodyActions } from '@shared/models';
+import { LoadStatusResponse } from 'appcoretruckassist';
 
 // svg-routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -59,14 +68,19 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     imports: [
         CommonModule,
         AngularSvgIconModule,
+        NgbPopover,
 
         // components
         CaTableCardViewComponent,
+        CaStatusChangeDropdownComponent,
+        LoadTypeComponent,
+        CaLoadStatusComponent,
 
         // pipes
         FormatCurrencyPipe,
         ThousandSeparatorPipe,
         GetNestedValuePipe,
+        FormatDatePipe,
     ],
 })
 export class NewLoadCardsComponent
@@ -75,6 +89,8 @@ export class NewLoadCardsComponent
 {
     // destroy
     protected destroy$ = new Subject<void>();
+
+    public changeStatusPopover: NgbPopover;
 
     // data (this will be changed when store is implemented)
     public tabCardData: {
@@ -102,7 +118,7 @@ export class NewLoadCardsComponent
     };
 
     // enums
-    public tableCardViewEnums = eTableCardViewData;
+    public eTableCardViewData = eTableCardViewData;
     public eDropdownMenu = eDropdownMenu;
 
     // svg-routes
@@ -114,6 +130,7 @@ export class NewLoadCardsComponent
     // enums
     public eSharedString = eSharedString;
     public eStringPlaceholder = eStringPlaceholder;
+    public ePosition = ePosition;
 
     constructor(
         protected modalService: ModalService,
@@ -128,6 +145,8 @@ export class NewLoadCardsComponent
             .subscribe((tab) => {
                 this.selectedTab = tab;
             });
+
+        this.initChangeStatusDropdownListener();
     }
 
     private navigateToLoadDetails(id: number): void {
@@ -191,6 +210,30 @@ export class NewLoadCardsComponent
             eDropdownMenu.LOAD,
             this.selectedTab
         );
+    }
+
+    public onNextStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchUpdateLoadStatus(status);
+    }
+
+    public onPreviousStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchRevertLoadStatus(status);
+    }
+
+    public onOpenChangeStatusDropdown(
+        tooltip: NgbPopover,
+        loadId: number
+    ): void {
+        this.changeStatusPopover = tooltip;
+        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
+    }
+
+    public initChangeStatusDropdownListener(): void {
+        this.loadStoreService.changeDropdownpossibleStatusesSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) this.changeStatusPopover.open();
+            });
     }
 
     ngOnDestroy(): void {

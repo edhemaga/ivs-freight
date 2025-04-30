@@ -156,3 +156,18 @@ export const milesUnitMapDataSelector = createSelector(
     selectMilesState,
     (state: IMilesState) => state.unitMapData
 );
+
+export const frontSideDataSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.frontSideData
+);
+
+export const backSideDataSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.backSideData
+);
+
+export const getSortableColumn = createSelector(
+    tableColumnsSelector,
+    (columns) => columns.filter((col) => col.hasSort)
+);

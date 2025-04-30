@@ -91,20 +91,20 @@ export class LoadCardDataConfig {
         {
             title: 'Status',
             key: 'stopsCount',
-            template: 'textWithTitle',
-            format: 'number',
+            template: 'loadStatus',
+            format: 'data',
         },
         {
             title: 'Pickup',
-            key: 'milesEmpty',
-            template: 'textWithTitle',
-            format: 'number',
+            key: 'pickup',
+            template: 'pickupDelivery',
+            format: 'data',
         },
         {
             title: 'Delivery',
-            key: 'milesLoaded',
-            template: 'textWithTitle',
-            format: 'number',
+            key: 'delivery',
+            template: 'pickupDelivery',
+            format: 'data',
         },
         {
             isDropdown: true,

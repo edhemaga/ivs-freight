@@ -180,6 +180,21 @@ body {
     text-align: right !important;
 }
 
+.text-ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.text-line-clamp {
+    &-2 {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+}
+
 html {
     body {
         app-ca-modal,
@@ -378,12 +393,6 @@ app-load-modal {
 .dispatch-load-grid {
     grid-template-columns: 30px 176px 151px 151px 1fr;
     gap: 4px;
-}
-
-.text-ellipsis {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
 }
 
 .h-full {
@@ -674,4 +683,19 @@ html ngb-modal-backdrop {
 ngb-modal-window.modal {
     backdrop-filter: blur(0.0625rem);
     background: $dark-3 !important;
+}
+
+// cursors
+.cursor-grab {
+    cursor: grab;
+}
+
+.cursor-grabbing {
+    cursor: grabbing;
+}
+
+.placeholder {
+    &-muted {
+        background: rgb(145 145 145 / 80%) !important;
+    }
 }

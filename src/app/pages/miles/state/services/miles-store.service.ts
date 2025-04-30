@@ -26,6 +26,9 @@ import {
     minimalListFiltersSelector,
     detailsLoadingSelector,
     milesUnitMapDataSelector,
+    frontSideDataSelector,
+    backSideDataSelector,
+    getSortableColumn,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // models
@@ -53,11 +56,16 @@ import { MilesHelper } from '@pages/miles/utils/helpers';
 import {
     ITableColumn,
     ITableConfig,
+    ITableReorderAction,
     ITableResizeAction,
-} from '@shared/components/new-table/interface';
+} from '@shared/components/new-table/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { ICaMapProps, IFilterAction } from 'ca-components';
-import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
+import {
+    ICardValueData,
+    IMinimalListFilters,
+    IStateFilters,
+} from '@shared/interfaces';
 import { IMilesModel, IMilesTabResults } from '@pages/miles/interface';
 
 @Injectable({
@@ -138,6 +146,15 @@ export class MilesStoreService {
     public unitMapDataSelector$: Observable<ICaMapProps> = this.store.pipe(
         select(milesUnitMapDataSelector)
     );
+
+    public getSortableColumnSelector$: Observable<ITableColumn[]> =
+        this.store.pipe(select(getSortableColumn));
+
+    public frontSideDataSelector$: Observable<ICardValueData[]> =
+        this.store.pipe(select(frontSideDataSelector));
+
+    public backSideDataSelector$: Observable<ICardValueData[]> =
+        this.store.pipe(select(backSideDataSelector));
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({
@@ -227,6 +244,13 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_RESIZE_CHANGE,
             resizeAction,
+        });
+    }
+
+    public dispatchReorderColumn(reorderAction: ITableReorderAction): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_REORDER_CHANGE,
+            reorderAction,
         });
     }
 
@@ -322,6 +346,12 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
             query,
+        });
+    }
+
+    public dispatchOpenColumnsModal(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_OPEN_COLUMNS_MODAL,
         });
     }
 }

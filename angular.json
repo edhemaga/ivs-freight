@@ -1,184 +1,179 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
-  "newProjectRoot": "projects",
-  "projects": {
-    "carrierassist-fe": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        },
-        "@schematics/angular:application": {
-          "strict": true
-        }
-      },
-      "root": "",
-      "sourceRoot": "src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "preserveSymlinks": true,
-            "outputPath": "dist/carrierassist-fe",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/assets",
-              {
-                "glob": "**/*",
-                "input": "node_modules/ca-components/src/assets/ca-components/",
-                "output": "src/assets/ca-components/"
-              }
-            ],
-            "styles": [
-              "src/styles.scss",
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "./node_modules/bootstrap/dist/css/bootstrap.css",
-              "./node_modules/snazzy-info-window/dist/snazzy-info-window.css",
-              "./node_modules/ngx-toastr/toastr.css",
-              "./node_modules/croppie/croppie.css",
-              "./node_modules/slick-carousel/slick/slick.scss",
-              "./node_modules/slick-carousel/slick/slick-theme.scss",
-              "./node_modules/ca-components/assets/scss/ca-global.scss"
-            ],
-            "scripts": [
-              "./node_modules/jquery/dist/jquery.min.js",
-              "./node_modules/popper.js/dist/umd/popper.js",
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "src/assets/scripts/geoxml3.js",
-              "./node_modules/crypto-js/crypto-js.js",
-              "./node_modules/slick-carousel/slick/slick.min.js"
-            ],
-            "allowedCommonJsDependencies": [
-              "ngx-google-places-autocomplete",
-              "croppie"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "21mb",
-                  "maximumError": "25mb"
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "projects",
+    "projects": {
+        "carrierassist-fe": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
                 },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "21mb",
-                  "maximumError": "25mb"
+                "@schematics/angular:application": {
+                    "strict": true
                 }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "sourceMap": false,
-              "outputHashing": "all"
             },
-            "staging": {
-              "optimization": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "21mb",
-                  "maximumError": "25mb"
+            "root": "",
+            "sourceRoot": "src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "preserveSymlinks": true,
+                        "outputPath": "dist/carrierassist-fe",
+                        "index": "src/index.html",
+                        "main": "src/main.ts",
+                        "polyfills": "src/polyfills.ts",
+                        "tsConfig": "tsconfig.app.json",
+                        "inlineStyleLanguage": "scss",
+                        "assets": [
+                            "src/assets",
+                            {
+                                "glob": "**/*",
+                                "input": "node_modules/ca-components/src/assets/ca-components/",
+                                "output": "src/assets/ca-components/"
+                            }
+                        ],
+                        "styles": [
+                            "src/styles.scss",
+                            "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+                            "./node_modules/bootstrap/dist/css/bootstrap.css",
+                            "./node_modules/snazzy-info-window/dist/snazzy-info-window.css",
+                            "./node_modules/ngx-toastr/toastr.css",
+                            "./node_modules/croppie/croppie.css",
+                            "./node_modules/slick-carousel/slick/slick.scss",
+                            "./node_modules/slick-carousel/slick/slick-theme.scss",
+                            "./node_modules/ca-components/assets/scss/ca-global.scss"
+                        ],
+                        "scripts": [
+                            "./node_modules/jquery/dist/jquery.min.js",
+                            "./node_modules/popper.js/dist/umd/popper.js",
+                            "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+                            "src/assets/scripts/geoxml3.js",
+                            "./node_modules/crypto-js/crypto-js.js",
+                            "./node_modules/slick-carousel/slick/slick.min.js"
+                        ],
+                        "allowedCommonJsDependencies": [
+                            "ngx-google-places-autocomplete",
+                            "croppie"
+                        ]
+                    },
+                    "configurations": {
+                        "production": {
+                            "optimization": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "21mb",
+                                    "maximumError": "25mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "21mb",
+                                    "maximumError": "25mb"
+                                }
+                            ],
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "sourceMap": false,
+                            "outputHashing": "all"
+                        },
+                        "staging": {
+                            "optimization": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "21mb",
+                                    "maximumError": "25mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "21mb",
+                                    "maximumError": "25mb"
+                                }
+                            ],
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.staging.ts"
+                                }
+                            ]
+                        },
+                        "development": {
+                            "buildOptimizer": false,
+                            "optimization": false,
+                            "vendorChunk": true,
+                            "extractLicenses": false,
+                            "sourceMap": true,
+                            "namedChunks": true
+                        }
+                    },
+                    "defaultConfiguration": "production"
                 },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "21mb",
-                  "maximumError": "25mb"
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "configurations": {
+                        "production": {
+                            "buildTarget": "carrierassist-fe:build:production"
+                        },
+                        "development": {
+                            "buildTarget": "carrierassist-fe:build:development"
+                        }
+                    },
+                    "defaultConfiguration": "development"
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "buildTarget": "carrierassist-fe:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "src/test.ts",
+                        "polyfills": "src/polyfills.ts",
+                        "tsConfig": "tsconfig.spec.json",
+                        "karmaConfig": "karma.conf.js",
+                        "inlineStyleLanguage": "scss",
+                        "assets": [
+                            "src/assets",
+                            {
+                                "glob": "**/*",
+                                "input": "node_modules/ca-components/src/assets/ca-components/",
+                                "output": "assets/ca-components/"
+                            }
+                        ],
+                        "styles": [
+                            "src/styles.scss",
+                            "./node_modules/slick-carousel/slick/slick.scss",
+                            "./node_modules/slick-carousel/slick/slick-theme.scss"
+                        ],
+                        "scripts": [
+                            "./node_modules/jquery/dist/jquery.min.js",
+                            "./node_modules/popper.js/dist/popper.js",
+                            "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+                            "./src/assets/scripts/geoxml3.js",
+                            "./node_modules/slick-carousel/slick/slick.min.js"
+                        ]
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-eslint/builder:lint",
+                    "options": {
+                        "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+                    }
                 }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.staging.ts"
-                }
-              ]
-            },
-            "development": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
             }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "configurations": {
-            "production": {
-              "buildTarget": "carrierassist-fe:build:production"
-            },
-            "development": {
-              "buildTarget": "carrierassist-fe:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "carrierassist-fe:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/assets",
-              {
-                "glob": "**/*",
-                "input": "node_modules/ca-components/src/assets/ca-components/",
-                "output": "assets/ca-components/"
-              }
-            ],
-            "styles": [
-              "src/styles.scss",
-              "./node_modules/slick-carousel/slick/slick.scss",
-              "./node_modules/slick-carousel/slick/slick-theme.scss"
-            ],
-            "scripts": [
-              "./node_modules/jquery/dist/jquery.min.js",
-              "./node_modules/popper.js/dist/popper.js",
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "./src/assets/scripts/geoxml3.js",
-              "./node_modules/slick-carousel/slick/slick.min.js"
-            ]
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
-          }
         }
-      }
+    },
+    "cli": {
+        "analytics": false,
+        "schematicCollections": ["@angular-eslint/schematics"]
     }
-  },
-  "cli": {
-    "analytics": false,
-    "schematicCollections": [
-      "@angular-eslint/schematics"
-    ]
-  }
 }

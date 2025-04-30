@@ -17,18 +17,9 @@ import {
     GetNestedValuePipe,
 } from '@shared/pipes';
 
-import { ModalService } from '@shared/services';
-import { CardColumnsModalComponent } from '@shared/components/card-columns-modal/card-columns-modal.component';
-
-// configs
-import { MilesCardDataConfig } from './utils/configs/miles-card-data.config';
-
-// interfaces
-import { ICardValueData } from '@shared/interfaces';
-
 // enums
-import { eMilesCardData } from '@pages/miles/pages/miles-card/enums';
-import { eTableCardViewData, TableStringEnum } from '@shared/enums';
+import { eTableCardViewData } from '@shared/enums';
+import { eMileTabs } from '@pages/miles/enums';
 
 // svg-routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -52,51 +43,14 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     ],
 })
 export class MilesCardComponent {
-    public frontSideData: ICardValueData[] =
-        MilesCardDataConfig.FRONT_SIDE_DATA;
-    public backSideData: ICardValueData[] = MilesCardDataConfig.BACK_SIDE_DATA;
-
     // enums
-    public tableCardViewEnums = eTableCardViewData;
+    public eTableCardViewData = eTableCardViewData;
+    public eMileTabs = eMileTabs;
 
     // svg-routes
     public sharedSvgRoutes = SharedSvgRoutes;
 
-    constructor(
-        private modalService: ModalService,
-        public milesStoreService: MilesStoreService
-    ) {}
-
-    public openColumnsModal(): void {
-        const action = {
-            data: {
-                cardsAllData: MilesCardDataConfig.CARD_ALL_DATA,
-                front_side: this.frontSideData,
-                back_side: this.backSideData,
-                numberOfRows: 4,
-                checked: true,
-            },
-            title: eMilesCardData.MILES_ACTIVE_TRUCK,
-        };
-        
-        this.modalService
-            .openModal(
-                CardColumnsModalComponent,
-                { size: TableStringEnum.SMALL },
-                action
-            )
-            .then((result) => {
-                if (result) {
-                    this.frontSideData = result.selectedColumns.front_side
-                        .slice(0, result.selectedColumns.numberOfRows)
-                        .map((front: ICardValueData) => front.inputItem);
-
-                    this.backSideData = result.selectedColumns.back_side
-                        .slice(0, result.selectedColumns.numberOfRows)
-                        .map((back: ICardValueData) => back.inputItem);
-                }
-            });
-    }
+    constructor(public milesStoreService: MilesStoreService) {}
 
     public onShowMoreClick(): void {
         this.milesStoreService.getNewPage();

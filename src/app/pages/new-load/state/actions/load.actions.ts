@@ -18,11 +18,12 @@ import {
     LoadStatusFilterResponse,
     LoadStatusResponse,
     RoutingResponse,
+    UpdateLoadStatusCommand,
 } from 'appcoretruckassist';
 
 // Interface
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // Ca components
 import { IFilterAction } from 'ca-components';
@@ -166,6 +167,14 @@ export const tableSortingChange = createAction(
 export const updateLoadStatus = createAction(
     LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS,
     props<{ status: LoadStatusResponse }>()
+);
+
+export const updateLoadStatusRegular = createAction(
+    LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS_REGULAR,
+    props<{
+        status: LoadStatusResponse;
+        updateLoadStatusCommand?: UpdateLoadStatusCommand;
+    }>()
 );
 
 export const updateLoadStatusSuccess = createAction(
