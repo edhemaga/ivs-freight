@@ -168,6 +168,7 @@
                 font-size: 17px;
                 font-weight: 700;
                 color: #2f2f2f;
+                user-select: none;
 
                 &::selection {
                     background-color: #2f2f2f33;
@@ -185,6 +186,7 @@
                 font-weight: 700;
                 color: #fff;
                 @include text-selection($white);
+                user-select: none;
 
                 &.blue {
                     background-color: #6692f1;
