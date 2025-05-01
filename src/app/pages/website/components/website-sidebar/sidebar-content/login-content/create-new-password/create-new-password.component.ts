@@ -88,7 +88,7 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
             .subscribe((value) => {
                 if (
                     value ===
-                    this.createNewPasswordForm.get(WebsiteStringEnum.PASSWORD)
+                    this.createNewPasswordForm.get(WebsiteStringEnum.NEW_PASSWORD)
                         .value
                 ) {
                     this.createNewPasswordForm
@@ -104,7 +104,7 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
             });
 
         this.createNewPasswordForm
-            .get(WebsiteStringEnum.PASSWORD)
+            .get(WebsiteStringEnum.NEW_PASSWORD)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
