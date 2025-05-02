@@ -24,7 +24,10 @@ import { eCommonElement, eStatusTab } from '@shared/enums';
 
 // Interface
 import { IMappedUser, IUserDeleteModal } from '@pages/new-user/interfaces';
-import { ITableColumn, ITableConfig } from '@shared/components/new-table/interfaces';
+import {
+    ITableColumn,
+    ITableConfig,
+} from '@shared/components/new-table/interfaces';
 
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
@@ -207,6 +210,12 @@ export class UserStoreService {
         this.store.dispatch({
             type: UserStoreConstants.ACTION_FILTER_CHANGED,
             filters,
+        });
+    }
+
+    public dispatchOpenUserModal(): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_OPEN_USER_MODAL,
         });
     }
 }

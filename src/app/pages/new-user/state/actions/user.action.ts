@@ -59,7 +59,6 @@ export const toggleColumnVisibility = createAction(
 );
 //#endregion
 
-
 //#region Tabs
 export const onTabTypeChange = createAction(
     UserStoreConstants.ACTION_DISPATCH_USER_TYPE_CHANGE,
@@ -141,5 +140,11 @@ export const onUserStatusChange = createAction(
 
 export const onUserStatusChangeError = createAction(
     UserStoreConstants.ACTION_DISPATCH_USER_STATUS_CHANGE_ERROR
+);
+//#endregion
+
+//#region Modal
+export const onOpenUserModal = createAction(
+    UserStoreConstants.ACTION_OPEN_USER_MODAL
 );
 //#endregion

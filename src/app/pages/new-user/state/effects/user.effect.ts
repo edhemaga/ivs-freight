@@ -10,6 +10,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 // Service
 import { UserService } from '@pages/new-user/services/user.service';
+import { ModalService } from '@shared/services';
 
 // Actions
 import * as UserActions from '@pages/new-user/state/actions/user.action';
@@ -23,12 +24,16 @@ import { eStatusTab } from '@shared/enums';
 // Models
 import { StatusSetMultipleCompanyUserCommand } from 'appcoretruckassist';
 
+// Components
+import { UserModalComponent } from '@pages/new-user/modals/user-modal/user-modal.component';
+
 @Injectable()
 export class UserEffects {
     constructor(
         // Store
         private actions$: Actions,
         private store: Store,
+        private modalService: ModalService,
 
         private userService: UserService
     ) {}
@@ -163,5 +168,14 @@ export class UserEffects {
                 );
             })
         )
+    );
+
+    public onModalOpen$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(UserActions.onOpenUserModal),
+                map(() => this.modalService.openModal(UserModalComponent, {}))
+            ),
+        { dispatch: false }
     );
 }
