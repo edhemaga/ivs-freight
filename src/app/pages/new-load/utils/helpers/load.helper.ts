@@ -69,6 +69,7 @@ export class LoadHelper {
 
                 ///////////////////////////////////////
                 templateName: name,
+                loadNumber,
                 loadType: loadType?.name ?? type?.name,
                 dispatcher,
                 companyName: company?.companyName,
@@ -89,6 +90,7 @@ export class LoadHelper {
                     driver?.truckNumber ?? dispatch?.truck?.truckNumber,
                 assignedDriverTrailerNumber:
                     driver?.trailerNumber ?? dispatch?.trailer?.trailerNumber,
+                status,
                 requirementTruck: loadRequirements?.truckType,
                 requirementTrailer: loadRequirements?.trailerType,
                 requirementLength:
@@ -150,8 +152,6 @@ export class LoadHelper {
                         selectedTab
                     ),
                 ////////////////////////////////////////////////
-                loadNumber,
-                status,
 
                 totalDue,
 

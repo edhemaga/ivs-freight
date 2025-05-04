@@ -26,6 +26,7 @@
         {
             select,
             templateName,
+            loadNumber,
             loadType,
             loadDispatcher,
             companyName,
@@ -38,6 +39,7 @@
             assignedDriver,
             assignedDriverTruckNumber,
             assignedDriverTrailerNumber,
+            loadStatus,
             requirementTruck,
             requirementTrailer,
             requirementLiftgate,
@@ -57,9 +59,6 @@
             dateEdited: dateTemplate,
             note,
             action,
-
-            loadNumber,
-            loadStatus,
 
             invoicedDate,
         };
@@ -173,7 +172,7 @@
         <!-- #region LOAD NUMBER COLUMN -->
 
         <ng-template #loadNumber let-data="data">
-            <div class="d-flex gap-1 align-items-center h-full">
+            <div class="d-flex gap-1 align-items-center">
                 @if (!store.isTypeColumnCheckedSelector) {
                     <app-load-type
                         [loadType]="data.loadType"
@@ -182,11 +181,11 @@
                 }
 
                 <span
+                    class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
                     ngbTooltip
                     [mainTooltip]="eGeneralActions.VIEW_DETAILS"
                     [tooltipBackground]="eColor.BLACK"
                     [position]="ePosition.BOTTOM"
-                    class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
                     [innerHtml]="
                         data.loadNumber
                             | tableHighlightSearchText: store.searchStrings
@@ -388,7 +387,11 @@
                 #ngbStatus="ngbPopover"
                 [autoClose]="true"
                 [ngbPopover]="statusPopover"
-                [placement]="ePosition.BOTTOM + ' ' + ePosition.TOP"
+                [placement]="
+                    ePosition.BOTTOM +
+                    eStringPlaceholder.WHITESPACE +
+                    ePosition.TOP
+                "
                 container="body"
                 popoverClass="table-status-popover"
                 triggers="manual"

@@ -21,6 +21,7 @@ export interface IMappedLoad {
 
     /////////////////////////////////////// TEMPLATE
     templateName: string;
+    loadNumber: string;
     loadType: EnumValue;
     dispatcher: CompanyUserShortResponse;
     companyName: string;
@@ -62,7 +63,6 @@ export interface IMappedLoad {
 
     ////////////////////////////////////////////////////////////
 
-    loadNumber: string;
     status: LoadStatusResponse;
 
     totalDue: number;
