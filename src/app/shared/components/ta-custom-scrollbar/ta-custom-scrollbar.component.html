@@ -9,7 +9,7 @@
             : 100 + 'vh',
         'overflow-y': scrollBarOptions.showHorizontalScrollBar
             ? 'visible'
-            : 'auto'
+            : 'auto',
     }"
 >
     <ng-content></ng-content>
@@ -28,42 +28,46 @@
     </div>
 
     <!-- Horizontal Scroll Bar -->
-    <div
-        class="horizontal-scroll-bar"
-        [ngStyle]="{
-            'left.px':
-                scrollBarOptions?.modalStyle?.horizontalScrollBarLeft === 0 ||
-                scrollBarOptions?.modalStyle?.horizontalScrollBarLeft
-                    ? scrollBarOptions.modalStyle.horizontalScrollBarLeft
-                    : tableNotPinedBoundingRect?.left - 74,
-            'width.px': scrollBarOptions?.modalStyle?.horizontalScrollBarWidth
-                ? scrollBarOptions.modalStyle.horizontalScrollBarWidth
-                : tableNotPinedBoundingRect?.width,
-            'margin-top.px': scrollBarOptions?.modalStyle
-                ?.horizontalScrollBarMarginTop
-                ? scrollBarOptions.modalStyle.horizontalScrollBarMarginTop
-                : -15
-        }"
-        [ngClass]="{
-            'modal-horizontal-scroll-bar':
-                scrollBarOptions?.modalStyle?.modalScrollClassActive
-        }"
-        *ngIf="showScrollbar && scrollBarOptions.showHorizontalScrollBar"
-    >
+    @if (showScrollbar && scrollBarOptions.showHorizontalScrollBar) {
         <div
-            class="horizontal-bar"
-            #bar
+            #scrollbarTrack
+            class="horizontal-scroll-bar"
             [ngStyle]="{
-                'width.px': scrollBarOptions?.modalStyle?.additionalWidth
-                    ? tableScrollWidth +
-                      scrollBarOptions.modalStyle.additionalWidth
-                    : tableScrollWidth
+                'left.px':
+                    scrollBarOptions?.modalStyle?.horizontalScrollBarLeft ===
+                        0 ||
+                    scrollBarOptions?.modalStyle?.horizontalScrollBarLeft
+                        ? scrollBarOptions.modalStyle.horizontalScrollBarLeft
+                        : tableNotPinedBoundingRect?.left - 74,
+                'width.px': scrollBarOptions?.modalStyle
+                    ?.horizontalScrollBarWidth
+                    ? scrollBarOptions.modalStyle.horizontalScrollBarWidth
+                    : tableScrollbarTrackWidth,
+                'margin-top.px': scrollBarOptions?.modalStyle
+                    ?.horizontalScrollBarMarginTop
+                    ? scrollBarOptions.modalStyle.horizontalScrollBarMarginTop
+                    : -14,
             }"
             [ngClass]="{
-                'horizontal-bar-sticky': scrollBarOptions.dataLength >= 23
+                'modal-horizontal-scroll-bar':
+                    scrollBarOptions?.modalStyle?.modalScrollClassActive,
             }"
-            (mousedown)="setDraggingStart($event)"
-            (mouseup)="isMouseDown = false"
-        ></div>
-    </div>
+        >
+            <div
+                #bar
+                class="horizontal-bar"
+                [ngStyle]="{
+                    'width.px': scrollBarOptions?.modalStyle?.additionalWidth
+                        ? tableScrollWidth +
+                          scrollBarOptions.modalStyle.additionalWidth
+                        : tableScrollWidth,
+                }"
+                [ngClass]="{
+                    'horizontal-bar-sticky': scrollBarOptions.dataLength > 25,
+                }"
+                (mousedown)="setDraggingStart($event)"
+                (mouseup)="isMouseDown = false"
+            ></div>
+        </div>
+    }
 </div>

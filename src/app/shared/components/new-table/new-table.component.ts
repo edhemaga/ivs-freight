@@ -3,10 +3,13 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    ElementRef,
     EventEmitter,
     Input,
     Output,
+    QueryList,
     TemplateRef,
+    ViewChildren,
 } from '@angular/core';
 import {
     CdkDragDrop,
@@ -90,6 +93,8 @@ import { TableScrollHelper } from '@shared/components/new-table/utils/helpers';
     ],
 })
 export class NewTableComponent<T> {
+    @ViewChildren('scrollableColumns')
+    scrollableColumns!: QueryList<ElementRef>;
     @Input() set columns(value: ITableColumn[]) {
         this.processColumns(value);
     }
@@ -155,10 +160,8 @@ export class NewTableComponent<T> {
 
         this.mainColumns = columns.filter((col) => !col.pinned);
 
-        this.hasActiveLeftPinnedColumns =
-            TableScrollHelper.countCheckedColumns(this.leftPinnedColumns) > 0;
-        this.hasActiveRightPinnedColumns =
-            TableScrollHelper.countCheckedColumns(this.rightPinnedColumns) > 0;
+        this.hasActiveLeftPinnedColumns = this.leftPinnedColumns?.length > 0;
+        this.hasActiveRightPinnedColumns = this.rightPinnedColumns?.length > 0;
 
         this.leftPinnedBorderWidth =
             TableScrollHelper.getTotalColumnWidth(this.leftPinnedColumns) + 8;
@@ -243,33 +246,35 @@ export class NewTableComponent<T> {
         if (scrollEvent.eventAction === eCustomScroll.SCROLLING) {
             let isMaxScroll = false;
 
-            document
-                .querySelectorAll(eCustomScroll.NOT_PINNED_SCROLL_CONTAINER)
-                .forEach((element) => {
-                    element.scrollLeft = scrollEvent.scrollPosition;
+            this.scrollableColumns.forEach((column) => {
+                column.nativeElement.scrollLeft = scrollEvent.scrollPosition;
 
-                    if (
-                        Math.round(scrollEvent.scrollPosition) >=
-                        Math.round(element.scrollWidth - element.clientWidth) -
-                            3
-                    ) {
-                        isMaxScroll = true;
-                    }
-                });
-
-            const elements = document.getElementsByClassName(
-                eCustomScroll.SCROLLABLE_COLUMNS
-            );
-
-            Array.from(elements).forEach((element) => {
-                element.scrollLeft = scrollEvent.scrollPosition;
+                if (
+                    Math.round(scrollEvent.scrollPosition) >=
+                    Math.round(
+                        column.nativeElement.scrollWidth -
+                            column.nativeElement.clientWidth
+                    ) -
+                        3
+                ) {
+                    isMaxScroll = true;
+                }
             });
+
+            const isLeftBorderCurrentlyShown = this.isLeftScrollLineShown;
+            const isRightBorderCurrentlyShown = this.isRightScrollLineShown;
 
             if (scrollEvent.scrollPosition) {
                 this.isLeftScrollLineShown = true;
 
                 this.isRightScrollLineShown = !isMaxScroll;
             } else this.isLeftScrollLineShown = false;
+
+            if (
+                isLeftBorderCurrentlyShown !== this.isLeftScrollLineShown ||
+                isRightBorderCurrentlyShown !== this.isRightScrollLineShown
+            )
+                this.cdr.detectChanges();
         } else if (
             scrollEvent.eventAction === eCustomScroll.IS_SCROLL_SHOWING
         ) {
@@ -278,7 +283,5 @@ export class NewTableComponent<T> {
                 this.isRightScrollLineShown = false;
             } else this.isRightScrollLineShown = true;
         }
-
-        this.cdr.detectChanges();
     }
 }
