@@ -30,7 +30,7 @@ export interface IMappedLoad {
     brokerPhoneExt: string;
     referenceNumber: string;
     commodity: string;
-    weight: string;
+    weight: ISingleValue;
     assignedDriver: LoadDriverInfo | DriverMinimalResponse;
     assignedDriverTruckNumber: string;
     assignedDriverTrailerNumber: string;
@@ -42,9 +42,9 @@ export interface IMappedLoad {
     requirementYear: string;
     requirementLiftgate: string;
     driverMessage: string;
-    milesLoaded: number;
+    milesLoaded: ISingleValue;
     milesEmpty: number;
-    milesTotal: number;
+    milesTotal: ISingleValue;
 
     billingRatePerMile: ISingleValue;
     billingLayover: ISingleValue;
@@ -54,22 +54,22 @@ export interface IMappedLoad {
     billingDetention: ISingleValue;
     billingRate: number;
     billingAdjustedRate: number;
+    billingPaid: ISingleValue;
+    dateCreated: ISingleValue;
+    dateEdited: ISingleValue;
+    note: string;
+    tableDropdownContent: IDropdownMenuItem[];
 
     ////////////////////////////////////////////////////////////
-
-    edit: boolean;
 
     loadNumber: string;
     status: LoadStatusResponse;
 
-    tableDropdownContent: IDropdownMenuItem[];
     totalDue: number;
-    broker: LoadBrokerInfo;
-
     invoicedDate: string;
-    note: string;
 
     pickup: LoadPickup;
     delivery: LoadDelivery;
-    dateCreated: string;
+
+    broker: LoadBrokerInfo;
 }

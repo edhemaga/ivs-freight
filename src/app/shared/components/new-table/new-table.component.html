@@ -283,8 +283,6 @@
                 @let hasDoubleHeightBorder =
                     _lastColumn && !!nextColumn?.columns;
 
-                @let isColumnAlignedRight = _column.isAlignedRight;
-
                 <div
                     class="d-flex reorder-container"
                     cdkDrag
@@ -301,7 +299,6 @@
                                 isGroup: true,
                                 isLastInGroup: _lastColumn,
                                 isGroupAlignedRight,
-                                isColumnAlignedRight,
                                 hasDoubleHeightBorder,
                                 isGroupHeadingHover,
                             }
@@ -348,13 +345,13 @@
         let-isGroup="isGroup"
         let-isLastInGroup="isLastInGroup"
         let-isGroupAlignedRight="isGroupAlignedRight"
-        let-isColumnAlignedRight="isColumnAlignedRight"
         let-hasDoubleHeightBorder="hasDoubleHeightBorder"
         let-isGroupHeadingHover="isGroupHeadingHover"
     >
         @if (column.isChecked) {
             @let isResizableColumn = !isTableLocked && column.isResizable;
             @let isEmptyTable = !displayedDataCount;
+            @let isPinnedRight = column.pinned === ePosition.RIGHT;
             @let columnWidth = column.width + eUnit.PX;
 
             @let tableColumnClass =
@@ -364,7 +361,7 @@
                     isGroup,
                     isEmptyTable,
                     isGroupAlignedRight,
-                    isColumnAlignedRight,
+                    isPinnedRight,
                 } | tableColumnClass;
 
             @let headingHoverActionId =
@@ -408,7 +405,6 @@
                     {
                         isTableLocked,
                         isGroupAlignedRight,
-                        isColumnAlignedRight,
                         isTableColumnInnerClass: true,
                         hasLabelTop: hasLabelTop && groupColumn.label,
                     } | tableColumnClass;

@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Subject, takeUntil } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// modules
 import { NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
-// Enums
+// enums
 import {
     eColor,
     eSharedString,
@@ -12,13 +15,14 @@ import {
     eDropdownMenu,
     eGeneralActions,
     eStringPlaceholder,
+    eThousandSeparatorFormat,
 } from '@shared/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // base classes
 import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
 
-// Components
+// components
 import {
     CaDropdownMenuComponent,
     CaStatusChangeDropdownComponent,
@@ -35,7 +39,7 @@ import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { LoadTypeComponent } from '@pages/new-load/components/load-type/load-type.component';
 import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
 
-// Services
+// services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 import { ModalService } from '@shared/services';
 
@@ -46,13 +50,18 @@ import { ITableColumn } from '@shared/components/new-table/interfaces';
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
-// Models
-import { LoadStatusResponse } from 'appcoretruckassist';
+// models
+import {
+    LoadListDto,
+    LoadStatusResponse,
+    LoadTemplateResponse,
+} from 'appcoretruckassist';
+
+// svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-// Pipes
+// pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
-import { ThousandSeparatorPipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-new-load-table',
@@ -64,7 +73,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes';
         NgbTooltip,
         NgbPopover,
 
-        // Components
+        // components
         NewTableComponent,
         CaLoadStatusComponent,
         CaDropdownMenuComponent,
@@ -78,9 +87,8 @@ import { ThousandSeparatorPipe } from '@shared/pipes';
         LoadTypeComponent,
         TaTruckTrailerIconComponent,
 
-        // Pipes
+        // pipes
         TableHighlightSearchTextPipe,
-        ThousandSeparatorPipe,
     ],
 })
 export class NewLoadTableComponent
@@ -101,6 +109,7 @@ export class NewLoadTableComponent
     public eDropdownMenu = eDropdownMenu;
     public eDateTimeFormat = eDateTimeFormat;
     public eStringPlaceholder = eStringPlaceholder;
+    public eThousandSeparatorFormat = eThousandSeparatorFormat;
 
     constructor(
         protected router: Router,
@@ -136,8 +145,8 @@ export class NewLoadTableComponent
 
     public onToggleDropdownMenuActions(
         action: IDropdownMenuOptionEmit,
-        data,
-        selectedTab
+        data: LoadListDto | LoadTemplateResponse,
+        selectedTab: string
     ): void {
         const { type } = action;
 
@@ -150,10 +159,12 @@ export class NewLoadTableComponent
         // this is because we have load and new load - it will be removed
         if (type === eDropdownMenu.VIEW_DETAILS_TYPE) {
             const { id } = data;
+
             this.navigateToLoadDetails(id);
 
             return;
         }
+
         this.handleDropdownMenuActions(
             tableAction,
             eDropdownMenu.LOAD,

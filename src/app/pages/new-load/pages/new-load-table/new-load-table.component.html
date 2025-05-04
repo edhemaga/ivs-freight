@@ -34,30 +34,33 @@
             brokerPhone,
             referenceNumber,
             commodity,
+            weight: thousandFormatterTemplate,
             assignedDriver,
             assignedDriverTruckNumber,
             assignedDriverTrailerNumber,
             requirementTruck,
             requirementTrailer,
+            requirementLiftgate,
             driverMessage,
-            milesLoaded,
+            milesLoaded: thousandFormatterTemplate,
             milesEmpty,
-            milesTotal,
+            milesTotal: thousandFormatterTemplate,
             billingRatePerMile: currencyTemplate,
             billingLayover: currencyTemplate,
             billinglumper: currencyTemplate,
             billingFuelSurcharge: currencyTemplate,
             billingEscort: currencyTemplate,
             billingDetention: currencyTemplate,
+            billingRate,
+            billingPaid: currencyTemplate,
+            dateCreated: dateTemplate,
+            dateEdited: dateTemplate,
+            note,
+            action,
 
             loadNumber,
             loadStatus,
 
-            edit,
-            action,
-            note,
-
-            billingRate,
             invoicedDate,
         };
 
@@ -83,10 +86,15 @@
             ></app-ca-checkbox-selected-count>
         </ng-template>
 
-        <ng-template #weightHeaderTemplate>
-            <div class="d-flex">
+        <ng-template
+            #weightHeaderTemplate
+            let-tableColumnClass="tableColumnClass"
+            let-tableColumnLabelWidth="tableColumnLabelWidth"
+        >
+            <div class="d-flex" [ngClass]="tableColumnClass">
                 <span
                     class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
+                    [ngStyle]="tableColumnLabelWidth"
                 >
                     Weight
 
@@ -101,21 +109,20 @@
 
         <ng-template
             #requirementLengthHeaderTemplate
-            let-data="data"
             let-tableColumnClass="tableColumnClass"
             let-tableColumnLabelWidth="tableColumnLabelWidth"
         >
             <div class="d-flex" [ngClass]="tableColumnClass">
-                <svg-icon
-                    [src]="sharedSvgRoutes.TABLE_LENGTH_ICON"
-                    class="d-flex svg-fill-bw6-2 svg-size-14 m-r-4"
-                >
-                </svg-icon>
-
                 <span
-                    class="text-size-11 ta-font-semi-bold text-color-muted text-truncate d-inline-block"
+                    class="d-flex align-items-center text-size-11 ta-font-semi-bold text-color-muted text-truncate d-inline-block"
                     [ngStyle]="tableColumnLabelWidth"
                 >
+                    <svg-icon
+                        [src]="sharedSvgRoutes.TABLE_LENGTH_ICON"
+                        class="d-flex svg-fill-bw6-2 svg-size-14 m-r-4"
+                    >
+                    </svg-icon>
+
                     ft
                 </span>
             </div>
@@ -124,11 +131,10 @@
         <ng-template
             #alignRightHeaderTemplate
             let-data="data"
-            let-tableColumnClass="tableColumnClass"
             let-tableColumnLabelWidth="tableColumnLabelWidth"
             let-label="label"
         >
-            <div class="d-flex" [ngClass]="tableColumnClass">
+            <div class="d-flex">
                 <span
                     class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
                     [ngStyle]="tableColumnLabelWidth"
@@ -140,13 +146,12 @@
 
         <ng-template
             #noteHeaderTemplate
-            let-data="data"
             let-tableColumnClass="tableColumnClass"
         >
             <div class="d-flex" [ngClass]="tableColumnClass">
                 <svg-icon
+                    class="svg-size-14 svg-fill-bw6-2 position-relative top-4"
                     [src]="sharedSvgRoutes.NOTE_ICON"
-                    class="svg-size-14"
                 ></svg-icon>
             </div>
         </ng-template>
@@ -167,11 +172,7 @@
 
         <!-- #region LOAD NUMBER COLUMN -->
 
-        <ng-template
-            #loadNumber
-            let-data="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
+        <ng-template #loadNumber let-data="data">
             <div class="d-flex gap-1 align-items-center h-full">
                 @if (!store.isTypeColumnCheckedSelector) {
                     <app-load-type
@@ -186,7 +187,6 @@
                     [tooltipBackground]="eColor.BLACK"
                     [position]="ePosition.BOTTOM"
                     class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
-                    [class]="cellColumnTextColorClass"
                     [innerHtml]="
                         data.loadNumber
                             | tableHighlightSearchText: store.searchStrings
@@ -286,19 +286,15 @@
             ></p>
         </ng-template>
 
-        <ng-template
-            #brokerPhone
-            let-data="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
-            <div [class]="cellColumnTextColorClass">
-                <span class="text-color-black-2 text-size-14"
-                    >{{ data?.brokerPhone }}
+        <ng-template #brokerPhone let-data="data">
+            <div class="d-flex align-items-center">
+                <span class="text-color-black-2 text-size-14 m-r-6">
+                    {{ data?.brokerPhone }}
                 </span>
 
                 @if (data.brokerPhoneExt) {
-                    <span class="text-color-muted text-size-14"
-                        >x {{ data.brokerPhoneExt }}
+                    <span class="text-color-muted text-size-14">
+                        x {{ data.brokerPhoneExt }}
                     </span>
                 }
             </div>
@@ -318,12 +314,8 @@
             ></div>
         </ng-template>
 
-        <ng-template
-            #commodity
-            let-data="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
-            <div class="align-items-center" [class]="cellColumnTextColorClass">
+        <ng-template #commodity let-data="data">
+            <div class="align-items-center">
                 @if (data.commodity === eSharedString.HAZARDOUS) {
                     <svg-icon
                         class="svg-size-18"
@@ -341,11 +333,7 @@
 
         <!-- #region ASSIGNED GROUP -->
 
-        <ng-template
-            #assignedDriver
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-            let-data="data"
-        >
+        <ng-template #assignedDriver let-data="data">
             <div class="d-flex gap-1">
                 @let driverFullName =
                     data.assignedDriver?.firstName +
@@ -441,18 +429,19 @@
             }
         </ng-template>
 
+        <ng-template #requirementLiftgate let-data="data">
+            <p class="text-color-black-2 text-size-14">
+                {{ data.requirementLiftgate && eGeneralActions.YES }}
+            </p>
+        </ng-template>
+
         <!-- #endregion END OF REQUIREMENT GROUP -->
 
         <!-- #region DRIVER MESSAGE COLUMN -->
 
-        <ng-template
-            #driverMessage
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-            let-data="data"
-        >
+        <ng-template #driverMessage let-data="data">
             <div
                 class="text-color-black-2 text-size-14 text-line-clamp-2"
-                [class]="cellColumnTextColorClass"
                 [innerHtml]="data.driverMessage"
             ></div>
         </ng-template>
@@ -461,21 +450,25 @@
 
         <!-- #region MILES GROUP -->
 
-        <ng-template let-data="data" #milesLoaded>
+        <ng-template #thousandFormatterTemplate let-data="data" let-key="key">
             <p class="text-color-black-2 text-size-14">
-                {{ data.milesLoaded | thousandSeparator }}
+                @let thousandFormatterTemplate =
+                    data[key]?.value
+                        | number: eThousandSeparatorFormat.DECIMAL_FORMAT;
+
+                {{ thousandFormatterTemplate }}
             </p>
         </ng-template>
 
         <ng-template let-data="data" #milesEmpty>
-            <p class="text-color-black-2 text-size-14">
-                {{ data.milesEmpty | thousandSeparator }}
-            </p>
-        </ng-template>
+            @let milesEmptyValue =
+                store.selectedTab === eSharedString.TEMPLATE
+                    ? eStringPlaceholder.ZERO
+                    : (data.milesEmpty
+                      | number: eThousandSeparatorFormat.DECIMAL_FORMAT);
 
-        <ng-template let-data="data" #milesTotal>
             <p class="text-color-black-2 text-size-14">
-                {{ data.milesTotal | thousandSeparator }}
+                {{ milesEmptyValue }}
             </p>
         </ng-template>
 
@@ -495,7 +488,7 @@
 
         <ng-template #billingRate let-data="data">
             @if (data.billingRate) {
-                <div class="d-flex flex-column align-items-end">
+                <div class="d-flex flex-column">
                     <p
                         class="ta-font-semi-bold text-size-14 text-color-black position-relative top-2"
                     >
@@ -513,30 +506,26 @@
 
         <!-- #endregion END OF BILLING GROUP -->
 
-        <ng-template
-            #invoicedDate
-            let-data="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
-            <div
-                class="text-color-black-2 text-size-14"
-                [class]="cellColumnTextColorClass"
-            >
+        <!-- #region DATES -->
+
+        <ng-template #dateTemplate let-data="data" let-key="key">
+            <p class="text-color-black-2 text-size-14">
+                @let dateTemplateValue =
+                    data[key]?.value | date: eDateTimeFormat.ANGULAR_MM_DD_YY;
+
+                {{ dateTemplateValue }}
+            </p>
+        </ng-template>
+
+        <ng-template #invoicedDate let-data="data">
+            <div class="text-color-black-2 text-size-14">
                 {{ data.invoicedDate | date: eDateTimeFormat.ANGULAR_MM_DD_YY }}
             </div>
         </ng-template>
 
-        <ng-template let-data="data" #action>
-            <ca-dropdown-menu
-                [type]="'dots-menu-type'"
-                [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
-                [options]="data.tableDropdownContent"
-                (dropdownOptionEmitter)="
-                    onToggleDropdownMenuActions($event, data, store.selectedTab)
-                "
-            >
-            </ca-dropdown-menu>
-        </ng-template>
+        <!-- #endregion END OF DATES -->
+
+        <!-- #region ACTIONS -->
 
         <ng-template let-data="data" #note>
             @let entityType =
@@ -554,6 +543,20 @@
             >
             </app-ta-note>
         </ng-template>
+
+        <ng-template let-data="data" #action>
+            <ca-dropdown-menu
+                [type]="'dots-menu-type'"
+                [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
+                [options]="data.tableDropdownContent"
+                (dropdownOptionEmitter)="
+                    onToggleDropdownMenuActions($event, data, store.selectedTab)
+                "
+            >
+            </ca-dropdown-menu>
+        </ng-template>
+
+        <!-- #endregion END OF ACTIONS -->
     </app-new-table>
 
     <ng-template #statusPopover>

@@ -14,34 +14,26 @@ export class TableColumnClassPipe implements PipeTransform {
         isGroup,
         isEmptyTable,
         isGroupAlignedRight,
-        isColumnAlignedRight,
         isTableColumnInnerClass,
         hasLabelTop,
+        isPinnedRight,
     }: {
         column: ITableColumn;
         isTableLocked: boolean;
         isGroup: boolean;
         isEmptyTable: boolean;
         isGroupAlignedRight: boolean;
-        isColumnAlignedRight: boolean;
         isTableColumnInnerClass: boolean;
         hasLabelTop: boolean;
+        isPinnedRight: boolean;
     }): object {
-        console.log('column', column);
-        console.log('isGroup', isGroup);
-        console.log('isGroupAlignedRight', isGroupAlignedRight);
-        console.log('isColumnAlignedRight', isColumnAlignedRight);
-
         return isTableColumnInnerClass
             ? {
                   'justify-content-between': !isTableLocked,
-                  'justify-content-end':
-                      isGroupAlignedRight || isColumnAlignedRight,
+                  'justify-content-end': isGroupAlignedRight,
                   'position-relative bottom-4': !isTableLocked && hasLabelTop,
                   'h-18': !isTableLocked && !isGroupAlignedRight,
-                  'aligned-right':
-                      isTableLocked &&
-                      (isGroupAlignedRight || isColumnAlignedRight),
+                  'aligned-right': isTableLocked && isGroupAlignedRight,
               }
             : {
                   'text-color-bw6-2': !column?.hasSort || !column?.direction,
@@ -56,13 +48,11 @@ export class TableColumnClassPipe implements PipeTransform {
                       column?.direction && isTableLocked,
                   'flex-column align-items-start mt-auto':
                       isGroup && !isGroupAlignedRight,
-                  'align-items-end':
-                      !isGroup || (isGroup && isColumnAlignedRight),
+                  'align-items-end': !isGroup,
                   'disable-text-selection': !isTableLocked,
-                  'order-2 m-l-4':
-                      (isGroupAlignedRight || isColumnAlignedRight) &&
-                      isTableLocked,
+                  'order-2 m-l-4': isGroupAlignedRight && isTableLocked,
                   'cursor-grab': !isTableLocked && !column.isDisabled,
+                  'justify-content-center': isPinnedRight,
               };
     }
 }

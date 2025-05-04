@@ -9,7 +9,10 @@
     tooltipTextAlign="center"
 >
     @if (unitNumber) {
-        <div class="text-color-black-2 text-size-14 hover-text-color" [ngStyle]="icon.className ? { '--hover-color': icon.color } : null">
+        <div
+            class="text-color-black-2 text-size-14 hover-text-color"
+            [ngStyle]="icon.className ? { '--hover-color': icon.color } : null"
+        >
             {{ unitNumber }}
         </div>
     } @else {

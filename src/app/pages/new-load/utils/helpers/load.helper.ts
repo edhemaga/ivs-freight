@@ -1,24 +1,20 @@
-// Enums
+// enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
-import { eSharedString } from '@shared/enums';
 
-// Interfaces
+// interfaces
 import { IMappedLoad } from '@pages/new-load/interfaces';
 
-// Models
-import { ITableData } from '@shared/models';
-
-// Models
+// models
 import {
     LoadListDto,
     LoadListResponse,
     LoadTemplateResponse,
 } from 'appcoretruckassist';
+import { ITableData } from '@shared/models';
 
 // helpers
 import { DropdownMenuContentHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
-import { MethodsCalculationsHelper } from '@shared/utils/helpers';
 
 export class LoadHelper {
     static loadMapper(
@@ -50,6 +46,11 @@ export class LoadHelper {
                 additionalBillingRates,
                 totalRate,
                 totalAdjustedRate,
+                totalPaid,
+                createdAt,
+                dateCreated,
+                updatedAt,
+                note,
 
                 loadNumber,
                 status,
@@ -58,13 +59,8 @@ export class LoadHelper {
 
                 invoicedDate,
 
-                note,
-
                 pickup,
                 delivery,
-
-                dateCreated,
-                createdAt,
             } = load;
 
             const mapped: IMappedLoad = {
@@ -77,14 +73,17 @@ export class LoadHelper {
                 dispatcher,
                 companyName: company?.companyName,
                 brokerBusinessName: broker?.businessName,
-                brokerContact: brokerContact?.contactName ?? broker?.contact,
+                brokerContact: broker?.contact ?? brokerContact?.contactName,
                 brokerPhone: broker?.phone,
-                brokerPhoneExt: broker?.phoneExt,
+                brokerPhoneExt:
+                    broker?.phoneExt ?? brokerContact?.extensionPhone,
                 referenceNumber:
-                    referenceNumber ?? loadDetails?.referenceNumber,
+                    loadDetails?.referenceNumber ?? referenceNumber,
                 commodity:
-                    generalCommodity?.name ?? loadDetails?.generalCommodityName,
-                weight: weight ?? loadDetails?.weight,
+                    loadDetails?.generalCommodityName ?? generalCommodity?.name,
+                weight: {
+                    value: loadDetails?.weight ?? weight,
+                },
                 assignedDriver: driver ?? dispatch?.driver,
                 assignedDriverTruckNumber:
                     driver?.truckNumber ?? dispatch?.truck?.truckNumber,
@@ -97,13 +96,15 @@ export class LoadHelper {
                 requirementDoor: loadRequirements?.doorType?.name,
                 requirementSuspension: loadRequirements?.suspension?.name,
                 requirementYear: loadRequirements?.year,
-                requirementLiftgate: loadRequirements?.liftgate
-                    ? eSharedString.YES
-                    : null,
+                requirementLiftgate: loadRequirements?.liftgate,
                 driverMessage: loadRequirements?.driverMessage,
-                milesLoaded: miles?.loadedMiles ?? totalMiles,
+                milesLoaded: {
+                    value: miles?.loadedMiles ?? totalMiles,
+                },
                 milesEmpty: miles?.emptyMiles,
-                milesTotal: miles?.totalMiles ?? totalMiles,
+                milesTotal: {
+                    value: miles?.totalMiles ?? totalMiles,
+                },
                 billingRatePerMile: {
                     value: billing?.rpm ?? rpm,
                 },
@@ -134,30 +135,32 @@ export class LoadHelper {
                 },
                 billingRate: totalRate,
                 billingAdjustedRate: totalAdjustedRate,
-
-                ////////////////////////////////////////////////
-                edit: true,
-                loadNumber,
-                status,
-
+                billingPaid: {
+                    value: billing?.paid ?? totalPaid,
+                },
+                dateCreated: {
+                    value: createdAt ?? dateCreated,
+                },
+                dateEdited: {
+                    value: updatedAt,
+                },
+                note,
                 tableDropdownContent:
                     DropdownMenuContentHelper.getLoadDropdownContent(
                         selectedTab
                     ),
+                ////////////////////////////////////////////////
+                loadNumber,
+                status,
+
                 totalDue,
 
-                broker,
-
                 invoicedDate,
-                note,
 
                 pickup,
                 delivery,
-                dateCreated: MethodsCalculationsHelper.convertDateFromBackend(
-                    selectedTab === eLoadStatusStringType.TEMPLATE
-                        ? dateCreated
-                        : createdAt
-                ),
+
+                broker,
             };
 
             console.log('MAPPED TEMPLATE LOAD', mapped);
