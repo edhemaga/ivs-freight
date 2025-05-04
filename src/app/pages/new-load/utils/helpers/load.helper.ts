@@ -59,7 +59,7 @@ export class LoadHelper {
                 note,
             } = load;
 
-            const mapped: IMappedLoad = {
+            const mappedLoad: IMappedLoad = {
                 id,
                 isSelected: false,
                 templateName: name,
@@ -166,7 +166,7 @@ export class LoadHelper {
                     ),
             };
 
-            return mapped;
+            return mappedLoad;
         });
     }
 

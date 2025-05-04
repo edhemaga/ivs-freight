@@ -113,6 +113,7 @@ export class NewTableComponent<T> {
 
     // columns
     public leftPinnedColumns: ITableColumn[] = [];
+    public leftPinnedDisabledColumns: ITableColumn[] = [];
     public mainColumns: ITableColumn[] = [];
     public rightPinnedColumns: ITableColumn[] = [];
     public hasActiveLeftPinnedColumns: boolean = false;
@@ -145,8 +146,12 @@ export class NewTableComponent<T> {
     constructor(private cdr: ChangeDetectorRef) {}
 
     private processColumns(columns: ITableColumn[]): void {
+        this.leftPinnedDisabledColumns = columns.filter(
+            (col) => col.pinned === ePosition.LEFT && col.isDisabled
+        );
+
         this.leftPinnedColumns = columns.filter(
-            (col) => col.pinned === ePosition.LEFT
+            (col) => col.pinned === ePosition.LEFT && !col.isDisabled
         );
 
         this.rightPinnedColumns = columns.filter(

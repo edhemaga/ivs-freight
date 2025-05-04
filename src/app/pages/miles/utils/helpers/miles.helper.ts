@@ -8,6 +8,8 @@ import { ArrowActionsStringEnum } from '@shared/enums';
 export class MilesHelper {
     static milesMapper(miles: MilesByUnitResponse[]): IMilesModel[] {
         const mappedMiles = miles.map((mile) => ({
+            id: mile.id,
+            isSelected: false,
             unit: mile.truck?.truckNumber,
             truckType: mile.truck?.truckType,
             truckId: mile.truck.id,
@@ -48,8 +50,6 @@ export class MilesHelper {
             milesEmpty: mile.emptyMiles,
             milesTotal: mile.totalMiles,
             revenue: mile.revenue,
-            id: mile.id,
-            isSelected: false,
         }));
 
         return mappedMiles;

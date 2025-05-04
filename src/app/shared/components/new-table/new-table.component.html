@@ -16,6 +16,31 @@
             <div
                 class="d-flex m-b-6 p-x-8 prevent-text-selection new-table--header"
             >
+                <!-- Pinned Left Disabled Columns -->
+
+                <div class="d-flex background-inherit left-0">
+                    @for (
+                        column of leftPinnedDisabledColumns;
+                        track column.key
+                    ) {
+                        @if (column.isChecked) {
+                            <div class="d-flex">
+                                <ng-container
+                                    *ngTemplateOutlet="
+                                        columnTemplate;
+                                        context: {
+                                            column,
+                                            nextColumn,
+                                        }
+                                    "
+                                ></ng-container>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <!-- Pinned Left Columns -->
+
                 <div
                     class="d-flex background-inherit left-0 new-table--pinned-left"
                     cdkDropList
@@ -56,6 +81,8 @@
                     }
                 </div>
 
+                <!-- Main Columns -->
+
                 <div
                     id="table-not-pined-scroll-container"
                     class="d-flex not-pined-columns scrollable-columns"
@@ -94,6 +121,8 @@
                         }
                     }
                 </div>
+
+                <!-- Pinned Right Columns -->
 
                 <div
                     class="d-flex right-0 background-inherit new-table--pinned-right"
@@ -143,7 +172,28 @@
                                 class="d-flex align-items-center p-l-4 br-3 p-y-1 m-t-4 m-b-4 h-26 background-hover-light-grey overflow-hidden"
                                 [class.background-light-grey]="row.isSelected"
                             >
-                                <!-- Left Pinned Columns -->
+                                <!-- Pinned Left Disabled Columns -->
+
+                                <div
+                                    class="d-flex align-items-center background-inherit left-0"
+                                >
+                                    @for (
+                                        column of leftPinnedDisabledColumns;
+                                        track column.key
+                                    ) {
+                                        <ng-container
+                                            *ngTemplateOutlet="
+                                                cellTemplate;
+                                                context: {
+                                                    column,
+                                                    row,
+                                                }
+                                            "
+                                        ></ng-container>
+                                    }
+                                </div>
+
+                                <!-- Pinned Left Columns -->
 
                                 <div
                                     class="d-flex align-items-center background-inherit left-0 new-table--pinned-left"
@@ -185,7 +235,7 @@
                                     }
                                 </div>
 
-                                <!-- Right Pinned Columns -->
+                                <!-- Pinned Right Columns -->
 
                                 <div
                                     class="d-flex align-items-center background-inherit right-0 new-table--pinned-right"
