@@ -29,7 +29,6 @@ import {
     CaCheckboxComponent,
     CaLoadStatusComponent,
     CaCheckboxSelectedCountComponent,
-    ePosition,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
@@ -62,7 +61,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
-
+import { ePosition, eUnit } from 'ca-components';
 @Component({
     selector: 'app-new-load-table',
     templateUrl: './new-load-table.component.html',
@@ -102,6 +101,7 @@ export class NewLoadTableComponent
     // svg-routes
     public sharedSvgRoutes = SharedSvgRoutes;
 
+    // enums
     public eColor = eColor;
     public eSharedString = eSharedString;
     public eGeneralActions = eGeneralActions;
@@ -110,6 +110,7 @@ export class NewLoadTableComponent
     public eDateTimeFormat = eDateTimeFormat;
     public eStringPlaceholder = eStringPlaceholder;
     public eThousandSeparatorFormat = eThousandSeparatorFormat;
+    public eUnit = eUnit;
 
     constructor(
         protected router: Router,

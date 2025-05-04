@@ -22,7 +22,6 @@ import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // pipes
-import { ThousandSeparatorPipe } from '@shared/pipes';
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
 
 @Component({
@@ -40,7 +39,6 @@ import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes
         TaAppTooltipV2Component,
 
         // pipes
-        ThousandSeparatorPipe,
         TableHighlightSearchTextPipe,
     ],
 })
