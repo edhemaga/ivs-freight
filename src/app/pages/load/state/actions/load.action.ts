@@ -127,6 +127,17 @@ export const getEditLoadModalData = createAction(
     }>()
 );
 
+export const getEditLoadModalOnlyData = createAction(
+    LoadStoreConstants.ACTION_GET_EDIT_LOAD_MODAL_ONLY_DATA
+);
+
+export const getEditLoadModalOnlyDataSuccess = createAction(
+    LoadStoreConstants.ACTION_GET_EDIT_LOAD_MODAL_ONLY_DATA_SUCCESS,
+    props<{
+        modal: LoadModalResponse;
+    }>()
+);
+
 export const getEditLoadModalDataSuccess = createAction(
     LoadStoreConstants.ACTION_GET_EDIT_LOAD_MODAL_DATA_SUCCESS,
     props<{

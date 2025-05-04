@@ -21,6 +21,8 @@
     [class.w-100]="store?.activeViewMode !== eCommonElement.LIST"
 >
     @if (store) {
+        @let isFilterDisabled = !store.viewData.length;
+
         <!-- Toolbar -->
 
         <app-new-table-toolbar
@@ -152,22 +154,37 @@
                 }
 
                 <ng-container *ngTemplateOutlet="divider"></ng-container>
+
                 <div
                     class="text-color-white background-bw6-2 background-hover-black text-size-11 ta-font-bold br-2 p-x-8 p-y-4 c-pointer"
                 >
                     LTL BUILDER
                 </div>
+
                 <ng-container *ngTemplateOutlet="divider"></ng-container>
 
                 @if (store?.activeViewMode === eCommonElement.CARD) {
+                    @let getSortableColumn = store.getSortableColumnSelector;
+
+                    <div class="m-r-8">
+                        <app-ca-sorting-card-dropdown
+                            [options]="getSortableColumn"
+                            [isDisabled]="isFilterDisabled"
+                            (onSortChange)="onSelectSortItem($event)"
+                            (onSelectItem)="onSelectSortItem($event)"
+                        ></app-ca-sorting-card-dropdown>
+                    </div>
+
                     <app-ca-checkbox-selected-count
                         [itemsTotalCount]="store.viewData.length"
                         [itemsSelectedCount]="store.selectedCount"
                         (onCheckboxCountClick)="onCheckboxCountClick($event)"
                     ></app-ca-checkbox-selected-count>
+
                     <ng-container *ngTemplateOutlet="divider"></ng-container>
                 }
             </ng-template>
+
             <ng-template #divider>
                 <div class="new-table--toolbar-divider">
                     <div

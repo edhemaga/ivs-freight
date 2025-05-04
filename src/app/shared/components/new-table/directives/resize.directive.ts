@@ -91,7 +91,7 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
             this.hasDoubleHeightBorder ? 'h-26' : 'h-14',
             'm-r-6',
             'br-1',
-            'z-2',
+            'z-1',
             'background-muted',
             'background-hover-black',
         ];

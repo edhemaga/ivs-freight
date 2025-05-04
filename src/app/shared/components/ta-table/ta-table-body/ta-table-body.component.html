@@ -5,6 +5,7 @@
                 showVerticalScrollBar: false,
                 showHorizontalScrollBar: true,
                 dataLength: viewData.length,
+                hasShowMore: viewData.length < activeTableData.length,
             }"
             [horizontalScrollHeight]="
                 activeAttachment !== -1 ||

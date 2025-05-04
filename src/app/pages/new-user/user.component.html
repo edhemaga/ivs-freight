@@ -7,6 +7,8 @@
         selectedCountSelector: userStoreService.selectedCountSelector$ | async,
         selectedUserSelector: userStoreService.selectedUserSelector$ | async,
         departmentList: userStoreService.departmentListSelector$ | async,
+        toolbarDropdownMenuOptions:
+        userStoreService.toolbarDropdownMenuOptionsSelector$ | async,
     };
 
 <ng-template #divider>
@@ -22,6 +24,7 @@
         [title]="'User'"
         [leftSide]="leftSide"
         [rightSide]="rightSide"
+        [toolbarDropdownContent]="store.toolbarDropdownMenuOptions"
         (onPlusClick)="
             onToolBarAction({
                 action: generalActions.OPEN_MODAL,

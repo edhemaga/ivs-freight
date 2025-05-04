@@ -13,6 +13,7 @@ import {
     IFilterAction,
     CaFilterStateDropdownComponent,
     CaFilterTimeDropdownComponent,
+    CaSortingCardDropdownComponent,
 } from 'ca-components';
 import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
@@ -45,6 +46,7 @@ import { TableCardBodyActions } from '@shared/models';
 // interfaces
 import { IStateFilters } from '@shared/interfaces';
 import { IMilesModel } from '@pages/miles/interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 @Component({
     selector: 'app-miles',
@@ -63,6 +65,7 @@ import { IMilesModel } from '@pages/miles/interface';
         CaFilterStateDropdownComponent,
         CaFilterTimeDropdownComponent,
         TaTableEmptyComponent,
+        CaSortingCardDropdownComponent,
     ],
 })
 export class MilesComponent
@@ -254,6 +257,10 @@ export class MilesComponent
 
                 break;
         }
+    }
+
+    public onSelectSortItem(column: ITableColumn): void {
+        this.milesStoreService.dispatchSortingChange(column);
     }
 
     ngOnDestroy(): void {

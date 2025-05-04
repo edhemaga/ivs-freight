@@ -1,3 +1,5 @@
+@import '/src/theme/variables.scss';
+
 .custom-scrollbar-holder {
     position: relative;
 
@@ -57,11 +59,11 @@
 
         .horizontal-bar {
             width: 6px;
-            position: relative !important;
+            position: relative;
             height: 6px;
             min-width: 30px;
-            border-radius: 1px;
-            background-color: #aaaaaa;
+            border-radius: 2px;
+            background-color: $ta-light-grey-2;
 
             &:hover {
                 background: rgba(0, 0, 0, 0.55);

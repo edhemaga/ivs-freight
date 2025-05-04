@@ -99,8 +99,8 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
 
     // TODO mozda ovo preko nekog id-a odraditi
     public displayedSection:
-        | eLoadDetailsGeneral.COMMENTS
-        | eLoadDetailsGeneral.STATUS_LOG = eLoadDetailsGeneral.COMMENTS;
+        | eLoadDetailsGeneral.COMMENT
+        | eLoadDetailsGeneral.STATUS_LOG = eLoadDetailsGeneral.COMMENT;
 
     // enums
     public eColor = eColor;
@@ -181,11 +181,11 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
         this.commentFilter = searchHighlightValue;
     }
 
-    public toggleIsSearchActive(): void {
+    public onToggleIsSearchActive(): void {
         this.isSearchActive = !this.isSearchActive;
     }
 
-    public addNewComment(loadId: number): void {
+    public onAddNewComment(loadId: number): void {
         const comment: CreateCommentCommand =
             CommentHelper.createCommentCommand(loadId);
         const dateNow = moment().format(eDateTimeFormat.MM_DD_YY);
@@ -226,7 +226,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
 
     public onDropdownItemSelect(event: IDropdownItem): void {
         if (
-            event.title !== eLoadDetailsGeneral.COMMENTS &&
+            event.title !== eLoadDetailsGeneral.COMMENT &&
             event.title !== eLoadDetailsGeneral.STATUS_LOG
         )
             return;

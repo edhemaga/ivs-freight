@@ -5,7 +5,8 @@
 <app-ta-custom-scrollbar
     [scrollBarOptions]="{
         showHorizontalScrollBar: true,
-        dataLength: 25,
+        dataLength: rows?.length,
+        hasShowMore: displayedDataCount < totalDataCount,
     }"
     (scrollEvent)="onHorizontalScroll($event)"
 >
@@ -84,6 +85,7 @@
                 <!-- Main Columns -->
 
                 <div
+                    #scrollableColumns
                     id="table-not-pined-scroll-container"
                     class="d-flex not-pined-columns scrollable-columns"
                     [ngClass]="{
@@ -146,8 +148,10 @@
                 <!-- Left Scroll Border -->
 
                 <div
-                    class="position-absolute w-8 h-full new-table--scroll-border new-table--scroll-border-left"
-                    [ngStyle]="{ left: leftPinnedBorderWidth + eUnit.PX }"
+                    class="position-absolute w-8 new-table--scroll-border new-table--scroll-border-left"
+                    [ngStyle]="{
+                        left: leftPinnedBorderWidth + eUnit.PX,
+                    }"
                     [class.hidden]="
                         !isLeftScrollLineShown || !hasActiveLeftPinnedColumns
                     "
@@ -156,8 +160,10 @@
                 <!-- Right Scroll Border -->
 
                 <div
-                    class="position-absolute w-8 h-full new-table--scroll-border new-table--scroll-border-right"
-                    [ngStyle]="{ right: rightPinnedBorderWidth + eUnit.PX }"
+                    class="position-absolute w-8 new-table--scroll-border new-table--scroll-border-right"
+                    [ngStyle]="{
+                        right: rightPinnedBorderWidth + eUnit.PX,
+                    }"
                     [class.hidden]="
                         !isRightScrollLineShown || !hasActiveRightPinnedColumns
                     "
@@ -217,6 +223,7 @@
                                 <!-- Main Columns -->
 
                                 <div
+                                    #scrollableColumns
                                     class="d-flex align-items-center not-pined-columns overflow-hidden scrollable-columns"
                                 >
                                     @for (
@@ -445,7 +452,7 @@
             >
                 @if (hasLabelTop) {
                     <span
-                        class="text-size-9 ta-font-extra-bold text-color-light-grey-2 z-2 text-uppercase"
+                        class="text-size-9 ta-font-extra-bold text-color-light-grey-2 z-1 text-uppercase"
                     >
                         {{ groupColumn.label }}
                     </span>
@@ -462,7 +469,7 @@
                 @let isHeadingHover = headingHoverId === column.id;
 
                 <div
-                    class="d-flex align-items-end z-2 new-table--row-heading-inner"
+                    class="d-flex align-items-end z-1 new-table--row-heading-inner"
                     [ngClass]="tableColumnInnerClass"
                 >
                     @let isPinned =

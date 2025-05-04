@@ -1,0 +1,43 @@
+<div class="d-flex flex-column gap-1 w-100">
+    <div
+        class="d-grid d-grid-stops h-42 gap-1 p-l-8 p-r-6 align-items-center background-bw2"
+    >
+        <div
+            class="background-green h-26 w-26 br-2 text-color-white ta-font-bold text-size-14 d-flex align-items-center justify-content-center"
+        >
+            1
+        </div>
+        <div class="d-flex flex-column">
+            <span
+                class="text-color-black ta-font-bold"
+                [ngClass]="shipper ? 'text-size-11' : 'text-size-14'"
+                >{{ shipper?.businessName ?? 'ORIGIN' }}
+                <span class="text-color-red-13">*</span>
+            </span>
+            @if (shipper?.address) {
+                <span class="text-color-bw6-2 ta-font-medium text-size-11">{{
+                    shipper?.address?.address
+                }}</span>
+            }
+        </div>
+        <div class="d-flex flex-column">
+            <span class="text-color-black ta-font-semi-bold text-size-11">
+                {{ stop?.dateFrom | date: eDateTimeFormat.ANGULAR_MM_DD_YY }}
+            </span>
+            <!-- <span class="text-color-bw6-2 ta-font-medium text-size-11"
+                >10:30 AM - 12:30 PM</span
+            > -->
+            <span class="text-color-bw6-2 ta-font-medium text-size-11">{{
+                stop?.timeFrom
+                    | loadTimeType
+                    | loadDatetimeRange: (stop?.timeTo | loadTimeType)
+            }}</span>
+        </div>
+        <div class="d-flex flex-column text-right">
+            <span class="text-color-black ta-font-medium text-size-11"
+                >0.0 mi</span
+            >
+            <span class="text-color-bw6-2 ta-font-medium text-size-11">0m</span>
+        </div>
+    </div>
+</div>

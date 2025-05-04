@@ -47,6 +47,19 @@ export const getLoadsOnPageChange = createAction(
 );
 //#endregion
 
+//#region Toolbar Hamburger Menu
+export const setToolbarDropdownMenuColumnsActive = createAction(
+    UserStoreConstants.ACTION_SET_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE,
+    props<{ isActive: boolean }>()
+);
+
+export const toggleColumnVisibility = createAction(
+    UserStoreConstants.ACTION_TOGGLE_COLUMN_VISIBILITY,
+    props<{ columnKey: string; isActive: boolean }>()
+);
+//#endregion
+
+
 //#region Tabs
 export const onTabTypeChange = createAction(
     UserStoreConstants.ACTION_DISPATCH_USER_TYPE_CHANGE,
