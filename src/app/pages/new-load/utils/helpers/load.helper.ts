@@ -22,10 +22,10 @@ export class LoadHelper {
         selectedTab: eLoadStatusStringType
     ): IMappedLoad[] {
         return loads.map((load) => {
-            console.log(selectedTab + ' LOAD', load);
             const {
                 id,
                 name,
+                loadNumber,
                 loadType,
                 type,
                 dispatcher,
@@ -38,6 +38,9 @@ export class LoadHelper {
                 weight,
                 driver,
                 dispatch,
+                status,
+                pickup,
+                delivery,
                 loadRequirements,
                 miles,
                 totalMiles,
@@ -47,27 +50,18 @@ export class LoadHelper {
                 totalRate,
                 totalAdjustedRate,
                 totalPaid,
+                totalDue,
+                invoicedDate,
+                paidDate,
                 createdAt,
                 dateCreated,
                 updatedAt,
                 note,
-
-                loadNumber,
-                status,
-
-                totalDue,
-
-                invoicedDate,
-
-                pickup,
-                delivery,
             } = load;
 
             const mapped: IMappedLoad = {
                 id,
                 isSelected: false,
-
-                ///////////////////////////////////////
                 templateName: name,
                 loadNumber,
                 loadType: loadType?.name ?? type?.name,
@@ -91,6 +85,8 @@ export class LoadHelper {
                 assignedDriverTrailerNumber:
                     driver?.trailerNumber ?? dispatch?.trailer?.trailerNumber,
                 status,
+                pickup,
+                delivery,
                 requirementTruck: loadRequirements?.truckType,
                 requirementTrailer: loadRequirements?.trailerType,
                 requirementLength:
@@ -106,6 +102,13 @@ export class LoadHelper {
                 milesEmpty: miles?.emptyMiles,
                 milesTotal: {
                     value: miles?.totalMiles ?? totalMiles,
+                },
+                billingPayTerm: billing?.payTermName?.replace(/\D/g, ''),
+                billingAgeUnpaid: {
+                    value: billing?.ageUnpaid,
+                },
+                billingAgePaid: {
+                    value: billing?.agePaid,
                 },
                 billingRatePerMile: {
                     value: billing?.rpm ?? rpm,
@@ -140,6 +143,16 @@ export class LoadHelper {
                 billingPaid: {
                     value: billing?.paid ?? totalPaid,
                 },
+                billingDue: {
+                    value: billing?.due,
+                },
+                totalDue,
+                dateInvoiced: {
+                    value: invoicedDate,
+                },
+                datePaid: {
+                    value: paidDate,
+                },
                 dateCreated: {
                     value: createdAt ?? dateCreated,
                 },
@@ -151,19 +164,7 @@ export class LoadHelper {
                     DropdownMenuContentHelper.getLoadDropdownContent(
                         selectedTab
                     ),
-                ////////////////////////////////////////////////
-
-                totalDue,
-
-                invoicedDate,
-
-                pickup,
-                delivery,
-
-                broker,
             };
-
-            console.log('MAPPED TEMPLATE LOAD', mapped);
 
             return mapped;
         });

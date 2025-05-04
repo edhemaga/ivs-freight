@@ -18,6 +18,9 @@
             select: selectHeaderTemplate,
             weight: weightHeaderTemplate,
             requirementLength: requirementLengthHeaderTemplate,
+            billingPayTerm: billingPayTermHeaderTemplate,
+            billingAgeUnpaid: billingAgeUnpaidHeaderTemplate,
+            billingAgePaid: billingAgePaidHeaderTemplate,
             billingRate: alignRightHeaderTemplate,
             note: noteHeaderTemplate,
         };
@@ -47,6 +50,8 @@
             milesLoaded: thousandFormatterTemplate,
             milesEmpty,
             milesTotal: thousandFormatterTemplate,
+            billingAgeUnpaid: ageingTemplate,
+            billingAgePaid: ageingTemplate,
             billingRatePerMile: currencyTemplate,
             billingLayover: currencyTemplate,
             billinglumper: currencyTemplate,
@@ -55,12 +60,13 @@
             billingDetention: currencyTemplate,
             billingRate,
             billingPaid: currencyTemplate,
+            billingDue: currencyTemplate,
+            dateInvoiced: dateTemplate,
+            datePaid: dateTemplate,
             dateCreated: dateTemplate,
             dateEdited: dateTemplate,
             note,
             action,
-
-            invoicedDate,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
@@ -89,13 +95,14 @@
             #weightHeaderTemplate
             let-tableColumnClass="tableColumnClass"
             let-tableColumnLabelWidth="tableColumnLabelWidth"
+            let-label="label"
         >
             <div class="d-flex" [ngClass]="tableColumnClass">
                 <span
                     class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
                     [ngStyle]="tableColumnLabelWidth"
                 >
-                    Weight
+                    {{ label }}
 
                     <span
                         class="text-size-11 ta-font-semi-bold text-color-muted text-lowercase"
@@ -123,6 +130,72 @@
                     </svg-icon>
 
                     ft
+                </span>
+            </div>
+        </ng-template>
+
+        <ng-template
+            #billingPayTermHeaderTemplate
+            let-tableColumnClass="tableColumnClass"
+            let-tableColumnLabelWidth="tableColumnLabelWidth"
+            let-label="label"
+        >
+            <div class="d-flex" [ngClass]="tableColumnClass">
+                <span
+                    class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
+                    [ngStyle]="tableColumnLabelWidth"
+                >
+                    {{ label }}
+
+                    <span
+                        class="text-size-11 ta-font-semi-bold text-color-muted text-lowercase"
+                    >
+                        d.
+                    </span>
+                </span>
+            </div>
+        </ng-template>
+
+        <ng-template
+            #billingAgeUnpaidHeaderTemplate
+            let-tableColumnClass="tableColumnClass"
+            let-tableColumnLabelWidth="tableColumnLabelWidth"
+            let-label="label"
+        >
+            <div class="d-flex" [ngClass]="tableColumnClass">
+                <span
+                    class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
+                    [ngStyle]="tableColumnLabelWidth"
+                >
+                    {{ label }}
+
+                    <span
+                        class="text-size-11 ta-font-semi-bold text-color-muted text-lowercase"
+                    >
+                        unp.
+                    </span>
+                </span>
+            </div>
+        </ng-template>
+
+        <ng-template
+            #billingAgePaidHeaderTemplate
+            let-tableColumnClass="tableColumnClass"
+            let-tableColumnLabelWidth="tableColumnLabelWidth"
+            let-label="label"
+        >
+            <div class="d-flex" [ngClass]="tableColumnClass">
+                <span
+                    class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
+                    [ngStyle]="tableColumnLabelWidth"
+                >
+                    {{ label }}
+
+                    <span
+                        class="text-size-11 ta-font-semi-bold text-color-muted text-lowercase"
+                    >
+                        paid
+                    </span>
                 </span>
             </div>
         </ng-template>
@@ -210,9 +283,9 @@
                     </app-load-type>
                 }
 
-                <div class="text-color-black text-size-14 ta-font-bold">
+                <p class="text-color-black text-size-14 ta-font-bold">
                     {{ data.templateName }}
-                </div>
+                </p>
             </div>
         </ng-template>
 
@@ -444,7 +517,7 @@
 
         <ng-template #driverMessage let-data="data">
             <div
-                class="text-color-black-2 text-size-14 text-line-clamp-2"
+                class="d-flex align-items-center text-color-black-2 text-size-14 text-line-clamp-2"
                 [innerHtml]="data.driverMessage"
             ></div>
         </ng-template>
@@ -478,6 +551,12 @@
         <!-- #endregion END OF MILES GROUP -->
 
         <!-- #region BILLING GROUP -->
+
+        <ng-template #ageingTemplate let-data="data" let-key="key">
+            <p class="text-color-black text-size-14 ta-font-semi-bold">
+                {{ data[key]?.value }}
+            </p>
+        </ng-template>
 
         <ng-template #currencyTemplate let-data="data" let-key="key">
             @if (data[key]?.value) {
@@ -518,12 +597,6 @@
 
                 {{ dateTemplateValue }}
             </p>
-        </ng-template>
-
-        <ng-template #invoicedDate let-data="data">
-            <div class="text-color-black-2 text-size-14">
-                {{ data.invoicedDate | date: eDateTimeFormat.ANGULAR_MM_DD_YY }}
-            </div>
         </ng-template>
 
         <!-- #endregion END OF DATES -->

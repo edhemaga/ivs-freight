@@ -2,7 +2,6 @@
 import {
     CompanyUserShortResponse,
     LoadStatusResponse,
-    LoadBrokerInfo,
     LoadDriverInfo,
     EnumValue,
     TruckTypeResponse,
@@ -18,8 +17,6 @@ import { ISingleValue } from '@shared/interfaces';
 export interface IMappedLoad {
     id: number;
     isSelected: boolean;
-
-    /////////////////////////////////////// TEMPLATE
     templateName: string;
     loadNumber: string;
     loadType: EnumValue;
@@ -35,6 +32,9 @@ export interface IMappedLoad {
     assignedDriver: LoadDriverInfo | DriverMinimalResponse;
     assignedDriverTruckNumber: string;
     assignedDriverTrailerNumber: string;
+    status: LoadStatusResponse;
+    pickup: LoadPickup;
+    delivery: LoadDelivery;
     requirementTruck: TruckTypeResponse;
     requirementTrailer: TrailerTypeResponse;
     requirementLength: string;
@@ -46,7 +46,9 @@ export interface IMappedLoad {
     milesLoaded: ISingleValue;
     milesEmpty: number;
     milesTotal: ISingleValue;
-
+    billingPayTerm: string;
+    billingAgeUnpaid: ISingleValue;
+    billingAgePaid: ISingleValue;
     billingRatePerMile: ISingleValue;
     billingLayover: ISingleValue;
     billinglumper: ISingleValue;
@@ -56,20 +58,12 @@ export interface IMappedLoad {
     billingRate: number;
     billingAdjustedRate: number;
     billingPaid: ISingleValue;
+    billingDue: ISingleValue;
+    totalDue: number;
+    dateInvoiced: ISingleValue;
+    datePaid: ISingleValue;
     dateCreated: ISingleValue;
     dateEdited: ISingleValue;
     note: string;
     tableDropdownContent: IDropdownMenuItem[];
-
-    ////////////////////////////////////////////////////////////
-
-    status: LoadStatusResponse;
-
-    totalDue: number;
-    invoicedDate: string;
-
-    pickup: LoadPickup;
-    delivery: LoadDelivery;
-
-    broker: LoadBrokerInfo;
 }
