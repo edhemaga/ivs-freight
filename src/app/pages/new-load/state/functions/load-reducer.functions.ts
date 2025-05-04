@@ -1,6 +1,10 @@
 // Interfaces
 import { ILoadState, IMappedLoad } from '@pages/new-load/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interfaces';
+import {
+    ITableColumn,
+    ITableReorderAction,
+    ITableResizeAction,
+} from '@shared/components/new-table/interfaces';
 
 // Models
 import {
@@ -176,7 +180,10 @@ export function onTableSortingChange(
     };
 
     if (state.activeViewMode === eCommonElement.CARD) {
-        sortItem = StoreFunctionsHelper.toggleSortCard(column, state.tableColumns);
+        sortItem = StoreFunctionsHelper.toggleSortCard(
+            column,
+            state.tableColumns
+        );
     } else {
         sortItem = StoreFunctionsHelper.toggleSort(column, state.tableColumns);
     }
@@ -192,6 +199,55 @@ export function onTableSortingChange(
             sortKey,
             label,
         },
+    };
+}
+
+export function pinTableColumn(
+    state: ILoadState,
+    column: ITableColumn
+): ILoadState {
+    return {
+        ...state,
+        tableColumns: StoreFunctionsHelper.togglePinned(
+            column,
+            state.tableColumns
+        ),
+    };
+}
+
+export function tableResizeChange(
+    state: ILoadState,
+    resizeAction: ITableResizeAction
+): ILoadState {
+    const { tableColumns } = state;
+    const { id, newWidth } = resizeAction;
+
+    const resizedColumns = StoreFunctionsHelper.updateColumnWidth(
+        tableColumns,
+        id,
+        newWidth
+    );
+
+    return {
+        ...state,
+        tableColumns: resizedColumns,
+    };
+}
+
+export function tableReorderChange(
+    state: ILoadState,
+    reorderAction: ITableReorderAction
+): ILoadState {
+    const { tableColumns } = state;
+
+    const reorderedColumns = StoreFunctionsHelper.reorderColumns(
+        tableColumns,
+        reorderAction
+    );
+
+    return {
+        ...state,
+        tableColumns: reorderedColumns,
     };
 }
 //#endregion

@@ -43,12 +43,12 @@
         [totalDataCount]="selectedTabTotalDataCount"
         [headerTemplates]="headerTemplates"
         [templates]="templates"
-        (onColumnPinned)="onColumnPinned($event)"
-        (onSortingChange)="onSortingChange($event)"
+        (onColumnSort)="onColumnSort($event)"
+        (onColumnPin)="onColumnPin($event)"
+        (onColumnRemove)="onColumnRemove($event)"
         (onColumnResize)="onColumnResize($event)"
         (onColumnReorder)="onColumnReorder($event)"
         (onShowMore)="onShowMoreClick()"
-        (onRemoveColumn)="onRemoveColumn($event)"
     >
         <!-- Header Templates -->
 
@@ -85,7 +85,7 @@
                             | tableHighlightSearchText
                                 : store.filter?.searchQuery
                     "
-                    (click)="goToMilesDetailsPage(data.truckId)"
+                    (click)="navigateToMilesDetails(data.truckId)"
                 ></p>
             </div>
         </ng-template>

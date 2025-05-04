@@ -95,6 +95,7 @@ import { TableScrollHelper } from '@shared/components/new-table/utils/helpers';
 export class NewTableComponent<T> {
     @ViewChildren('scrollableColumns')
     scrollableColumns!: QueryList<ElementRef>;
+
     @Input() set columns(value: ITableColumn[]) {
         this.processColumns(value);
     }
@@ -106,15 +107,14 @@ export class NewTableComponent<T> {
     @Input() templates: { [key: string]: TemplateRef<T> } = {};
     @Input() expandedRows: Set<number> = new Set([]);
 
-    @Output() onShowMore: EventEmitter<boolean> = new EventEmitter();
-    @Output() onSortingChange: EventEmitter<ITableColumn> = new EventEmitter();
-    @Output() onColumnPinned: EventEmitter<ITableColumn> = new EventEmitter();
+    @Output() onColumnSort: EventEmitter<ITableColumn> = new EventEmitter();
+    @Output() onColumnPin: EventEmitter<ITableColumn> = new EventEmitter();
+    @Output() onColumnRemove: EventEmitter<string> = new EventEmitter();
     @Output() onColumnResize: EventEmitter<ITableResizeAction> =
         new EventEmitter();
     @Output() onColumnReorder: EventEmitter<ITableReorderAction> =
         new EventEmitter();
-
-    @Output() onRemoveColumn: EventEmitter<string> = new EventEmitter();
+    @Output() onShowMore: EventEmitter<boolean> = new EventEmitter();
 
     // columns
     public leftPinnedColumns: ITableColumn[] = [];
@@ -174,31 +174,6 @@ export class NewTableComponent<T> {
             TableScrollHelper.getTotalColumnWidth(this.rightPinnedColumns) + 8;
     }
 
-    public handlePinColumnClick(column: ITableColumn): void {
-        this.onColumnPinned.emit(column);
-    }
-
-    public handleSortColumnClick(column: ITableColumn): void {
-        const isSortDisabled =
-            !this.isTableLocked || !this.rows.length || !column.hasSort;
-
-        if (isSortDisabled) return;
-
-        this.onSortingChange.emit(column);
-    }
-
-    public onShowMoreClick(): void {
-        this.onShowMore.emit();
-    }
-
-    public onColumnResizing(isResize: boolean): void {
-        this.isResize = isResize;
-    }
-
-    public onColumnWidthResize(resizeAction: ITableResizeAction): void {
-        this.onColumnResize.emit(resizeAction);
-    }
-
     public onHeadingHover(columnId: number, groupLabel: string): void {
         if (!this.isTableLocked && !this.isReorder) {
             this.headingHoverId = columnId;
@@ -206,15 +181,36 @@ export class NewTableComponent<T> {
         }
     }
 
-    public onRemoveColumnClick(columnKey: string): void {
-        this.onRemoveColumn.emit(columnKey);
+    public onColumnSortAction(column: ITableColumn): void {
+        const isSortDisabled =
+            !this.isTableLocked || !this.rows.length || !column.hasSort;
+
+        if (isSortDisabled) return;
+
+        this.onColumnSort.emit(column);
+    }
+
+    public onColumnPinAction(column: ITableColumn): void {
+        this.onColumnPin.emit(column);
+    }
+
+    public onColumnRemoveAction(columnKey: string): void {
+        this.onColumnRemove.emit(columnKey);
+    }
+
+    public onColumnResizeAction(resizeAction: ITableResizeAction): void {
+        this.onColumnResize.emit(resizeAction);
+    }
+
+    public onColumnResizing(isResize: boolean): void {
+        this.isResize = isResize;
     }
 
     public onReorderStart(): void {
         this.isReorder = true;
     }
 
-    public onReorderEnd(
+    public onColumnReorderAction(
         event: CdkDragDrop<string[]>,
         selectedColumns: ITableColumn[],
         groupColumnKey?: string
@@ -242,9 +238,8 @@ export class NewTableComponent<T> {
         this.groupHeadingHoverLabel = null;
     }
 
-    //TODO documents drawer
-    public isRowExpanded(rowId: number): boolean {
-        return this.expandedRows?.has(rowId);
+    public onShowMoreAction(): void {
+        this.onShowMore.emit();
     }
 
     public onHorizontalScroll(scrollEvent: ICustomScrollEvent): void {
@@ -288,5 +283,10 @@ export class NewTableComponent<T> {
                 this.isRightScrollLineShown = false;
             } else this.isRightScrollLineShown = true;
         }
+    }
+
+    //TODO documents drawer
+    public isRowExpanded(rowId: number): boolean {
+        return this.expandedRows?.has(rowId);
     }
 }

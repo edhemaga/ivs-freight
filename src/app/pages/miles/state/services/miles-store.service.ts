@@ -320,7 +320,7 @@ export class MilesStoreService {
         });
     }
 
-    public goToMilesDetailsPage(unitId: string): void {
+    public navigateToMilesDetails(unitId: string): void {
         this.router.navigate([
             `/${eMilesRouting.BASE}/${eMilesRouting.MAP}/${unitId}`,
         ]);

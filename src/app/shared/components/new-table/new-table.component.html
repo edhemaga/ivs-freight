@@ -47,7 +47,7 @@
                     cdkDropList
                     cdkDropListOrientation="horizontal"
                     (cdkDropListDropped)="
-                        onReorderEnd($event, leftPinnedColumns)
+                        onColumnReorderAction($event, leftPinnedColumns)
                     "
                 >
                     @for (
@@ -94,7 +94,9 @@
                     }"
                     cdkDropList
                     cdkDropListOrientation="horizontal"
-                    (cdkDropListDropped)="onReorderEnd($event, mainColumns)"
+                    (cdkDropListDropped)="
+                        onColumnReorderAction($event, mainColumns)
+                    "
                 >
                     @for (
                         column of mainColumns;
@@ -292,7 +294,7 @@
                     <app-ca-show-more
                         [displayedDataCount]="displayedDataCount"
                         [totalDataCount]="totalDataCount"
-                        (onShowMore)="onShowMoreClick()"
+                        (onShowMore)="onShowMoreAction()"
                     ></app-ca-show-more>
                 }
             </div>
@@ -324,7 +326,7 @@
             class="d-flex h-30 p-t-4 position-relative new-table--row-heading-group"
             [ngClass]="tableGroupClass"
             (cdkDropListDropped)="
-                onReorderEnd($event, column.columns, column.key)
+                onColumnReorderAction($event, column.columns, column.key)
             "
             (mouseenter)="onHeadingHover(null, groupColumnHoverAction)"
             (mouseleave)="onHeadingHover(null, null)"
@@ -440,8 +442,8 @@
                 [hasLabelTop]="hasLabelTop && groupColumn.label"
                 [hasDoubleHeightBorder]="hasDoubleHeightBorder"
                 (resizing)="onColumnResizing($event)"
-                (columnWidthResize)="onColumnWidthResize($event)"
-                (click)="handleSortColumnClick(column)"
+                (columnWidthResize)="onColumnResizeAction($event)"
+                (click)="onColumnSortAction(column)"
                 (mouseenter)="
                     onHeadingHover(
                         headingHoverActionId,
@@ -554,9 +556,7 @@
                                     [mainTooltip]="pinColumnTooltip"
                                     [tooltipBackground]="eColor.BLACK"
                                     [position]="ePosition.BOTTOM"
-                                    (click)="
-                                        handlePinColumnClick(pinColumnAction)
-                                    "
+                                    (click)="onColumnPinAction(pinColumnAction)"
                                 >
                                     @let pinColumnClass =
                                         {
@@ -597,7 +597,7 @@
                                     [tooltipBackground]="eColor.BLACK"
                                     [position]="ePosition.BOTTOM"
                                     (click)="
-                                        onRemoveColumnClick(removeColumnAction)
+                                        onColumnRemoveAction(removeColumnAction)
                                     "
                                 >
                                     <svg-icon

@@ -50,16 +50,16 @@ export class MilesTableComponent {
 
     constructor(public milesStoreService: MilesStoreService) {}
 
-    public onColumnPinned(column: ITableColumn): void {
-        this.milesStoreService.dispatchColumnPinnedAction(column);
-    }
-
-    public onSortingChange(column: ITableColumn): void {
+    public onColumnSort(column: ITableColumn): void {
         this.milesStoreService.dispatchSortingChange(column);
     }
 
-    public onShowMoreClick(): void {
-        this.milesStoreService.getNewPage();
+    public onColumnPin(column: ITableColumn): void {
+        this.milesStoreService.dispatchColumnPinnedAction(column);
+    }
+
+    public onColumnRemove(columnKey: string): void {
+        this.milesStoreService.dispatchToggleColumnsVisiblity(columnKey, false);
     }
 
     public onColumnResize(resizeAction: ITableResizeAction): void {
@@ -70,11 +70,11 @@ export class MilesTableComponent {
         this.milesStoreService.dispatchReorderColumn(reorderAction);
     }
 
-    public goToMilesDetailsPage(id: string): void {
-        this.milesStoreService.goToMilesDetailsPage(id);
+    public onShowMoreClick(): void {
+        this.milesStoreService.getNewPage();
     }
 
-    public onRemoveColumn(columnKey: string): void {
-        this.milesStoreService.dispatchToggleColumnsVisiblity(columnKey, false);
+    public navigateToMilesDetails(id: string): void {
+        this.milesStoreService.navigateToMilesDetails(id);
     }
 }

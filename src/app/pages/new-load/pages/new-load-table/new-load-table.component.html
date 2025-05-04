@@ -78,7 +78,11 @@
         [totalDataCount]="store.selectedTabCountSelector"
         [headerTemplates]="headerTemplates"
         [templates]="templates"
-        (onSortingChange)="onSortingChange($event)"
+        (onColumnSort)="onColumnSort($event)"
+        (onColumnPin)="onColumnPin($event)"
+        (onColumnRemove)="onColumnRemove($event)"
+        (onColumnResize)="onColumnResize($event)"
+        (onColumnReorder)="onColumnReorder($event)"
         (onShowMore)="onShowMoreClick()"
     >
         <!-- Header Templates -->

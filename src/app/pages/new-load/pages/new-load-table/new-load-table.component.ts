@@ -44,7 +44,11 @@ import { ModalService } from '@shared/services';
 
 // interfaces
 import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interfaces';
+import {
+    ITableColumn,
+    ITableReorderAction,
+    ITableResizeAction,
+} from '@shared/components/new-table/interfaces';
 
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
@@ -126,22 +130,44 @@ export class NewLoadTableComponent
         this.initChangeStatusDropdownListener();
     }
 
-    public navigateToLoadDetails(id: number): void {
-        this.loadStoreService.navigateToLoadDetails(id);
+    public initChangeStatusDropdownListener(): void {
+        this.loadStoreService.changeDropdownpossibleStatusesSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) this.changeStatusPopover.open();
+            });
     }
 
-    public onOpenModal(id: number, selectedTab: eLoadStatusStringType): void {
-        const isTemplate = selectedTab === eLoadStatusStringType.TEMPLATE;
+    public onColumnSort(column: ITableColumn): void {
+        this.loadStoreService.dispatchSortingChange(column);
+    }
 
-        this.loadStoreService.onOpenModal({
-            id,
-            isTemplate,
-            isEdit: true,
-        });
+    public onColumnPin(column: ITableColumn): void {
+        this.loadStoreService.dispatchColumnPinnedAction(column);
+    }
+
+    public onColumnRemove(columnKey: string): void {
+        this.loadStoreService.dispatchToggleColumnsVisiblity(columnKey, false);
+    }
+
+    public onColumnResize(resizeAction: ITableResizeAction): void {
+        this.loadStoreService.dispatchResizeColumn(resizeAction);
+    }
+
+    public onColumnReorder(reorderAction: ITableReorderAction): void {
+        this.loadStoreService.dispatchReorderColumn(reorderAction);
     }
 
     public onShowMoreClick(): void {
         this.loadStoreService.getNewPage();
+    }
+
+    public onCheckboxCountClick(action: string): void {
+        this.loadStoreService.onSelectAll(action);
+    }
+
+    public onSelectLoad(id: number): void {
+        this.loadStoreService.onSelectLoad(id);
     }
 
     public onToggleDropdownMenuActions(
@@ -173,6 +199,15 @@ export class NewLoadTableComponent
         );
     }
 
+    public onOpenChangeStatusDropdown(
+        tooltip: NgbPopover,
+        loadId: number
+    ): void {
+        this.changeStatusPopover = tooltip;
+
+        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
+    }
+
     public onNextStatus(status: LoadStatusResponse): void {
         this.loadStoreService.dispatchUpdateLoadStatus(status);
     }
@@ -181,32 +216,18 @@ export class NewLoadTableComponent
         this.loadStoreService.dispatchRevertLoadStatus(status);
     }
 
-    public onOpenChangeStatusDropdown(
-        tooltip: NgbPopover,
-        loadId: number
-    ): void {
-        this.changeStatusPopover = tooltip;
-        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
+    public navigateToLoadDetails(id: number): void {
+        this.loadStoreService.navigateToLoadDetails(id);
     }
 
-    public initChangeStatusDropdownListener(): void {
-        this.loadStoreService.changeDropdownpossibleStatusesSelector$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) this.changeStatusPopover.open();
-            });
-    }
+    public onOpenModal(id: number, selectedTab: eLoadStatusStringType): void {
+        const isTemplate = selectedTab === eLoadStatusStringType.TEMPLATE;
 
-    public onCheckboxCountClick(action: string): void {
-        this.loadStoreService.onSelectAll(action);
-    }
-
-    public onSelectLoad(id: number): void {
-        this.loadStoreService.onSelectLoad(id);
-    }
-
-    public onSortingChange(column: ITableColumn): void {
-        this.loadStoreService.dispatchSortingChange(column);
+        this.loadStoreService.onOpenModal({
+            id,
+            isTemplate,
+            isEdit: true,
+        });
     }
 
     ngOnDestroy(): void {
