@@ -8,6 +8,7 @@ export class UserTableColumnsConfig {
     static getTableColumns(): ITableColumn[] {
         return [
             UserTableColumnsConfig.selectColumn,
+            UserTableColumnsConfig.editNameColumn,
             UserTableColumnsConfig.userNameColumn,
             UserTableColumnsConfig.departmentColumn,
             UserTableColumnsConfig.employeeDetailGroup,
@@ -32,6 +33,20 @@ export class UserTableColumnsConfig {
         isDisabled: true,
         isChecked: true,
         hasSort: false,
+    };
+
+    static editNameColumn: ITableColumn = {
+        key: 'edit',
+        label: 'Edit',
+        labelToolbar: 'Edit',
+        width: 234,
+        minWidth: 234,
+        maxWidth: 234,
+        isResizable: true,
+        isChecked: true,
+        isDisabled: true,
+        hasSort: true,
+        sortName: CompanyUserSortBy.Name,
     };
 
     static userNameColumn: ITableColumn = {

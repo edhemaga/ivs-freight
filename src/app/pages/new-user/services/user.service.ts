@@ -6,6 +6,8 @@ import { IStateFilters } from '@shared/interfaces';
 // Models
 import {
     CompanyUserListResponse,
+    CompanyUserModalResponse,
+    CompanyUserResponse,
     DepartmentFilterResponse,
     StatusSetMultipleCompanyUserCommand,
 } from 'appcoretruckassist';
@@ -105,6 +107,18 @@ export class UserService {
         return this.http.get<DepartmentFilterResponse[]>(
             `${environment.API_ENDPOINT}/api/department/filter`,
             { params }
+        );
+    }
+
+    public getModalDropdowns(): Observable<CompanyUserModalResponse> {
+        return this.http.get<CompanyUserModalResponse>(
+            `${environment.API_ENDPOINT}/api/companyuser/modal`
+        );
+    }
+
+    public editUserModal(userId: number): Observable<CompanyUserResponse> {
+        return this.http.get<CompanyUserResponse>(
+            `${environment.API_ENDPOINT}/api/companyuser/${userId}`
         );
     }
 }
