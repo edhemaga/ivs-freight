@@ -165,8 +165,12 @@ export class NewTableComponent<T> {
 
         this.mainColumns = columns.filter((col) => !col.pinned);
 
-        this.hasActiveLeftPinnedColumns = this.leftPinnedColumns?.length > 0;
-        this.hasActiveRightPinnedColumns = this.rightPinnedColumns?.length > 0;
+        this.processScrollProperties();
+    }
+
+    private processScrollProperties(): void {
+        this.hasActiveLeftPinnedColumns = !!this.leftPinnedColumns?.length;
+        this.hasActiveRightPinnedColumns = !!this.rightPinnedColumns?.length;
 
         this.leftPinnedBorderWidth =
             TableScrollHelper.getTotalColumnWidth(this.leftPinnedColumns) + 8;

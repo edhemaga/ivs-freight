@@ -17,7 +17,7 @@ import {
     eStringPlaceholder,
     eThousandSeparatorFormat,
 } from '@shared/enums';
-import { eLoadStatusStringType } from '@pages/new-load/enums';
+import { ePosition, eUnit } from 'ca-components';
 
 // base classes
 import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
@@ -65,7 +65,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
-import { ePosition, eUnit } from 'ca-components';
+
 @Component({
     selector: 'app-new-load-table',
     templateUrl: './new-load-table.component.html',
@@ -130,12 +130,10 @@ export class NewLoadTableComponent
         this.initChangeStatusDropdownListener();
     }
 
-    public initChangeStatusDropdownListener(): void {
+    private initChangeStatusDropdownListener(): void {
         this.loadStoreService.changeDropdownpossibleStatusesSelector$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) this.changeStatusPopover.open();
-            });
+            .subscribe((value) => value && this.changeStatusPopover.open());
     }
 
     public onColumnSort(column: ITableColumn): void {
@@ -218,16 +216,6 @@ export class NewLoadTableComponent
 
     public navigateToLoadDetails(id: number): void {
         this.loadStoreService.navigateToLoadDetails(id);
-    }
-
-    public onOpenModal(id: number, selectedTab: eLoadStatusStringType): void {
-        const isTemplate = selectedTab === eLoadStatusStringType.TEMPLATE;
-
-        this.loadStoreService.onOpenModal({
-            id,
-            isTemplate,
-            isEdit: true,
-        });
     }
 
     ngOnDestroy(): void {

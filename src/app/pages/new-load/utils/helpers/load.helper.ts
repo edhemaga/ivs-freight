@@ -59,6 +59,10 @@ export class LoadHelper {
                 note,
             } = load;
 
+            const requirementLength =
+                loadRequirements?.trailerLength?.name?.replace(/\D/g, '');
+            const billingPayTerm = billing?.payTermName?.replace(/\D/g, '');
+
             const mappedLoad: IMappedLoad = {
                 id,
                 isSelected: false,
@@ -89,8 +93,7 @@ export class LoadHelper {
                 delivery,
                 requirementTruck: loadRequirements?.truckType,
                 requirementTrailer: loadRequirements?.trailerType,
-                requirementLength:
-                    loadRequirements?.trailerLength?.name?.replace(/\D/g, ''),
+                requirementLength,
                 requirementDoor: loadRequirements?.doorType?.name,
                 requirementSuspension: loadRequirements?.suspension?.name,
                 requirementYear: loadRequirements?.year,
@@ -103,7 +106,7 @@ export class LoadHelper {
                 milesTotal: {
                     value: miles?.totalMiles ?? totalMiles,
                 },
-                billingPayTerm: billing?.payTermName?.replace(/\D/g, ''),
+                billingPayTerm,
                 billingAgeUnpaid: {
                     value: billing?.ageUnpaid,
                 },

@@ -87,6 +87,8 @@
     >
         <!-- Header Templates -->
 
+        <!-- #region SELECT HEADER COLUMN -->
+
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox-selected-count
                 [itemsTotalCount]="store.viewData.length"
@@ -94,6 +96,8 @@
                 (onCheckboxCountClick)="onCheckboxCountClick($event)"
             ></app-ca-checkbox-selected-count>
         </ng-template>
+
+        <!-- #endregion END OF SELECT HEADER COLUMN -->
 
         <ng-template
             #weightHeaderTemplate
@@ -220,6 +224,8 @@
             </div>
         </ng-template>
 
+        <!-- #region NOTE HEADER COLUMN -->
+
         <ng-template
             #noteHeaderTemplate
             let-tableColumnClass="tableColumnClass"
@@ -232,7 +238,11 @@
             </div>
         </ng-template>
 
+        <!-- #endregion END OF NOTE HEADER COLUMN -->
+
         <!-- Column Templates -->
+
+        <!-- #region SELECT COLUMN -->
 
         <ng-template let-data="data" #select>
             @let loadName = 'Load-' + data.id;
@@ -245,6 +255,8 @@
                 (columnCheckAction)="onSelectLoad(data.id)"
             ></app-ca-checkbox>
         </ng-template>
+
+        <!-- #endregion END OF SELECT COLUMN -->
 
         <!-- #region LOAD NUMBER COLUMN -->
 

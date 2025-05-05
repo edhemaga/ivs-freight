@@ -721,7 +721,7 @@
                 @let tableColumnCellColorClass =
                     {
                         isTableColumnCellColorClass: true,
-                        hasValue: !!row[column.key],
+                        hasValue: !!row[column.key].value,
                     } | tableColumnCellClass;
 
                 <!-- Display custom template if template exists -->

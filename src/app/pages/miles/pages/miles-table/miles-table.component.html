@@ -18,14 +18,20 @@
         {
             unit,
             truckType,
+            stopsCount: thousandFormatterTemplate,
             stopsPickup: percentTemplate,
             stopsDelivery: percentTemplate,
-            fuelCount: percentTemplate,
-            parkingCount: percentTemplate,
             deadHeadCount: percentTemplate,
+            parkingCount: percentTemplate,
+            fuelCount: percentTemplate,
             repairCount: percentTemplate,
             towingCount: percentTemplate,
+            loadCount: thousandFormatterTemplate,
+            fuelGalons: thousandFormatterTemplate,
             fuelCost,
+            milesLoaded: thousandFormatterDecimalTemplate,
+            milesEmpty: thousandFormatterDecimalTemplate,
+            milesTotal: thousandFormatterDecimalTemplate,
             revenue,
         };
 
@@ -52,6 +58,8 @@
     >
         <!-- Header Templates -->
 
+        <!-- #region REVENUE HEADER COLUMN -->
+
         <ng-template
             #revenueHeaderTemplate
             let-data="data"
@@ -67,6 +75,8 @@
                 </span>
             </div>
         </ng-template>
+
+        <!-- #endregion END OF REVENUE HEADER COLUMN -->
 
         <!-- Column Templates -->
 
@@ -111,18 +121,56 @@
             let-key="key"
             let-cellColumnTextColorClass="cellColumnTextColorClass"
         >
+            @let countValue =
+                data[key]?.count
+                    | number: eThousandSeparatorFormat.REGULAR_FORMAT;
+
             @let percentValue = data[key]?.percent + eUnit.PERCENTAGE_SIGN;
 
             <p class="text-size-14" [class]="cellColumnTextColorClass">
-                {{ data[key]?.count }}
+                {{ countValue }}
 
-                <span class="text-color-muted text-size-11 ta-font-semi-bold">
+                <!--   <span class="text-color-muted text-size-11 ta-font-semi-bold">
                     {{ percentValue }}
-                </span>
+                </span> -->
             </p>
         </ng-template>
 
         <!-- #endregion END OF PERCENT COLUMN -->
+
+        <!-- #region THOUSAND FORMATTER COLUMN -->
+
+        <ng-template
+            #thousandFormatterTemplate
+            let-data="data"
+            let-key="key"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <p class="text-size-14" [class]="cellColumnTextColorClass">
+                @let thousandFormatterTemplateValue =
+                    data[key]?.value
+                        | number: eThousandSeparatorFormat.REGULAR_FORMAT;
+
+                {{ thousandFormatterTemplateValue }}
+            </p>
+        </ng-template>
+
+        <ng-template
+            #thousandFormatterDecimalTemplate
+            let-data="data"
+            let-key="key"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <p class="text-size-14" [class]="cellColumnTextColorClass">
+                @let thousandFormatterDecimalTemplateValue =
+                    data[key]?.value
+                        | number: eThousandSeparatorFormat.DECIMAL_FORMAT;
+
+                {{ thousandFormatterDecimalTemplateValue }}
+            </p>
+        </ng-template>
+
+        <!-- #endregion END OF THOUSAND FORMATTER COLUMN -->
 
         <!-- #region FUEL COST COLUMN -->
 
@@ -131,8 +179,10 @@
             let-data="data"
             let-cellColumnTextColorClass="cellColumnTextColorClass"
         >
+            @let fuelCostTemplateValue = data.fuelCost | currency;
+
             <p class="text-size-14" [class]="cellColumnTextColorClass">
-                {{ data.fuelCost | currency }}
+                {{ fuelCostTemplateValue }}
             </p>
         </ng-template>
 
@@ -143,6 +193,7 @@
         <ng-template
             #revenue
             let-data="data"
+            let-key="key"
             let-cellColumnTextColorClass="cellColumnTextColorClass"
         >
             <div
@@ -153,11 +204,13 @@
                         : 'justify-content-start'
                 "
             >
+                @let revenueTemplateValue = data[key]?.value | currency;
+
                 <p
                     class="text-size-14 ta-font-semi-bold"
                     [class]="cellColumnTextColorClass"
                 >
-                    {{ data.revenue | currency }}
+                    {{ revenueTemplateValue }}
                 </p>
             </div>
         </ng-template>
