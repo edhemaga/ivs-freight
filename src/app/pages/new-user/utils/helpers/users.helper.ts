@@ -79,7 +79,9 @@ export class UsersHelper {
                 routingNumber,
                 accountNumber,
                 paymentType,
-                salary
+                salary,
+                is1099,
+                commission
             } = user;
 
             const mapped: IMappedUser = {
@@ -101,7 +103,9 @@ export class UsersHelper {
                 routingNumber,
                 accountNumber,
                 payrollType: paymentType?.name,
-                salary
+                salary,
+                is1099,
+                commission
             };
 
             return mapped;

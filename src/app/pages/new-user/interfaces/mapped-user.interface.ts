@@ -20,4 +20,6 @@ export interface IMappedUser {
     accountNumber: string | null;
     payrollType: string | null;
     salary: number | null;
+    is1099: boolean;
+    commission: number | null;
 }

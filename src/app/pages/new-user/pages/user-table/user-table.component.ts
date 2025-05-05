@@ -62,6 +62,7 @@ export class UserTableComponent {
     public eStatusTab = eStatusTab;
     public eSharedString = eSharedString;
     public eStringPlaceholder = eStringPlaceholder;
+    public etableStringEnum = TableStringEnum;
 
     // Svg routes
     public sharedSvgRoutes = SharedSvgRoutes;

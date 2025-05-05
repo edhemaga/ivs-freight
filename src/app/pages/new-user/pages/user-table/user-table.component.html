@@ -30,6 +30,8 @@
             bankAccount,
             payrollType,
             payrollSalary,
+            payrollForm,
+            payrollComm,
         };
     @let headerTemplates =
         {
@@ -263,7 +265,7 @@
                         [src]="sharedSvgRoutes.GREEN_CIRCLE"
                         class="svg-size-10 d-flex align-items-center"
                     ></svg-icon>
-                    
+
                     <div class="text-color-black ta-font-bold text-size-14">
                         {{ userActivity }}
                     </div>
@@ -334,11 +336,50 @@
         </ng-template>
 
         <ng-template
+            #payrollForm
+            let-user="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            @let is1099 =
+                user?.is1099
+                    ? etableStringEnum.FORM_TYPE_1
+                    : etableStringEnum.W_2;
+
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    is1099 | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template
+            #payrollComm
+            let-user="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            @let commission =
+                user?.commission
+                    ? user?.commission + eStringPlaceholder.PERCENTAGE_SIGN
+                    : eStringPlaceholder.EMPTY;
+
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    commission | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template
             #payrollSalary
             let-user="data"
             let-cellColumnTextColorClass="cellColumnTextColorClass"
         >
-            @let salaryFormat = user?.salary | formatCurrency;
+            @let salaryFormat =
+                user?.salary
+                    ? (user?.salary | formatCurrency)
+                    : eStringPlaceholder.EMPTY;
 
             <div
                 class="text-color-black ta-font-bold text-size-14 text-truncate"
