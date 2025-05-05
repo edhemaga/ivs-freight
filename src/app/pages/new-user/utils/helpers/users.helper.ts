@@ -81,7 +81,11 @@ export class UsersHelper {
                 paymentType,
                 salary,
                 is1099,
-                commission
+                commission,
+                startDate,
+                createdAt,
+                updatedAt,
+                deactivatedAt
             } = user;
 
             const mapped: IMappedUser = {
@@ -105,7 +109,11 @@ export class UsersHelper {
                 payrollType: paymentType?.name,
                 salary,
                 is1099,
-                commission
+                commission,
+                startDate,
+                createdAt,
+                updatedAt,
+                deactivatedAt
             };
 
             return mapped;

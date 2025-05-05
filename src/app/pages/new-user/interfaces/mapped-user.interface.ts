@@ -22,4 +22,8 @@ export interface IMappedUser {
     salary: number | null;
     is1099: boolean;
     commission: number | null;
+    startDate: string | null;
+    createdAt: string | null;
+    updatedAt: string | null;
+    deactivatedAt: string | null;
 }

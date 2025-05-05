@@ -11,7 +11,7 @@ import { UserStoreService } from '@pages/new-user/state/services/user-store.serv
 import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // Enums
-import { eSharedString, eStatusTab, eStringPlaceholder, TableStringEnum } from '@shared/enums';
+import { eDateTimeFormat, eSharedString, eStatusTab, eStringPlaceholder, TableStringEnum } from '@shared/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -63,6 +63,7 @@ export class UserTableComponent {
     public eSharedString = eSharedString;
     public eStringPlaceholder = eStringPlaceholder;
     public etableStringEnum = TableStringEnum;
+    public eDateTimeFormat = eDateTimeFormat;
 
     // Svg routes
     public sharedSvgRoutes = SharedSvgRoutes;

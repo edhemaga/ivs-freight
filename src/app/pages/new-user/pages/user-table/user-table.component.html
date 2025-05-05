@@ -32,6 +32,10 @@
             payrollSalary,
             payrollForm,
             payrollComm,
+            dateHired,
+            dateDeactivated,
+            dateAdded,
+            dateEdited,
         };
     @let headerTemplates =
         {
@@ -123,12 +127,8 @@
             ></div>
         </ng-template>
 
-        <ng-template
-            #employeePhone
-            let-user="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
-            <div class="text-size-14" [class]="cellColumnTextColorClass">
+        <ng-template #employeePhone let-user="data">
+            <div class="text-size-14">
                 <span class="text-color-black-2">{{ user?.phone }} </span>
                 @if (user?.extensionPhone) {
                     <span class="text-color-muted"
@@ -183,14 +183,9 @@
         <!-- #endregion END OF PERSONAL DETAILS GROUP -->
 
         <!-- #region STATUS COLUMN -->
-        <ng-template
-            #status
-            let-user="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
+        <ng-template #status let-user="data">
             <div
                 class="d-flex gap-1 align-items-center text-color-black-2 text-size-14"
-                [class]="cellColumnTextColorClass"
             >
                 @switch (user?.userStatus) {
                     @case (eStringPlaceholder.ZERO) {}
@@ -209,13 +204,13 @@
                     @case (eSharedString.INVITED) {
                         <svg-icon
                             [src]="sharedSvgRoutes.USER_STATUS_INVITED_ICON"
-                            class="svg-size-14 text-color-grey opacity-60"
+                            class="svg-size-14"
                         ></svg-icon>
                     }
                     @case (eSharedString.EXPIRED) {
                         <svg-icon
                             [src]="sharedSvgRoutes.USER_STATUS_EXPIRED_ICON"
-                            class="svg-size-14 text-color-grey opacity-60"
+                            class="svg-size-14"
                         ></svg-icon>
                     }
                     @default {
@@ -233,7 +228,7 @@
                 <span
                     class="text-color-black ta-font-bold text-size-11 text-uppercase"
                     [ngClass]="{
-                        'opacity-60': userStatusInvitedOrExpired,
+                        'text-color-muted': userStatusInvitedOrExpired,
                     }"
                     [innerHtml]="
                         user?.userStatus === eStringPlaceholder.ZERO
@@ -249,17 +244,10 @@
         <!-- #region END OF STATUS COLUMN -->
 
         <!-- #region ACTIVITY COLUMN -->
-        <ng-template
-            #activity
-            let-user="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
+        <ng-template #activity let-user="data">
             @let userActivity = user?.lastLogin | activityTime: 'activity';
 
-            <div
-                class="d-flex gap-1 align-items-center"
-                [class]="cellColumnTextColorClass"
-            >
+            <div class="d-flex gap-1 align-items-center">
                 @if (userActivity === eSharedString.ONLINE) {
                     <svg-icon
                         [src]="sharedSvgRoutes.GREEN_CIRCLE"
@@ -279,11 +267,7 @@
         <!-- #region END OF ACTIVITY COLUMN -->
 
         <!-- #region BANK DETAILS GROUP -->
-        <ng-template
-            #bankName
-            let-user="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
+        <ng-template #bankName let-user="data">
             <div
                 class="text-color-black-2 text-size-14"
                 [innerHtml]="
@@ -293,11 +277,7 @@
             ></div>
         </ng-template>
 
-        <ng-template
-            #bankRouting
-            let-user="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
+        <ng-template #bankRouting let-user="data">
             <div
                 class="text-color-black-2 text-size-14 text-truncate"
                 [innerHtml]="
@@ -307,11 +287,7 @@
             ></div>
         </ng-template>
 
-        <ng-template
-            #bankAccount
-            let-user="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
+        <ng-template #bankAccount let-user="data">
             <app-ta-password-account-hidden-characters
                 [passwordOrAccount]="user?.accountNumber"
             ></app-ta-password-account-hidden-characters>
@@ -320,12 +296,7 @@
         <!-- #region END OF BANK DETAILS GROUP -->
 
         <!-- #region PAYROLL DETAILS GROUP -->
-
-        <ng-template
-            #payrollType
-            let-user="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
+        <ng-template #payrollType let-user="data">
             <div
                 class="text-color-black-2 text-size-14 text-truncate"
                 [innerHtml]="
@@ -335,11 +306,7 @@
             ></div>
         </ng-template>
 
-        <ng-template
-            #payrollForm
-            let-user="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
+        <ng-template #payrollForm let-user="data">
             @let is1099 =
                 user?.is1099
                     ? etableStringEnum.FORM_TYPE_1
@@ -353,11 +320,7 @@
             ></div>
         </ng-template>
 
-        <ng-template
-            #payrollComm
-            let-user="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
+        <ng-template #payrollComm let-user="data">
             @let commission =
                 user?.commission
                     ? user?.commission + eStringPlaceholder.PERCENTAGE_SIGN
@@ -371,11 +334,7 @@
             ></div>
         </ng-template>
 
-        <ng-template
-            #payrollSalary
-            let-user="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
+        <ng-template #payrollSalary let-user="data">
             @let salaryFormat =
                 user?.salary
                     ? (user?.salary | formatCurrency)
@@ -388,7 +347,53 @@
                 "
             ></div>
         </ng-template>
-
         <!-- #region END OF PAYROLL DETAILS GROUP -->
+
+        <!-- #region DATES GROUP -->
+
+        <ng-template #dateHired let-user="data">
+            @let formatDate =
+                user.startDate | date: eDateTimeFormat.ANGULAR_MM_DD_YY;
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    formatDate | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template #dateDeactivated let-user="data">
+            @let formatDate =
+                user.deactivatedAt | date: eDateTimeFormat.ANGULAR_MM_DD_YY;
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    formatDate | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template #dateAdded let-user="data">
+            @let formatDate =
+                user.createdAt | date: eDateTimeFormat.ANGULAR_MM_DD_YY;
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    formatDate | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template #dateEdited let-user="data">
+            @let formatDate =
+                user.updatedAt | date: eDateTimeFormat.ANGULAR_MM_DD_YY;
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    formatDate | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+        <!-- #region END OF DATES GROUP -->
     </app-new-table>
 }
