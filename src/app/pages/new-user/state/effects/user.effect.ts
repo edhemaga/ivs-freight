@@ -174,7 +174,9 @@ export class UserEffects {
         () =>
             this.actions$.pipe(
                 ofType(UserActions.onOpenUserModal),
-                map(() => this.modalService.openModal(UserModalComponent, {}))
+                switchMap((modal) =>
+                    this.modalService.openModal(UserModalComponent, {}, modal)
+                )
             ),
         { dispatch: false }
     );

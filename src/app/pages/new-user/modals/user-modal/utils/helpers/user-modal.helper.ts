@@ -7,6 +7,7 @@ import {
 
 // Models
 import { Tabs } from '@ca-shared/models/tabs.model';
+import { CompanyUserResponse } from 'appcoretruckassist';
 
 // Enums
 import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
@@ -35,49 +36,57 @@ export class UserModalHelper {
         ];
     }
 
-    static getDepartmentTabs(): Tabs[] {
+    static getDepartmentTabs(isAdmin: boolean): Tabs[] {
         return [
             {
                 id: 1,
                 name: 'User',
-                checked: true,
+                checked: !isAdmin,
             },
             {
                 id: 2,
                 name: 'Admin',
-                checked: false,
+                checked: isAdmin,
             },
         ];
     }
 
-    static createForm(): UntypedFormGroup {
+    static createForm(userData: CompanyUserResponse): UntypedFormGroup {
         return new UntypedFormGroup({
-            [eUserModalForm.EMAIL]: new UntypedFormControl('', [
+            [eUserModalForm.EMAIL]: new UntypedFormControl(userData?.email, [
                 Validators.required,
                 Validators.email,
             ]),
-            [eUserModalForm.FIRST_NAME]: new UntypedFormControl('', [
-                Validators.required,
-                ...firstNameValidation,
-            ]),
-            [eUserModalForm.LAST_NAME]: new UntypedFormControl('', [
-                Validators.required,
-                ...lastNameValidation,
-            ]),
-            [eUserModalForm.DEPARTMENT]: new UntypedFormControl('', [
-                Validators.required,
-            ]),
-            [eUserModalForm.OFFICE]: new UntypedFormControl(''),
-            [eUserModalForm.PHONE]: new UntypedFormControl('', [phoneFaxRegex]),
-            [eUserModalForm.PHONE_EXTENSION]: new UntypedFormControl('', [
-                ...phoneExtension,
-            ]),
-            [eUserModalForm.PERSONAL_EMAIL]: new UntypedFormControl('', [
-                Validators.email,
-            ]),
-            [eUserModalForm.PERSONAL_PHONE]: new UntypedFormControl('', [
+            [eUserModalForm.FIRST_NAME]: new UntypedFormControl(
+                userData?.firstName,
+                [Validators.required, ...firstNameValidation]
+            ),
+            [eUserModalForm.LAST_NAME]: new UntypedFormControl(
+                userData?.lastName,
+                [Validators.required, ...lastNameValidation]
+            ),
+            [eUserModalForm.DEPARTMENT]: new UntypedFormControl(
+                userData?.department?.id,
+                [Validators.required]
+            ),
+            [eUserModalForm.OFFICE]: new UntypedFormControl(
+                userData?.companyOffice?.id
+            ),
+            [eUserModalForm.PHONE]: new UntypedFormControl(userData?.phone, [
                 phoneFaxRegex,
             ]),
+            [eUserModalForm.PHONE_EXTENSION]: new UntypedFormControl(
+                userData?.extensionPhone,
+                [...phoneExtension]
+            ),
+            [eUserModalForm.PERSONAL_EMAIL]: new UntypedFormControl(
+                userData?.personalEmail,
+                [Validators.email]
+            ),
+            [eUserModalForm.PERSONAL_PHONE]: new UntypedFormControl(
+                userData?.personalPhone,
+                [phoneFaxRegex]
+            ),
         });
     }
 }

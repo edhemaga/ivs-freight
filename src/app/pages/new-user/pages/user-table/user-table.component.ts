@@ -28,7 +28,6 @@ import {
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
-
 @Component({
     selector: 'app-user-table',
     templateUrl: './user-table.component.html',
@@ -49,7 +48,7 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
         // Pipes
         TableHighlightSearchTextPipe,
-        NameInitialsPipe
+        NameInitialsPipe,
     ],
 })
 export class UserTableComponent {
@@ -75,5 +74,9 @@ export class UserTableComponent {
 
     public onCheckboxCountClick(action: string): void {
         this.userStoreService.dispatchSelectAll(action);
+    }
+
+    public openEditModal(userId: number): void {
+        this.userStoreService.dispatchOpenUserModal(true, userId);
     }
 }

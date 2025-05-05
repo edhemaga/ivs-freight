@@ -12,7 +12,7 @@
 
 @if (store) {
     @let isTableLocked = store.tableSettings.isTableLocked;
-    @let templates = { select, name, department };
+    @let templates = { select, name, department, edit };
     @let headerTemplates =
         {
             select: selectHeaderTemplate,
@@ -86,6 +86,15 @@
                         | tableHighlightSearchText: store.searchStrings
                 "
             ></div>
+        </ng-template>
+
+        <ng-template let-user="data" #edit>
+            <div
+                class="text-color-black-2 text-size-14"
+                (click)="openEditModal(user.id)"
+            >
+                Edit
+            </div>
         </ng-template>
     </app-new-table>
 }

@@ -213,9 +213,11 @@ export class UserStoreService {
         });
     }
 
-    public dispatchOpenUserModal(): void {
+    public dispatchOpenUserModal(isEdit: boolean, id: number): void {
         this.store.dispatch({
             type: UserStoreConstants.ACTION_OPEN_USER_MODAL,
+            isEdit,
+            id,
         });
     }
 }

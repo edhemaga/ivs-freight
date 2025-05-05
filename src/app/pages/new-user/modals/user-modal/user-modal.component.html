@@ -3,134 +3,142 @@
     [rightHeaderTemplate]="rightHeaderTemplate"
 >
     <div class="new-modal" origin>
-        <form [formGroup]="userForm">
-            <app-ca-tab-switch
-                [tabs]="userTabs"
-                [type]="'type1-modal-popup'"
-                (switchClicked)="onUserTabChange()"
-            >
-            </app-ca-tab-switch>
-
-            <div class="d-grid m-t-26">
-                @let emailInputConfig =
-                    { configType: eUserModalForm.EMAIL } | userModalInputConfig;
-
-                <ca-input-test
-                    formControlName="email"
-                    [inputConfig]="emailInputConfig"
-                ></ca-input-test>
-            </div>
-
-            <div class="d-grid d-grid-user-name m-t-26">
-                @let firstNameInputConfig =
-                    { configType: eUserModalForm.FIRST_NAME }
-                        | userModalInputConfig;
-
-                <ca-input-test
-                    formControlName="firstName"
-                    [inputConfig]="firstNameInputConfig"
-                ></ca-input-test>
-
-                @let lastNameInputConfig =
-                    { configType: eUserModalForm.LAST_NAME }
-                        | userModalInputConfig;
-
-                <ca-input-test
-                    formControlName="lastName"
-                    [inputConfig]="lastNameInputConfig"
-                ></ca-input-test>
-            </div>
-
-            <div class="d-grid d-grid-department m-t-26">
+        @if (userForm) {
+            <form [formGroup]="userForm">
                 <app-ca-tab-switch
-                    [tabs]="departmentTabs"
-                    [type]="'type4-modal-popup'"
-                    (switchClicked)="onDepartmentTabChange()"
+                    [tabs]="userTabs"
+                    [type]="'type1-modal-popup'"
+                    (switchClicked)="onUserTabChange()"
                 >
                 </app-ca-tab-switch>
 
-                @let departmentInputConfig =
-                    { configType: eUserModalForm.DEPARTMENT }
-                        | userModalInputConfig;
+                <div class="d-grid m-t-26">
+                    @let emailInputConfig =
+                        { configType: eUserModalForm.EMAIL }
+                            | userModalInputConfig;
 
-                <ca-input-dropdown-test
-                    formControlName="departmentId"
-                    optionValue="id"
-                    label="name"
-                    [options]="dropdownList?.departments"
-                    [inputConfig]="departmentInputConfig"
-                ></ca-input-dropdown-test>
-            </div>
-
-            <div class="d-grid d-grid-office m-t-26">
-                @let officeInputConfig =
-                    { configType: eUserModalForm.OFFICE }
-                        | userModalInputConfig;
-
-                <ca-input-dropdown-test
-                    formControlName="officeId"
-                    optionValue="id"
-                    label="name"
-                    [options]="dropdownList?.officeShortResponses"
-                    [inputConfig]="officeInputConfig"
-                ></ca-input-dropdown-test>
-
-                @let phoneInputConfig =
-                    { configType: eUserModalForm.PHONE } | userModalInputConfig;
-
-                <ca-input-test
-                    formControlName="phone"
-                    [inputConfig]="phoneInputConfig"
-                ></ca-input-test>
-
-                <div
-                    class="w-26 h-26 br-2 background-bw2 background-hover-bw-9 svg-fill-muted svg-hover-black c-pointer d-flex align-items-center justify-content-center"
-                >
-                    <svg-icon
-                        class="svg-size-18"
-                        [src]="svgRoutes.PLUS_ICON"
-                    ></svg-icon>
+                    <ca-input-test
+                        formControlName="email"
+                        [inputConfig]="emailInputConfig"
+                    ></ca-input-test>
                 </div>
-            </div>
 
-            <div class="m-t-26">
-                <app-ca-custom-card
-                    customDividerClass="divider--dark"
-                    cardName="Personal Detail"
-                    [hasDivider]="true"
-                    [isCardOpen]="true"
-                    [animationMarginParams]="{
-                        marginTop: '18px',
-                        marginBottom: '0',
-                    }"
-                >
-                    <div origin>
-                        <div class="d-grid d-grid-personal-info">
-                            @let personalPhoneInputConfig =
-                                { configType: eUserModalForm.PERSONAL_PHONE }
-                                    | userModalInputConfig;
+                <div class="d-grid d-grid-user-name m-t-26">
+                    @let firstNameInputConfig =
+                        { configType: eUserModalForm.FIRST_NAME }
+                            | userModalInputConfig;
 
-                            <ca-input-test
-                                formControlName="personalPhone"
-                                [inputConfig]="personalPhoneInputConfig"
-                            ></ca-input-test>
+                    <ca-input-test
+                        formControlName="firstName"
+                        [inputConfig]="firstNameInputConfig"
+                    ></ca-input-test>
 
-                            @let personalEmailInputConfig =
-                                { configType: eUserModalForm.PERSONAL_EMAIL }
-                                    | userModalInputConfig;
+                    @let lastNameInputConfig =
+                        { configType: eUserModalForm.LAST_NAME }
+                            | userModalInputConfig;
 
-                            <ca-input-test
-                                formControlName="personalEmail"
-                                [inputConfig]="personalEmailInputConfig"
-                            ></ca-input-test>
-                        </div>
-                        <div
-                            class="d-grid d-grid-personal-address m-t-26"
-                        ></div>
+                    <ca-input-test
+                        formControlName="lastName"
+                        [inputConfig]="lastNameInputConfig"
+                    ></ca-input-test>
+                </div>
+
+                <div class="d-grid d-grid-department m-t-26">
+                    <app-ca-tab-switch
+                        [tabs]="departmentTabs"
+                        [type]="'type4-modal-popup'"
+                        (switchClicked)="onDepartmentTabChange()"
+                    >
+                    </app-ca-tab-switch>
+
+                    @let departmentInputConfig =
+                        { configType: eUserModalForm.DEPARTMENT }
+                            | userModalInputConfig;
+
+                    <ca-input-dropdown-test
+                        formControlName="departmentId"
+                        optionValue="id"
+                        label="name"
+                        [options]="dropdownList?.departments"
+                        [inputConfig]="departmentInputConfig"
+                    ></ca-input-dropdown-test>
+                </div>
+
+                <div class="d-grid d-grid-office m-t-26">
+                    @let officeInputConfig =
+                        { configType: eUserModalForm.OFFICE }
+                            | userModalInputConfig;
+
+                    <ca-input-dropdown-test
+                        formControlName="officeId"
+                        optionValue="id"
+                        label="name"
+                        [options]="dropdownList?.officeShortResponses"
+                        [inputConfig]="officeInputConfig"
+                    ></ca-input-dropdown-test>
+
+                    @let phoneInputConfig =
+                        { configType: eUserModalForm.PHONE }
+                            | userModalInputConfig;
+
+                    <ca-input-test
+                        formControlName="phone"
+                        [inputConfig]="phoneInputConfig"
+                    ></ca-input-test>
+
+                    <div
+                        class="w-26 h-26 br-2 background-bw2 background-hover-bw-9 svg-fill-muted svg-hover-black c-pointer d-flex align-items-center justify-content-center"
+                    >
+                        <svg-icon
+                            class="svg-size-18"
+                            [src]="svgRoutes.PLUS_ICON"
+                        ></svg-icon>
                     </div>
-                </app-ca-custom-card>
-            </div>
-        </form>
+                </div>
+
+                <div class="m-t-26">
+                    <app-ca-custom-card
+                        customDividerClass="divider--dark"
+                        cardName="Personal Detail"
+                        [hasDivider]="true"
+                        [isCardOpen]="true"
+                        [animationMarginParams]="{
+                            marginTop: '18px',
+                            marginBottom: '0',
+                        }"
+                    >
+                        <div origin>
+                            <div class="d-grid d-grid-personal-info">
+                                @let personalPhoneInputConfig =
+                                    {
+                                        configType:
+                                            eUserModalForm.PERSONAL_PHONE,
+                                    } | userModalInputConfig;
+
+                                <ca-input-test
+                                    formControlName="personalPhone"
+                                    [inputConfig]="personalPhoneInputConfig"
+                                ></ca-input-test>
+
+                                @let personalEmailInputConfig =
+                                    {
+                                        configType:
+                                            eUserModalForm.PERSONAL_EMAIL,
+                                    } | userModalInputConfig;
+
+                                <ca-input-test
+                                    formControlName="personalEmail"
+                                    [inputConfig]="personalEmailInputConfig"
+                                ></ca-input-test>
+                            </div>
+                            <div
+                                class="d-grid d-grid-personal-address m-t-26"
+                            ></div>
+                        </div>
+                    </app-ca-custom-card>
+                </div>
+            </form>
+        }
     </div>
 
     <ng-template #rightHeaderTemplate>

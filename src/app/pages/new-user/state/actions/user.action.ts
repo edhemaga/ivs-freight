@@ -145,6 +145,10 @@ export const onUserStatusChangeError = createAction(
 
 //#region Modal
 export const onOpenUserModal = createAction(
-    UserStoreConstants.ACTION_OPEN_USER_MODAL
+    UserStoreConstants.ACTION_OPEN_USER_MODAL,
+    props<{
+        isEdit: boolean;
+        id: number;
+    }>()
 );
 //#endregion
