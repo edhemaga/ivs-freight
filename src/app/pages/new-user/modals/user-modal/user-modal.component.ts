@@ -8,7 +8,10 @@ import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 
 // Models
 import { Tabs } from '@ca-shared/models/tabs.model';
-import { CompanyUserModalResponse } from 'appcoretruckassist';
+import {
+    CompanyUserModalResponse,
+    CompanyUserResponse,
+} from 'appcoretruckassist';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -85,7 +88,7 @@ export class UserModalComponent implements OnInit {
     public isEditMode: boolean;
 
     // Show modal spinner
-    public activeAction = '';
+    public activeAction = null;
 
     // Tabs
     public userTabs: Tabs[] = UserModalHelper.getUserTabs();
@@ -94,7 +97,7 @@ export class UserModalComponent implements OnInit {
     // Form
     public userForm: UntypedFormGroup;
     public dropdownList: CompanyUserModalResponse;
-    user: import('c:/Users/Truli/Desktop/Projects/carriera-fe/appcoretruckassist/index').CompanyUserResponse;
+    public user: CompanyUserResponse;
 
     constructor(
         private userService: UserService,

@@ -13,7 +13,7 @@
                 >
                 </app-ca-tab-switch>
 
-                <div class="d-grid m-t-26">
+                <div class="d-grid gap-12 m-t-26">
                     @let emailInputConfig =
                         { configType: eUserModalForm.EMAIL }
                             | userModalInputConfig;
@@ -24,7 +24,7 @@
                     ></ca-input-test>
                 </div>
 
-                <div class="d-grid d-grid-user-name m-t-26">
+                <div class="d-grid gap-12 d-grid-user-name m-t-26">
                     @let firstNameInputConfig =
                         { configType: eUserModalForm.FIRST_NAME }
                             | userModalInputConfig;
@@ -44,7 +44,7 @@
                     ></ca-input-test>
                 </div>
 
-                <div class="d-grid d-grid-department m-t-26">
+                <div class="d-grid gap-12 d-grid-department m-t-26">
                     <app-ca-tab-switch
                         [tabs]="departmentTabs"
                         [type]="'type4-modal-popup'"
@@ -65,7 +65,7 @@
                     ></ca-input-dropdown-test>
                 </div>
 
-                <div class="d-grid d-grid-office m-t-26">
+                <div class="d-grid gap-12 d-grid-office m-t-26">
                     @let officeInputConfig =
                         { configType: eUserModalForm.OFFICE }
                             | userModalInputConfig;
@@ -109,7 +109,7 @@
                         }"
                     >
                         <div origin>
-                            <div class="d-grid d-grid-personal-info">
+                            <div class="d-grid gap-12 d-grid-personal-info">
                                 @let personalPhoneInputConfig =
                                     {
                                         configType:
@@ -133,7 +133,7 @@
                                 ></ca-input-test>
                             </div>
                             <div
-                                class="d-grid d-grid-personal-address m-t-26"
+                                class="d-grid gap-12 d-grid-personal-address m-t-26"
                             ></div>
                         </div>
                     </app-ca-custom-card>
