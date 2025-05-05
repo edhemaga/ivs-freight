@@ -16,6 +16,7 @@
         {
             select,
             name,
+            edit,
             department,
             employeePhone,
             employeeOffice,
@@ -69,6 +70,16 @@
                 [name]="userName"
                 (columnCheckAction)="onSelectUser(user.id)"
             ></app-ca-checkbox>
+        </ng-template>
+
+        <!-- Modal test only -->
+        <ng-template let-user="data" #edit>
+            <div
+                class="text-color-black-2 text-size-14"
+                (click)="openEditModal(user.id)"
+            >
+                Edit
+            </div>
         </ng-template>
 
         <!-- #region NAME COLUMN -->

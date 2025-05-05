@@ -11,7 +11,13 @@ import { UserStoreService } from '@pages/new-user/state/services/user-store.serv
 import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // Enums
-import { eDateTimeFormat, eSharedString, eStatusTab, eStringPlaceholder, TableStringEnum } from '@shared/enums';
+import {
+    eDateTimeFormat,
+    eSharedString,
+    eStatusTab,
+    eStringPlaceholder,
+    TableStringEnum,
+} from '@shared/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -23,12 +29,17 @@ import {
     CaCheckboxSelectedCountComponent,
     CaProfileImageComponent,
 } from 'ca-components';
+import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 
 // Pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
-import { ActivityTimePipe, FormatCurrencyPipe, NameInitialsPipe, ThousandSeparatorPipe } from '@shared/pipes';
+import {
+    ActivityTimePipe,
+    FormatCurrencyPipe,
+    NameInitialsPipe,
+    ThousandSeparatorPipe,
+} from '@shared/pipes';
 import { AddressFullnamePipe } from '@shared/pipes/address-fullname.pipe';
-import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 
 @Component({
     selector: 'app-user-table',
@@ -51,10 +62,11 @@ import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/t
 
         // Pipes
         TableHighlightSearchTextPipe,
+        NameInitialsPipe,
         ActivityTimePipe,
         NameInitialsPipe,
         AddressFullnamePipe,
-        FormatCurrencyPipe
+        FormatCurrencyPipe,
     ],
 })
 export class UserTableComponent {
@@ -84,5 +96,9 @@ export class UserTableComponent {
 
     public onCheckboxCountClick(action: string): void {
         this.userStoreService.dispatchSelectAll(action);
+    }
+
+    public openEditModal(userId: number): void {
+        this.userStoreService.dispatchOpenUserModal(true, userId);
     }
 }
