@@ -6,6 +6,7 @@ import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 
 // Models
 import { Tabs } from '@ca-shared/models/tabs.model';
+import { CompanyUserModalResponse } from 'appcoretruckassist';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -15,6 +16,7 @@ import { UserModalHelper } from '@pages/new-user/modals/user-modal/utils/helpers
 
 // Components
 import {
+    CaCustomCardComponent,
     CaInputDropdownTestComponent,
     CaModalComponent,
     CaTabSwitchComponent,
@@ -28,6 +30,9 @@ import { UserModalInputConfigPipe } from '@pages/new-user/modals/user-modal/pipe
 
 // Enums
 import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
+
+// Services
+import { UserService } from '@pages/new-user/services/user.service';
 
 @Component({
     selector: 'app-user-modal',
@@ -44,6 +49,7 @@ import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
         SvgIconComponent,
         CaInputDropdownTestComponent,
         InputTestComponent,
+        CaCustomCardComponent,
 
         // Pipes
         UserModalInputConfigPipe,
@@ -66,9 +72,23 @@ export class UserModalComponent implements OnInit {
 
     // Form
     public userForm: UntypedFormGroup;
+    public dropdownList: CompanyUserModalResponse;
+
+    constructor(private userService: UserService) {}
 
     ngOnInit(): void {
+        this.setupModal();
+    }
+
+    private setupModal(): void {
         this.userForm = UserModalHelper.createForm();
+
+        const staticData$ = this.userService.getModalDropdowns();
+
+        // TODO: We will add edit later
+        staticData$.subscribe((data) => {
+            this.dropdownList = data;
+        });
     }
 
     public onUserTabChange(): void {}

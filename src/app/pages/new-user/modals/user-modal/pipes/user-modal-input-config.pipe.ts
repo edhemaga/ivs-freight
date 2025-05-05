@@ -46,6 +46,58 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     isRequired: true,
                     textTransform: 'capitalize',
                 };
+
+            case eUserModalForm.DEPARTMENT:
+                return {
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Department',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-318',
+                    isRequired: true,
+                };
+
+            case eUserModalForm.OFFICE:
+                return {
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Office',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-252',
+                    isRequired: true,
+                };
+
+            case eUserModalForm.PHONE:
+                return {
+                    name: 'Phone',
+                    type: 'text',
+                    label: 'Phone',
+                    placeholderIcon: 'phone',
+                };
+
+            case eUserModalForm.PHONE_EXTENSION:
+                return {
+                    name: 'Phone',
+                    type: 'text',
+                    label: 'Ext.',
+                    placeholderIcon: 'phoneExt',
+                };
+
+            case eUserModalForm.PERSONAL_PHONE:
+                return {
+                    name: 'Personal Phone',
+                    type: 'text',
+                    label: 'Personal Phone',
+                    placeholderIcon: 'phone',
+                };
+
+            case eUserModalForm.PERSONAL_EMAIL:
+                return {
+                    name: 'Personal Email',
+                    type: 'text',
+                    label: 'Personal Email',
+                    placeholderIcon: 'email',
+                };
         }
     }
 }

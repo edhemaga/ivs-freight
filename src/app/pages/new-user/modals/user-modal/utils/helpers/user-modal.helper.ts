@@ -15,6 +15,8 @@ import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
 import {
     firstNameValidation,
     lastNameValidation,
+    phoneExtension,
+    phoneFaxRegex,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 export class UserModalHelper {
@@ -61,6 +63,20 @@ export class UserModalHelper {
             [eUserModalForm.LAST_NAME]: new UntypedFormControl('', [
                 Validators.required,
                 ...lastNameValidation,
+            ]),
+            [eUserModalForm.DEPARTMENT]: new UntypedFormControl('', [
+                Validators.required,
+            ]),
+            [eUserModalForm.OFFICE]: new UntypedFormControl(''),
+            [eUserModalForm.PHONE]: new UntypedFormControl('', [phoneFaxRegex]),
+            [eUserModalForm.PHONE_EXTENSION]: new UntypedFormControl('', [
+                ...phoneExtension,
+            ]),
+            [eUserModalForm.PERSONAL_EMAIL]: new UntypedFormControl('', [
+                Validators.email,
+            ]),
+            [eUserModalForm.PERSONAL_PHONE]: new UntypedFormControl('', [
+                phoneFaxRegex,
             ]),
         });
     }

@@ -8,4 +8,16 @@
     &-department {
         grid-template-columns: 126px 318px;
     }
+
+    &-office {
+        grid-template-columns: 252px 154px 26px;
+    }
+
+    &-personal-info {
+        grid-template-columns: 190px 254px;
+    }
+
+    &-personal-address {
+        grid-template-columns: 364px 80px;
+    }
 }
