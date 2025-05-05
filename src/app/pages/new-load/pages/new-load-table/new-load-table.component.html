@@ -21,7 +21,6 @@
             billingPayTerm: additionalLabelHeaderTemplate,
             billingAgeUnpaid: additionalLabelHeaderTemplate,
             billingAgePaid: additionalLabelHeaderTemplate,
-            billingRate: alignRightHeaderTemplate,
             note: noteHeaderTemplate,
         };
 
@@ -59,8 +58,8 @@
             billingEscort: currencyTemplate,
             billingDetention: currencyTemplate,
             billingRate,
-            billingPaid: currencyTemplate,
-            billingDue: currencyTemplate,
+            billingPaid: currencyBoldTemplate,
+            billingDue: currencyBoldTemplate,
             dateInvoiced: dateTemplate,
             datePaid: dateTemplate,
             dateCreated: dateTemplate,
@@ -151,22 +150,6 @@
         </ng-template>
 
         <!-- #endregion END OF REQUIREMENT LENGTH HEADER COLUMN -->
-
-        <ng-template
-            #alignRightHeaderTemplate
-            let-data="data"
-            let-tableColumnLabelWidth="tableColumnLabelWidth"
-            let-label="label"
-        >
-            <div class="d-flex">
-                <span
-                    class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
-                    [ngStyle]="tableColumnLabelWidth"
-                >
-                    {{ label }}
-                </span>
-            </div>
-        </ng-template>
 
         <!-- #region NOTE HEADER COLUMN -->
 
@@ -524,6 +507,17 @@
                     @let currencyTemplateValue = data[key]?.value | currency;
 
                     {{ currencyTemplateValue }}
+                </p>
+            }
+        </ng-template>
+
+        <ng-template #currencyBoldTemplate let-data="data" let-key="key">
+            @if (data[key]?.value) {
+                <p class="text-color-black text-size-14 ta-font-semi-bold">
+                    @let currencyBoldTemplateValue =
+                        data[key]?.value | currency;
+
+                    {{ currencyBoldTemplateValue }}
                 </p>
             }
         </ng-template>

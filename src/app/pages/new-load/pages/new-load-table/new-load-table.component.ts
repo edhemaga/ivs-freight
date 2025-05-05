@@ -17,7 +17,7 @@ import {
     eStringPlaceholder,
     eThousandSeparatorFormat,
 } from '@shared/enums';
-import { ePosition, eUnit } from 'ca-components';
+import { ePosition } from 'ca-components';
 
 // base classes
 import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
@@ -114,7 +114,6 @@ export class NewLoadTableComponent
     public eDateTimeFormat = eDateTimeFormat;
     public eStringPlaceholder = eStringPlaceholder;
     public eThousandSeparatorFormat = eThousandSeparatorFormat;
-    public eUnit = eUnit;
 
     constructor(
         protected router: Router,
