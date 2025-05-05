@@ -1134,6 +1134,7 @@ export class LoadTableColumnsConfig {
             hasSort: false,
         },
         {
+            id: 39,
             key: 'note',
             label: '',
             labelToolbar: '',
@@ -1146,7 +1147,7 @@ export class LoadTableColumnsConfig {
             hasSort: false,
         },
         {
-            id: 39,
+            id: 40,
             key: 'action',
             label: '',
             labelToolbar: '',
