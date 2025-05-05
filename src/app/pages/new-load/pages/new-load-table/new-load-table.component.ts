@@ -26,6 +26,7 @@ import {
     CaCheckboxSelectedCountComponent,
     ePosition,
     CaCommentsComponent,
+    IComment,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
@@ -55,6 +56,7 @@ import { User } from '@shared/models';
 // Pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
 import { ThousandSeparatorPipe } from '@shared/pipes';
+import { deleteCommentById } from '../../../load/state/actions/load.action';
 
 @Component({
     selector: 'app-new-load-table',
@@ -180,7 +182,7 @@ export class NewLoadTableComponent
         loadId: number
     ): void {
         this.changeStatusPopover = tooltip;
-        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
+        this.loadStoreService.dispatchOpenChangeStatusDropdown(loadId);
     }
 
     public initChangeStatusDropdownListener(): void {
@@ -206,6 +208,18 @@ export class NewLoadTableComponent
     public onToggleComments(id: number): void {
         this.selectedCommentsLoadId =
             this.selectedCommentsLoadId === id ? null : id;
+    }
+
+    public onCommentDelete(commentId: number, loadId): void {
+        this.loadStoreService.dispatchDeleteComment(commentId, loadId);
+    }
+
+    public onCommentAdded(comment: IComment, loadId: number): void {
+        this.loadStoreService.dispatchAddComment(comment, loadId);
+    }
+
+    public onCommentEdited(comment: IComment, loadId: number): void {
+        this.loadStoreService.dispatchEditComment(comment, loadId);
     }
 
     ngOnDestroy(): void {

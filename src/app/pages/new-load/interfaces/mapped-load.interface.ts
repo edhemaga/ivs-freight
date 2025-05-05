@@ -29,7 +29,7 @@ export interface IMappedLoad {
     driverInfo?: LoadDriverInfo | DriverMinimalResponse;
     templateName: string;
     commodity?: string;
-    comments: IComment;
+    comments: IComment[];
     brokerBusinessName: string;
     assignedDriverTruckNumber: string;
     assignedDriverTrailerNumber: string;

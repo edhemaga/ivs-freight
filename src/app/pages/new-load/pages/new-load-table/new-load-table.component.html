@@ -472,13 +472,11 @@
             @let isSelected = loadId === selectedCommentsLoadId;
             @let commentCount = data?.comments?.length;
             <div
-                class="w-26 h-26 d-flex align-items-center justify-items-center c-pointer br-2 m-t-1"
+                class="w-26 h-26 d-flex place-items-center c-pointer br-2 m-t-1"
                 [class.background-black]="isSelected"
                 (click)="onToggleComments(loadId)"
             >
-                <div
-                    class="position-relative d-flex align-items-center justify-items-center m-auto"
-                >
+                <div class="position-relative d-flex place-items-center m-auto">
                     <span
                         class="comments-count z-0 position-absolute text-color-white text-size-9 ta-font-semi-bold"
                         >{{ commentCount }}</span
@@ -497,6 +495,15 @@
                                 [comments]="data?.comments"
                                 [commentCount]="commentCount"
                                 [currentUser]="currentUser"
+                                (onCommentDelete)="
+                                    onCommentDelete($event, loadId)
+                                "
+                                (onCommentAdded)="
+                                    onCommentAdded($event, loadId)
+                                "
+                                (onCommentEdited)="
+                                    onCommentEdited($event, loadId)
+                                "
                             ></ca-comments>
                         </div>
                     </div>

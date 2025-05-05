@@ -9,6 +9,8 @@ import {
     map,
     switchMap,
     withLatestFrom,
+    tap,
+    mergeMap,
 } from 'rxjs/operators';
 import { EMPTY, forkJoin, Observable, of } from 'rxjs';
 
@@ -41,6 +43,9 @@ import {
     LoadSortBy,
     SortOrder,
     LoadDriverInfo,
+    CommentService,
+    CreateCommentCommand,
+    UpdateCommentCommand,
 } from 'appcoretruckassist';
 
 // Enums
@@ -51,10 +56,7 @@ import { eLoadRouting, eLoadStatusStringType } from '@pages/new-load/enums';
 import { IStateFilters } from '@shared/interfaces';
 
 // Selectors
-import {
-    loadIdLoadStatusChangeSelector,
-    selectedLoadForStatusChangeSelector,
-} from '@pages/new-load/state/selectors/load.selectors';
+import { loadIdLoadStatusChangeSelector } from '@pages/new-load/state/selectors/load.selectors';
 
 // Helpers
 import { LoadStoreHelper } from '@pages/new-load/utils/helpers';
@@ -65,6 +67,7 @@ export class LoadEffect {
         // Services
         private modalService: ModalService,
         private loadService: LoadService,
+        private commentService: CommentService,
 
         // Store
         private actions$: Actions,
@@ -480,7 +483,8 @@ export class LoadEffect {
                 const { status } = action || {};
                 const driverInfo = load.driverInfo as LoadDriverInfo;
                 const currentStatus = load.status;
-                const isActiveTab = selectedTab === eLoadStatusStringType.ACTIVE
+                const isActiveTab =
+                    selectedTab === eLoadStatusStringType.ACTIVE;
 
                 const shouldOpenModal =
                     LoadStoreHelper.isOpenChangeStatusLocationModal(
@@ -566,5 +570,80 @@ export class LoadEffect {
             })
         )
     );
+    //#endregion
+
+    //#region Comments
+
+    public addComment$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.onAddLoadComment),
+            exhaustMap(({ comment, loadId }) => {
+                const newComment: CreateCommentCommand = {
+                    entityTypeCommentId: 2,
+                    entityTypeId: loadId,
+                    commentContent: comment?.commentContent,
+                };
+                return this.commentService.apiCommentPost(newComment).pipe(
+                    mergeMap(({ id }) =>
+                        of(
+                            LoadActions.onAddLoadCommentSuccess({
+                                comment: {
+                                    id,
+                                    ...comment,
+                                },
+                                loadId,
+                            })
+                        )
+                    ),
+                    catchError(() => of(LoadActions.onAddLoadCommentError))
+                );
+            })
+        )
+    );
+
+    public deleteComment$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.onDeleteLoadComment),
+            exhaustMap(({ id, loadId }) => {
+                return this.commentService.apiCommentIdDelete(id).pipe(
+                    mergeMap(() =>
+                        of(
+                            LoadActions.onDeleteLoadCommentSuccess({
+                                id,
+                                loadId,
+                            })
+                        )
+                    ),
+                    catchError(() => of(LoadActions.onDeleteLoadCommentError))
+                );
+            })
+        )
+    );
+
+    public editComment$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.onEditLoadComment),
+            exhaustMap(({ comment, loadId }) => {
+                const { id, commentContent } = comment;
+                const updateComment: UpdateCommentCommand = {
+                    id,
+                    commentContent,
+                };
+
+                return this.commentService.apiCommentPut(updateComment).pipe(
+                    mergeMap(() =>
+                        of(
+                            LoadActions.onEditLoadCommentSuccess({
+                                comment,
+                                loadId,
+                            })
+                        )
+                    ),
+                    catchError(() => of(LoadActions.onEditLoadCommentError))
+                );
+            })
+        )
+    );
+
     //#endregion
 }

@@ -20,7 +20,7 @@ import {
     ITableConfig,
 } from '@shared/components/new-table/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { IFilterAction } from 'ca-components';
+import { IFilterAction, IComment } from 'ca-components';
 
 // Selectors
 import * as LoadSelectors from '@pages/new-load/state/selectors/load.selectors';
@@ -343,7 +343,7 @@ export class LoadStoreService {
         });
     }
 
-    public dispatchOpenChangeStatuDropdown(loadId: number): void {
+    public dispatchOpenChangeStatusDropdown(loadId: number): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN,
             loadId,
@@ -356,4 +356,30 @@ export class LoadStoreService {
             column,
         });
     }
+
+    //#region Comments
+    public dispatchAddComment(comment: IComment, loadId: number): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_ON_COMMENT_ADD,
+            comment,
+            loadId,
+        });
+    }
+
+    public dispatchDeleteComment(id: number, loadId: number): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_ON_COMMENT_DELETE,
+            id,
+            loadId,
+        });
+    }
+
+    public dispatchEditComment(comment: IComment, loadId: number): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_ON_COMMENT_EDIT,
+            comment,
+            loadId,
+        });
+    }
+    //#endregion
 }
