@@ -32,6 +32,7 @@ export class UserModalHelper {
                 id: 2,
                 name: 'Additional',
                 checked: false,
+                disabled: true,
             },
         ];
     }
@@ -72,6 +73,9 @@ export class UserModalHelper {
             [eUserModalForm.DEPARTMENT]: new UntypedFormControl(
                 userData?.department?.id,
                 [Validators.required]
+            ),
+            [eUserModalForm.IS_ADMIN]: new UntypedFormControl(
+                userData?.isAdmin
             ),
             [eUserModalForm.OFFICE]: new UntypedFormControl(
                 userData?.companyOffice?.id

@@ -128,8 +128,13 @@ export class UserModalComponent implements OnInit {
         );
     }
 
+    // Leave for now, as it is not done in backend yet
     public onUserTabChange(): void {}
-    public onDepartmentTabChange(): void {}
+
+    public onDepartmentTabChange(tab: Tabs): void {
+        const isAdmin = tab.id === 2;
+        this.userForm.get(eUserModalForm.IS_ADMIN).setValue(isAdmin);
+    }
 
     public onModalAction(action: eGeneralActions): void {
         switch (action) {
