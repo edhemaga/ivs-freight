@@ -15,6 +15,7 @@ import { MilesStoreService } from '@pages/miles/state/services/miles-store.servi
 // enums
 import { eMileTabs } from '@pages/miles/enums';
 import { eColor, ePosition, eUnit } from 'ca-components';
+import { eThousandSeparatorFormat } from '@shared/enums';
 
 // components
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
@@ -22,7 +23,6 @@ import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // pipes
-import { ThousandSeparatorPipe } from '@shared/pipes';
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
 
 @Component({
@@ -40,7 +40,6 @@ import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes
         TaAppTooltipV2Component,
 
         // pipes
-        ThousandSeparatorPipe,
         TableHighlightSearchTextPipe,
     ],
 })
@@ -49,19 +48,20 @@ export class MilesTableComponent {
     public eUnit = eUnit;
     public eColor = eColor;
     public ePosition = ePosition;
+    public eThousandSeparatorFormat = eThousandSeparatorFormat;
 
     constructor(public milesStoreService: MilesStoreService) {}
 
-    public onColumnPinned(column: ITableColumn): void {
-        this.milesStoreService.dispatchColumnPinnedAction(column);
-    }
-
-    public onSortingChange(column: ITableColumn): void {
+    public onColumnSort(column: ITableColumn): void {
         this.milesStoreService.dispatchSortingChange(column);
     }
 
-    public onShowMoreClick(): void {
-        this.milesStoreService.getNewPage();
+    public onColumnPin(column: ITableColumn): void {
+        this.milesStoreService.dispatchColumnPinnedAction(column);
+    }
+
+    public onColumnRemove(columnKey: string): void {
+        this.milesStoreService.dispatchToggleColumnsVisiblity(columnKey, false);
     }
 
     public onColumnResize(resizeAction: ITableResizeAction): void {
@@ -72,11 +72,11 @@ export class MilesTableComponent {
         this.milesStoreService.dispatchReorderColumn(reorderAction);
     }
 
-    public goToMilesDetailsPage(id: string): void {
-        this.milesStoreService.goToMilesDetailsPage(id);
+    public onShowMoreClick(): void {
+        this.milesStoreService.getNewPage();
     }
 
-    public onRemoveColumn(columnKey: string): void {
-        this.milesStoreService.dispatchToggleColumnsVisiblity(columnKey, false);
+    public navigateToMilesDetails(id: string): void {
+        this.milesStoreService.navigateToMilesDetails(id);
     }
 }

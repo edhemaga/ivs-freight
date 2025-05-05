@@ -42,10 +42,10 @@ import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-mo
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-// Interface
+// Interfaces
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 import { IMappedLoad } from '@pages/new-load/interfaces';
-import { ITableColumn } from '@ca-shared/interfaces/table/table-column.interface';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 @Component({
     selector: 'app-new-load',
@@ -69,7 +69,7 @@ import { ITableColumn } from '@ca-shared/interfaces/table/table-column.interface
         CaSearchMultipleStates2Component,
         SvgIconComponent,
         CaCheckboxSelectedCountComponent,
-        CaSortingCardDropdownComponent
+        CaSortingCardDropdownComponent,
     ],
 })
 export class NewLoadComponent<T> {
@@ -226,8 +226,6 @@ export class NewLoadComponent<T> {
     }
 
     public onSelectSortItem(column: ITableColumn): void {
-        this.loadStoreService.dispatchSortingChange(
-            column
-        );
+        this.loadStoreService.dispatchSortingChange(column);
     }
 }

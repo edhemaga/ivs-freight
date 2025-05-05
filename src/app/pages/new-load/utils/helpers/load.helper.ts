@@ -1,24 +1,20 @@
-// Enums
+// enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
-import { eSharedString } from '@shared/enums';
 
-// Interfaces
+// interfaces
 import { IMappedLoad } from '@pages/new-load/interfaces';
 
-// Models
-import { ITableData } from '@shared/models';
-
-// Modesl
+// models
 import {
     LoadListDto,
     LoadListResponse,
     LoadTemplateResponse,
 } from 'appcoretruckassist';
+import { ITableData } from '@shared/models';
 
 // helpers
 import { DropdownMenuContentHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
-import { MethodsCalculationsHelper } from '@shared/utils/helpers';
 
 export class LoadHelper {
     static loadMapper(
@@ -28,81 +24,153 @@ export class LoadHelper {
         return loads.map((load) => {
             const {
                 id,
+                name,
                 loadNumber,
-                status,
-                dispatcher,
-                loadDetails,
-                totalDue,
-                broker,
-                driver,
-                miles,
-                billing,
-                invoicedDate,
-                generalCommodity,
-                note,
                 loadType,
                 type,
-                loadRequirements,
+                dispatcher,
+                companyName,
                 company,
+                broker,
+                brokerContact,
+                referenceNumber,
+                loadDetails,
+                generalCommodity,
+                weight,
+                driver,
                 dispatch,
+                status,
                 pickup,
                 delivery,
+                loadRequirements,
+                miles,
                 totalMiles,
-                dateCreated,
+                billing,
+                rpm,
+                additionalBillingRates,
+                totalRate,
+                totalAdjustedRate,
+                totalPaid,
+                totalDue,
+                invoicedDate,
+                paidDate,
                 createdAt,
+                dateCreated,
+                updatedAt,
+                note,
             } = load;
 
-            const mapped: IMappedLoad = {
+            const requirementLength =
+                loadRequirements?.trailerLength?.name?.replace(/\D/g, '');
+            const billingPayTerm = billing?.payTermName?.replace(/\D/g, '');
+
+            const mappedLoad: IMappedLoad = {
                 id,
-                edit: true,
                 isSelected: false,
+                templateName: name,
                 loadNumber,
-                templateName: load.name,
-                status,
+                loadType: loadType?.name ?? type?.name,
                 dispatcher,
-                referenceNumber: loadDetails?.referenceNumber,
+                companyName: companyName ?? company?.companyName,
+                brokerBusinessName: broker?.businessName,
+                brokerContact: broker?.contact ?? brokerContact?.contactName,
+                brokerPhone: broker?.phone,
+                brokerPhoneExt:
+                    broker?.phoneExt ?? brokerContact?.extensionPhone,
+                referenceNumber:
+                    loadDetails?.referenceNumber ?? referenceNumber,
+                commodity:
+                    loadDetails?.generalCommodityName ?? generalCommodity?.name,
+                weight: {
+                    value: loadDetails?.weight ?? weight,
+                },
+                assignedDriver: driver ?? dispatch?.driver,
+                assignedDriverTruckNumber:
+                    driver?.truckNumber ?? dispatch?.truck?.truckNumber,
+                assignedDriverTrailerNumber:
+                    driver?.trailerNumber ?? dispatch?.trailer?.trailerNumber,
+                status,
+                pickup,
+                delivery,
+                requirementTruck: loadRequirements?.truckType,
+                requirementTrailer: loadRequirements?.trailerType,
+                requirementLength,
+                requirementDoor: loadRequirements?.doorType?.name,
+                requirementSuspension: loadRequirements?.suspension?.name,
+                requirementYear: loadRequirements?.year,
+                requirementLiftgate: loadRequirements?.liftgate,
+                driverMessage: loadRequirements?.driverMessage,
+                milesLoaded: {
+                    value: miles?.loadedMiles ?? totalMiles,
+                },
+                milesEmpty: miles?.emptyMiles,
+                milesTotal: {
+                    value: miles?.totalMiles ?? totalMiles,
+                },
+                billingPayTerm,
+                billingAgeUnpaid: {
+                    value: billing?.ageUnpaid,
+                },
+                billingAgePaid: {
+                    value: billing?.agePaid,
+                },
+                billingRatePerMile: {
+                    value: billing?.rpm ?? rpm,
+                },
+                billingLayover: {
+                    value:
+                        additionalBillingRates &&
+                        additionalBillingRates[0]?.rate,
+                },
+                billinglumper: {
+                    value:
+                        additionalBillingRates &&
+                        additionalBillingRates[1]?.rate,
+                },
+                billingFuelSurcharge: {
+                    value:
+                        additionalBillingRates &&
+                        additionalBillingRates[2]?.rate,
+                },
+                billingEscort: {
+                    value:
+                        additionalBillingRates &&
+                        additionalBillingRates[3]?.rate,
+                },
+                billingDetention: {
+                    value:
+                        additionalBillingRates &&
+                        additionalBillingRates[4]?.rate,
+                },
+                billingRate: totalRate,
+                billingAdjustedRate: totalAdjustedRate,
+                billingPaid: {
+                    value: billing?.paid ?? totalPaid,
+                },
+                billingDue: {
+                    value: billing?.due,
+                },
+                totalDue,
+                dateInvoiced: {
+                    value: invoicedDate,
+                },
+                datePaid: {
+                    value: paidDate,
+                },
+                dateCreated: {
+                    value: createdAt ?? dateCreated,
+                },
+                dateEdited: {
+                    value: updatedAt,
+                },
+                note,
                 tableDropdownContent:
                     DropdownMenuContentHelper.getLoadDropdownContent(
                         selectedTab
                     ),
-                totalDue,
-                loadType: loadType?.name ?? type?.name,
-                broker,
-                brokerContact: broker?.contact,
-                commodity:
-                    loadDetails?.generalCommodityName ?? generalCommodity?.name,
-                brokerBusinessName: broker?.businessName,
-                driverInfo: driver ? driver : dispatch?.driver,
-                assignedDriverTruckNumber: driver?.truckNumber,
-                assignedDriverTrailerNumber: driver?.trailerNumber,
-                milesLoaded: miles?.loadedMiles,
-                milesEmpty: miles?.emptyMiles,
-                milesTotal: miles?.totalMiles ?? totalMiles,
-                billingRatePerMile: billing?.rpm,
-                billingRate: billing?.rate,
-                companyName: company?.companyName,
-                invoicedDate,
-                note,
-                requirementTruck: loadRequirements?.truckType,
-                requirementTrailer: loadRequirements?.trailerType,
-                requirementLength:
-                    loadRequirements?.trailerLength?.name?.replace(/\D/g, ''),
-                requirementDoor: loadRequirements?.doorType?.name,
-                requirementSuspension: loadRequirements?.suspension?.name,
-                requirementYear: loadRequirements?.year,
-                requirementLiftgate: loadRequirements?.liftgate
-                    ? eSharedString.YES
-                    : eSharedString.EMPTY_STRING_PLACEHOLDER,
-                driverMessage: loadRequirements?.driverMessage,
-                pickup,
-                delivery,
-                dateCreated: MethodsCalculationsHelper.convertDateFromBackend(
-                    selectedTab === eLoadStatusStringType.TEMPLATE
-                        ? dateCreated
-                        : createdAt
-                ),
             };
-            return mapped;
+
+            return mappedLoad;
         });
     }
 

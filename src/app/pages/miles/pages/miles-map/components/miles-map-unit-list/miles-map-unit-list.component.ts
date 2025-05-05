@@ -114,12 +114,12 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     public getTruckUnit(unitId: string): void {
         this.resetFormValue();
         this.detailsTitleCard.dropdownPopover?.close();
-        this.milesStoreService.goToMilesDetailsPage(unitId);
+        this.milesStoreService.navigateToMilesDetails(unitId);
     }
 
     public selectUnit(truckId: string): void {
         this.resetFormValue();
-        this.milesStoreService.goToMilesDetailsPage(truckId);
+        this.milesStoreService.navigateToMilesDetails(truckId);
         this.detailsTitleCard.dropdownPopover?.close();
     }
 

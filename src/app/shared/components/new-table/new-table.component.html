@@ -17,12 +17,37 @@
             <div
                 class="d-flex m-b-6 p-x-8 prevent-text-selection new-table--header"
             >
+                <!-- Pinned Left Disabled Columns -->
+
+                <div class="d-flex background-inherit left-0">
+                    @for (
+                        column of leftPinnedDisabledColumns;
+                        track column.key
+                    ) {
+                        @if (column.isChecked) {
+                            <div class="d-flex">
+                                <ng-container
+                                    *ngTemplateOutlet="
+                                        columnTemplate;
+                                        context: {
+                                            column,
+                                            nextColumn,
+                                        }
+                                    "
+                                ></ng-container>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <!-- Pinned Left Columns -->
+
                 <div
                     class="d-flex background-inherit left-0 new-table--pinned-left"
                     cdkDropList
                     cdkDropListOrientation="horizontal"
                     (cdkDropListDropped)="
-                        onReorderEnd($event, leftPinnedColumns)
+                        onColumnReorderAction($event, leftPinnedColumns)
                     "
                 >
                     @for (
@@ -57,6 +82,8 @@
                     }
                 </div>
 
+                <!-- Main Columns -->
+
                 <div
                     #scrollableColumns
                     id="table-not-pined-scroll-container"
@@ -67,7 +94,9 @@
                     }"
                     cdkDropList
                     cdkDropListOrientation="horizontal"
-                    (cdkDropListDropped)="onReorderEnd($event, mainColumns)"
+                    (cdkDropListDropped)="
+                        onColumnReorderAction($event, mainColumns)
+                    "
                 >
                     @for (
                         column of mainColumns;
@@ -76,24 +105,28 @@
                     ) {
                         @let nextColumn = mainColumns[mainColumnIndex + 1];
 
-                        <div
-                            class="d-flex reorder-container"
-                            cdkDrag
-                            [cdkDragDisabled]="isReorderDisabled"
-                            (cdkDragStarted)="onReorderStart()"
-                        >
-                            <ng-container
-                                *ngTemplateOutlet="
-                                    columnTemplate;
-                                    context: {
-                                        column,
-                                        nextColumn,
-                                    }
-                                "
-                            ></ng-container>
-                        </div>
+                        @if (column.isChecked) {
+                            <div
+                                class="d-flex reorder-container"
+                                cdkDrag
+                                [cdkDragDisabled]="isReorderDisabled"
+                                (cdkDragStarted)="onReorderStart()"
+                            >
+                                <ng-container
+                                    *ngTemplateOutlet="
+                                        columnTemplate;
+                                        context: {
+                                            column,
+                                            nextColumn,
+                                        }
+                                    "
+                                ></ng-container>
+                            </div>
+                        }
                     }
                 </div>
+
+                <!-- Pinned Right Columns -->
 
                 <div
                     class="d-flex right-0 background-inherit new-table--pinned-right"
@@ -144,10 +177,35 @@
                     >
                         @if (row) {
                             <div
-                                class="d-flex align-items-center p-x-4 br-3 p-y-1 m-t-4 m-b-4 h-26 background-hover-light-grey overflow-hidden"
-                                [class.background-light-grey]="row.isSelected"
+                                class="d-flex align-items-center p-l-4 br-3 p-y-1 m-t-4 m-b-4 h-26 overflow-hidden"
+                                [class]="
+                                    row.isSelected
+                                        ? 'background-light-grey'
+                                        : 'background-hover-bw2'
+                                "
                             >
-                                <!-- Left Pinned Columns -->
+                                <!-- Pinned Left Disabled Columns -->
+
+                                <div
+                                    class="d-flex align-items-center background-inherit left-0"
+                                >
+                                    @for (
+                                        column of leftPinnedDisabledColumns;
+                                        track column.key
+                                    ) {
+                                        <ng-container
+                                            *ngTemplateOutlet="
+                                                cellTemplate;
+                                                context: {
+                                                    column,
+                                                    row,
+                                                }
+                                            "
+                                        ></ng-container>
+                                    }
+                                </div>
+
+                                <!-- Pinned Left Columns -->
 
                                 <div
                                     class="d-flex align-items-center background-inherit left-0 new-table--pinned-left"
@@ -190,7 +248,7 @@
                                     }
                                 </div>
 
-                                <!-- Right Pinned Columns -->
+                                <!-- Pinned Right Columns -->
 
                                 <div
                                     class="d-flex align-items-center background-inherit right-0 new-table--pinned-right"
@@ -240,7 +298,7 @@
                     <app-ca-show-more
                         [displayedDataCount]="displayedDataCount"
                         [totalDataCount]="totalDataCount"
-                        (onShowMore)="onShowMoreClick()"
+                        (onShowMore)="onShowMoreAction()"
                     ></app-ca-show-more>
                 }
             </div>
@@ -251,7 +309,7 @@
 <!-- Templates -->
 
 <ng-template #columnTemplate let-column="column" let-nextColumn="nextColumn">
-    @let isAlignedRight = column.isAlignedRight;
+    @let isGroupAlignedRight = column.isAlignedRight;
 
     @if (column.columns?.length) {
         @let firstCheckedIndex =
@@ -272,7 +330,7 @@
             class="d-flex h-30 p-t-4 position-relative new-table--row-heading-group"
             [ngClass]="tableGroupClass"
             (cdkDropListDropped)="
-                onReorderEnd($event, column.columns, column.key)
+                onColumnReorderAction($event, column.columns, column.key)
             "
             (mouseenter)="onHeadingHover(null, groupColumnHoverAction)"
             (mouseleave)="onHeadingHover(null, null)"
@@ -303,7 +361,7 @@
                                 hasLabelTop,
                                 isGroup: true,
                                 isLastInGroup: _lastColumn,
-                                isAlignedRight,
+                                isGroupAlignedRight,
                                 hasDoubleHeightBorder,
                                 isGroupHeadingHover,
                             }
@@ -334,7 +392,7 @@
                 columnDisplay;
                 context: {
                     column,
-                    isAlignedRight,
+                    isGroupAlignedRight,
                     hasDoubleHeightBorder,
                     isGroupHeadingHover,
                 }
@@ -349,13 +407,14 @@
         let-hasLabelTop="hasLabelTop"
         let-isGroup="isGroup"
         let-isLastInGroup="isLastInGroup"
-        let-isAlignedRight="isAlignedRight"
+        let-isGroupAlignedRight="isGroupAlignedRight"
         let-hasDoubleHeightBorder="hasDoubleHeightBorder"
         let-isGroupHeadingHover="isGroupHeadingHover"
     >
         @if (column.isChecked) {
             @let isResizableColumn = !isTableLocked && column.isResizable;
             @let isEmptyTable = !displayedDataCount;
+            @let isPinnedRight = column.pinned === ePosition.RIGHT;
             @let columnWidth = column.width + eUnit.PX;
 
             @let tableColumnClass =
@@ -364,7 +423,8 @@
                     isTableLocked,
                     isGroup,
                     isEmptyTable,
-                    isAlignedRight,
+                    isGroupAlignedRight,
+                    isPinnedRight,
                 } | tableColumnClass;
 
             @let headingHoverActionId =
@@ -386,8 +446,8 @@
                 [hasLabelTop]="hasLabelTop && groupColumn.label"
                 [hasDoubleHeightBorder]="hasDoubleHeightBorder"
                 (resizing)="onColumnResizing($event)"
-                (columnWidthResize)="onColumnWidthResize($event)"
-                (click)="handleSortColumnClick(column)"
+                (columnWidthResize)="onColumnResizeAction($event)"
+                (click)="onColumnSortAction(column)"
                 (mouseenter)="
                     onHeadingHover(
                         headingHoverActionId,
@@ -407,7 +467,7 @@
                 @let tableColumnInnerClass =
                     {
                         isTableLocked,
-                        isAlignedRight,
+                        isGroupAlignedRight,
                         isTableColumnInnerClass: true,
                         hasLabelTop: hasLabelTop && groupColumn.label,
                     } | tableColumnClass;
@@ -440,6 +500,8 @@
                                 headerTemplates[column.key];
                                 context: {
                                     data: column,
+                                    label: column.label,
+                                    additionalLabel: column.additionalLabel,
                                     tableColumnClass,
                                     tableColumnLabelWidth,
                                 }
@@ -499,9 +561,7 @@
                                     [mainTooltip]="pinColumnTooltip"
                                     [tooltipBackground]="eColor.BLACK"
                                     [position]="ePosition.BOTTOM"
-                                    (click)="
-                                        handlePinColumnClick(pinColumnAction)
-                                    "
+                                    (click)="onColumnPinAction(pinColumnAction)"
                                 >
                                     @let pinColumnClass =
                                         {
@@ -542,7 +602,7 @@
                                     [tooltipBackground]="eColor.BLACK"
                                     [position]="ePosition.BOTTOM"
                                     (click)="
-                                        onRemoveColumnClick(removeColumnAction)
+                                        onColumnRemoveAction(removeColumnAction)
                                     "
                                 >
                                     <svg-icon
@@ -662,7 +722,7 @@
                 @let tableColumnCellColorClass =
                     {
                         isTableColumnCellColorClass: true,
-                        hasValue: !!row[column.key],
+                        hasValue: !!row[column.key]?.value,
                     } | tableColumnCellClass;
 
                 <!-- Display custom template if template exists -->
