@@ -26,7 +26,7 @@ import {
 
 // Pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
-import { ActivityTimePipe, NameInitialsPipe } from '@shared/pipes';
+import { ActivityTimePipe, FormatCurrencyPipe, NameInitialsPipe, ThousandSeparatorPipe } from '@shared/pipes';
 import { AddressFullnamePipe } from '@shared/pipes/address-fullname.pipe';
 import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 
@@ -53,7 +53,8 @@ import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/t
         TableHighlightSearchTextPipe,
         ActivityTimePipe,
         NameInitialsPipe,
-        AddressFullnamePipe
+        AddressFullnamePipe,
+        FormatCurrencyPipe
     ],
 })
 export class UserTableComponent {

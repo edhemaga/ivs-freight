@@ -18,4 +18,6 @@ export interface IMappedUser {
     bankName: string | null;
     routingNumber: string | null;
     accountNumber: string | null;
+    payrollType: string | null;
+    salary: number | null;
 }

@@ -95,6 +95,7 @@ export class SharedSvgRoutes {
     static USER_STATUS_OWNER_ICON: string = 'assets/svg/common/user-status-owner-icon.svg'
     static USER_STATUS_EXPIRED_ICON: string = 'assets/svg/common/user-status-expired-icon.svg'
     static USER_STATUS_INVITED_ICON: string = 'assets/svg/common/user-status-invited-icon.svg'
+    static GREEN_CIRCLE: string = 'assets/svg/common/colors/ic_circle.svg'
 
 
 }

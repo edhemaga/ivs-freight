@@ -3,7 +3,7 @@ export enum eSharedString {
     ADMIN = 'Admin',
     USER = 'User',
     USER_LOWERCASE = 'user',
-
+    ONLINE = 'Online',
     TRUCK = 'truck',
     TRUCK_CAPITALIZED = 'Truck',
     TRAILER = 'trailer',

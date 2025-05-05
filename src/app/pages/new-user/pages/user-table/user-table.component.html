@@ -28,6 +28,8 @@
             bankName,
             bankRouting,
             bankAccount,
+            payrollType,
+            payrollSalary,
         };
     @let headerTemplates =
         {
@@ -250,8 +252,26 @@
             let-user="data"
             let-cellColumnTextColorClass="cellColumnTextColorClass"
         >
-            <div class="text-color-black-2 text-size-14">
-                {{ user?.lastLogin | activityTime: 'activity' }}
+            @let userActivity = user?.lastLogin | activityTime: 'activity';
+
+            <div
+                class="d-flex gap-1 align-items-center"
+                [class]="cellColumnTextColorClass"
+            >
+                @if (userActivity === eSharedString.ONLINE) {
+                    <svg-icon
+                        [src]="sharedSvgRoutes.GREEN_CIRCLE"
+                        class="svg-size-10 d-flex align-items-center"
+                    ></svg-icon>
+                    
+                    <div class="text-color-black ta-font-bold text-size-14">
+                        {{ userActivity }}
+                    </div>
+                } @else {
+                    <div class="text-color-black-2 text-size-14">
+                        {{ userActivity }}
+                    </div>
+                }
             </div>
         </ng-template>
         <!-- #region END OF ACTIVITY COLUMN -->
@@ -294,6 +314,40 @@
                 [passwordOrAccount]="user?.accountNumber"
             ></app-ta-password-account-hidden-characters>
         </ng-template>
+
         <!-- #region END OF BANK DETAILS GROUP -->
+
+        <!-- #region PAYROLL DETAILS GROUP -->
+
+        <ng-template
+            #payrollType
+            let-user="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div
+                class="text-color-black-2 text-size-14 text-truncate"
+                [innerHtml]="
+                    user?.payrollType
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template
+            #payrollSalary
+            let-user="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            @let salaryFormat = user?.salary | formatCurrency;
+
+            <div
+                class="text-color-black ta-font-bold text-size-14 text-truncate"
+                [innerHtml]="
+                    salaryFormat | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <!-- #region END OF PAYROLL DETAILS GROUP -->
     </app-new-table>
 }
