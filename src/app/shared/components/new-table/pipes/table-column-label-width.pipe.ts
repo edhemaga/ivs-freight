@@ -30,7 +30,7 @@ export class TableColumnLabelWidthPipe implements PipeTransform {
         const isFullMaxWidth =
             isTableLocked ||
             (!isLastInGroup && !isHeadingHover) ||
-            (isLastInGroup && !isGroupHeadingHover);
+            (isLastInGroup && !isGroupHeadingHover && !isHeadingHover);
 
         return {
             'max-width': isFullMaxWidth

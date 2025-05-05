@@ -93,7 +93,9 @@ export class TaTruckTrailerIconComponent implements OnInit {
     private mapTrailer(): void {
         const trailerType = this.inputData as TrailerTypeResponse;
         this.icon = {
-            icon: `${TruckTrailerIconEnum.TRAILER_SVG_ROUTE}${trailerType.logoName}`,
+            icon:
+                trailerType.logoName &&
+                `${TruckTrailerIconEnum.TRAILER_SVG_ROUTE}${trailerType.logoName}`,
             name: trailerType.name,
             color:
                 this.trailerColorMap[trailerType.name] ||
@@ -108,7 +110,9 @@ export class TaTruckTrailerIconComponent implements OnInit {
     private mapTruck(): void {
         const truckType = this.inputData as TruckTypeResponse;
         this.icon = {
-            icon: `${TruckTrailerIconEnum.TRUCK_SVG_ROUTE}${truckType.logoName}`,
+            icon:
+                truckType.logoName &&
+                `${TruckTrailerIconEnum.TRUCK_SVG_ROUTE}${truckType.logoName}`,
             name: truckType.name,
             color:
                 this.truckColorMap[truckType.name] ||

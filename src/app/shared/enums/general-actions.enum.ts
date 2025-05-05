@@ -38,6 +38,8 @@ export enum eGeneralActions {
 
     DOWNLOAD = 'Download',
 
+    YES = 'YES',
+
     PIN_COLUMN = 'Pin Column',
     PIN_GROUP = 'Pin Group',
     REMOVE_PIN = 'Remove Pin',
@@ -46,5 +48,5 @@ export enum eGeneralActions {
     CONVERT_TO_LOAD = 'Convert to Load',
     CONVERT_TO_TEMPLATE = 'Convert To Template',
     CREATE_TEMPLATE = 'Create Template',
-    VIEW_DETAILS = "View Details"
+    VIEW_DETAILS = 'View Details',
 }

@@ -182,6 +182,16 @@ export const loadReducer = createReducer(
     on(LoadActions.tableSortingChange, (state, { column }) =>
         Functions.onTableSortingChange(state, column)
     ),
+    on(LoadActions.pinTableColumn, (state, { column }) =>
+        Functions.pinTableColumn(state, column)
+    ),
+    on(LoadActions.tableResizeChange, (state, { resizeAction }) =>
+        Functions.tableResizeChange(state, resizeAction)
+    ),
+    on(LoadActions.tableReorderChange, (state, { reorderAction }) =>
+        Functions.tableReorderChange(state, reorderAction)
+    ),
+
     //#endregion
 
     //#region Change dropdown status

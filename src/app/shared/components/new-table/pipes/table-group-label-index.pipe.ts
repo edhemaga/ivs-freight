@@ -10,7 +10,7 @@ export class TableGroupLabelIndexPipe implements PipeTransform {
         isLastCheckedIndex,
     }: {
         columns: { isChecked: boolean }[];
-        isLastCheckedIndex: boolean;
+        isLastCheckedIndex?: boolean;
     }): number {
         if (!columns) return -1;
 

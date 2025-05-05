@@ -16,6 +16,7 @@
         {
             select,
             name,
+            edit,
             department,
             employeePhone,
             employeeOffice,
@@ -63,6 +64,16 @@
                 [name]="userName"
                 (columnCheckAction)="onSelectUser(user.id)"
             ></app-ca-checkbox>
+        </ng-template>
+
+        <!-- Modal test only -->
+        <ng-template let-user="data" #edit>
+            <div
+                class="text-color-black-2 text-size-14"
+                (click)="openEditModal(user.id)"
+            >
+                Edit
+            </div>
         </ng-template>
 
         <!-- #region NAME COLUMN -->
@@ -263,7 +274,7 @@
                         [src]="sharedSvgRoutes.GREEN_CIRCLE"
                         class="svg-size-10 d-flex align-items-center"
                     ></svg-icon>
-                    
+
                     <div class="text-color-black ta-font-bold text-size-14">
                         {{ userActivity }}
                     </div>

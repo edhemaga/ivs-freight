@@ -1,30 +1,34 @@
 import { CommonModule } from '@angular/common';
-import { Subject, takeUntil } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// modules
 import { NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
-// Enums
+// enums
 import {
     eColor,
     eSharedString,
     eDateTimeFormat,
     eDropdownMenu,
     eGeneralActions,
+    eStringPlaceholder,
+    eThousandSeparatorFormat,
 } from '@shared/enums';
-import { eLoadStatusStringType } from '@pages/new-load/enums';
+import { ePosition } from 'ca-components';
 
 // base classes
 import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
 
-// Components
+// components
 import {
     CaDropdownMenuComponent,
     CaStatusChangeDropdownComponent,
     CaCheckboxComponent,
     CaLoadStatusComponent,
     CaCheckboxSelectedCountComponent,
-    ePosition,
     CaCommentsComponent,
     IComment,
 } from 'ca-components';
@@ -36,27 +40,36 @@ import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { LoadTypeComponent } from '@pages/new-load/components/load-type/load-type.component';
 import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
 
-// Services
+// services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 import { ModalService } from '@shared/services';
 
 // interfaces
 import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interfaces';
+import {
+    ITableColumn,
+    ITableReorderAction,
+    ITableResizeAction,
+} from '@shared/components/new-table/interfaces';
 
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 import { UserHelper } from '@shared/utils/helpers';
 
-// Models
-import { LoadStatusResponse } from 'appcoretruckassist';
+// models
+import {
+    LoadListDto,
+    LoadStatusResponse,
+    LoadTemplateResponse,
+} from 'appcoretruckassist';
+
+// svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 import { User } from '@shared/models';
 
-// Pipes
+// pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
 import { ThousandSeparatorPipe } from '@shared/pipes';
-import { deleteCommentById } from '../../../load/state/actions/load.action';
 
 @Component({
     selector: 'app-new-load-table',
@@ -68,7 +81,7 @@ import { deleteCommentById } from '../../../load/state/actions/load.action';
         NgbTooltip,
         NgbPopover,
 
-        // Components
+        // components
         NewTableComponent,
         CaLoadStatusComponent,
         CaDropdownMenuComponent,
@@ -83,7 +96,7 @@ import { deleteCommentById } from '../../../load/state/actions/load.action';
         TaTruckTrailerIconComponent,
         CaCommentsComponent,
 
-        // Pipes
+        // pipes
         TableHighlightSearchTextPipe,
         ThousandSeparatorPipe,
     ],
@@ -99,12 +112,15 @@ export class NewLoadTableComponent
     // svg-routes
     public sharedSvgRoutes = SharedSvgRoutes;
 
+    // enums
     public eColor = eColor;
     public eSharedString = eSharedString;
     public eGeneralActions = eGeneralActions;
     public ePosition = ePosition;
     public eDropdownMenu = eDropdownMenu;
     public eDateTimeFormat = eDateTimeFormat;
+    public eStringPlaceholder = eStringPlaceholder;
+    public eThousandSeparatorFormat = eThousandSeparatorFormat;
 
     public selectedCommentsLoadId: number | null = null;
 
@@ -124,28 +140,48 @@ export class NewLoadTableComponent
         this.initChangeStatusDropdownListener();
     }
 
-    public navigateToLoadDetails(id: number): void {
-        this.loadStoreService.navigateToLoadDetails(id);
+    private initChangeStatusDropdownListener(): void {
+        this.loadStoreService.changeDropdownpossibleStatusesSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => value && this.changeStatusPopover.open());
     }
 
-    public onOpenModal(id: number, selectedTab: eLoadStatusStringType): void {
-        const isTemplate = selectedTab === eLoadStatusStringType.TEMPLATE;
+    public onColumnSort(column: ITableColumn): void {
+        this.loadStoreService.dispatchSortingChange(column);
+    }
 
-        this.loadStoreService.onOpenModal({
-            id,
-            isTemplate,
-            isEdit: true,
-        });
+    public onColumnPin(column: ITableColumn): void {
+        this.loadStoreService.dispatchColumnPinnedAction(column);
+    }
+
+    public onColumnRemove(columnKey: string): void {
+        this.loadStoreService.dispatchToggleColumnsVisiblity(columnKey, false);
+    }
+
+    public onColumnResize(resizeAction: ITableResizeAction): void {
+        this.loadStoreService.dispatchResizeColumn(resizeAction);
+    }
+
+    public onColumnReorder(reorderAction: ITableReorderAction): void {
+        this.loadStoreService.dispatchReorderColumn(reorderAction);
     }
 
     public onShowMoreClick(): void {
         this.loadStoreService.getNewPage();
     }
 
+    public onCheckboxCountClick(action: string): void {
+        this.loadStoreService.onSelectAll(action);
+    }
+
+    public onSelectLoad(id: number): void {
+        this.loadStoreService.onSelectLoad(id);
+    }
+
     public onToggleDropdownMenuActions(
         action: IDropdownMenuOptionEmit,
-        data,
-        selectedTab
+        data: LoadListDto | LoadTemplateResponse,
+        selectedTab: string
     ): void {
         const { type } = action;
 
@@ -158,23 +194,17 @@ export class NewLoadTableComponent
         // this is because we have load and new load - it will be removed
         if (type === eDropdownMenu.VIEW_DETAILS_TYPE) {
             const { id } = data;
+
             this.navigateToLoadDetails(id);
 
             return;
         }
+
         this.handleDropdownMenuActions(
             tableAction,
             eDropdownMenu.LOAD,
             selectedTab
         );
-    }
-
-    public onNextStatus(status: LoadStatusResponse): void {
-        this.loadStoreService.dispatchUpdateLoadStatus(status);
-    }
-
-    public onPreviousStatus(status: LoadStatusResponse): void {
-        this.loadStoreService.dispatchRevertLoadStatus(status);
     }
 
     public onOpenChangeStatusDropdown(
@@ -185,24 +215,16 @@ export class NewLoadTableComponent
         this.loadStoreService.dispatchOpenChangeStatusDropdown(loadId);
     }
 
-    public initChangeStatusDropdownListener(): void {
-        this.loadStoreService.changeDropdownpossibleStatusesSelector$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) this.changeStatusPopover.open();
-            });
+    public onNextStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchUpdateLoadStatus(status);
     }
 
-    public onCheckboxCountClick(action: string): void {
-        this.loadStoreService.onSelectAll(action);
+    public onPreviousStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchRevertLoadStatus(status);
     }
 
-    public onSelectLoad(id: number): void {
-        this.loadStoreService.onSelectLoad(id);
-    }
-
-    public onSortingChange(column: ITableColumn): void {
-        this.loadStoreService.dispatchSortingChange(column);
+    public navigateToLoadDetails(id: number): void {
+        this.loadStoreService.navigateToLoadDetails(id);
     }
 
     public onToggleComments(id: number): void {

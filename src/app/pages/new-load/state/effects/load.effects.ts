@@ -481,7 +481,7 @@ export class LoadEffect {
             ),
             exhaustMap(([action, load, selectedTab]) => {
                 const { status } = action || {};
-                const driverInfo = load.driverInfo as LoadDriverInfo;
+                const driverInfo = load.assignedDriver as LoadDriverInfo;
                 const currentStatus = load.status;
                 const isActiveTab =
                     selectedTab === eLoadStatusStringType.ACTIVE;
