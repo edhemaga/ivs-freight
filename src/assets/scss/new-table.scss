@@ -45,6 +45,8 @@
     }
 
     &--scroll-border {
+        height: calc( 100% - 18px );
+        
         &-left {
             background-image: linear-gradient(to right, $bw2, $bw-10);
         }

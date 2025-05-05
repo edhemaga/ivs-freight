@@ -40,6 +40,7 @@ export class MilesTableColumnsConfig {
             label: 'Stop',
             labelToolbar: 'Stops',
             pinned: null,
+            isChecked: true,
             columns: [
                 {
                     id: 3,
@@ -151,6 +152,7 @@ export class MilesTableColumnsConfig {
             key: 'load',
             label: '',
             pinned: null,
+            isChecked: true,
             columns: [
                 {
                     id: 11,
@@ -172,7 +174,7 @@ export class MilesTableColumnsConfig {
             label: 'Fuel',
             labelToolbar: 'Fuel',
             pinned: null,
-            hasSort: false,
+            isChecked: true,
             columns: [
                 {
                     id: 12,
@@ -219,7 +221,7 @@ export class MilesTableColumnsConfig {
             label: 'Miles',
             labelToolbar: 'Miles',
             pinned: null,
-            hasSort: false,
+            isChecked: true,
             columns: [
                 {
                     id: 15,
@@ -267,6 +269,7 @@ export class MilesTableColumnsConfig {
             label: '',
             pinned: null,
             isAlignedRight: true,
+            isChecked: true,
             columns: [
                 {
                     id: 18,
@@ -277,7 +280,7 @@ export class MilesTableColumnsConfig {
                     minWidth: 78,
                     maxWidth: 200,
                     isResizable: true,
-                    isChecked: false,
+                    isChecked: true,
                     hasSort: true,
                     sortName: MilesStopSortBy.Revenue,
                 },

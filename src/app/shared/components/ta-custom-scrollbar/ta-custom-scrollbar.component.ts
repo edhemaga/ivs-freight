@@ -36,8 +36,13 @@ let hasTablePageHeight = false;
 export class TaCustomScrollbarComponent
     implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
+    @ViewChild('contentHolder', { static: false })
+    private contentHolder: ElementRef;
     @ViewChild('bar', { static: false }) private bar: ElementRef;
-    @Output() scrollEvent: EventEmitter<ICustomScrollEvent> = new EventEmitter();
+    @ViewChild('scrollbarTrack', { static: false })
+    private scrollbarTrack: ElementRef;
+    @Output() scrollEvent: EventEmitter<ICustomScrollEvent> =
+        new EventEmitter();
     @Input() scrollBarOptions: any;
     @Input() horizontalScrollHeight: number;
     @Input() isOverflowUnset?: boolean = false;
@@ -63,6 +68,7 @@ export class TaCustomScrollbarComponent
     tableScrollRatio: number = 0;
     tableScrollRatioFull: number = 0;
     tableScrollWidth: number = 0;
+    tableScrollbarTrackWidth: number = 0;
 
     constructor(
         private ngZone: NgZone,
@@ -165,6 +171,15 @@ export class TaCustomScrollbarComponent
                         ? scrollWrapper.getBoundingClientRect()
                         : null;
 
+                let scrollBarTrackWidth =
+                    this.contentHolder.nativeElement.firstChild.clientWidth -
+                    (this.tableNotPinedBoundingRect.left - 74);
+
+                if (this.scrollBarOptions.hasShowMore)
+                    scrollBarTrackWidth -= 93; // subtract Show More
+
+                this.tableScrollbarTrackWidth = scrollBarTrackWidth;
+
                 const tableFullWidth = scrollWrapper?.scrollWidth
                     ? scrollWrapper.scrollWidth
                     : 0;
@@ -179,7 +194,8 @@ export class TaCustomScrollbarComponent
                 this.tableScrollRatioFull = tableFullWidth / tableVisibleWidth;
 
                 this.tableScrollWidth =
-                    this.tableScrollRatio * tableVisibleWidth;
+                    (scrollWrapper?.clientWidth / scrollWrapper?.scrollWidth) *
+                    this.tableScrollbarTrackWidth;
 
                 if (tableFullWidth <= tableVisibleWidth) {
                     this.showScrollbar = false;
@@ -265,19 +281,27 @@ export class TaCustomScrollbarComponent
             // Table Scroll
             else {
                 let offsetBar = e.clientX - this.tableBarClickPosition;
-                const maxWidth = this.tableNotPinedBoundingRect.width;
 
-                offsetBar = offsetBar < 0 ? 0 : offsetBar;
-                offsetBar =
-                    e.clientX + this.tableBarClickRestWidth > maxWidth
-                        ? maxWidth - this.tableScrollWidth
-                        : offsetBar;
+                const trackWidth =
+                    this.scrollbarTrack.nativeElement.offsetWidth;
+                const thumbWidth = this.bar.nativeElement.offsetWidth;
+                const maxThumbOffset = trackWidth - thumbWidth;
+
+                offsetBar = Math.max(0, Math.min(offsetBar, maxThumbOffset));
 
                 this.bar.nativeElement.style.transform = `translateX(${offsetBar}px)`;
 
+                const scrollWrapper =
+                    document.querySelector('.not-pined-columns');
+
+                const totalScrollableWidth =
+                    scrollWrapper.scrollWidth - scrollWrapper.clientWidth;
+                const scrollLeft =
+                    (offsetBar / maxThumbOffset) * totalScrollableWidth;
+
                 this.scrollEvent.emit({
                     eventAction: 'scrolling',
-                    scrollPosition: offsetBar * this.tableScrollRatioFull,
+                    scrollPosition: scrollLeft,
                 });
             }
         }
