@@ -182,9 +182,9 @@ export class UserStoreService {
                         type: UserStoreConstants.ACTION_DISPATCH_DELETE_USERS,
                         users: modalData.users,
                     });
-                }
 
-                ngbActiveModal.close();
+                    ngbActiveModal.close();
+                }
             });
     }
 
@@ -200,9 +200,8 @@ export class UserStoreService {
                         type: UserStoreConstants.ACTION_DISPATCH_USER_STATUS_CHANGE,
                         users: modalData.users,
                     });
+                    ngbActiveModal.close();
                 }
-
-                ngbActiveModal.close();
             });
     }
 

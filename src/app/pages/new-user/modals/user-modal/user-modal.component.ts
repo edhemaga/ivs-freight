@@ -38,9 +38,10 @@ import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
 
 // Services
 import { UserService } from '@pages/new-user/services/user.service';
+import { UserStoreService } from '@pages/new-user/state/services/user-store.service';
 
 // Interfaces
-import { IUserModal } from '@pages/new-user/interfaces';
+import { IMappedUser, IUserModal } from '@pages/new-user/interfaces';
 
 @Component({
     selector: 'app-user-modal',
@@ -93,9 +94,12 @@ export class UserModalComponent implements OnInit {
     // Form
     public userForm: UntypedFormGroup;
     public dropdownList: CompanyUserModalResponse;
+    user: import('c:/Users/Truli/Desktop/Projects/carriera-fe/appcoretruckassist/index').CompanyUserResponse;
 
     constructor(
         private userService: UserService,
+        public userStoreService: UserStoreService,
+
         private ngbActiveModal: NgbActiveModal
     ) {}
 
@@ -117,6 +121,8 @@ export class UserModalComponent implements OnInit {
 
                 this.userForm = UserModalHelper.createForm(userData || {});
 
+                this.user = userData;
+
                 this.modalTitle = UserModalHelper.generateModalTitle(
                     this.isEditMode
                 );
@@ -137,9 +143,31 @@ export class UserModalComponent implements OnInit {
     }
 
     public onModalAction(action: eGeneralActions): void {
+        const users: Partial<IMappedUser>[] = [
+            {
+                isSelected: true,
+                fullName: `${this.user.firstName} ${this.user.lastName}`,
+                id: this.user.id,
+            },
+        ];
+
         switch (action) {
             case this.eGeneralActions.CLOSE:
                 this.ngbActiveModal.close();
+                break;
+
+            case this.eGeneralActions.DEACTIVATE:
+                this.userStoreService.dispatchUserStatusChange(
+                    { users },
+                    this.ngbActiveModal
+                );
+                break;
+
+            case this.eGeneralActions.DELETE:
+                this.userStoreService.dispatchDeleteUsers(
+                    { users },
+                    this.ngbActiveModal
+                );
                 break;
         }
     }
