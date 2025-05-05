@@ -1,0 +1,229 @@
+<app-ca-modal
+    [modalTitle]="modalTitle"
+    [rightHeaderTemplate]="rightHeaderTemplate"
+    [footerTemplate]="footerTemplate"
+>
+    <div class="new-modal" origin>
+        @if (userForm) {
+            <form [formGroup]="userForm">
+                <app-ca-tab-switch
+                    [tabs]="userTabs"
+                    [type]="'type1-modal-popup'"
+                    (switchClicked)="onUserTabChange()"
+                >
+                </app-ca-tab-switch>
+
+                <div class="d-grid gap-12 m-t-26">
+                    @let emailInputConfig =
+                        { configType: eUserModalForm.EMAIL }
+                            | userModalInputConfig;
+
+                    <ca-input-test
+                        formControlName="email"
+                        [inputConfig]="emailInputConfig"
+                    ></ca-input-test>
+                </div>
+
+                <div class="d-grid gap-12 d-grid-user-name m-t-26">
+                    @let firstNameInputConfig =
+                        { configType: eUserModalForm.FIRST_NAME }
+                            | userModalInputConfig;
+
+                    <ca-input-test
+                        formControlName="firstName"
+                        [inputConfig]="firstNameInputConfig"
+                    ></ca-input-test>
+
+                    @let lastNameInputConfig =
+                        { configType: eUserModalForm.LAST_NAME }
+                            | userModalInputConfig;
+
+                    <ca-input-test
+                        formControlName="lastName"
+                        [inputConfig]="lastNameInputConfig"
+                    ></ca-input-test>
+                </div>
+
+                <div class="d-grid gap-12 d-grid-department m-t-26">
+                    <app-ca-tab-switch
+                        [tabs]="departmentTabs"
+                        [type]="'type4-modal-popup'"
+                        (switchClicked)="onDepartmentTabChange($event)"
+                    >
+                    </app-ca-tab-switch>
+
+                    @let departmentInputConfig =
+                        { configType: eUserModalForm.DEPARTMENT }
+                            | userModalInputConfig;
+
+                    <ca-input-dropdown-test
+                        formControlName="departmentId"
+                        optionValue="id"
+                        label="name"
+                        [options]="dropdownList?.departments"
+                        [inputConfig]="departmentInputConfig"
+                    ></ca-input-dropdown-test>
+                </div>
+
+                <div class="d-grid gap-12 d-grid-office m-t-26">
+                    @let officeInputConfig =
+                        { configType: eUserModalForm.OFFICE }
+                            | userModalInputConfig;
+
+                    <ca-input-dropdown-test
+                        formControlName="officeId"
+                        optionValue="id"
+                        label="name"
+                        [options]="dropdownList?.officeShortResponses"
+                        [inputConfig]="officeInputConfig"
+                    ></ca-input-dropdown-test>
+
+                    @let phoneInputConfig =
+                        { configType: eUserModalForm.PHONE }
+                            | userModalInputConfig;
+
+                    <ca-input-test
+                        formControlName="phone"
+                        [inputConfig]="phoneInputConfig"
+                    ></ca-input-test>
+
+                    <div
+                        class="w-26 h-26 br-2 background-bw2 background-hover-bw-9 svg-fill-muted svg-hover-black c-pointer d-flex align-items-center justify-content-center"
+                    >
+                        <svg-icon
+                            class="svg-size-18"
+                            [src]="svgRoutes.PLUS_ICON"
+                        ></svg-icon>
+                    </div>
+                </div>
+
+                <div class="m-t-26">
+                    <app-ca-custom-card
+                        customDividerClass="divider--dark"
+                        cardName="Personal Detail"
+                        [hasDivider]="true"
+                        [isCardOpen]="true"
+                        [animationMarginParams]="{
+                            marginTop: '18px',
+                            marginBottom: '0',
+                        }"
+                    >
+                        <div origin>
+                            <div class="d-grid gap-12 d-grid-personal-info">
+                                @let personalPhoneInputConfig =
+                                    {
+                                        configType:
+                                            eUserModalForm.PERSONAL_PHONE,
+                                    } | userModalInputConfig;
+
+                                <ca-input-test
+                                    formControlName="personalPhone"
+                                    [inputConfig]="personalPhoneInputConfig"
+                                ></ca-input-test>
+
+                                @let personalEmailInputConfig =
+                                    {
+                                        configType:
+                                            eUserModalForm.PERSONAL_EMAIL,
+                                    } | userModalInputConfig;
+
+                                <ca-input-test
+                                    formControlName="personalEmail"
+                                    [inputConfig]="personalEmailInputConfig"
+                                ></ca-input-test>
+                            </div>
+                            <div
+                                class="d-grid gap-12 d-grid-personal-address m-t-26"
+                            ></div>
+                        </div>
+                    </app-ca-custom-card>
+                </div>
+            </form>
+        }
+    </div>
+
+    <ng-template #rightHeaderTemplate>
+        <div
+            class="d-flex align-items-center justify-content-center w-26 h-26 background-hover-bw2 svg-fill-muted svg-hover-black"
+            (click)="onModalAction(eGeneralActions.CLOSE)"
+        >
+            <svg-icon
+                class="svg-size-14"
+                [src]="svgRoutes.CLOSE_ICON"
+            ></svg-icon>
+        </div>
+    </ng-template>
+
+    <ng-template #footerTemplate>
+        <div class="p-b-12 p-x-12">
+            <div class="divider divider--dark divider--small"></div>
+
+            <div class="d-flex justify-content-between w-full m-t-12">
+                @if (isEditMode) {
+                    <div class="d-flex justify-content-between w-full">
+                        <div class="d-flex">
+                            <app-ca-modal-button
+                                class="mr-12"
+                                text="Delete"
+                                [size]="eModalButtonSize.SMALL"
+                                (click)="onModalAction(eGeneralActions.DELETE)"
+                                [type]="
+                                    eModalButtonClassType.SECONDARY_NEGATIVE
+                                "
+                            >
+                            </app-ca-modal-button>
+                            <app-ca-modal-button
+                                class="mr-12"
+                                text="Deactivate"
+                                [size]="eModalButtonSize.SMALL"
+                                (click)="
+                                    onModalAction(eGeneralActions.DEACTIVATE)
+                                "
+                                [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                            >
+                            </app-ca-modal-button>
+                        </div>
+                        <app-ca-modal-button
+                            text="Save Changes"
+                            [isValid]="userForm?.valid"
+                            [isSpinnerShown]="
+                                activeAction === eGeneralActions.SAVE
+                            "
+                            [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+                            (click)="onModalAction(eGeneralActions.SAVE)"
+                        >
+                        </app-ca-modal-button>
+                    </div>
+                } @else {
+                    <div class="d-flex justify-content-end w-full">
+                        <app-ca-modal-button
+                            class="mr-12"
+                            text="Send And Invite New"
+                            [isValid]="userForm?.valid"
+                            [isSpinnerShown]="
+                                activeAction ===
+                                eGeneralActions.SAVE_AND_ADD_NEW
+                            "
+                            [type]="eModalButtonClassType.SECONDARY_POSITIVE"
+                            (click)="
+                                onModalAction(eGeneralActions.SAVE_AND_ADD_NEW)
+                            "
+                        >
+                        </app-ca-modal-button>
+
+                        <app-ca-modal-button
+                            text="Send Invite"
+                            [isValid]="userForm?.valid"
+                            [isSpinnerShown]="
+                                activeAction === eGeneralActions.SAVE
+                            "
+                            [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+                            (click)="onModalAction(eGeneralActions.SAVE)"
+                        >
+                        </app-ca-modal-button>
+                    </div>
+                }
+            </div>
+        </div>
+    </ng-template>
+</app-ca-modal>

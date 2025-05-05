@@ -24,7 +24,10 @@ import { eCommonElement, eStatusTab } from '@shared/enums';
 
 // Interface
 import { IMappedUser, IUserDeleteModal } from '@pages/new-user/interfaces';
-import { ITableColumn, ITableConfig } from '@shared/components/new-table/interfaces';
+import {
+    ITableColumn,
+    ITableConfig,
+} from '@shared/components/new-table/interfaces';
 
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
@@ -179,9 +182,9 @@ export class UserStoreService {
                         type: UserStoreConstants.ACTION_DISPATCH_DELETE_USERS,
                         users: modalData.users,
                     });
-                }
 
-                ngbActiveModal.close();
+                    ngbActiveModal.close();
+                }
             });
     }
 
@@ -197,9 +200,8 @@ export class UserStoreService {
                         type: UserStoreConstants.ACTION_DISPATCH_USER_STATUS_CHANGE,
                         users: modalData.users,
                     });
+                    ngbActiveModal.close();
                 }
-
-                ngbActiveModal.close();
             });
     }
 
@@ -207,6 +209,14 @@ export class UserStoreService {
         this.store.dispatch({
             type: UserStoreConstants.ACTION_FILTER_CHANGED,
             filters,
+        });
+    }
+
+    public dispatchOpenUserModal(isEdit: boolean, id: number): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_OPEN_USER_MODAL,
+            isEdit,
+            id,
         });
     }
 }
