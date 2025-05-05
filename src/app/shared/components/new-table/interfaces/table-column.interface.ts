@@ -11,6 +11,7 @@ export interface ITableColumn {
     maxWidth?: number;
     // Text for column heading
     label: string;
+    additionalLabel?: string;
     pinned?: 'left' | 'right';
     hasSort?: boolean;
     direction?: SortOrder | null;

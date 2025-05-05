@@ -16,11 +16,11 @@
     @let headerTemplates =
         {
             select: selectHeaderTemplate,
-            weight: weightHeaderTemplate,
+            weight: additionalLabelHeaderTemplate,
             requirementLength: requirementLengthHeaderTemplate,
-            billingPayTerm: billingPayTermHeaderTemplate,
-            billingAgeUnpaid: billingAgeUnpaidHeaderTemplate,
-            billingAgePaid: billingAgePaidHeaderTemplate,
+            billingPayTerm: additionalLabelHeaderTemplate,
+            billingAgeUnpaid: additionalLabelHeaderTemplate,
+            billingAgePaid: additionalLabelHeaderTemplate,
             billingRate: alignRightHeaderTemplate,
             note: noteHeaderTemplate,
         };
@@ -99,11 +99,14 @@
 
         <!-- #endregion END OF SELECT HEADER COLUMN -->
 
+        <!-- #region ADDITIONAL LABEL HEADER COLUMN -->
+
         <ng-template
-            #weightHeaderTemplate
+            #additionalLabelHeaderTemplate
             let-tableColumnClass="tableColumnClass"
             let-tableColumnLabelWidth="tableColumnLabelWidth"
             let-label="label"
+            let-additionalLabel="additionalLabel"
         >
             <div class="d-flex" [ngClass]="tableColumnClass">
                 <span
@@ -115,16 +118,21 @@
                     <span
                         class="text-size-11 ta-font-semi-bold text-color-muted text-lowercase"
                     >
-                        {{ eUnit.POUNDS }}.
+                        {{ additionalLabel }}
                     </span>
                 </span>
             </div>
         </ng-template>
 
+        <!-- #endregion END OF ADDITIONAL LABEL HEADER COLUMN -->
+
+        <!-- #region REQUIREMENT LENGTH HEADER COLUMN -->
+
         <ng-template
             #requirementLengthHeaderTemplate
             let-tableColumnClass="tableColumnClass"
             let-tableColumnLabelWidth="tableColumnLabelWidth"
+            let-additionalLabel="additionalLabel"
         >
             <div class="d-flex" [ngClass]="tableColumnClass">
                 <span
@@ -137,76 +145,12 @@
                     >
                     </svg-icon>
 
-                    {{ eUnit.FT }}
+                    {{ additionalLabel }}
                 </span>
             </div>
         </ng-template>
 
-        <ng-template
-            #billingPayTermHeaderTemplate
-            let-tableColumnClass="tableColumnClass"
-            let-tableColumnLabelWidth="tableColumnLabelWidth"
-            let-label="label"
-        >
-            <div class="d-flex" [ngClass]="tableColumnClass">
-                <span
-                    class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
-                    [ngStyle]="tableColumnLabelWidth"
-                >
-                    {{ label }}
-
-                    <span
-                        class="text-size-11 ta-font-semi-bold text-color-muted text-lowercase"
-                    >
-                        {{ eUnit.DAYS_SHORT }}.
-                    </span>
-                </span>
-            </div>
-        </ng-template>
-
-        <ng-template
-            #billingAgeUnpaidHeaderTemplate
-            let-tableColumnClass="tableColumnClass"
-            let-tableColumnLabelWidth="tableColumnLabelWidth"
-            let-label="label"
-        >
-            <div class="d-flex" [ngClass]="tableColumnClass">
-                <span
-                    class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
-                    [ngStyle]="tableColumnLabelWidth"
-                >
-                    {{ label }}
-
-                    <span
-                        class="text-size-11 ta-font-semi-bold text-color-muted text-lowercase"
-                    >
-                        unp.
-                    </span>
-                </span>
-            </div>
-        </ng-template>
-
-        <ng-template
-            #billingAgePaidHeaderTemplate
-            let-tableColumnClass="tableColumnClass"
-            let-tableColumnLabelWidth="tableColumnLabelWidth"
-            let-label="label"
-        >
-            <div class="d-flex" [ngClass]="tableColumnClass">
-                <span
-                    class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
-                    [ngStyle]="tableColumnLabelWidth"
-                >
-                    {{ label }}
-
-                    <span
-                        class="text-size-11 ta-font-semi-bold text-color-muted text-lowercase"
-                    >
-                        paid
-                    </span>
-                </span>
-            </div>
-        </ng-template>
+        <!-- #endregion END OF REQUIREMENT LENGTH HEADER COLUMN -->
 
         <ng-template
             #alignRightHeaderTemplate

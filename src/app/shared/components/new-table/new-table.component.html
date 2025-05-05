@@ -501,6 +501,7 @@
                                 context: {
                                     data: column,
                                     label: column.label,
+                                    additionalLabel: column.additionalLabel,
                                     tableColumnClass,
                                     tableColumnLabelWidth,
                                 }
@@ -721,7 +722,7 @@
                 @let tableColumnCellColorClass =
                     {
                         isTableColumnCellColorClass: true,
-                        hasValue: !!row[column.key].value,
+                        hasValue: !!row[column.key]?.value,
                     } | tableColumnCellClass;
 
                 <!-- Display custom template if template exists -->
