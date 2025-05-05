@@ -146,8 +146,8 @@ export class UserModalComponent implements OnInit {
         const users: Partial<IMappedUser>[] = [
             {
                 isSelected: true,
-                fullName: `${this.user.firstName} ${this.user.lastName}`,
-                id: this.user.id,
+                fullName: `${this.user?.firstName} ${this.user?.lastName}`,
+                id: this.user?.id,
             },
         ];
 
