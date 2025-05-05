@@ -8,6 +8,7 @@ export class UserTableColumnsConfig {
     static getTableColumns(): ITableColumn[] {
         return [
             UserTableColumnsConfig.selectColumn,
+            UserTableColumnsConfig.editNameColumn,
             UserTableColumnsConfig.userNameColumn,
             UserTableColumnsConfig.departmentColumn,
             UserTableColumnsConfig.employeeDetailGroup,
@@ -16,14 +17,12 @@ export class UserTableColumnsConfig {
             UserTableColumnsConfig.activityColumn,
             UserTableColumnsConfig.bankDetailGroup,
             UserTableColumnsConfig.payrollDetailGroup,
-            UserTableColumnsConfig.dateHiredColumn,
-            UserTableColumnsConfig.dateDeactivatedColumn,
-            UserTableColumnsConfig.dateAddedColumn,
-            UserTableColumnsConfig.dateEditedColumn
+            UserTableColumnsConfig.datesColumn,
         ];
     }
 
     static selectColumn: ITableColumn = {
+        id: 1,
         key: 'select',
         label: '',
         pinned: 'left',
@@ -36,10 +35,26 @@ export class UserTableColumnsConfig {
         hasSort: false,
     };
 
+    static editNameColumn: ITableColumn = {
+        key: 'edit',
+        label: 'Edit',
+        labelToolbar: 'Edit',
+        width: 234,
+        minWidth: 234,
+        maxWidth: 234,
+        isResizable: true,
+        isChecked: true,
+        isDisabled: true,
+        hasSort: true,
+        sortName: CompanyUserSortBy.Name,
+    };
+
     static userNameColumn: ITableColumn = {
+        id: 2,
         key: 'name',
         label: 'Name',
         labelToolbar: 'Name',
+        pinned: 'left',
         width: 234,
         minWidth: 234,
         maxWidth: 234,
@@ -51,9 +66,11 @@ export class UserTableColumnsConfig {
     };
 
     static departmentColumn: ITableColumn = {
+        id: 3,
         key: 'department',
         label: 'Department',
         labelToolbar: 'Department',
+        pinned: null,
         width: 138,
         minWidth: 138,
         maxWidth: 138,
@@ -68,8 +85,10 @@ export class UserTableColumnsConfig {
         label: 'Employee',
         labelToolbar: 'Employee Detail',
         isChecked: true,
+        pinned: null,
         columns: [
             {
+                id: 4,
                 key: 'employeeOffice',
                 label: 'Office',
                 labelToolbar: 'Office',
@@ -82,6 +101,7 @@ export class UserTableColumnsConfig {
                 sortName: CompanyUserSortBy.EmployeeOffice,
             },
             {
+                id: 5,
                 key: 'employeePhone',
                 label: 'Phone',
                 labelToolbar: 'Phone',
@@ -94,6 +114,7 @@ export class UserTableColumnsConfig {
                 sortName: CompanyUserSortBy.Phone,
             },
             {
+                id: 6,
                 key: 'employeeEmail',
                 label: 'Email',
                 labelToolbar: 'Email',
@@ -112,8 +133,11 @@ export class UserTableColumnsConfig {
         key: 'personalDetailGroup',
         label: 'Personal',
         labelToolbar: 'Personal Detail',
+        pinned: null,
+        isChecked: false,
         columns: [
             {
+                id: 7,
                 key: 'personalPhone',
                 label: 'Phone',
                 labelToolbar: 'Phone',
@@ -126,6 +150,7 @@ export class UserTableColumnsConfig {
                 sortName: CompanyUserSortBy.PersonalPhone,
             },
             {
+                id: 8,
                 key: 'personalEmail',
                 label: 'Email',
                 labelToolbar: 'Email',
@@ -138,6 +163,7 @@ export class UserTableColumnsConfig {
                 sortName: CompanyUserSortBy.PersonalEmail,
             },
             {
+                id: 9,
                 key: 'personalAddress',
                 label: 'Address',
                 labelToolbar: 'Address',
@@ -156,8 +182,11 @@ export class UserTableColumnsConfig {
         key: 'statusColumnGroup',
         label: '',
         labelToolbar: '',
+        pinned: null,
+        isChecked: true,
         columns: [
             {
+                id: 10,
                 key: 'status',
                 label: 'Status',
                 labelToolbar: 'Status',
@@ -176,8 +205,11 @@ export class UserTableColumnsConfig {
         key: 'activityColumnGroup',
         label: '',
         labelToolbar: '',
+        pinned: null,
+        isChecked: true,
         columns: [
             {
+                id: 11,
                 key: 'activity',
                 label: 'Activity',
                 labelToolbar: 'Activity',
@@ -197,8 +229,10 @@ export class UserTableColumnsConfig {
         label: 'Bank',
         labelToolbar: 'Bank Detail',
         isChecked: false,
+        pinned: null,
         columns: [
             {
+                id: 12,
                 key: 'bankName',
                 label: 'Name',
                 labelToolbar: 'Name',
@@ -211,6 +245,7 @@ export class UserTableColumnsConfig {
                 sortName: CompanyUserSortBy.BankName,
             },
             {
+                id: 13,
                 key: 'bankRouting',
                 label: 'Routing',
                 labelToolbar: 'Routing',
@@ -223,6 +258,7 @@ export class UserTableColumnsConfig {
                 sortName: CompanyUserSortBy.BankRouting,
             },
             {
+                id: 14,
                 key: 'bankAccount',
                 label: 'Account',
                 labelToolbar: 'Account',
@@ -240,9 +276,11 @@ export class UserTableColumnsConfig {
         key: 'payrollDetailGroup',
         label: 'Payroll',
         labelToolbar: 'Payroll Detail',
-        isChecked: false,
+        isChecked: true,
+        pinned: null,
         columns: [
             {
+                id: 15,
                 key: 'payrollType',
                 label: 'Pay Type',
                 labelToolbar: 'Pay Type',
@@ -255,6 +293,7 @@ export class UserTableColumnsConfig {
                 sortName: CompanyUserSortBy.PayType,
             },
             {
+                id: 16,
                 key: 'payrollForm',
                 label: 'Form',
                 labelToolbar: 'Form',
@@ -267,6 +306,7 @@ export class UserTableColumnsConfig {
                 sortName: CompanyUserSortBy.Form,
             },
             {
+                id: 17,
                 key: 'payrollComm',
                 label: 'Comm',
                 labelToolbar: 'Commission',
@@ -279,6 +319,7 @@ export class UserTableColumnsConfig {
                 sortName: CompanyUserSortBy.Comm,
             },
             {
+                id: 18,
                 key: 'payrollSalary',
                 label: 'Salary',
                 labelToolbar: 'Salary',
@@ -293,12 +334,15 @@ export class UserTableColumnsConfig {
         ],
     };
 
-    static dateHiredColumn: ITableColumn = {
-        key: 'dateHiredColumnGroup',
+    static datesColumn: ITableColumn = {
+        key: 'datesColumnGroup',
         label: '',
         labelToolbar: '',
+        pinned: null,
+        isChecked: false,
         columns: [
             {
+                id: 19,
                 key: 'dateHired',
                 label: 'Hired',
                 labelToolbar: 'Date Hired',
@@ -308,19 +352,12 @@ export class UserTableColumnsConfig {
                 isResizable: true,
                 isChecked: false,
                 hasSort: true,
-                sortName: CompanyUserSortBy.Hired
+                sortName: CompanyUserSortBy.Hired,
             },
-        ],
-    };
-
-    static dateDeactivatedColumn: ITableColumn = {
-        key: 'dateDeactivatedColumnGroup',
-        label: '',
-        labelToolbar: '',
-        columns: [
             {
+                id: 20,
                 key: 'dateDeactivated',
-                label: 'Deactivated',
+                label: 'Deact',
                 labelToolbar: 'Date Deactivated',
                 width: 88,
                 minWidth: 88,
@@ -328,17 +365,10 @@ export class UserTableColumnsConfig {
                 isResizable: true,
                 isChecked: false,
                 hasSort: true,
-                sortName: CompanyUserSortBy.DateDeactivated
+                sortName: CompanyUserSortBy.DateDeactivated,
             },
-        ],
-    };
-
-    static dateAddedColumn: ITableColumn = {
-        key: 'dateAddedColumnGroup',
-        label: '',
-        labelToolbar: '',
-        columns: [
             {
+                id: 21,
                 key: 'dateAdded',
                 label: 'Added',
                 labelToolbar: 'Date Added',
@@ -348,16 +378,10 @@ export class UserTableColumnsConfig {
                 isResizable: true,
                 isChecked: false,
                 hasSort: true,
-                sortName: CompanyUserSortBy.DateCreated
+                sortName: CompanyUserSortBy.DateCreated,
             },
-        ],
-    };
-    static dateEditedColumn: ITableColumn = {
-        key: 'dateEditedColumnGroup',
-        label: '',
-        labelToolbar: '',
-        columns: [
             {
+                id: 22,
                 key: 'dateEdited',
                 label: 'Edited',
                 labelToolbar: 'Date Edited',
@@ -367,9 +391,8 @@ export class UserTableColumnsConfig {
                 isResizable: true,
                 isChecked: false,
                 hasSort: true,
-                sortName: CompanyUserSortBy.DateUpdated
+                sortName: CompanyUserSortBy.DateUpdated,
             },
         ],
     };
-
 }

@@ -33,7 +33,10 @@ export class UserStoreConstants {
     //#region Toolbar actions
     public static ACTION_SET_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE = `${this.COMPONENT_NAME_KEY} ACTION_SET_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE`;
     public static ACTION_TOGGLE_COLUMN_VISIBILITY = `${this.COMPONENT_NAME_KEY} ACTION_TOGGLE_COLUMN_VISIBILITY`;
-    
+
     //#endregion
 
+    //#region  Modal
+    public static ACTION_OPEN_USER_MODAL = `${this.COMPONENT_NAME_KEY} ACTION_OPEN_USER_MODAL`;
+    //#endregion
 }

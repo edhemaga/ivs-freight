@@ -1,7 +1,9 @@
 export enum eSharedString {
+    OWNER = "Owner",
+    ADMIN = 'Admin',
     USER = 'User',
     USER_LOWERCASE = 'user',
-
+    ONLINE = 'Online',
     TRUCK = 'truck',
     TRUCK_CAPITALIZED = 'Truck',
     TRAILER = 'trailer',
@@ -46,6 +48,8 @@ export enum eSharedString {
 
     // Status
     INVITED = 'Invited',
+    EXPIRED = 'Expired',
+
 
     // Load
     LOAD_VERTICAL_LINE = 'Load | ',

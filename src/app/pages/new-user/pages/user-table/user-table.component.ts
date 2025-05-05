@@ -11,7 +11,12 @@ import { UserStoreService } from '@pages/new-user/state/services/user-store.serv
 import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // Enums
-import { eStatusTab } from '@shared/enums';
+import {
+    eSharedString,
+    eStatusTab,
+    eStringPlaceholder,
+    TableStringEnum,
+} from '@shared/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -23,11 +28,17 @@ import {
     CaCheckboxSelectedCountComponent,
     CaProfileImageComponent,
 } from 'ca-components';
+import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 
 // Pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
-import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
-
+import {
+    ActivityTimePipe,
+    FormatCurrencyPipe,
+    NameInitialsPipe,
+    ThousandSeparatorPipe,
+} from '@shared/pipes';
+import { AddressFullnamePipe } from '@shared/pipes/address-fullname.pipe';
 
 @Component({
     selector: 'app-user-table',
@@ -46,15 +57,22 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
         CaCheckboxSelectedCountComponent,
         CaProfileImageComponent,
         SvgIconComponent,
+        TaPasswordAccountHiddenCharactersComponent,
 
         // Pipes
         TableHighlightSearchTextPipe,
-        NameInitialsPipe
+        NameInitialsPipe,
+        ActivityTimePipe,
+        NameInitialsPipe,
+        AddressFullnamePipe,
+        FormatCurrencyPipe,
     ],
 })
 export class UserTableComponent {
     // Enums
     public eStatusTab = eStatusTab;
+    public eSharedString = eSharedString;
+    public eStringPlaceholder = eStringPlaceholder;
 
     // Svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
@@ -75,5 +93,9 @@ export class UserTableComponent {
 
     public onCheckboxCountClick(action: string): void {
         this.userStoreService.dispatchSelectAll(action);
+    }
+
+    public openEditModal(userId: number): void {
+        this.userStoreService.dispatchOpenUserModal(true, userId);
     }
 }
