@@ -1,0 +1,11 @@
+.d-grid {
+    gap: 12px;
+
+    &-user-name {
+        grid-template-columns: 222px 222px;
+    }
+
+    &-department {
+        grid-template-columns: 126px 318px;
+    }
+}

@@ -1,3 +1,66 @@
-<app-ca-modal>
-    <div class="new-modal" origin></div>
+<app-ca-modal
+    [modalTitle]="modalTitle"
+    [rightHeaderTemplate]="rightHeaderTemplate"
+>
+    <div class="new-modal" origin>
+        <form [formGroup]="userForm">
+            <app-ca-tab-switch
+                [tabs]="userTabs"
+                [type]="'type1-modal-popup'"
+                (switchClicked)="onUserTabChange()"
+            >
+            </app-ca-tab-switch>
+
+            <div class="d-grid m-t-26">
+                @let emailInputConfig =
+                    { configType: eUserModalForm.EMAIL } | userModalInputConfig;
+
+                <ca-input-test
+                    formControlName="email"
+                    [inputConfig]="emailInputConfig"
+                ></ca-input-test>
+            </div>
+
+            <div class="d-grid d-grid-user-name m-t-26">
+                @let firstNameInputConfig =
+                    { configType: eUserModalForm.FIRST_NAME }
+                        | userModalInputConfig;
+
+                <ca-input-test
+                    formControlName="firstName"
+                    [inputConfig]="firstNameInputConfig"
+                ></ca-input-test>
+
+                @let lastNameInputConfig =
+                    { configType: eUserModalForm.LAST_NAME }
+                        | userModalInputConfig;
+
+                <ca-input-test
+                    formControlName="lastName"
+                    [inputConfig]="lastNameInputConfig"
+                ></ca-input-test>
+            </div>
+
+            <div class="d-grid d-grid-department m-t-26">
+                <app-ca-tab-switch
+                    [tabs]="departmentTabs"
+                    [type]="'type4-modal-popup'"
+                    (switchClicked)="onDepartmentTabChange()"
+                >
+                </app-ca-tab-switch>
+            </div>
+        </form>
+    </div>
+
+    <ng-template #rightHeaderTemplate>
+        <div
+            class="d-flex align-items-center justify-content-center w-26 h-26 background-hover-bw2 svg-fill-muted svg-hover-black"
+            (click)="onModalAction(eGeneralActions.CLOSE)"
+        >
+            <svg-icon
+                class="svg-size-14"
+                [src]="svgRoutes.CLOSE_ICON"
+            ></svg-icon>
+        </div>
+    </ng-template>
 </app-ca-modal>
