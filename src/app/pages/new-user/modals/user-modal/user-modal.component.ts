@@ -20,9 +20,12 @@ import { UserModalHelper } from '@pages/new-user/modals/user-modal/utils/helpers
 import {
     CaCustomCardComponent,
     CaInputDropdownTestComponent,
+    CaModalButtonComponent,
     CaModalComponent,
     CaTabSwitchComponent,
     eGeneralActions,
+    eModalButtonClassType,
+    eModalButtonSize,
     InputTestComponent,
 } from 'ca-components';
 import { SvgIconComponent } from 'angular-svg-icon';
@@ -50,6 +53,7 @@ import { IUserModal } from '@pages/new-user/interfaces';
 
         // Components
         CaModalComponent,
+        CaModalButtonComponent,
         CaTabSwitchComponent,
         SvgIconComponent,
         CaInputDropdownTestComponent,
@@ -67,12 +71,20 @@ export class UserModalComponent implements OnInit {
     // Enums
     public eGeneralActions = eGeneralActions;
     public eUserModalForm = eUserModalForm;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
 
     // Icon routes
     public svgRoutes = SharedSvgRoutes;
 
     // Modal title
-    public modalTitle: string = 'Invite User';
+    public modalTitle: string;
+
+    // Show modal buttons based on edit mode
+    public isEditMode: boolean;
+
+    // Show modal spinner
+    public activeAction = '';
 
     // Tabs
     public userTabs: Tabs[] = UserModalHelper.getUserTabs();
@@ -93,7 +105,9 @@ export class UserModalComponent implements OnInit {
 
     private setupModal(): void {
         const staticData$ = this.userService.getModalDropdowns();
-        const userData$ = this.editData?.isEdit
+        this.isEditMode = this.editData?.isEdit;
+
+        const userData$ = this.isEditMode
             ? this.userService.editUserModal(this.editData.id)
             : of(null);
 
@@ -102,6 +116,11 @@ export class UserModalComponent implements OnInit {
                 this.dropdownList = dropdownData;
 
                 this.userForm = UserModalHelper.createForm(userData || {});
+
+                this.modalTitle = UserModalHelper.generateModalTitle(
+                    this.isEditMode
+                );
+
                 this.departmentTabs = UserModalHelper.getDepartmentTabs(
                     userData?.isAdmin
                 );

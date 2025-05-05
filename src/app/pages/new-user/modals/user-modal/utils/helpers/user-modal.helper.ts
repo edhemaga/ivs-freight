@@ -51,6 +51,10 @@ export class UserModalHelper {
         ];
     }
 
+    static generateModalTitle(isEdit: boolean): string {
+        return isEdit ? 'Edit User' : 'Invite User';
+    }
+
     static createForm(userData: CompanyUserResponse): UntypedFormGroup {
         return new UntypedFormGroup({
             [eUserModalForm.EMAIL]: new UntypedFormControl(userData?.email, [
