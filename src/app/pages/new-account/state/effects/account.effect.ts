@@ -26,7 +26,7 @@ export class AccountEffect {
                 this.accountService.getAccountList().pipe(
                     map((data) => AccountActions.loadAccountsSuccess({ data })),
                     catchError((error) =>
-                        of(AccountActions.loadAccountsFailure({ error }))
+                        of(AccountActions.loadAccountsFailure())
                     )
                 )
             )

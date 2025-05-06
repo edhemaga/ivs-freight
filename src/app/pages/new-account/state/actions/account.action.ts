@@ -14,6 +14,5 @@ export const loadAccountsSuccess = createAction(
 );
 
 export const loadAccountsFailure = createAction(
-    AccountStoreConstants.LOAD_ACCOUNTS_FAILURE,
-    props<{ error: any }>()
+    AccountStoreConstants.LOAD_ACCOUNTS_FAILURE
 );

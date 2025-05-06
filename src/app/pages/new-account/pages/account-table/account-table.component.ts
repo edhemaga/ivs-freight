@@ -9,10 +9,10 @@ import { NewTableComponent } from '@shared/components/new-table/new-table.compon
 
 @Component({
     selector: 'app-account-table',
-    standalone: true,
-    imports: [CommonModule, NewTableComponent],
     templateUrl: './account-table.component.html',
     styleUrl: './account-table.component.scss',
+    standalone: true,
+    imports: [CommonModule, NewTableComponent],
 })
 export class AccountTableComponent {
     constructor(public accountStore: AccountStoreService) {}

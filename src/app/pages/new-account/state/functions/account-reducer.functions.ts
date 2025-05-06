@@ -13,14 +13,11 @@ export function onLoadAccountsSuccess(
 ): IAccountState {
     return {
         ...state,
-        accountList: AccountHelper.accountMapper(data),
+        accountList: AccountHelper.accountsMapper(data.pagination.data),
     };
 }
 
-export function onLoadAccountsError(
-    state: IAccountState,
-    error: any
-): IAccountState {
+export function onLoadAccountsError(state: IAccountState): IAccountState {
     return {
         ...state,
         accountList: [],

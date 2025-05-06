@@ -27,8 +27,8 @@ export const accountReducer = createReducer(
     on(AccountActions.loadAccountsSuccess, (state, { data }) =>
         AccountFunctions.onLoadAccountsSuccess(state, data)
     ),
-    on(AccountActions.loadAccountsFailure, (state, { error }) =>
-        AccountFunctions.onLoadAccountsError(state, error)
+    on(AccountActions.loadAccountsFailure, (state) =>
+        AccountFunctions.onLoadAccountsError(state)
     )
     //#endregion
 );

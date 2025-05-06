@@ -2,13 +2,13 @@
 import { IMappedAccount } from '@pages/new-account/interfaces';
 
 // Models
-import { GetCompanyAccountListResponse } from 'appcoretruckassist';
+import { CompanyAccountResponse } from 'appcoretruckassist';
 
 export class AccountHelper {
-    static accountMapper(
-        accountResponse: GetCompanyAccountListResponse
+    static accountsMapper(
+        accounts: CompanyAccountResponse[]
     ): IMappedAccount[] {
-        return accountResponse.pagination.data.map((account) => {
+        return accounts.map((account) => {
             const { id, name } = account;
 
             const mapped: IMappedAccount = {
