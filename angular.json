@@ -125,27 +125,6 @@
                                 }
                             ]
                         },
-                        "beta": {
-                            "optimization": true,
-                            "budgets": [
-                                {
-                                    "type": "initial",
-                                    "maximumWarning": "21mb",
-                                    "maximumError": "25mb"
-                                },
-                                {
-                                    "type": "anyComponentStyle",
-                                    "maximumWarning": "21mb",
-                                    "maximumError": "25mb"
-                                }
-                            ],
-                            "fileReplacements": [
-                                {
-                                    "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.beta.ts"
-                                }
-                            ]
-                        },
                         "development": {
                             "buildOptimizer": false,
                             "optimization": false,
@@ -204,11 +183,18 @@
                             "./node_modules/slick-carousel/slick/slick.min.js"
                         ]
                     }
+                },
+                "lint": {
+                    "builder": "@angular-eslint/builder:lint",
+                    "options": {
+                        "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+                    }
                 }
             }
         }
     },
     "cli": {
-        "analytics": false
+        "analytics": false,
+        "schematicCollections": ["@angular-eslint/schematics"]
     }
 }
