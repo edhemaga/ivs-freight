@@ -19,6 +19,7 @@ import {
     CaLoadStatusLogComponent,
     CaTabSwitchComponent,
     CaToolbarDropdownComponent,
+    CaCommentsComponent,
 } from 'ca-components';
 
 // Services
@@ -36,7 +37,7 @@ import { eStringPlaceholder } from 'ca-components';
 import { eLoadDetailsGeneral } from '@pages/new-load/enums';
 
 // Models
-import { CommentCompanyUser, CommentData, Tabs } from '@shared/models';
+import { CommentCompanyUser, CommentData, Tabs, User } from '@shared/models';
 import {
     CommentService,
     CreateCommentCommand,
@@ -75,6 +76,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaLoadStatusLogComponent,
         CaToolbarDropdownComponent,
         CaTabSwitchComponent,
+        CaCommentsComponent,
         // pipes
         CreateLoadCommentsPipe,
         CreateLoadAdditionalInfoDropdownOptionsPipe,
@@ -113,6 +115,8 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
 
     // filter
     public commentFilter: string = eStringPlaceholder.EMPTY;
+
+    public currentUser: User = UserHelper.getUserFromLocalStorage();
 
     constructor(
         public loadStoreService: LoadStoreService,

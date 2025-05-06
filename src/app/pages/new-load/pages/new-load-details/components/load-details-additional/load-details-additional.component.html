@@ -97,33 +97,31 @@
     @switch (displayedSection) {
         @case (eLoadDetailsGeneral.COMMENT) {
             <div class="w-100 mb-1">
-                @if (isLoading) {
-                    <p class="placeholder-glow">
-                        <span
-                            class="placeholder placeholder-muted br-2 h-26 w-100"
-                        ></span>
-                    </p>
-                } @else {
+                @let _comments =
+                    comments
+                        | createLoadComment
+                            : commentFilter
+                            : isDriverButtonSelected;
+                <ca-comments
+                    [isDarkmode]="1 === 2"
+                    [comments]="_comments"
+                    [currentUser]="currentUser"
+                >
                     <app-ca-tab-switch
                         [tabs]="commentTabs"
                         [type]="'type4-modal-popup'"
                         (switchClicked)="onItemSelected($event)"
                     >
                     </app-ca-tab-switch>
-                }
+                </ca-comments>
+                @if (isLoading) {
+                    <p class="placeholder-glow">
+                        <span
+                            class="placeholder placeholder-muted br-2 h-26 w-100"
+                        ></span>
+                    </p>
+                } @else {}
             </div>
-            @let _comments =
-                comments
-                    | createLoadComment: commentFilter : isDriverButtonSelected;
-            <app-ta-comments-search
-                [commentsData]="_comments"
-                [isDisplaySearch]="isSearchActive"
-                [isHeaderHidden]="isHeaderHidden"
-                [isLoading]="isLoading"
-                (onActionEmitter)="onCommentAction($event, load.id)"
-                (onSortEmitter)="onSortAction($event, load.id)"
-                (onSearchHighlightEmitter)="onSearchHighlightAction($event)"
-            ></app-ta-comments-search>
         }
         @case (eLoadDetailsGeneral.STATUS_LOG) {
             <div class="background-white p-x-6 p-y-6 br-3 w-100">
