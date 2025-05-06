@@ -682,7 +682,8 @@
                     | tableGroupLabelIndex;
 
             @let hasMarginRight =
-                isTableLocked && _columnIndex === lastCheckedIndex;
+                (isTableLocked && _columnIndex === lastCheckedIndex) ||
+                (!isTableLocked && _column.isUniqueColumn);
 
             <ng-container
                 *ngTemplateOutlet="
@@ -714,10 +715,15 @@
                     hasMarginRight,
                 } | tableColumnCellClass;
 
+            @let tableColumnCellWidth =
+                {
+                    column,
+                    isTableLocked,
+                } | tableColumnCellWidth;
+
             <div
                 [ngClass]="tableColumnCellClass"
-                [style.min-width]="column.minWidth + eUnit.PX"
-                [style.width]="column.width + eUnit.PX"
+                [ngStyle]="tableColumnCellWidth"
             >
                 @let tableColumnCellColorClass =
                     {
