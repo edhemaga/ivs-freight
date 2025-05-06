@@ -243,7 +243,7 @@ export class MilesTableColumnsConfig {
                     id: 17,
                     key: 'fuelMpg',
                     label: 'MPG',
-                    labelToolbar: 'MPG',
+                    labelToolbar: 'Mile per Gallon',
                     width: 64,
                     minWidth: 64,
                     maxWidth: 200,

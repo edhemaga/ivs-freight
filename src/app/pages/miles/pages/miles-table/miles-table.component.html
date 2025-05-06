@@ -32,6 +32,7 @@
             loadRatePerMile: currencyTemplate,
             fuelGalons: thousandFormatterTemplate,
             fuelCost: currencyTemplate,
+            fuelMpg,
             milesLoaded: thousandFormatterDecimalTemplate,
             milesEmpty: thousandFormatterDecimalTemplate,
             milesTotal: thousandFormatterDecimalTemplate,
@@ -197,6 +198,25 @@
         </ng-template>
 
         <!-- #endregion END OF CURRENCY COLUMN -->
+
+        <!-- #region FUEL MILE PER GALLON COLUMN -->
+
+        <ng-template #fuelMpg let-data="data">
+            @let fuelMpgValue =
+                data?.fuelMpg
+                    | number: eThousandSeparatorFormat.DECIMAL_DOUBLE_FORMAT;
+
+            <p
+                class="text-size-14"
+                [class]="
+                    data?.fuelMpg ? 'text-color-black-2' : 'text-color-muted'
+                "
+            >
+                {{ fuelMpgValue }}
+            </p>
+        </ng-template>
+
+        <!-- #endregion END OF FUEL MILE PER GALLON COLUMN -->
 
         <!-- #region REVENUE COLUMN -->
 
