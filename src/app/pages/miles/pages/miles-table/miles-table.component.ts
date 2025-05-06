@@ -15,7 +15,7 @@ import { MilesStoreService } from '@pages/miles/state/services/miles-store.servi
 // enums
 import { eMileTabs } from '@pages/miles/enums';
 import { eColor, ePosition, eUnit } from 'ca-components';
-import { eThousandSeparatorFormat } from '@shared/enums';
+import { eDateTimeFormat, eThousandSeparatorFormat } from '@shared/enums';
 
 // components
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
@@ -49,6 +49,7 @@ export class MilesTableComponent {
     public eColor = eColor;
     public ePosition = ePosition;
     public eThousandSeparatorFormat = eThousandSeparatorFormat;
+    public eDateTimeFormat = eDateTimeFormat;
 
     constructor(public milesStoreService: MilesStoreService) {}
 

@@ -3,6 +3,5 @@ export * from './table-group-class.pipe';
 export * from './table-group-label-index.pipe';
 export * from './table-column-label-width.pipe';
 export * from './table-column-action-class.pipe';
-export * from './table-column-cell-class.pipe';
 export * from './table-highlight-search-text.pipe';
 export * from './table-column-cell-width.pipe';
