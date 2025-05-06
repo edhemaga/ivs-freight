@@ -20,6 +20,9 @@
     &-white {
         background: $white;
     }
+    &-white-6 {
+        background: $white-6;
+    }
     &-dark-2 {
         background: $dark-2;
     }
@@ -136,6 +139,10 @@
             @include hover($ta-black);
         }
 
+        &-black-3 {
+            @include hover($ta-black-3);
+        }
+
         &-dark-2 {
             @include hover($dark-2);
         }
@@ -146,6 +153,9 @@
             }
             &-16 {
                 @include hover($ta-blue-16);
+            }
+            &-17 {
+                @include hover($ta-blue-17);
             }
         }
 
@@ -164,7 +174,7 @@
         }
 
         &-bw-9 {
-            background-color: $bw-9;
+            @include hover($bw-9);
         }
     }
 }

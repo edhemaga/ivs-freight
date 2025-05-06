@@ -1,43 +1,133 @@
-<div class="d-flex flex-column gap-1 w-100">
+<div class="d-flex flex-column gap-1 w-616">
     <div
-        class="d-grid d-grid-stops h-42 gap-1 p-l-8 p-r-6 align-items-center background-bw2"
+        class="d-grid d-grid-stops gap-1 p-l-8 p-r-6 align-items-center br-3"
+        [ngClass]="_stopFormGroup | stopContainerClass: isOpen"
     >
+        @let stopType =
+            _stopFormGroup.get(eLoadModalStopsForm.STOP_TYPE)?.value;
+        @let dateFrom =
+            _stopFormGroup.get(eLoadModalStopsForm.DATE_FROM)?.value;
+        @let dateTo = _stopFormGroup.get(eLoadModalStopsForm.DATE_TO)?.value;
+        @let timeFrom =
+            _stopFormGroup.get(eLoadModalStopsForm.TIME_FROM)?.value;
+        @let timeTo = _stopFormGroup.get(eLoadModalStopsForm.TIME_TO)?.value;
+        @let isShipperValid =
+            _stopFormGroup.get(eLoadModalStopsForm.SHIPPER_ID).valid;
+        @let areDatesInvalid =
+            _stopFormGroup.get(eLoadModalStopsForm.DATE_FROM).invalid ||
+            _stopFormGroup.get(eLoadModalStopsForm.TIME_FROM).invalid ||
+            _stopFormGroup.get(eLoadModalStopsForm.TIME_TO).invalid;
         <div
             class="background-green h-26 w-26 br-2 text-color-white ta-font-bold text-size-14 d-flex align-items-center justify-content-center"
+            [ngClass]="
+                stopType === 1 ? 'background-green' : 'background-orange-4'
+            "
         >
             1
         </div>
         <div class="d-flex flex-column">
-            <span
-                class="text-color-black ta-font-bold"
-                [ngClass]="shipper ? 'text-size-11' : 'text-size-14'"
-                >{{ shipper?.businessName ?? 'ORIGIN' }}
-                <span class="text-color-red-13">*</span>
-            </span>
-            @if (shipper?.address) {
-                <span class="text-color-bw6-2 ta-font-medium text-size-11">{{
-                    shipper?.address?.address
-                }}</span>
+            @if (!isShipperValid && _stopFormGroup.dirty) {
+                <span
+                    class="ta-font-bold text-size-11"
+                    [ngClass]="
+                        isOpen ? 'text-color-red-13' : 'text-color-red-11'
+                    "
+                >
+                    REQUIRED *
+                </span>
+                <span
+                    class="ta-font-medium text-size-11"
+                    [ngClass]="
+                        isOpen ? 'text-color-red-13' : 'text-color-red-11'
+                    "
+                >
+                    Fill all necessary fields
+                </span>
+            } @else {
+                <span
+                    class="text-color-black ta-font-bold"
+                    [ngClass]="
+                        shipper
+                            ? isOpen
+                                ? 'text-size-11 text-color-white'
+                                : 'text-size-11 text-color-black'
+                            : isOpen
+                              ? 'text-size-14 text-color-white'
+                              : 'text-size-14 text-color-black'
+                    "
+                    >{{
+                        shipper?.businessName ??
+                            (stopType === 1 ? 'ORIGIN' : 'DESTINATION')
+                    }}
+
+                    @if (!isShipperValid) {
+                        <span class="text-color-red-11">*</span>
+                    }
+                </span>
+                @if (shipper?.address) {
+                    <span
+                        class="ta-font-medium text-size-11"
+                        [ngClass]="
+                            isOpen ? 'text-color-white-4' : 'text-color-bw6-2'
+                        "
+                        >{{ shipper?.address?.address }}</span
+                    >
+                }
             }
         </div>
         <div class="d-flex flex-column">
-            <span class="text-color-black ta-font-semi-bold text-size-11">
-                {{ stop?.dateFrom | date: eDateTimeFormat.ANGULAR_MM_DD_YY }}
-            </span>
-            <!-- <span class="text-color-bw6-2 ta-font-medium text-size-11"
-                >10:30 AM - 12:30 PM</span
-            > -->
-            <span class="text-color-bw6-2 ta-font-medium text-size-11">{{
-                stop?.timeFrom
-                    | loadTimeType
-                    | loadDatetimeRange: (stop?.timeTo | loadTimeType)
-            }}</span>
+            @if (areDatesInvalid && _stopFormGroup.dirty) {
+                <span
+                    class="ta-font-bold text-size-11"
+                    [ngClass]="
+                        isOpen ? 'text-color-red-13' : 'text-color-red-11'
+                    "
+                >
+                    REQUIRED *
+                </span>
+                <span
+                    class="ta-font-medium text-size-11"
+                    [ngClass]="
+                        isOpen ? 'text-color-red-13' : 'text-color-red-11'
+                    "
+                >
+                    Fill all necessary fields
+                </span>
+            } @else {
+                <span
+                    class="ta-font-semi-bold text-size-11"
+                    [ngClass]="isOpen ? 'text-color-white' : 'text-color-black'"
+                >
+                    {{ dateFrom | date: eDateTimeFormat.ANGULAR_MM_DD_YY }}
+                    @if (dateTo) {
+                        -
+                        {{ dateTo | date: eDateTimeFormat.ANGULAR_MM_DD_YY }}
+                    }
+                </span>
+                <span
+                    class="ta-font-medium text-size-11"
+                    [ngClass]="
+                        isOpen ? 'text-color-white-4' : 'text-color-bw6-2'
+                    "
+                    >{{
+                        timeFrom
+                            | loadTimeType
+                            | loadDatetimeRange: (timeTo | loadTimeType)
+                    }}</span
+                >
+            }
         </div>
         <div class="d-flex flex-column text-right">
-            <span class="text-color-black ta-font-medium text-size-11"
+            <span
+                class="ta-font-medium text-size-11"
+                [ngClass]="isOpen ? 'text-color-white' : 'text-color-black'"
                 >0.0 mi</span
             >
-            <span class="text-color-bw6-2 ta-font-medium text-size-11">0m</span>
+            <span
+                class="ta-font-medium text-size-11"
+                [ngClass]="isOpen ? 'text-color-white-4' : 'text-color-bw6-2'"
+                >0m</span
+            >
         </div>
     </div>
 </div>
