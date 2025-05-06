@@ -1,42 +1,47 @@
-<div class="main_inside filled">
+@let isIncompleteDispatch =
+    status?.statusString === 'Off' || status?.statusString === 'Available';
+
+<div class="main_inside" [class.filled]="!isIncompleteDispatch">
     <div class="padding-inside">
-        <div
-            class="status-container d-flex flex-column justify-content-center"
-            [ngClass]="{ hovering: isHoveringRow }"
-            [ngStyle]="{ cursor: isUnlockable ? 'pointer' : 'auto' }"
-            ngbTooltip
-            mainContent
-            [mainTooltip]="'Change Status'"
-            position="bottom"
-            [tooltipBackground]="'#424242'"
-            tooltipColor="'#ffff'"
-            tooltipTextAlign="center"
-            (click)="isUnlockable && getStatusDropdown(ngbStatus)"
-            [disableTooltip]="!isUnlockable"
-        >
+        @if (!isIncompleteDispatch) {
             <div
-                class="status ta-font-bold"
-                #ngbStatus="ngbPopover"
-                [autoClose]="true"
-                [ngbPopover]="statusPopover"
-                [placement]="'bottom'"
-                container="body"
-                popoverClass="table-status-popover"
-                triggers="manual"
+                class="status-container d-flex flex-column justify-content-center"
+                [ngClass]="{ hovering: isHoveringRow }"
+                [ngStyle]="{ cursor: isUnlockable ? 'pointer' : 'auto' }"
+                ngbTooltip
+                mainContent
+                [mainTooltip]="'Change Status'"
+                position="bottom"
+                [tooltipBackground]="'#424242'"
+                tooltipColor="'#ffff'"
+                tooltipTextAlign="center"
+                (click)="isUnlockable && getStatusDropdown(ngbStatus)"
+                [disableTooltip]="!isUnlockable"
             >
-                <app-load-status-string
-                    [status]="{
-                        name: status.statusString,
-                        valueForRequest: status.statusValue.name
-                    }"
-                    [justifyStart]="true"
-                    [isDispatch]="true"
-                ></app-load-status-string>
+                <div
+                    class="status ta-font-bold"
+                    #ngbStatus="ngbPopover"
+                    [autoClose]="true"
+                    [ngbPopover]="statusPopover"
+                    [placement]="'bottom'"
+                    container="body"
+                    popoverClass="table-status-popover"
+                    triggers="manual"
+                >
+                    <app-load-status-string
+                        [status]="{
+                            name: status.statusString,
+                            valueForRequest: status.statusValue.name,
+                        }"
+                        [justifyStart]="true"
+                        [isDispatch]="true"
+                    ></app-load-status-string>
+                </div>
+                <div class="status-time ta-font-medium">
+                    {{ showTime }}
+                </div>
             </div>
-            <div class="status-time ta-font-medium">
-                {{ showTime }}
-            </div>
-        </div>
+        }
     </div>
 </div>
 
