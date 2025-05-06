@@ -18,7 +18,6 @@ import { ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 
 // Pipes
-import { ThousandSeparatorPipe } from '@shared/pipes';
 import { MilesIconPipe } from '@pages/miles/pipes/miles-icon.pipe';
 
 // Svg routes
@@ -35,7 +34,10 @@ import {
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Enums
-import { ArrowActionsStringEnum } from '@shared/enums';
+import {
+    ArrowActionsStringEnum,
+    eThousandSeparatorFormat,
+} from '@shared/enums';
 
 // Const
 import { MilesStopsTable } from '@pages/miles/utils/constants';
@@ -62,7 +64,6 @@ import { onHTMLElementScroll } from '@shared/utils/helpers/scroll-helper';
         TaAppTooltipV2Component,
 
         // Pipes
-        ThousandSeparatorPipe,
         MilesIconPipe,
     ],
 })
@@ -73,7 +74,13 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     @ViewChild('detailsTitleCard')
     detailsTitleCard: CaDetailsTitleCardComponent<unknown>;
 
+    // svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
+
+    // enums
+    public eThousandSeparatorFormat = eThousandSeparatorFormat;
+
+    // configs
     public stopsConfig = MilesStopsTable.HEADER_CONFIG;
     public searchField = MilesStopsTable.SEARCH_FIELD;
 
