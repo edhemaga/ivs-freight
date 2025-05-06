@@ -20,6 +20,7 @@ import {
     CaTabSwitchComponent,
     CaToolbarDropdownComponent,
     CaCommentsComponent,
+    IComment,
 } from 'ca-components';
 
 // Services
@@ -240,6 +241,18 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
 
     public onItemSelected(event: Tabs): void {
         this.isDriverButtonSelected = event.id === 2;
+    }
+
+    public onCommentDelete(commentId: number, loadId): void {
+        this.loadStoreService.dispatchDeleteComment(commentId, loadId);
+    }
+
+    public onCommentAdded(comment: IComment, loadId: number): void {
+        this.loadStoreService.dispatchAddComment(comment, loadId);
+    }
+
+    public onCommentEdited(comment: IComment, loadId: number): void {
+        this.loadStoreService.dispatchEditComment(comment, loadId);
     }
 
     ngOnDestroy(): void {

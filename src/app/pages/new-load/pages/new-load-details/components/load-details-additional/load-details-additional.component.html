@@ -1,5 +1,6 @@
 @let loadDetailsSelector = loadStoreService.loadDetailsSelector$ | async;
 @let load = loadDetailsSelector.data;
+@let loadId = load?.id;
 @let isLoading = loadDetailsSelector.isLoading;
 @let comments = load?.comments;
 @let statusHistory = load?.statusHistory;
@@ -103,9 +104,13 @@
                             : commentFilter
                             : isDriverButtonSelected;
                 <ca-comments
-                    [isDarkmode]="1 === 2"
+                    [isDarkmode]="false"
                     [comments]="_comments"
                     [currentUser]="currentUser"
+                    [isSearchDisplayed]="isSearchActive"
+                    (onCommentDelete)="onCommentDelete($event, loadId)"
+                    (onCommentAdded)="onCommentAdded($event, loadId)"
+                    (onCommentEdited)="onCommentEdited($event, loadId)"
                 >
                     <app-ca-tab-switch
                         [tabs]="commentTabs"
