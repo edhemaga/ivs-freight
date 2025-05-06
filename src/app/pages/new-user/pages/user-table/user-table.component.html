@@ -12,7 +12,32 @@
 
 @if (store) {
     @let isTableLocked = store.tableSettings.isTableLocked;
-    @let templates = { select, name, department };
+    @let templates =
+        {
+            select,
+            name,
+            edit,
+            department,
+            employeePhone,
+            employeeOffice,
+            employeeEmail,
+            personalPhone,
+            personalEmail,
+            personalAddress,
+            status,
+            activity,
+            bankName,
+            bankRouting,
+            bankAccount,
+            payrollType,
+            payrollSalary,
+            payrollForm,
+            payrollComm,
+            dateHired,
+            dateDeactivated,
+            dateAdded,
+            dateEdited,
+        };
     @let headerTemplates =
         {
             select: selectHeaderTemplate,
@@ -47,6 +72,17 @@
             ></app-ca-checkbox>
         </ng-template>
 
+        <!-- Modal test only -->
+        <ng-template let-user="data" #edit>
+            <div
+                class="text-color-black-2 text-size-14"
+                (click)="openEditModal(user.id)"
+            >
+                Edit
+            </div>
+        </ng-template>
+
+        <!-- #region NAME COLUMN -->
         <ng-template let-user="data" #name>
             <div class="d-flex gap-1">
                 @if (store.selectedTab === eStatusTab.ACTIVE) {
@@ -77,7 +113,9 @@
                 ></div>
             </div>
         </ng-template>
+        <!-- #endregion END OF NAME COLUMN -->
 
+        <!-- #region DEPARTMENT NAME COLUMN -->
         <ng-template let-user="data" #department>
             <div
                 class="text-color-black-2 text-size-14"
@@ -87,5 +125,286 @@
                 "
             ></div>
         </ng-template>
+        <!-- #endregion END OF DEPARTMENT NAME COLUMN -->
+
+        <!-- #region EMPLOYEE GROUP -->
+        <ng-template let-user="data" #employeeOffice>
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    user?.companyOffice
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template #employeePhone let-user="data">
+            <div class="text-size-14">
+                <span class="text-color-black-2">{{ user?.phone }} </span>
+                @if (user?.extensionPhone) {
+                    <span class="text-color-muted"
+                        >x {{ user?.extensionPhone }}
+                    </span>
+                }
+            </div>
+        </ng-template>
+
+        <ng-template let-user="data" #employeeEmail>
+            <p
+                class="text-color-black-2 text-size-14 text-truncate"
+                [innerHtml]="
+                    user?.email | tableHighlightSearchText: store.searchStrings
+                "
+            ></p>
+        </ng-template>
+        <!-- #endregion END OF EMPLOYEE GROUP -->
+
+        <!-- #region PERSONAL DETAILS GROUP -->
+        <ng-template let-user="data" #personalPhone>
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    user?.personalPhone
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template let-user="data" #personalEmail>
+            <p
+                class="text-color-black-2 text-size-14 text-truncate"
+                [innerHtml]="
+                    user?.personalEmail
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></p>
+        </ng-template>
+
+        <ng-template let-user="data" #personalAddress>
+            @let fullAddress = user?.address | addressFullname;
+
+            <div
+                class="text-color-black-2 text-size-14 text-truncate"
+                [innerHtml]="
+                    fullAddress | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <!-- #endregion END OF PERSONAL DETAILS GROUP -->
+
+        <!-- #region STATUS COLUMN -->
+        <ng-template #status let-user="data">
+            <div
+                class="d-flex gap-1 align-items-center text-color-black-2 text-size-14"
+            >
+                @switch (user?.userStatus) {
+                    @case (eStringPlaceholder.ZERO) {}
+                    @case (eSharedString.OWNER) {
+                        <svg-icon
+                            [src]="sharedSvgRoutes.USER_STATUS_OWNER_ICON"
+                            class="svg-size-14"
+                        ></svg-icon>
+                    }
+                    @case (eSharedString.ADMIN) {
+                        <svg-icon
+                            [src]="sharedSvgRoutes.USER_STATUS_ADMIN_ICON"
+                            class="svg-size-14"
+                        ></svg-icon>
+                    }
+                    @case (eSharedString.INVITED) {
+                        <svg-icon
+                            [src]="sharedSvgRoutes.USER_STATUS_INVITED_ICON"
+                            class="svg-size-14"
+                        ></svg-icon>
+                    }
+                    @case (eSharedString.EXPIRED) {
+                        <svg-icon
+                            [src]="sharedSvgRoutes.USER_STATUS_EXPIRED_ICON"
+                            class="svg-size-14"
+                        ></svg-icon>
+                    }
+                    @default {
+                        <svg-icon
+                            [src]="sharedSvgRoutes.USER_CIRCLE_ICON"
+                            class="svg-size-14"
+                        ></svg-icon>
+                    }
+                }
+
+                @let userStatusInvitedOrExpired =
+                    user?.userStatus === eSharedString.INVITED ||
+                    user?.userStatus === eSharedString.EXPIRED;
+
+                <span
+                    class="text-color-black ta-font-bold text-size-11 text-uppercase"
+                    [ngClass]="{
+                        'text-color-muted': userStatusInvitedOrExpired,
+                    }"
+                    [innerHtml]="
+                        user?.userStatus === eStringPlaceholder.ZERO
+                            ? eStringPlaceholder.NA_UPPERCASE
+                            : (user?.userStatus
+                              | tableHighlightSearchText: store.searchStrings)
+                    "
+                >
+                </span>
+            </div>
+        </ng-template>
+
+        <!-- #region END OF STATUS COLUMN -->
+
+        <!-- #region ACTIVITY COLUMN -->
+        <ng-template #activity let-user="data">
+            @let userActivity = user?.lastLogin | activityTime: 'activity';
+
+            <div class="d-flex gap-1 align-items-center">
+                @if (userActivity === eSharedString.ONLINE) {
+                    <svg-icon
+                        [src]="sharedSvgRoutes.GREEN_CIRCLE"
+                        class="svg-size-10 d-flex align-items-center"
+                    ></svg-icon>
+
+                    <div class="text-color-black ta-font-bold text-size-14">
+                        {{ userActivity }}
+                    </div>
+                } @else {
+                    <div class="text-color-black-2 text-size-14">
+                        {{ userActivity }}
+                    </div>
+                }
+            </div>
+        </ng-template>
+        <!-- #region END OF ACTIVITY COLUMN -->
+
+        <!-- #region BANK DETAILS GROUP -->
+        <ng-template #bankName let-user="data">
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    user?.bankName
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template #bankRouting let-user="data">
+            <div
+                class="text-color-black-2 text-size-14 text-truncate"
+                [innerHtml]="
+                    user?.routingNumber
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template #bankAccount let-user="data">
+            <app-ta-password-account-hidden-characters
+                [passwordOrAccount]="user?.accountNumber"
+            ></app-ta-password-account-hidden-characters>
+        </ng-template>
+
+        <!-- #region END OF BANK DETAILS GROUP -->
+
+        <!-- #region PAYROLL DETAILS GROUP -->
+        <ng-template #payrollType let-user="data">
+            <div
+                class="text-color-black-2 text-size-14 text-truncate"
+                [innerHtml]="
+                    user?.payrollType
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template #payrollForm let-user="data">
+            @let is1099 =
+                user?.is1099
+                    ? etableStringEnum.FORM_TYPE_1
+                    : etableStringEnum.W_2;
+
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    is1099 | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template #payrollComm let-user="data">
+            @let commission =
+                user?.commission
+                    ? user?.commission + eStringPlaceholder.PERCENTAGE_SIGN
+                    : eStringPlaceholder.EMPTY;
+
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    commission | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template #payrollSalary let-user="data">
+            @let salaryFormat =
+                user?.salary
+                    ? (user?.salary | formatCurrency)
+                    : eStringPlaceholder.EMPTY;
+
+            <div
+                class="text-color-black ta-font-bold text-size-14 text-truncate"
+                [innerHtml]="
+                    salaryFormat | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+        <!-- #region END OF PAYROLL DETAILS GROUP -->
+
+        <!-- #region DATES GROUP -->
+
+        <ng-template #dateHired let-user="data">
+            @let formatDate =
+                user.startDate | date: eDateTimeFormat.ANGULAR_MM_DD_YY;
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    formatDate | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template #dateDeactivated let-user="data">
+            @let formatDate =
+                user.deactivatedAt | date: eDateTimeFormat.ANGULAR_MM_DD_YY;
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    formatDate | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template #dateAdded let-user="data">
+            @let formatDate =
+                user.createdAt | date: eDateTimeFormat.ANGULAR_MM_DD_YY;
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    formatDate | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template #dateEdited let-user="data">
+            @let formatDate =
+                user.updatedAt | date: eDateTimeFormat.ANGULAR_MM_DD_YY;
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    formatDate | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+        <!-- #region END OF DATES GROUP -->
     </app-new-table>
 }

@@ -3,10 +3,13 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    ElementRef,
     EventEmitter,
     Input,
     Output,
+    QueryList,
     TemplateRef,
+    ViewChildren,
 } from '@angular/core';
 import {
     CdkDragDrop,
@@ -90,6 +93,9 @@ import { TableScrollHelper } from '@shared/components/new-table/utils/helpers';
     ],
 })
 export class NewTableComponent<T> {
+    @ViewChildren('scrollableColumns')
+    scrollableColumns!: QueryList<ElementRef>;
+
     @Input() set columns(value: ITableColumn[]) {
         this.processColumns(value);
     }
@@ -101,18 +107,18 @@ export class NewTableComponent<T> {
     @Input() templates: { [key: string]: TemplateRef<T> } = {};
     @Input() expandedRows: Set<number> = new Set([]);
 
-    @Output() onShowMore: EventEmitter<boolean> = new EventEmitter();
-    @Output() onSortingChange: EventEmitter<ITableColumn> = new EventEmitter();
-    @Output() onColumnPinned: EventEmitter<ITableColumn> = new EventEmitter();
+    @Output() onColumnSort: EventEmitter<ITableColumn> = new EventEmitter();
+    @Output() onColumnPin: EventEmitter<ITableColumn> = new EventEmitter();
+    @Output() onColumnRemove: EventEmitter<string> = new EventEmitter();
     @Output() onColumnResize: EventEmitter<ITableResizeAction> =
         new EventEmitter();
     @Output() onColumnReorder: EventEmitter<ITableReorderAction> =
         new EventEmitter();
-
-    @Output() onRemoveColumn: EventEmitter<string> = new EventEmitter();
+    @Output() onShowMore: EventEmitter<boolean> = new EventEmitter();
 
     // columns
     public leftPinnedColumns: ITableColumn[] = [];
+    public leftPinnedDisabledColumns: ITableColumn[] = [];
     public mainColumns: ITableColumn[] = [];
     public rightPinnedColumns: ITableColumn[] = [];
     public hasActiveLeftPinnedColumns: boolean = false;
@@ -145,8 +151,12 @@ export class NewTableComponent<T> {
     constructor(private cdr: ChangeDetectorRef) {}
 
     private processColumns(columns: ITableColumn[]): void {
+        this.leftPinnedDisabledColumns = columns.filter(
+            (col) => col.pinned === ePosition.LEFT && col.isDisabled
+        );
+
         this.leftPinnedColumns = columns.filter(
-            (col) => col.pinned === ePosition.LEFT
+            (col) => col.pinned === ePosition.LEFT && !col.isDisabled
         );
 
         this.rightPinnedColumns = columns.filter(
@@ -155,40 +165,17 @@ export class NewTableComponent<T> {
 
         this.mainColumns = columns.filter((col) => !col.pinned);
 
-        this.hasActiveLeftPinnedColumns =
-            TableScrollHelper.countCheckedColumns(this.leftPinnedColumns) > 0;
-        this.hasActiveRightPinnedColumns =
-            TableScrollHelper.countCheckedColumns(this.rightPinnedColumns) > 0;
+        this.processScrollProperties();
+    }
+
+    private processScrollProperties(): void {
+        this.hasActiveLeftPinnedColumns = !!this.leftPinnedColumns?.length;
+        this.hasActiveRightPinnedColumns = !!this.rightPinnedColumns?.length;
 
         this.leftPinnedBorderWidth =
             TableScrollHelper.getTotalColumnWidth(this.leftPinnedColumns) + 8;
         this.rightPinnedBorderWidth =
             TableScrollHelper.getTotalColumnWidth(this.rightPinnedColumns) + 8;
-    }
-
-    public handlePinColumnClick(column: ITableColumn): void {
-        this.onColumnPinned.emit(column);
-    }
-
-    public handleSortColumnClick(column: ITableColumn): void {
-        const isSortDisabled =
-            !this.isTableLocked || !this.rows.length || !column.hasSort;
-
-        if (isSortDisabled) return;
-
-        this.onSortingChange.emit(column);
-    }
-
-    public onShowMoreClick(): void {
-        this.onShowMore.emit();
-    }
-
-    public onColumnResizing(isResize: boolean): void {
-        this.isResize = isResize;
-    }
-
-    public onColumnWidthResize(resizeAction: ITableResizeAction): void {
-        this.onColumnResize.emit(resizeAction);
     }
 
     public onHeadingHover(columnId: number, groupLabel: string): void {
@@ -198,15 +185,36 @@ export class NewTableComponent<T> {
         }
     }
 
-    public onRemoveColumnClick(columnKey: string): void {
-        this.onRemoveColumn.emit(columnKey);
+    public onColumnSortAction(column: ITableColumn): void {
+        const isSortDisabled =
+            !this.isTableLocked || !this.rows.length || !column.hasSort;
+
+        if (isSortDisabled) return;
+
+        this.onColumnSort.emit(column);
+    }
+
+    public onColumnPinAction(column: ITableColumn): void {
+        this.onColumnPin.emit(column);
+    }
+
+    public onColumnRemoveAction(columnKey: string): void {
+        this.onColumnRemove.emit(columnKey);
+    }
+
+    public onColumnResizeAction(resizeAction: ITableResizeAction): void {
+        this.onColumnResize.emit(resizeAction);
+    }
+
+    public onColumnResizing(isResize: boolean): void {
+        this.isResize = isResize;
     }
 
     public onReorderStart(): void {
         this.isReorder = true;
     }
 
-    public onReorderEnd(
+    public onColumnReorderAction(
         event: CdkDragDrop<string[]>,
         selectedColumns: ITableColumn[],
         groupColumnKey?: string
@@ -234,42 +242,43 @@ export class NewTableComponent<T> {
         this.groupHeadingHoverLabel = null;
     }
 
-    //TODO documents drawer
-    public isRowExpanded(rowId: number): boolean {
-        return this.expandedRows?.has(rowId);
+    public onShowMoreAction(): void {
+        this.onShowMore.emit();
     }
 
     public onHorizontalScroll(scrollEvent: ICustomScrollEvent): void {
         if (scrollEvent.eventAction === eCustomScroll.SCROLLING) {
             let isMaxScroll = false;
 
-            document
-                .querySelectorAll(eCustomScroll.NOT_PINNED_SCROLL_CONTAINER)
-                .forEach((element) => {
-                    element.scrollLeft = scrollEvent.scrollPosition;
+            this.scrollableColumns.forEach((column) => {
+                column.nativeElement.scrollLeft = scrollEvent.scrollPosition;
 
-                    if (
-                        Math.round(scrollEvent.scrollPosition) >=
-                        Math.round(element.scrollWidth - element.clientWidth) -
-                            3
-                    ) {
-                        isMaxScroll = true;
-                    }
-                });
-
-            const elements = document.getElementsByClassName(
-                eCustomScroll.SCROLLABLE_COLUMNS
-            );
-
-            Array.from(elements).forEach((element) => {
-                element.scrollLeft = scrollEvent.scrollPosition;
+                if (
+                    Math.round(scrollEvent.scrollPosition) >=
+                    Math.round(
+                        column.nativeElement.scrollWidth -
+                            column.nativeElement.clientWidth
+                    ) -
+                        3
+                ) {
+                    isMaxScroll = true;
+                }
             });
+
+            const isLeftBorderCurrentlyShown = this.isLeftScrollLineShown;
+            const isRightBorderCurrentlyShown = this.isRightScrollLineShown;
 
             if (scrollEvent.scrollPosition) {
                 this.isLeftScrollLineShown = true;
 
                 this.isRightScrollLineShown = !isMaxScroll;
             } else this.isLeftScrollLineShown = false;
+
+            if (
+                isLeftBorderCurrentlyShown !== this.isLeftScrollLineShown ||
+                isRightBorderCurrentlyShown !== this.isRightScrollLineShown
+            )
+                this.cdr.detectChanges();
         } else if (
             scrollEvent.eventAction === eCustomScroll.IS_SCROLL_SHOWING
         ) {
@@ -278,7 +287,10 @@ export class NewTableComponent<T> {
                 this.isRightScrollLineShown = false;
             } else this.isRightScrollLineShown = true;
         }
+    }
 
-        this.cdr.detectChanges();
+    //TODO documents drawer
+    public isRowExpanded(rowId: number): boolean {
+        return this.expandedRows?.has(rowId);
     }
 }

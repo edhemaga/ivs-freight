@@ -26,6 +26,7 @@ export * from './business-status.enum';
 export * from './shared-string.enum';
 export * from './avatar-color.enum';
 export * from './date-time-format.enum';
+export * from './thousand-separator-format.enum';
 export * from './sort-direction.enum';
 
 // Files

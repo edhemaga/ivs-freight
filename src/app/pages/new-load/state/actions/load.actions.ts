@@ -21,9 +21,13 @@ import {
     UpdateLoadStatusCommand,
 } from 'appcoretruckassist';
 
-// Interface
+// Interfaces
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interfaces';
+import {
+    ITableColumn,
+    ITableReorderAction,
+    ITableResizeAction,
+} from '@shared/components/new-table/interfaces';
 
 // Ca components
 import { IFilterAction } from 'ca-components';
@@ -160,6 +164,21 @@ export const toggleCardFlipViewMode = createAction(
 export const tableSortingChange = createAction(
     LoadStoreConstants.ACTION_SORTING_CHANGE,
     props<{ column: ITableColumn }>()
+);
+
+export const pinTableColumn = createAction(
+    LoadStoreConstants.ACTION_TOGGLE_PIN_TABLE_COLUMN,
+    props<{ column: ITableColumn }>()
+);
+
+export const tableResizeChange = createAction(
+    LoadStoreConstants.ACTION_RESIZE_CHANGE,
+    props<{ resizeAction: ITableResizeAction }>()
+);
+
+export const tableReorderChange = createAction(
+    LoadStoreConstants.ACTION_REORDER_CHANGE,
+    props<{ reorderAction: ITableReorderAction }>()
 );
 //#endregion
 

@@ -8,6 +8,8 @@
         miles: milesStoreService.miles$ | async,
         toolbarDropdownMenuActions:
             milesStoreService.toolbarDropdownMenuOptionsSelector$ | async,
+        getSortableColumnSelector:
+            milesStoreService.getSortableColumnSelector$ | async,
     };
 
 <div
@@ -21,6 +23,7 @@
             [title]="eSharedString.MILES"
             [isMarginTopDisabled]="true"
             [leftSide]="leftSide"
+            [rightSide]="rightSide"
             [hasPlusIcon]="false"
             [toolbarDropdownContent]="store.toolbarDropdownMenuActions"
             (toolbarDropdownAction)="onToolbarDropdownMenuActions($event)"
@@ -80,6 +83,21 @@
                 </div>
             </ng-template>
 
+            <ng-template #rightSide>
+                @if (store?.activeViewMode === eCommonElement.CARD) {
+                    @let getSortableColumn = store.getSortableColumnSelector;
+    
+                    <div>
+                        <app-ca-sorting-card-dropdown
+                            [options]="getSortableColumn"
+                            (onSortChange)="onSelectSortItem($event)"
+                            (onSelectItem)="onSelectSortItem($event)"
+                        ></app-ca-sorting-card-dropdown>
+                    </div>
+                    <ng-container *ngTemplateOutlet="divider"></ng-container>
+                }
+            </ng-template>
+
             <ng-template #divider>
                 <div class="new-table--toolbar-divider">
                     <div
@@ -92,6 +110,7 @@
         <router-outlet></router-outlet>
 
         <!-- Empty State - List, Card -->
+
         <app-ta-table-empty
             [activeViewMode]="store.activeViewMode"
             [btnText]="eSharedString.TRUCK_CAPITALIZED"

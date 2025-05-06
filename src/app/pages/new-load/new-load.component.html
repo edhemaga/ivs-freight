@@ -16,159 +16,190 @@
         tableSettingsSelector: loadStoreService.tableSettingsSelector$ | async,
     };
 
-@if (store) {
-    <app-new-table-toolbar
-        [title]="'Load'"
-        [leftSide]="leftSide"
-        [rightSide]="rightSide"
-        [toolbarDropdownContent]="store.toolbarDropdownMenuOptions"
-        (onPlusClick)="
-            onToolBarAction({
-                action: generalActions.OPEN_MODAL,
-            })
-        "
-        (toolbarDropdownAction)="onToolbarDropdownMenuActions($event)"
-    >
-        <ng-template #leftSide>
-            <app-toolbar-tabs-wrapper
-                class="d-flex align-items-center"
-                [data]="store.toolbarTabs"
-                [selectedTab]="store.selectedTab"
-                [viewMode]="store.activeViewMode"
-                [betweenTabsTemplate]="betweenTabsTemplate"
-                (onTabChange)="onToolBarAction($event)"
-            ></app-toolbar-tabs-wrapper>
+<div
+    class="d-inline-block"
+    [class.w-100]="store?.activeViewMode !== eCommonElement.LIST"
+>
+    @if (store) {
+        @let isFilterDisabled = !store.viewData.length;
 
-            <ng-template #betweenTabsTemplate>
-                @if (selectedTab !== eLoadStatusStringType.TEMPLATE) {
-                    <div
-                        class="text-color-blue-18 text-size-14 ta-font-bold br-2 h-26 w-88 justify-content-center d-flex align-items-center"
-                        [ngClass]="{
-                            'background-blue-16': store.selectedCount,
-                        }"
+        <!-- Toolbar -->
+
+        <app-new-table-toolbar
+            [title]="'Load'"
+            [leftSide]="leftSide"
+            [rightSide]="rightSide"
+            [toolbarDropdownContent]="store.toolbarDropdownMenuOptions"
+            (onPlusClick)="
+                onToolBarAction({
+                    action: generalActions.OPEN_MODAL,
+                })
+            "
+            (toolbarDropdownAction)="onToolbarDropdownMenuActions($event)"
+        >
+            <ng-template #leftSide>
+                <app-toolbar-tabs-wrapper
+                    class="d-flex align-items-center"
+                    [data]="store.toolbarTabs"
+                    [selectedTab]="store.selectedTab"
+                    [viewMode]="store.activeViewMode"
+                    [betweenTabsTemplate]="betweenTabsTemplate"
+                    (onTabChange)="onToolBarAction($event)"
+                ></app-toolbar-tabs-wrapper>
+
+                <ng-template #betweenTabsTemplate>
+                    @if (selectedTab !== eLoadStatusStringType.TEMPLATE) {
+                        <div
+                            class="text-color-blue-18 text-size-14 ta-font-bold br-2 h-26 w-88 justify-content-center d-flex align-items-center"
+                            [ngClass]="{
+                                'background-blue-16': store.selectedCount,
+                            }"
+                        >
+                            {{ store.totalSum | currency: 'USD' }}
+                        </div>
+
+                        <ng-container
+                            *ngTemplateOutlet="divider"
+                        ></ng-container>
+                    }
+                </ng-template>
+
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+                <ca-search-multiple-states-2
+                    [selectedTab]="selectedTab"
+                    (onSearchQueryChange)="onSearchQueryChange($event)"
+                ></ca-search-multiple-states-2>
+
+                <div class="d-flex gap-1 align-items-center">
+                    <ng-container *ngTemplateOutlet="divider"></ng-container>
+
+                    @if (selectedTab !== eLoadStatusStringType.TEMPLATE) {
+                        <app-ca-filter-time-dropdown
+                            type="TimeFilter"
+                            subType="past"
+                            [entityType]="selectedTab"
+                            (setFilter)="setFilters($event)"
+                        >
+                        </app-ca-filter-time-dropdown>
+
+                        <app-ca-filter-list-dropdown
+                            type="Dispatcher"
+                            [list]="store.filtersDropdownList.dispatcherFilters"
+                            [entityType]="selectedTab"
+                            (setFilter)="setFilters($event)"
+                        >
+                        </app-ca-filter-list-dropdown>
+
+                        <app-ca-filter-list-dropdown
+                            type="Status"
+                            [list]="store.filtersDropdownList.statusFilters"
+                            [entityType]="selectedTab"
+                            (setFilter)="setFilters($event)"
+                        >
+                        </app-ca-filter-list-dropdown>
+                    }
+
+                    <app-ca-filter
+                        subType="all"
+                        type="moneyFilter"
+                        icon="dollar"
+                        filterTitle="Money Filter"
+                        [entityType]="selectedTab"
+                        [isMoneyFilter]="true"
+                        [isLoadType]="true"
+                        (setFilter)="setFilters($event)"
+                        (clearAll)="setFilters($event)"
                     >
-                        {{ store.totalSum | currency: 'USD' }}
+                    </app-ca-filter>
+                </div>
+
+                @if (
+                    selectedTab === eLoadStatusStringType.TEMPLATE &&
+                    store.selectedCount
+                ) {
+                    <ng-container *ngTemplateOutlet="divider"></ng-container>
+                    <div
+                        class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
+                    >
+                        {{ store.selectedCount }} Selected
                     </div>
+                }
+            </ng-template>
+
+            <ng-template #rightSide>
+                @if (store.selectedCount) {
+                    @let isPending =
+                        selectedTab === eLoadStatusStringType.PENDING;
+                    @let isTemplate =
+                        selectedTab === eLoadStatusStringType.TEMPLATE;
+                    @if (isPending || isTemplate) {
+                        <svg-icon
+                            class="background-hover-bw2 svg-fill-red-10 svg-hover-red-14 svg-size-16 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26"
+                            [src]="sharedIcons.DELETE_ICON"
+                            (click)="
+                                onDeleteLoadList(
+                                    isTemplate,
+                                    store.selectedLoads
+                                )
+                            "
+                        >
+                        </svg-icon>
+                    }
+
+                    <svg-icon
+                        [src]="sharedIcons.PRINT_ICON"
+                        class="background-hover-dark-2 svg-fill-muted svg-hover-black svg-size-18 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26 m-l-4"
+                    >
+                    </svg-icon>
+                }
+
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+
+                <div
+                    class="text-color-white background-bw6-2 background-hover-black text-size-11 ta-font-bold br-2 p-x-8 p-y-4 c-pointer"
+                >
+                    LTL BUILDER
+                </div>
+
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+
+                @if (store?.activeViewMode === eCommonElement.CARD) {
+                    @let getSortableColumn = store.getSortableColumnSelector;
+
+                    <div class="m-r-8">
+                        <app-ca-sorting-card-dropdown
+                            [options]="getSortableColumn"
+                            [isDisabled]="isFilterDisabled"
+                            (onSortChange)="onSelectSortItem($event)"
+                            (onSelectItem)="onSelectSortItem($event)"
+                        ></app-ca-sorting-card-dropdown>
+                    </div>
+
+                    <app-ca-checkbox-selected-count
+                        [itemsTotalCount]="store.viewData.length"
+                        [itemsSelectedCount]="store.selectedCount"
+                        (onCheckboxCountClick)="onCheckboxCountClick($event)"
+                    ></app-ca-checkbox-selected-count>
 
                     <ng-container *ngTemplateOutlet="divider"></ng-container>
                 }
             </ng-template>
 
-            <ng-container *ngTemplateOutlet="divider"></ng-container>
-            <ca-search-multiple-states-2
-                [selectedTab]="selectedTab"
-                (onSearchQueryChange)="onSearchQueryChange($event)"
-            ></ca-search-multiple-states-2>
-
-            <div class="d-flex gap-1 align-items-center">
-                <ng-container *ngTemplateOutlet="divider"></ng-container>
-
-                @if (selectedTab !== eLoadStatusStringType.TEMPLATE) {
-                    <app-ca-filter-time-dropdown
-                        type="TimeFilter"
-                        subType="past"
-                        [entityType]="selectedTab"
-                        (setFilter)="setFilters($event)"
-                    >
-                    </app-ca-filter-time-dropdown>
-
-                    <app-ca-filter-list-dropdown
-                        type="Dispatcher"
-                        [list]="store.filtersDropdownList.dispatcherFilters"
-                        [entityType]="selectedTab"
-                        (setFilter)="setFilters($event)"
-                    >
-                    </app-ca-filter-list-dropdown>
-
-                    <app-ca-filter-list-dropdown
-                        type="Status"
-                        [list]="store.filtersDropdownList.statusFilters"
-                        [entityType]="selectedTab"
-                        (setFilter)="setFilters($event)"
-                    >
-                    </app-ca-filter-list-dropdown>
-                }
-
-                <app-ca-filter
-                    subType="all"
-                    type="moneyFilter"
-                    icon="dollar"
-                    filterTitle="Money Filter"
-                    [entityType]="selectedTab"
-                    [isMoneyFilter]="true"
-                    [isLoadType]="true"
-                    (setFilter)="setFilters($event)"
-                    (clearAll)="setFilters($event)"
-                >
-                </app-ca-filter>
-            </div>
-
-            @if (
-                selectedTab === eLoadStatusStringType.TEMPLATE &&
-                store.selectedCount
-            ) {
-                <ng-container *ngTemplateOutlet="divider"></ng-container>
-                <div
-                    class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
-                >
-                    {{ store.selectedCount }} Selected
+            <ng-template #divider>
+                <div class="new-table--toolbar-divider">
+                    <div
+                        class="new-table--toolbar-divider-border background-light-grey-6"
+                    ></div>
                 </div>
-            }
-        </ng-template>
+            </ng-template>
+        </app-new-table-toolbar>
 
-        <ng-template #rightSide>
-            @if (store.selectedCount) {
-                @let isPending = selectedTab === eLoadStatusStringType.PENDING;
-                @let isTemplate =
-                    selectedTab === eLoadStatusStringType.TEMPLATE;
-                @if (isPending || isTemplate) {
-                    <svg-icon
-                        class="background-hover-bw2 svg-fill-red-10 svg-hover-red-14 svg-size-16 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26"
-                        [src]="sharedIcons.DELETE_ICON"
-                        (click)="
-                            onDeleteLoadList(isTemplate, store.selectedLoads)
-                        "
-                    >
-                    </svg-icon>
-                }
+        @if (store?.activeViewMode === eCommonElement.LIST) {
+            <app-new-load-table></app-new-load-table>
+        } @else {
+            <app-new-load-cards></app-new-load-cards>
+        }
 
-                <svg-icon
-                    [src]="sharedIcons.PRINT_ICON"
-                    class="background-hover-dark-2 svg-fill-muted svg-hover-black svg-size-18 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26 m-l-4"
-                >
-                </svg-icon>
-            }
-
-            <ng-container *ngTemplateOutlet="divider"></ng-container>
-            <div
-                class="text-color-white background-bw6-2 background-hover-black text-size-11 ta-font-bold br-2 p-x-8 p-y-4 c-pointer"
-            >
-                LTL BUILDER
-            </div>
-            <ng-container *ngTemplateOutlet="divider"></ng-container>
-
-            @if (store?.activeViewMode === eCommonElement.CARD) {
-                <app-ca-checkbox-selected-count
-                    [itemsTotalCount]="store.viewData.length"
-                    [itemsSelectedCount]="store.selectedCount"
-                    (onCheckboxCountClick)="onCheckboxCountClick($event)"
-                ></app-ca-checkbox-selected-count>
-                <ng-container *ngTemplateOutlet="divider"></ng-container>
-            }
-        </ng-template>
-        <ng-template #divider>
-            <div class="new-table--toolbar-divider">
-                <div
-                    class="new-table--toolbar-divider-border background-light-grey-6"
-                ></div>
-            </div>
-        </ng-template>
-    </app-new-table-toolbar>
-
-    <!-- TODO: Should this be moved to separete routes? -->
-    @if (store?.activeViewMode === eCommonElement.LIST) {
-        <app-new-load-table></app-new-load-table>
-    } @else {
-        <app-new-load-cards></app-new-load-cards>
+        <!-- Empty State - List, Card -->
     }
-}
+</div>

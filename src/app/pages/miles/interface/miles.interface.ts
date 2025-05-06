@@ -1,16 +1,15 @@
-import { TruckTypeResponse } from 'appcoretruckassist';
+import { ISingleValue } from '@shared/interfaces';
 
-export interface ICountPercent {
-    count: number | undefined;
-    percent: number | undefined;
-}
+// models
+import { TruckTypeResponse } from 'appcoretruckassist';
 
 export interface IMilesModel {
     id: number;
+    isSelected: boolean;
+    unit: string;
+    truckType: TruckTypeResponse;
     truckId: number;
-    unit: string | undefined;
-    truckType: TruckTypeResponse | undefined;
-    stopsCount: number | undefined;
+    stopsCount: ISingleValue;
     stopsPickup: ICountPercent;
     stopsDelivery: ICountPercent;
     fuelCount: ICountPercent;
@@ -18,12 +17,17 @@ export interface IMilesModel {
     deadHeadCount: ICountPercent;
     repairCount: ICountPercent;
     towingCount: ICountPercent;
-    loadCount: number | undefined;
-    fuelGalons: number | null | undefined;
-    fuelCost: number | null | undefined;
-    fuelMpg: number | null | undefined;
-    milesLoaded: number | undefined;
-    milesEmpty: number | undefined;
-    milesTotal: number | undefined;
-    revenue: number | undefined;
+    loadCount: ISingleValue;
+    fuelGalons: ISingleValue;
+    fuelCost: number;
+    fuelMpg: number;
+    milesLoaded: ISingleValue;
+    milesEmpty: ISingleValue;
+    milesTotal: ISingleValue;
+    revenue: ISingleValue;
+}
+
+export interface ICountPercent {
+    count: number;
+    percent: number;
 }

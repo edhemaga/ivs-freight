@@ -18,6 +18,8 @@ import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 import {
     ITableColumn,
     ITableConfig,
+    ITableReorderAction,
+    ITableResizeAction,
 } from '@shared/components/new-table/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { IFilterAction } from 'ca-components';
@@ -354,6 +356,27 @@ export class LoadStoreService {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_SORTING_CHANGE,
             column,
+        });
+    }
+
+    public dispatchColumnPinnedAction(column: ITableColumn): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_TOGGLE_PIN_TABLE_COLUMN,
+            column,
+        });
+    }
+
+    public dispatchResizeColumn(resizeAction: ITableResizeAction): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_RESIZE_CHANGE,
+            resizeAction,
+        });
+    }
+
+    public dispatchReorderColumn(reorderAction: ITableReorderAction): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_REORDER_CHANGE,
+            reorderAction,
         });
     }
 }

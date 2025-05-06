@@ -13,25 +13,27 @@ export class TableColumnClassPipe implements PipeTransform {
         isTableLocked,
         isGroup,
         isEmptyTable,
-        isAlignedRight,
+        isGroupAlignedRight,
         isTableColumnInnerClass,
         hasLabelTop,
+        isPinnedRight,
     }: {
         column: ITableColumn;
         isTableLocked: boolean;
         isGroup: boolean;
         isEmptyTable: boolean;
-        isAlignedRight: boolean;
+        isGroupAlignedRight: boolean;
         isTableColumnInnerClass: boolean;
         hasLabelTop: boolean;
+        isPinnedRight: boolean;
     }): object {
         return isTableColumnInnerClass
             ? {
                   'justify-content-between': !isTableLocked,
-                  'justify-content-end': isAlignedRight,
+                  'justify-content-end': isGroupAlignedRight,
                   'position-relative bottom-4': !isTableLocked && hasLabelTop,
-                  'h-18': !isTableLocked && !isAlignedRight,
-                  'aligned-right': isTableLocked && isAlignedRight,
+                  'h-18': !isTableLocked && !isGroupAlignedRight,
+                  'aligned-right': isTableLocked && isGroupAlignedRight,
               }
             : {
                   'text-color-bw6-2': !column?.hasSort || !column?.direction,
@@ -45,11 +47,12 @@ export class TableColumnClassPipe implements PipeTransform {
                   'text-color-blue-18 text-hover-blue-15 svg-fill-blue-13 svg-hover-blue-18':
                       column?.direction && isTableLocked,
                   'flex-column align-items-start mt-auto':
-                      isGroup && !isAlignedRight,
+                      isGroup && !isGroupAlignedRight,
                   'align-items-end': !isGroup,
                   'disable-text-selection': !isTableLocked,
-                  'order-2 m-l-4': isAlignedRight && isTableLocked,
+                  'order-2 m-l-4': isGroupAlignedRight && isTableLocked,
                   'cursor-grab': !isTableLocked && !column.isDisabled,
+                  'justify-content-center': isPinnedRight,
               };
     }
 }

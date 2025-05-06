@@ -1,6 +1,10 @@
 // Interfaces
 import { ILoadState, IMappedLoad } from '@pages/new-load/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interfaces';
+import {
+    ITableColumn,
+    ITableReorderAction,
+    ITableResizeAction,
+} from '@shared/components/new-table/interfaces';
 
 // Models
 import {
@@ -13,6 +17,7 @@ import {
     LoadStatusResponse,
     LoadTemplateListResponse,
     RoutingResponse,
+    SortOrder,
 } from 'appcoretruckassist';
 
 // Enums
@@ -167,8 +172,23 @@ export function onTableSortingChange(
     state: ILoadState,
     column: ITableColumn
 ): ILoadState {
-    const { columns, sortKey, sortDirection, label } =
-        StoreFunctionsHelper.toggleSort(column, state.tableColumns);
+    let sortItem: {
+        columns: ITableColumn[];
+        sortKey: string;
+        sortDirection: SortOrder | null;
+        label: string;
+    };
+
+    if (state.activeViewMode === eCommonElement.CARD) {
+        sortItem = StoreFunctionsHelper.toggleSortCard(
+            column,
+            state.tableColumns
+        );
+    } else {
+        sortItem = StoreFunctionsHelper.toggleSort(column, state.tableColumns);
+    }
+
+    const { columns, sortKey, sortDirection, label } = sortItem;
 
     return {
         ...state,
@@ -179,6 +199,55 @@ export function onTableSortingChange(
             sortKey,
             label,
         },
+    };
+}
+
+export function pinTableColumn(
+    state: ILoadState,
+    column: ITableColumn
+): ILoadState {
+    return {
+        ...state,
+        tableColumns: StoreFunctionsHelper.togglePinned(
+            column,
+            state.tableColumns
+        ),
+    };
+}
+
+export function tableResizeChange(
+    state: ILoadState,
+    resizeAction: ITableResizeAction
+): ILoadState {
+    const { tableColumns } = state;
+    const { id, newWidth } = resizeAction;
+
+    const resizedColumns = StoreFunctionsHelper.updateColumnWidth(
+        tableColumns,
+        id,
+        newWidth
+    );
+
+    return {
+        ...state,
+        tableColumns: resizedColumns,
+    };
+}
+
+export function tableReorderChange(
+    state: ILoadState,
+    reorderAction: ITableReorderAction
+): ILoadState {
+    const { tableColumns } = state;
+
+    const reorderedColumns = StoreFunctionsHelper.reorderColumns(
+        tableColumns,
+        reorderAction
+    );
+
+    return {
+        ...state,
+        tableColumns: reorderedColumns,
     };
 }
 //#endregion

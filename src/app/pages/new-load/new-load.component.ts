@@ -32,6 +32,7 @@ import {
     CaSearchMultipleStates2Component,
     CaCheckboxSelectedCountComponent,
     IFilterAction,
+    CaSortingCardDropdownComponent,
 } from 'ca-components';
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
 import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
@@ -41,9 +42,10 @@ import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-mo
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-// Interface
+// Interfaces
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 import { IMappedLoad } from '@pages/new-load/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 @Component({
     selector: 'app-new-load',
@@ -67,6 +69,7 @@ import { IMappedLoad } from '@pages/new-load/interfaces';
         CaSearchMultipleStates2Component,
         SvgIconComponent,
         CaCheckboxSelectedCountComponent,
+        CaSortingCardDropdownComponent,
     ],
 })
 export class NewLoadComponent<T> {
@@ -220,5 +223,9 @@ export class NewLoadComponent<T> {
             columnType,
             isChecked
         );
+    }
+
+    public onSelectSortItem(column: ITableColumn): void {
+        this.loadStoreService.dispatchSortingChange(column);
     }
 }

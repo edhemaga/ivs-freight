@@ -9,7 +9,11 @@
             <div class="report-card-title d-f-aic-jcb">
                 @if (payrollReport) {
                     <div class="d-flex align-items-center">
-                        <div class="payroll_report_title">Report</div>
+                        <div
+                            class="payroll_report_title text-size-16 ta-font-extra-bold text-color-black"
+                        >
+                            Report
+                        </div>
                         <div class="payroll_chip">
                             {{ includedLoads?.length }} STOP ({{
                                 payrollReport.extraStopCount
@@ -90,7 +94,9 @@
         <div class="report-card">
             <div class="report-card-title d-f-aic-jcb">
                 <div class="d-flex align-items-center">
-                    <div class="payroll_report_title">
+                    <div
+                        class="payroll_report_title text-size-16 ta-font-extra-bold text-color-black"
+                    >
                         Period
                         {{ payrollReport.periodStart | date: 'MM/dd/yy' }}
                     </div>
@@ -113,7 +119,9 @@
 
 <!-- TABLE TEMPLATES -->
 <ng-template #customCountTemplate let-data let-index="index">
-    <div class="custom-load-index text-color-black">{{ index + 1 }}</div>
+    <div class="custom-load-index text-color-black user-select-none">
+        {{ index + 1 }}
+    </div>
 </ng-template>
 
 <ng-template #customFeeTemplate let-data let-index="index">
@@ -131,7 +139,6 @@
         [class.group-loads-with-border-left]="data.hasBorderLeft"
         [class.first-in-group]="data.firstInRow"
         [class.last-in-group]="data.lastInRow"
-
     >
         @if (data.orderNumber) {
             <svg-icon
