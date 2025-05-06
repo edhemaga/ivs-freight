@@ -11,7 +11,10 @@
             Total Miles
         </div>
         <div class="text-size-18 ta-font-medium text-color-black m-b-8">
-            {{ (total.totalMiles | thousandSeparator) ?? '0.0' }}
+            {{
+                total.totalMiles
+                    | number: eThousandSeparatorFormat.DECIMAL_FORMAT
+            }}
         </div>
 
         @let totalUnitCount = total.loadedMiles + total.emptyMiles;
@@ -38,7 +41,10 @@
                         columns;
                         context: {
                             label: 'Loaded',
-                            value: (total.loadedMiles | thousandSeparator) ?? 0,
+                            value:
+                                (total.loadedMiles
+                                | number
+                                    : eThousandSeparatorFormat.DECIMAL_FORMAT),
                             bgClass: 'background-muted',
                             isCircleVisible: true,
                         }
@@ -51,7 +57,10 @@
                         columns;
                         context: {
                             label: 'Empty',
-                            value: (total.emptyMiles | thousandSeparator) ?? 0,
+                            value:
+                                (total.emptyMiles
+                                | number
+                                    : eThousandSeparatorFormat.DECIMAL_FORMAT),
                             bgClass: 'background-dark-2',
                             isCircleVisible: true,
                         }
@@ -179,7 +188,9 @@
             >
                 <div class="d-flex flex-wrap p-b-12">
                     @let galons =
-                        ((total.fuelTotalGalons | thousandSeparator) ??
+                        ((total.fuelTotalGalons
+                            | number
+                                : eThousandSeparatorFormat.REGULAR_FORMAT) ??
                             total.fuelTotalGalons) + ' gal';
                     <ng-container
                         *ngTemplateOutlet="
@@ -216,9 +227,7 @@
                             columns;
                             context: {
                                 label: 'Revenue',
-                                value:
-                                    '$' +
-                                    ((total.revenue | thousandSeparator) ?? 0),
+                                value: total.revenue | currency,
                             }
                         "
                     >
