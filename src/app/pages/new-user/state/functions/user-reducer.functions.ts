@@ -1,20 +1,22 @@
-// Interfaces
-import { IMappedUser, IUserState } from '@pages/new-user/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interfaces';
-
 // Models
 import {
     CompanyUserListResponse,
+    CompanyUserResponse,
     DepartmentFilterResponse,
 } from 'appcoretruckassist';
 
+import { eCardFlipViewMode, eStatusTab } from '@shared/enums';
+
+import { ITableColumn } from '@shared/components/new-table/interfaces';
+import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 // Enums
 import { eCommonElement, eGeneralActions, IFilterAction } from 'ca-components';
-import { eCardFlipViewMode, eStatusTab } from '@shared/enums';
+
+// Interfaces
+import { IMappedUser, IUserState } from '@pages/new-user/interfaces';
 
 // Helpers
 import { UsersHelper } from '@pages/new-user/utils/helpers';
-import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 import {
     DropdownMenuToolbarContentHelper,
     DropdownMenuColumnsActionsHelper,
@@ -234,6 +236,20 @@ export function toggleColumnVisibility(
     return {
         ...state,
         tableColumns,
+    };
+}
+
+export function onUserEdit(
+    state: IUserState,
+    user: CompanyUserResponse
+): IUserState {
+    return {
+        ...state,
+        users: state.users.map((_user) =>
+            _user.id === user.id
+                ? { ..._user, ...UsersHelper.usersMapper([user])[0] }
+                : _user
+        ),
     };
 }
 //#endregion

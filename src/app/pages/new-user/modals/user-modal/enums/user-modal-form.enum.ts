@@ -12,4 +12,5 @@ export enum eUserModalForm {
     START_DATE = 'startDate',
     SALARY = 'salary',
     IS_1099 = 'is1099',
+    INCLUDED_IN_PAYROLL = 'includeInPayroll',
 }
