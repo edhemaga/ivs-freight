@@ -1,23 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { forkJoin, of } from 'rxjs';
 
+// Models
 import { Tabs } from '@ca-shared/models/tabs.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
     CompanyUserModalResponse,
     CompanyUserResponse,
 } from 'appcoretruckassist';
-import { forkJoin, of } from 'rxjs';
+import { AddressEntity } from '@ca-shared/models/address-entity.model';
 
-import { UserModalInputConfigPipe } from '@pages/new-user/modals/user-modal/pipes/user-modal-input-config.pipe';
-
-import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
-import { eGeneralActions } from '@shared/enums';
-
-import { UserService } from '@pages/new-user/services/user.service';
-import { UserStoreService } from '@pages/new-user/state/services/user-store.service';
-
+// Components
 import { SvgIconComponent } from 'angular-svg-icon';
 import {
     CaCustomCardComponent,
@@ -29,13 +24,33 @@ import {
     eModalButtonClassType,
     eModalButtonSize,
     InputTestComponent,
+    CaInputAddressDropdownComponent,
+    CaInputNoteComponent,
 } from 'ca-components';
 
+// Pipes
+import { UserModalInputConfigPipe } from '@pages/new-user/modals/user-modal/pipes/user-modal-input-config.pipe';
+
+// Enums
+import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
+import { eGeneralActions } from '@shared/enums';
+
+// Services
+import { UserService } from '@pages/new-user/services/user.service';
+import { UserStoreService } from '@pages/new-user/state/services/user-store.service';
+import { AddressService } from '@shared/services/address.service';
+
+// Interfaces
 import { IMappedUser, IUserModal } from '@pages/new-user/interfaces';
 
+// Mixins
+import { AddressMixin } from '@shared/mixins';
+
+// Helpers
 import { UserModalHelper } from '@pages/new-user/modals/user-modal/utils/helpers';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers';
 
+// Svg Routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
@@ -55,13 +70,22 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaInputDropdownTestComponent,
         InputTestComponent,
         CaCustomCardComponent,
+        CaInputAddressDropdownComponent,
+        CaInputNoteComponent,
         CaInputDatetimePickerComponent,
 
         // Pipes
         UserModalInputConfigPipe,
     ],
 })
-export class UserModalComponent implements OnInit {
+export class UserModalComponent
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnInit
+{
     // Inputs
     @Input() editData: IUserModal;
 
@@ -85,12 +109,18 @@ export class UserModalComponent implements OnInit {
     public userForm: UntypedFormGroup;
     public userTabs: Tabs[] = UserModalHelper.getUserTabs();
 
+    // Address
+    public selectedAddress: AddressEntity = null;
+
     constructor(
         private userService: UserService,
         public userStoreService: UserStoreService,
+        public addressService: AddressService,
 
         private ngbActiveModal: NgbActiveModal
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.setupModal();
@@ -111,6 +141,8 @@ export class UserModalComponent implements OnInit {
                 this.userForm = UserModalHelper.createForm(userData || {});
 
                 this.user = userData;
+
+                this.selectedAddress = userData?.address;
 
                 this.modalTitle = UserModalHelper.generateModalTitle(
                     this.isEditMode
@@ -198,6 +230,15 @@ export class UserModalComponent implements OnInit {
                 }
 
                 break;
+        }
+    }
+
+    public onHandleAddress(event: {
+        address: AddressEntity;
+        valid: boolean;
+    }): void {
+        if (event.valid) {
+            this.selectedAddress = event.address;
         }
     }
 

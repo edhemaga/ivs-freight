@@ -14,6 +14,8 @@ import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
 
 // Validators
 import {
+    addressUnitValidation,
+    addressValidation,
     firstNameValidation,
     lastNameValidation,
     phoneExtension,
@@ -60,6 +62,15 @@ export class UserModalHelper {
                 userData?.personalPhone,
                 [phoneFaxRegex]
             ),
+            [eUserModalForm.ADDRESS]: new UntypedFormControl(
+                userData?.address,
+                [...addressValidation]
+            ),
+            [eUserModalForm.ADDRESS_UNIT]: new UntypedFormControl(
+                userData?.address?.addressUnit,
+                [...addressUnitValidation]
+            ),
+            [eUserModalForm.NOTE]: new UntypedFormControl(userData?.note),
             [eUserModalForm.START_DATE]: new UntypedFormControl(
                 userData?.startDate,
                 [Validators.required]
