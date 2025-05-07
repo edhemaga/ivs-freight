@@ -21,41 +21,6 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 export class UserModalHelper {
-    static getUserTabs(): Tabs[] {
-        return [
-            {
-                id: 1,
-                name: 'Basic',
-                checked: true,
-            },
-            {
-                id: 2,
-                name: 'Additional',
-                checked: false,
-                disabled: true,
-            },
-        ];
-    }
-
-    static getDepartmentTabs(isAdmin: boolean): Tabs[] {
-        return [
-            {
-                id: 1,
-                name: 'User',
-                checked: !isAdmin,
-            },
-            {
-                id: 2,
-                name: 'Admin',
-                checked: isAdmin,
-            },
-        ];
-    }
-
-    static generateModalTitle(isEdit: boolean): string {
-        return isEdit ? 'Edit User' : 'Invite User';
-    }
-
     static createForm(userData: CompanyUserResponse): UntypedFormGroup {
         return new UntypedFormGroup({
             [eUserModalForm.EMAIL]: new UntypedFormControl(userData?.email, [
@@ -95,6 +60,64 @@ export class UserModalHelper {
                 userData?.personalPhone,
                 [phoneFaxRegex]
             ),
+            [eUserModalForm.START_DATE]: new UntypedFormControl(
+                userData?.startDate,
+                [Validators.required]
+            ),
+            [eUserModalForm.SALARY]: new UntypedFormControl(userData?.salary, [
+                Validators.required,
+            ]),
+            [eUserModalForm.IS_1099]: new UntypedFormControl(userData?.is1099),
         });
+    }
+
+    static generateModalTitle(isEdit: boolean): string {
+        return isEdit ? 'Edit User' : 'Invite User';
+    }
+
+    static getDepartmentTabs(isAdmin: boolean): Tabs[] {
+        return [
+            {
+                id: 1,
+                name: 'User',
+                checked: !isAdmin,
+            },
+            {
+                id: 2,
+                name: 'Admin',
+                checked: isAdmin,
+            },
+        ];
+    }
+
+    static getTaxFormTabs(is1099: boolean): Tabs[] {
+        return [
+            {
+                id: 1,
+                name: '1099',
+                checked: is1099,
+            },
+            {
+                id: 2,
+                name: 'W-2',
+                checked: !is1099,
+            },
+        ];
+    }
+
+    static getUserTabs(): Tabs[] {
+        return [
+            {
+                id: 1,
+                name: 'Basic',
+                checked: true,
+            },
+            {
+                id: 2,
+                name: 'Additional',
+                checked: false,
+                disabled: true,
+            },
+        ];
     }
 }

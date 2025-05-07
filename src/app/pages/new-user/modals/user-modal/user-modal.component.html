@@ -138,6 +138,46 @@
                         </div>
                     </app-ca-custom-card>
                 </div>
+
+                <app-ca-custom-card
+                    customDividerClass="divider--dark"
+                    cardName="Include in Payroll"
+                    [hasDivider]="true"
+                    [isCardOpen]="true"
+                    [animationMarginParams]="{
+                        marginTop: '18px',
+                        marginBottom: '0',
+                    }"
+                >
+                    <div origin>
+                        <div class="d-grid gap-12 d-grid-payroll-payment">
+                            @let salary =
+                                { configType: eUserModalForm.SALARY }
+                                    | userModalInputConfig;
+
+                            <ca-input-test
+                                formControlName="salary"
+                                [inputConfig]="salary"
+                            ></ca-input-test>
+
+                            @let startDate =
+                                { configType: eUserModalForm.START_DATE }
+                                    | userModalInputConfig;
+
+                            <ca-input-datetime-picker
+                                formControlName="startDate"
+                                [inputConfig]="startDate"
+                            ></ca-input-datetime-picker>
+
+                            <app-ca-tab-switch
+                                [tabs]="taxFormTabs"
+                                [type]="'type4-modal-popup'"
+                                (switchClicked)="onTaxFormTabChange($event)"
+                            >
+                            </app-ca-tab-switch>
+                        </div>
+                    </div>
+                </app-ca-custom-card>
             </form>
         }
     </div>

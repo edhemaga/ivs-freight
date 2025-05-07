@@ -61,6 +61,8 @@ import { milesReducer } from '@pages/miles/state/reducers/miles.reducer';
 import { UserEffects } from '@pages/new-user/state/effects/user.effect';
 import { userReducer } from '@pages/new-user/state/reducers/user-reducer';
 
+import { AccountEffect } from '@pages/new-account/state/effects/account.effect';
+import { accountReducer } from '@pages/new-account/state/reducers/account.reducer';
 // Load
 // TODO: IT WILL BE RENAMED AND REMOVED ONCE WE HAVE NEW LOAD READY !!! DON'T COMMENT PR PLEASE :*
 import { loadReducer } from '@pages/load/state/reducers/load.reducer';
@@ -113,12 +115,14 @@ export const appConfig: ApplicationConfig = {
             MilesEffects,
             NewLoadEffect,
             UserEffects,
+            AccountEffect,
         ]),
         StoreModule.forRoot({
             load: loadReducer,
             miles: milesReducer,
             newLoad: NewLoadReducer,
             user: userReducer,
+            account: accountReducer,
         }),
         StoreDevtoolsModule.instrument({
             name: 'Carriera App',

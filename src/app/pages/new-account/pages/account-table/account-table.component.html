@@ -1,0 +1,23 @@
+@let store =
+    {
+        columns: accountStore.tableColumnsSelector$ | async,
+        viewData: accountStore.accountListSelector$ | async,
+    };
+
+@if (store) {
+    @let templates =
+        {
+            name,
+        };
+
+    <app-new-table
+        [columns]="store.columns"
+        [rows]="store.viewData"
+        [templates]="templates"
+    >
+        <!-- #region NAME COLUMN -->
+        <ng-template let-account="data" #name>
+            {{ account.name }}
+        </ng-template>
+    </app-new-table>
+}

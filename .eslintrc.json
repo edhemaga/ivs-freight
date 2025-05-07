@@ -184,7 +184,10 @@
                             },
                             {
                                 "groupName": "pipes",
-                                "elementNamePattern": ["^@shared/pipes"]
+                                "elementNamePattern": [
+                                    "^@shared/pipes",
+                                    "^.*pipes.*"
+                                ]
                             },
                             {
                                 "groupName": "helpers",
