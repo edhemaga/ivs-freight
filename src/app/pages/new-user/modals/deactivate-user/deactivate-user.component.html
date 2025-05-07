@@ -1,43 +1,76 @@
 @let users = modalData?.users || [];
 @let isSingular = users.length === 1;
+
+@let selectedTab = userStoreService.selectedTabSelector$ | async;
+@let isActive = selectedTab === eStatusTab.ACTIVE;
+@let activationString = isActive ? 'deactivate' : 'activate';
 @let inputModalData =
     {
         count: isSingular ? 0 : users.length,
-        title: 'Delete User',
+        title: (isActive ? 'Deactivate' : 'Aactivate') + ' User',
     };
 
-<app-ca-delete-modal [template]="deleteTemplate" [modalData]="inputModalData">
-    <ng-template #deleteTemplate>
-        <div class="gap-2 d-flex flex-column">
-            @for (user of users; track user.id) {
-                <div class="gap-1 d-flex align-items-center b-8">
-                    <app-ca-profile-image
-                        [name]="user?.fullName"
-                        [size]="'small'"
-                        [type]="'user'"
-                        [withTooltip]="true"
-                        [size]="28"
-                        [isDispatch]="true"
-                        [avatarImg]="user?.avatar"
-                    >
-                    </app-ca-profile-image>
+@let modalQuestion =
+    'Are you sure you want to ' +
+    activationString +
+    ' selected user' +
+    (isSingular ? '' : 's') +
+    '?';
 
-                    <div class="d-flex flex-column m-l-2">
-                        <div class="text-size-16 ta-font-bold text-color-black">
+@if (isActive) {
+    <app-ca-deactivate-modal
+        [template]="activateTemplate"
+        [modalData]="inputModalData"
+    >
+    </app-ca-deactivate-modal>
+} @else {
+    <app-ca-active-modal
+        [template]="activateTemplate"
+        [modalData]="inputModalData"
+    >
+    </app-ca-active-modal>
+}
+
+<ng-template #activateTemplate>
+    <div class="gap-2 d-flex flex-column">
+        @for (user of users; track user.id) {
+            <div class="gap-1 d-flex align-items-center b-8">
+                <app-ca-profile-image
+                    [name]="user?.fullName"
+                    [size]="'small'"
+                    [type]="'user'"
+                    [withTooltip]="true"
+                    [size]="28"
+                    [isDispatch]="true"
+                    [avatarImg]="user?.avatar"
+                >
+                </app-ca-profile-image>
+
+                <div class="d-flex flex-column m-l-2">
+                    <div class="d-flex">
+                        <div
+                            class="text-size-16 ta-font-bold text-color-black m-r-6"
+                        >
                             {{ user?.fullName }}
                         </div>
 
-                        <div class="text-size-14 text-color-muted">
-                            {{ user?.department }}
-                        </div>
+                        @if (!isActive) {
+                            <svg-icon
+                                [src]="sharedIcons.DEACTIVATE_ICON"
+                                class="svg-size-18 svg-fill-muted br-2 d-flex align-items-center justify-content-center"
+                            >
+                            </svg-icon>
+                        }
+                    </div>
+
+                    <div class="text-size-14 text-color-muted">
+                        {{ user?.department }}
                     </div>
                 </div>
-            }
-            <div class="text-size-14 ta-font-medium text-color-black">
-                Are you sure you want to delete selected user{{
-                    isSingular ? '' : 's'
-                }}?
             </div>
+        }
+        <div class="text-size-14 ta-font-medium text-color-black w-272">
+            {{ modalQuestion }}
         </div>
-    </ng-template>
-</app-ca-delete-modal>
+    </div>
+</ng-template>
