@@ -1,16 +1,30 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
-import { forkJoin, of } from 'rxjs';
 
+import { AddressEntity } from '@ca-shared/models/address-entity.model';
 // Models
 import { Tabs } from '@ca-shared/models/tabs.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+// Mixins
+import { AddressMixin } from '@shared/mixins';
 import {
     CompanyUserModalResponse,
     CompanyUserResponse,
 } from 'appcoretruckassist';
-import { AddressEntity } from '@ca-shared/models/address-entity.model';
+import { forkJoin, of } from 'rxjs';
+
+// Pipes
+import { UserModalInputConfigPipe } from '@pages/new-user/modals/user-modal/pipes/user-modal-input-config.pipe';
+
+// Enums
+import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
+import { eGeneralActions } from '@shared/enums';
+
+// Services
+import { UserService } from '@pages/new-user/services/user.service';
+import { UserStoreService } from '@pages/new-user/state/services/user-store.service';
+import { AddressService } from '@shared/services/address.service';
 
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
@@ -28,23 +42,8 @@ import {
     CaInputNoteComponent,
 } from 'ca-components';
 
-// Pipes
-import { UserModalInputConfigPipe } from '@pages/new-user/modals/user-modal/pipes/user-modal-input-config.pipe';
-
-// Enums
-import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
-import { eGeneralActions } from '@shared/enums';
-
-// Services
-import { UserService } from '@pages/new-user/services/user.service';
-import { UserStoreService } from '@pages/new-user/state/services/user-store.service';
-import { AddressService } from '@shared/services/address.service';
-
 // Interfaces
 import { IMappedUser, IUserModal } from '@pages/new-user/interfaces';
-
-// Mixins
-import { AddressMixin } from '@shared/mixins';
 
 // Helpers
 import { UserModalHelper } from '@pages/new-user/modals/user-modal/utils/helpers';
@@ -102,15 +101,14 @@ export class UserModalComponent
     public isEditMode: boolean;
     // Modal title
     public modalTitle: string;
+    // Address
+    public selectedAddress: AddressEntity = null;
     // Icon routes
     public svgRoutes = SharedSvgRoutes;
     public taxFormTabs: Tabs[];
     public user: CompanyUserResponse;
     public userForm: UntypedFormGroup;
     public userTabs: Tabs[] = UserModalHelper.getUserTabs();
-
-    // Address
-    public selectedAddress: AddressEntity = null;
 
     constructor(
         private userService: UserService,
@@ -164,6 +162,15 @@ export class UserModalComponent
         this.userForm.get(eUserModalForm.IS_ADMIN).setValue(isAdmin);
     }
 
+    public onHandleAddress(event: {
+        address: AddressEntity;
+        valid: boolean;
+    }): void {
+        if (event.valid) {
+            this.selectedAddress = event.address;
+        }
+    }
+
     public onModalAction(action: eGeneralActions): void {
         const users: Partial<IMappedUser>[] = [
             {
@@ -208,43 +215,59 @@ export class UserModalComponent
                         MethodsCalculationsHelper.convertDateToBackend(
                             this.userForm.value[eUserModalForm.START_DATE]
                         ),
+                    [eUserModalForm.SALARY]:
+                        MethodsCalculationsHelper.convertThousandSepInNumber(
+                            this.userForm.value[eUserModalForm.SALARY]
+                        ),
                 };
 
                 if (this.isEditMode) {
-                    this.userService.editUser(userData).subscribe(() => {
-                        this.userService
-                            .editUserModal(this.editData.id)
-                            .subscribe((user) =>
-                                this.userStoreService.dispatchUpdateUser(user)
-                            );
-                        this.ngbActiveModal.close();
-                    });
-                } else {
-                    this.userService.createNewUser(userData).subscribe(() => {
-                        if (action === eGeneralActions.SAVE_AND_ADD_NEW) {
-                            this.userForm.reset();
-
-                            // Reset tabs
-                            this.departmentTabs =
-                                UserModalHelper.getDepartmentTabs(false);
-                            this.taxFormTabs =
-                                UserModalHelper.getTaxFormTabs(true);
-                        } else {
+                    this.userService
+                        .editUser({
+                            ...userData,
+                            id: this.editData.id,
+                        })
+                        .subscribe(() => {
+                            this.userService
+                                .editUserModal(this.editData.id)
+                                .subscribe((user) =>
+                                    this.userStoreService.dispatchUpdateUser(
+                                        user
+                                    )
+                                );
                             this.ngbActiveModal.close();
-                        }
-                    });
+                        });
+                } else {
+                    this.userService
+                        .createNewUser(userData)
+                        .subscribe((newUser) => {
+                            if (action === eGeneralActions.SAVE_AND_ADD_NEW) {
+                                this.userForm.patchValue(
+                                    UserModalHelper.createForm({}).value
+                                );
+
+                                // Reset tabs
+                                this.departmentTabs =
+                                    UserModalHelper.getDepartmentTabs(false);
+                                this.taxFormTabs =
+                                    UserModalHelper.getTaxFormTabs(true);
+
+                                this.activeAction = null;
+                            } else {
+                                this.ngbActiveModal.close();
+                            }
+
+                            this.userService
+                                .editUserModal(newUser.id)
+                                .subscribe((user) =>
+                                    this.userStoreService.dispatchCreateNewUser(
+                                        user
+                                    )
+                                );
+                        });
                 }
 
                 break;
-        }
-    }
-
-    public onHandleAddress(event: {
-        address: AddressEntity;
-        valid: boolean;
-    }): void {
-        if (event.valid) {
-            this.selectedAddress = event.address;
         }
     }
 
