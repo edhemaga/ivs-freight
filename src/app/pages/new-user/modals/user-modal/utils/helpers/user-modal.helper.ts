@@ -40,7 +40,7 @@ export class UserModalHelper {
                 [Validators.required]
             ),
             [eUserModalForm.IS_ADMIN]: new UntypedFormControl(
-                userData?.isAdmin
+                userData?.isAdmin ?? false
             ),
             [eUserModalForm.OFFICE]: new UntypedFormControl(
                 userData?.companyOffice?.id
@@ -64,10 +64,11 @@ export class UserModalHelper {
                 userData?.startDate,
                 [Validators.required]
             ),
-            [eUserModalForm.SALARY]: new UntypedFormControl(userData?.salary, [
-                Validators.required,
-            ]),
+            [eUserModalForm.SALARY]: new UntypedFormControl(userData?.salary),
             [eUserModalForm.IS_1099]: new UntypedFormControl(userData?.is1099),
+            [eUserModalForm.INCLUDED_IN_PAYROLL]: new UntypedFormControl(
+                userData?.includeInPayroll ?? false
+            ),
         });
     }
 

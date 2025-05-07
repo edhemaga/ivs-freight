@@ -13,6 +13,7 @@ import { forkJoin, of } from 'rxjs';
 import { UserModalInputConfigPipe } from '@pages/new-user/modals/user-modal/pipes/user-modal-input-config.pipe';
 
 import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
+import { eGeneralActions } from '@shared/enums';
 
 import { UserService } from '@pages/new-user/services/user.service';
 import { UserStoreService } from '@pages/new-user/state/services/user-store.service';
@@ -25,7 +26,6 @@ import {
     CaModalButtonComponent,
     CaModalComponent,
     CaTabSwitchComponent,
-    eGeneralActions,
     eModalButtonClassType,
     eModalButtonSize,
     InputTestComponent,
@@ -34,6 +34,7 @@ import {
 import { IMappedUser, IUserModal } from '@pages/new-user/interfaces';
 
 import { UserModalHelper } from '@pages/new-user/modals/user-modal/utils/helpers';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers';
 
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
@@ -140,6 +141,8 @@ export class UserModalComponent implements OnInit {
             },
         ];
 
+        this.activeAction = action;
+
         switch (action) {
             case this.eGeneralActions.CLOSE:
                 this.ngbActiveModal.close();
@@ -157,6 +160,43 @@ export class UserModalComponent implements OnInit {
                     { users },
                     this.ngbActiveModal
                 );
+                break;
+            case eGeneralActions.SAVE_AND_ADD_NEW:
+            case eGeneralActions.SAVE:
+                // eslint-disable-next-line no-case-declarations
+                const userData = {
+                    ...this.userForm.value,
+                    [eUserModalForm.START_DATE]:
+                        MethodsCalculationsHelper.convertDateToBackend(
+                            this.userForm.value[eUserModalForm.START_DATE]
+                        ),
+                };
+
+                if (this.isEditMode) {
+                    this.userService.editUser(userData).subscribe(() => {
+                        this.userService
+                            .editUserModal(this.editData.id)
+                            .subscribe((user) =>
+                                this.userStoreService.dispatchUpdateUser(user)
+                            );
+                        this.ngbActiveModal.close();
+                    });
+                } else {
+                    this.userService.createNewUser(userData).subscribe(() => {
+                        if (action === eGeneralActions.SAVE_AND_ADD_NEW) {
+                            this.userForm.reset();
+
+                            // Reset tabs
+                            this.departmentTabs =
+                                UserModalHelper.getDepartmentTabs(false);
+                            this.taxFormTabs =
+                                UserModalHelper.getTaxFormTabs(true);
+                        } else {
+                            this.ngbActiveModal.close();
+                        }
+                    });
+                }
+
                 break;
         }
     }
