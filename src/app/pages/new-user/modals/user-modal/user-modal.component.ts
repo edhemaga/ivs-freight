@@ -215,6 +215,10 @@ export class UserModalComponent
                         MethodsCalculationsHelper.convertDateToBackend(
                             this.userForm.value[eUserModalForm.START_DATE]
                         ),
+                    [eUserModalForm.SALARY]:
+                        MethodsCalculationsHelper.convertThousandSepInNumber(
+                            this.userForm.value[eUserModalForm.SALARY]
+                        ),
                 };
 
                 if (this.isEditMode) {
