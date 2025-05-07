@@ -1,1 +1,82 @@
-<app-account-table></app-account-table>
+@let store =
+    {
+        activeViewMode: accountStoreService.activeViewModeSelector$ | async,
+        accountList: accountStoreService.accountListSelector$ | async,
+        selectedCountSelector:
+            accountStoreService.selectedCountSelector$ | async,
+        selectedAccountSelector:
+            accountStoreService.selectedCountSelector$ | async,
+        toolbarDropdownMenuOptions:
+            accountStoreService.toolbarDropdownMenuOptionsSelector$ | async,
+    };
+
+<ng-template #divider>
+    <div class="new-table--toolbar-divider">
+        <div
+            class="new-table--toolbar-divider-border background-light-grey-6"
+        ></div>
+    </div>
+</ng-template>
+
+@if (store) {
+    <app-new-table-toolbar
+        [title]="'Account'"
+        [leftSide]="leftSide"
+        [rightSide]="rightSide"
+        [toolbarDropdownContent]="store.toolbarDropdownMenuOptions"
+        (onPlusClick)="
+            onToolBarAction({
+                action: generalActions.OPEN_MODAL,
+            })
+        "
+        (toolbarDropdownAction)="onToolbarDropdownMenuActions($event)"
+    >
+        <ng-template #leftSide>
+            <app-toolbar-tabs-wrapper
+                class="d-flex align-items-center"
+                [data]="store.toolbarTabs"
+                [viewMode]="store.activeViewMode"
+                [betweenTabsTemplate]="betweenTabsTemplate"
+                [isTableLocked]="isTableLocked"
+                (onTabChange)="onToolBarAction($event)"
+            ></app-toolbar-tabs-wrapper>
+
+            <ng-container *ngTemplateOutlet="divider"></ng-container>
+            <ca-search-multiple-states-2
+                (onSearchQueryChange)="onSearchQueryChange($event)"
+            ></ca-search-multiple-states-2>
+
+            @if (store.selectedCountSelector) {
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+                <div
+                    class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
+                >
+                    {{ store.selectedCountSelector }} Selected
+                </div>
+            }
+        </ng-template>
+        <ng-template #rightSide>
+            @if (store.selectedCountSelector) {
+                <!-- <svg-icon
+                    class="background-hover-bw2 svg-fill-red-10 svg-hover-red-14 svg-size-16 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26"
+                    [src]="sharedIcons.DELETE_ICON"
+                    (click)="onDeleteUserList(store.selectedAccountSelector)"
+                >
+                </svg-icon> -->
+
+                <svg-icon
+                    [src]="sharedIcons.PRINT_ICON"
+                    class="background-hover-dark-2 svg-fill-muted svg-hover-black svg-size-18 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26 m-l-4"
+                >
+                </svg-icon>
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+            }
+        </ng-template>
+    </app-new-table-toolbar>
+
+    @if (store?.activeViewMode === eCommonElement.LIST) {
+        <app-account-table></app-account-table>
+    } @else {
+        CARDS
+    }
+}

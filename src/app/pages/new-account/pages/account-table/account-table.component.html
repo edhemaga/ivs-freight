@@ -1,23 +1,58 @@
 @let store =
     {
+        accountList: accountStore.accountListSelector$ | async,
         columns: accountStore.tableColumnsSelector$ | async,
-        viewData: accountStore.accountListSelector$ | async,
+        selectedCount: accountStore.selectedCountSelector$ | async,
+        selectedTabCountSelector:
+            accountStore.selectedTabCountSelector$ | async,
+        tableSettings: accountStore.tableSettingsSelector$ | async,
     };
 
 @if (store) {
+    @let isTableLocked = store.tableSettings.isTableLocked;
     @let templates =
         {
+            select,
             name,
         };
 
+    @let headerTemplates =
+        {
+            select: selectHeaderTemplate,
+        };
+
     <app-new-table
-        [columns]="store.columns"
-        [rows]="store.viewData"
+        [rows]="store.accountList"
         [templates]="templates"
+        [columns]="store.columns"
+        [headerTemplates]="headerTemplates"
+        [isTableLocked]="isTableLocked"
+        [totalDataCount]="store.selectedTabCountSelector"
     >
-        <!-- #region NAME COLUMN -->
+        <ng-template #selectHeaderTemplate>
+            <app-ca-checkbox-selected-count
+                [itemsTotalCount]="store.accountList.length"
+                [itemsSelectedCount]="store.selectedCount"
+                (onCheckboxCountClick)="onCheckboxCountClick($event)"
+            ></app-ca-checkbox-selected-count>
+        </ng-template>
+
+        <ng-template let-account="data" #select>
+            @let accountName = 'Account-' + account.id;
+            <app-ca-checkbox
+                [isChecked]="account.isSelected"
+                [isRegularCheckbox]="false"
+                [itemIndex]="account.id"
+                [name]="accountName"
+                (columnCheckAction)="onSelectAccount(account.id)"
+            ></app-ca-checkbox>
+        </ng-template>
+
+        <!-- #region ACCOUNT NAME COLUMN -->
         <ng-template let-account="data" #name>
-            {{ account.name }}
+            <div class="text-color-black-2 text-size-14">
+                {{ account.name }}
+            </div>
         </ng-template>
     </app-new-table>
 }
