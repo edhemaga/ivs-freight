@@ -5,7 +5,6 @@ import { IMilesModel } from '@pages/miles/interface';
 export class MilesHelper {
     static milesMapper(miles: MilesByUnitResponse[]): IMilesModel[] {
         return miles.map((mile) => {
-            console.log('miles', miles);
             const {
                 id,
                 truck,

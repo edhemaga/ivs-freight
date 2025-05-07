@@ -9,8 +9,8 @@ import {
 } from 'appcoretruckassist';
 
 // Enums
-import { eCommonElement, eGeneralActions, IFilterAction } from 'ca-components';
-import { eCardFlipViewMode, eStatusTab } from '@shared/enums';
+import { eGeneralActions, IFilterAction } from 'ca-components';
+import { eCardFlipViewMode, eStatusTab, eCommonElement } from '@shared/enums';
 
 // Helpers
 import { UsersHelper } from '@pages/new-user/utils/helpers';

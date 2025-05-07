@@ -2,8 +2,8 @@
 import { createAction, props } from '@ngrx/store';
 
 // Enums
-import { eCommonElement, IFilterAction } from 'ca-components';
-import { eStatusTab } from '@shared/enums';
+import { IFilterAction } from 'ca-components';
+import { eStatusTab, eCommonElement } from '@shared/enums';
 
 // Const
 import { UserStoreConstants } from '@pages/new-user/utils/constants';
