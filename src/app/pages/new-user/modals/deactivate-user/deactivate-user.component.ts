@@ -18,7 +18,6 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 import {
     CaActivateModalComponent,
     CaDeactivateModalComponent,
-    CaDeleteModalComponent,
     CaProfileImageComponent,
 } from 'ca-components';
 
@@ -32,7 +31,6 @@ import {
         AngularSvgIconModule,
 
         // Components
-        CaDeleteModalComponent,
         CaProfileImageComponent,
         CaDeactivateModalComponent,
         CaActivateModalComponent,
