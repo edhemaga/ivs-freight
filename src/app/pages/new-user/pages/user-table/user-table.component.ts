@@ -12,6 +12,7 @@ import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // Enums
 import {
+    eDateTimeFormat,
     eSharedString,
     eStatusTab,
     eStringPlaceholder,
@@ -73,6 +74,8 @@ export class UserTableComponent {
     public eStatusTab = eStatusTab;
     public eSharedString = eSharedString;
     public eStringPlaceholder = eStringPlaceholder;
+    public etableStringEnum = TableStringEnum;
+    public eDateTimeFormat = eDateTimeFormat;
 
     // Svg routes
     public sharedSvgRoutes = SharedSvgRoutes;

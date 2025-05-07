@@ -33,7 +33,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // pipes
 import {
     TableColumnActionClassPipe,
-    TableColumnCellClassPipe,
+    TableColumnCellWidthPipe,
     TableColumnClassPipe,
     TableColumnLabelWidthPipe,
     TableGroupClassPipe,
@@ -82,7 +82,7 @@ import { TableScrollHelper } from '@shared/components/new-table/utils/helpers';
         TableGroupLabelIndexPipe,
         TableColumnLabelWidthPipe,
         TableColumnActionClassPipe,
-        TableColumnCellClassPipe,
+        TableColumnCellWidthPipe,
 
         // directives
         ResizableColumnDirective,

@@ -26,13 +26,19 @@
             fuelCount: percentTemplate,
             repairCount: percentTemplate,
             towingCount: percentTemplate,
+            splitCount: percentTemplate,
             loadCount: thousandFormatterTemplate,
+            loadExtraStops: thousandFormatterTemplate,
+            loadRatePerMile: currencyTemplate,
             fuelGalons: thousandFormatterTemplate,
-            fuelCost,
+            fuelCost: currencyTemplate,
+            fuelMpg,
             milesLoaded: thousandFormatterDecimalTemplate,
             milesEmpty: thousandFormatterDecimalTemplate,
             milesTotal: thousandFormatterDecimalTemplate,
+            milesPerLoad: thousandFormatterDecimalTemplate,
             revenue,
+            dateDeactivated,
         };
 
     @let selectedTabTotalDataCount =
@@ -82,7 +88,7 @@
 
         <!-- #region UNIT COLUMN -->
 
-        <ng-template #unit let-data="data" let-column="column">
+        <ng-template #unit let-data="data">
             <div class="d-flex align-items-center">
                 <p
                     class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 d-inline-block text-truncate"
@@ -115,19 +121,19 @@
 
         <!-- #region PERCENT COLUMN -->
 
-        <ng-template
-            #percentTemplate
-            let-data="data"
-            let-key="key"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
+        <ng-template #percentTemplate let-data="data" let-key="key">
             @let countValue =
                 data[key]?.count
                     | number: eThousandSeparatorFormat.REGULAR_FORMAT;
 
             @let percentValue = data[key]?.percent + eUnit.PERCENTAGE_SIGN;
 
-            <p class="text-size-14" [class]="cellColumnTextColorClass">
+            <p
+                class="text-size-14"
+                [class]="
+                    data[key]?.count ? 'text-color-black-2' : 'text-color-muted'
+                "
+            >
                 {{ countValue }}
 
                 <!--   <span class="text-color-muted text-size-11 ta-font-semi-bold">
@@ -140,17 +146,17 @@
 
         <!-- #region THOUSAND FORMATTER COLUMN -->
 
-        <ng-template
-            #thousandFormatterTemplate
-            let-data="data"
-            let-key="key"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
-            <p class="text-size-14" [class]="cellColumnTextColorClass">
-                @let thousandFormatterTemplateValue =
-                    data[key]?.value
-                        | number: eThousandSeparatorFormat.REGULAR_FORMAT;
+        <ng-template #thousandFormatterTemplate let-data="data" let-key="key">
+            @let thousandFormatterTemplateValue =
+                data[key]?.value
+                    | number: eThousandSeparatorFormat.REGULAR_FORMAT;
 
+            <p
+                class="text-size-14"
+                [class]="
+                    data[key]?.value ? 'text-color-black-2' : 'text-color-muted'
+                "
+            >
                 {{ thousandFormatterTemplateValue }}
             </p>
         </ng-template>
@@ -159,43 +165,62 @@
             #thousandFormatterDecimalTemplate
             let-data="data"
             let-key="key"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
         >
-            <p class="text-size-14" [class]="cellColumnTextColorClass">
-                @let thousandFormatterDecimalTemplateValue =
-                    data[key]?.value
-                        | number: eThousandSeparatorFormat.DECIMAL_FORMAT;
+            @let thousandFormatterDecimalTemplateValue =
+                data[key]?.value
+                    | number: eThousandSeparatorFormat.DECIMAL_FORMAT;
 
+            <p
+                class="text-size-14"
+                [class]="
+                    data[key]?.value ? 'text-color-black-2' : 'text-color-muted'
+                "
+            >
                 {{ thousandFormatterDecimalTemplateValue }}
             </p>
         </ng-template>
 
         <!-- #endregion END OF THOUSAND FORMATTER COLUMN -->
 
-        <!-- #region FUEL COST COLUMN -->
+        <!-- #region CURRENCY COLUMN -->
 
-        <ng-template
-            #fuelCost
-            let-data="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
-            @let fuelCostTemplateValue = data.fuelCost | currency;
+        <ng-template #currencyTemplate let-data="data" let-key="key">
+            @let currencyTemplateValue = data[key]?.value | currency;
 
-            <p class="text-size-14" [class]="cellColumnTextColorClass">
-                {{ fuelCostTemplateValue }}
+            <p
+                class="text-size-14"
+                [class]="
+                    data[key]?.value ? 'text-color-black-2' : 'text-color-muted'
+                "
+            >
+                {{ currencyTemplateValue }}
             </p>
         </ng-template>
 
-        <!-- #endregion END OF FUEL COST COLUMN -->
+        <!-- #endregion END OF CURRENCY COLUMN -->
+
+        <!-- #region FUEL MILE PER GALLON COLUMN -->
+
+        <ng-template #fuelMpg let-data="data">
+            @let fuelMpgValue =
+                data?.fuelMpg
+                    | number: eThousandSeparatorFormat.DECIMAL_DOUBLE_FORMAT;
+
+            <p
+                class="text-size-14"
+                [class]="
+                    data?.fuelMpg ? 'text-color-black-2' : 'text-color-muted'
+                "
+            >
+                {{ fuelMpgValue }}
+            </p>
+        </ng-template>
+
+        <!-- #endregion END OF FUEL MILE PER GALLON COLUMN -->
 
         <!-- #region REVENUE COLUMN -->
 
-        <ng-template
-            #revenue
-            let-data="data"
-            let-key="key"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
+        <ng-template #revenue let-data="data" let-key="key">
             <div
                 class="d-flex"
                 [class]="
@@ -208,7 +233,11 @@
 
                 <p
                     class="text-size-14 ta-font-semi-bold"
-                    [class]="cellColumnTextColorClass"
+                    [class]="
+                        data[key]?.value
+                            ? 'text-color-black-2'
+                            : 'text-color-muted'
+                    "
                 >
                     {{ revenueTemplateValue }}
                 </p>
@@ -216,5 +245,18 @@
         </ng-template>
 
         <!-- #endregion END OF REVENUE COLUMN -->
+
+        <!-- #region DATE DEACTIVATED COLUMN -->
+
+        <ng-template #dateDeactivated let-data="data" let-key="key">
+            <p class="text-color-black-2 text-size-14">
+                @let dateTemplateValue =
+                    data[key]?.value | date: eDateTimeFormat.ANGULAR_MM_DD_YY;
+
+                {{ dateTemplateValue }}
+            </p>
+        </ng-template>
+
+        <!-- #endregion END OF DATE DEACTIVATED COLUMN -->
     </app-new-table>
 }

@@ -70,8 +70,7 @@ export class NewLoadModalStopsComponent implements OnInit {
 
     public stopsForm: UntypedFormGroup;
 
-    public selectedShippers: { [index: number]: any } = {};
-    public activeCardIndex: number | null = null;
+    public activeCardIndex: number = -1;
 
     get stopsFormArray(): FormArray {
         return this.stopsForm.get('stops') as FormArray;
@@ -119,15 +118,7 @@ export class NewLoadModalStopsComponent implements OnInit {
         this.stopsFormArray.push(newStop);
     }
 
-    public onSelectShipper(shipper: any, index: number): void {
-        this.selectedShippers = {
-            ...this.selectedShippers,
-            [index]: shipper,
-        };
-        console.log('selectedShippers', this.selectedShippers);
-    }
-
-    public handleCardOpened(opened: boolean, index: number): void {
-        this.activeCardIndex = opened ? index : null;
+    public onCardOpened(opened: boolean, index: number): void {
+        this.activeCardIndex = opened ? index : -1;
     }
 }

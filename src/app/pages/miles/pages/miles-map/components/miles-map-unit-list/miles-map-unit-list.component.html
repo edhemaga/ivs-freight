@@ -317,27 +317,42 @@
             class="text-color-black text-size-11 ta-font-bold text-truncate d-flex"
         >
             @let location = stop.location;
+
             <svg-icon
                 [src]="(stop.type.name | milesIcon).icon"
                 [ngClass]="(stop.type.name | milesIcon).color"
                 class="svg-size-14 d-flex m-r-4"
             ></svg-icon>
+
             {{ location.city }}, {{ location.stateShortName }}
             {{ location.zipCode }}
         </div>
+
         <div class="text-color-black text-size-11 text-right">
-            {{ (stop.legMiles | thousandSeparator) ?? '0.0' }}
+            {{
+                stop.legMiles | number: eThousandSeparatorFormat.DECIMAL_FORMAT
+            }}
         </div>
+
         @if (isStopListWidthExpanded) {
             <div class="text-color-black text-size-11 text-right">
-                {{ (stop.loadedMiles | thousandSeparator) ?? '0.0' }}
+                {{
+                    stop.loadedMiles
+                        | number: eThousandSeparatorFormat.DECIMAL_FORMAT
+                }}
             </div>
             <div class="text-color-black text-size-11 text-right">
-                {{ (stop.emptyMiles | thousandSeparator) ?? '0.0' }}
+                {{
+                    stop.emptyMiles
+                        | number: eThousandSeparatorFormat.DECIMAL_FORMAT
+                }}
             </div>
         }
         <div class="text-color-black text-size-11 ta-font-medium text-right">
-            {{ (stop.totalMiles | thousandSeparator) ?? '0.0' }}
+            {{
+                stop.totalMiles
+                    | number: eThousandSeparatorFormat.DECIMAL_FORMAT
+            }}
         </div>
     </div>
 </ng-template>

@@ -8,7 +8,7 @@ import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/rep
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // base classes
-import { ColumnsDropdownMenuActionsBase } from './columns-dropdown-menu-actions.base';
+import { ColumnsDropdownMenuActionsBase } from '@shared/base-classes/columns-dropdown-menu-actions.base';
 
 // enums
 import { eDropdownMenu, TableStringEnum } from '@shared/enums';
