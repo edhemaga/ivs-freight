@@ -1,22 +1,23 @@
-// ngrx
-import { createAction, props } from '@ngrx/store';
-
-// Enums
-import { eCommonElement, IFilterAction } from 'ca-components';
-import { eStatusTab } from '@shared/enums';
-
 // Const
 import { UserStoreConstants } from '@pages/new-user/utils/constants';
-
 // Models
 import {
     CompanyUserListResponse,
+    CompanyUserResponse,
     DepartmentFilterResponse,
 } from 'appcoretruckassist';
 
+import { eStatusTab } from '@shared/enums';
+
 // Interface
 import { ITableColumn } from '@shared/components/new-table/interfaces';
+// Enums
+import { eCommonElement, IFilterAction } from 'ca-components';
+
 import { IMappedUser } from '@pages/new-user/interfaces';
+
+// ngrx
+import { createAction, props } from '@ngrx/store';
 
 //#region List
 export const onGetInitalList = createAction(
@@ -150,5 +151,12 @@ export const onOpenUserModal = createAction(
         isEdit: boolean;
         id: number;
     }>()
+);
+//#endregion
+
+//#region Modal
+export const onUserEdit = createAction(
+    UserStoreConstants.ACTION_DISPATCH_UPDATE_USER,
+    props<{ user: CompanyUserResponse }>()
 );
 //#endregion

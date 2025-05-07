@@ -9,4 +9,8 @@ export enum eUserModalForm {
     PHONE_EXTENSION = 'extensionPhone',
     PERSONAL_PHONE = 'personalPhone',
     PERSONAL_EMAIL = 'personalEmail',
+    START_DATE = 'startDate',
+    SALARY = 'salary',
+    IS_1099 = 'is1099',
+    INCLUDED_IN_PAYROLL = 'includeInPayroll',
 }

@@ -1,3 +1,4 @@
+/* eslint-disable perfectionist/sort-classes */
 export class UserStoreConstants {
     static COMPONENT_NAME_KEY = '[User Store]';
     public static ACTION_DISPATCH_LOAD_USER_LIST = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_LOAD_USER_LIST`;
@@ -39,4 +40,7 @@ export class UserStoreConstants {
     //#region  Modal
     public static ACTION_OPEN_USER_MODAL = `${this.COMPONENT_NAME_KEY} ACTION_OPEN_USER_MODAL`;
     //#endregion
+
+    //#region Modal action
+    public static ACTION_DISPATCH_UPDATE_USER = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_UPDATE_USER`;
 }

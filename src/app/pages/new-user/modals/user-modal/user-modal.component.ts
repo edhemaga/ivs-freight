@@ -1,50 +1,42 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { forkJoin, of } from 'rxjs';
-
-// Form
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 
-// Models
 import { Tabs } from '@ca-shared/models/tabs.model';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
     CompanyUserModalResponse,
     CompanyUserResponse,
 } from 'appcoretruckassist';
+import { forkJoin, of } from 'rxjs';
 
-// Svg routes
-import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { UserModalInputConfigPipe } from '@pages/new-user/modals/user-modal/pipes/user-modal-input-config.pipe';
 
-// Helpers
-import { UserModalHelper } from '@pages/new-user/modals/user-modal/utils/helpers';
+import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
+import { eGeneralActions } from '@shared/enums';
 
-// Components
+import { UserService } from '@pages/new-user/services/user.service';
+import { UserStoreService } from '@pages/new-user/state/services/user-store.service';
+
+import { SvgIconComponent } from 'angular-svg-icon';
 import {
     CaCustomCardComponent,
+    CaInputDatetimePickerComponent,
     CaInputDropdownTestComponent,
     CaModalButtonComponent,
     CaModalComponent,
     CaTabSwitchComponent,
-    eGeneralActions,
     eModalButtonClassType,
     eModalButtonSize,
     InputTestComponent,
 } from 'ca-components';
-import { SvgIconComponent } from 'angular-svg-icon';
 
-// Pipes
-import { UserModalInputConfigPipe } from '@pages/new-user/modals/user-modal/pipes/user-modal-input-config.pipe';
-
-// Enums
-import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
-
-// Services
-import { UserService } from '@pages/new-user/services/user.service';
-import { UserStoreService } from '@pages/new-user/state/services/user-store.service';
-
-// Interfaces
 import { IMappedUser, IUserModal } from '@pages/new-user/interfaces';
+
+import { UserModalHelper } from '@pages/new-user/modals/user-modal/utils/helpers';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers';
+
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-user-modal',
@@ -63,6 +55,7 @@ import { IMappedUser, IUserModal } from '@pages/new-user/interfaces';
         CaInputDropdownTestComponent,
         InputTestComponent,
         CaCustomCardComponent,
+        CaInputDatetimePickerComponent,
 
         // Pipes
         UserModalInputConfigPipe,
@@ -72,32 +65,25 @@ export class UserModalComponent implements OnInit {
     // Inputs
     @Input() editData: IUserModal;
 
-    // Enums
-    public eGeneralActions = eGeneralActions;
-    public eUserModalForm = eUserModalForm;
-    public eModalButtonClassType = eModalButtonClassType;
-    public eModalButtonSize = eModalButtonSize;
-
-    // Icon routes
-    public svgRoutes = SharedSvgRoutes;
-
-    // Modal title
-    public modalTitle: string;
-
-    // Show modal buttons based on edit mode
-    public isEditMode: boolean;
-
     // Show modal spinner
     public activeAction = null;
-
-    // Tabs
-    public userTabs: Tabs[] = UserModalHelper.getUserTabs();
     public departmentTabs: Tabs[];
-
-    // Form
-    public userForm: UntypedFormGroup;
     public dropdownList: CompanyUserModalResponse;
+    // Enums
+    public eGeneralActions = eGeneralActions;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
+    public eUserModalForm = eUserModalForm;
+    // Show modal buttons based on edit mode
+    public isEditMode: boolean;
+    // Modal title
+    public modalTitle: string;
+    // Icon routes
+    public svgRoutes = SharedSvgRoutes;
+    public taxFormTabs: Tabs[];
     public user: CompanyUserResponse;
+    public userForm: UntypedFormGroup;
+    public userTabs: Tabs[] = UserModalHelper.getUserTabs();
 
     constructor(
         private userService: UserService,
@@ -133,12 +119,13 @@ export class UserModalComponent implements OnInit {
                 this.departmentTabs = UserModalHelper.getDepartmentTabs(
                     userData?.isAdmin
                 );
+
+                this.taxFormTabs = UserModalHelper.getTaxFormTabs(
+                    userData ? userData.is1099 : true
+                );
             }
         );
     }
-
-    // Leave for now, as it is not done in backend yet
-    public onUserTabChange(): void {}
 
     public onDepartmentTabChange(tab: Tabs): void {
         const isAdmin = tab.id === 2;
@@ -153,6 +140,8 @@ export class UserModalComponent implements OnInit {
                 id: this.user?.id,
             },
         ];
+
+        this.activeAction = action;
 
         switch (action) {
             case this.eGeneralActions.CLOSE:
@@ -172,6 +161,50 @@ export class UserModalComponent implements OnInit {
                     this.ngbActiveModal
                 );
                 break;
+            case eGeneralActions.SAVE_AND_ADD_NEW:
+            case eGeneralActions.SAVE:
+                // eslint-disable-next-line no-case-declarations
+                const userData = {
+                    ...this.userForm.value,
+                    [eUserModalForm.START_DATE]:
+                        MethodsCalculationsHelper.convertDateToBackend(
+                            this.userForm.value[eUserModalForm.START_DATE]
+                        ),
+                };
+
+                if (this.isEditMode) {
+                    this.userService.editUser(userData).subscribe(() => {
+                        this.userService
+                            .editUserModal(this.editData.id)
+                            .subscribe((user) =>
+                                this.userStoreService.dispatchUpdateUser(user)
+                            );
+                        this.ngbActiveModal.close();
+                    });
+                } else {
+                    this.userService.createNewUser(userData).subscribe(() => {
+                        if (action === eGeneralActions.SAVE_AND_ADD_NEW) {
+                            this.userForm.reset();
+
+                            // Reset tabs
+                            this.departmentTabs =
+                                UserModalHelper.getDepartmentTabs(false);
+                            this.taxFormTabs =
+                                UserModalHelper.getTaxFormTabs(true);
+                        } else {
+                            this.ngbActiveModal.close();
+                        }
+                    });
+                }
+
+                break;
         }
     }
+
+    public onTaxFormTabChange(tab: Tabs): void {
+        this.userForm.get(eUserModalForm.IS_1099).patchValue(tab.id === 1);
+    }
+
+    // Leave for now, as it is not done in backend yet
+    public onUserTabChange(): void {}
 }

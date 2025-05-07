@@ -1,13 +1,16 @@
-// Interface
-import { IMappedUser } from '@pages/new-user/interfaces';
-import { eStatusTab } from '@shared/enums';
-import { ITableData } from '@shared/models';
-
 // Models
 import {
     CompanyUserListItemResponse,
     CompanyUserListResponse,
+    CompanyUserResponse,
 } from 'appcoretruckassist';
+
+import { eStatusTab } from '@shared/enums';
+
+import { ITableData } from '@shared/models';
+
+// Interface
+import { IMappedUser } from '@pages/new-user/interfaces';
 
 export class UsersHelper {
     static updateTabsCount(
@@ -58,7 +61,9 @@ export class UsersHelper {
         return updatedTabs;
     }
 
-    static usersMapper(users: CompanyUserListItemResponse[]): IMappedUser[] {
+    static usersMapper(
+        users: CompanyUserListItemResponse[] | CompanyUserResponse[]
+    ): IMappedUser[] {
         return users.map((user) => {
             const {
                 firstName,
@@ -85,7 +90,7 @@ export class UsersHelper {
                 startDate,
                 createdAt,
                 updatedAt,
-                deactivatedAt
+                deactivatedAt,
             } = user;
 
             const mapped: IMappedUser = {
@@ -93,7 +98,12 @@ export class UsersHelper {
                 isSelected: false,
                 fullName: `${firstName} ${lastName}`,
                 avatar: avatarFile?.url,
-                department,
+                // For edit we get department as object inside list it is string
+                // TODO: Should we ask back to be same response maybe there is more changes?
+                department:
+                    typeof department === 'object'
+                        ? department.name
+                        : department,
                 companyOffice,
                 email,
                 phone,
@@ -113,7 +123,7 @@ export class UsersHelper {
                 startDate,
                 createdAt,
                 updatedAt,
-                deactivatedAt
+                deactivatedAt,
             };
 
             return mapped;
