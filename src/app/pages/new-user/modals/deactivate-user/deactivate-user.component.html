@@ -3,11 +3,15 @@
 
 @let selectedTab = userStoreService.selectedTabSelector$ | async;
 @let isActive = selectedTab === eStatusTab.ACTIVE;
-@let activationString = isActive ? 'deactivate' : 'activate';
+@let activationString =
+    isActive ? eGeneralActions.DEACTIVATE : eGeneralActions.ACTIVATE;
 @let inputModalData =
     {
         count: isSingular ? 0 : users.length,
-        title: (isActive ? 'Deactivate' : 'Aactivate') + ' User',
+        title:
+            (isActive
+                ? eGeneralActions.DEACTIVATE_CAPITALIZED
+                : eGeneralActions.ACTIVATE_CAPITALIZED) + ' User',
     };
 
 @let modalQuestion =

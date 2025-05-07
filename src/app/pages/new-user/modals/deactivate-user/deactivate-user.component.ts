@@ -9,7 +9,7 @@ import { IUserDeleteModal } from '@pages/new-user/interfaces';
 import { UserStoreService } from '@pages/new-user/state/services/user-store.service';
 
 // Enums
-import { eStatusTab } from '@shared/enums';
+import { eGeneralActions, eStatusTab } from '@shared/enums';
 
 // Routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -43,6 +43,7 @@ export class DeactivateUserComponent {
 
     public sharedIcons = SharedSvgRoutes;
     public eStatusTab = eStatusTab;
+    public eGeneralActions = eGeneralActions;
 
     constructor(public userStoreService: UserStoreService) {}
 }
