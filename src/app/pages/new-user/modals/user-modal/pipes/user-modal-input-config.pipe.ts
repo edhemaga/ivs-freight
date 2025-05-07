@@ -98,6 +98,28 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     label: 'Personal Email',
                     placeholderIcon: 'email',
                 };
+
+            case eUserModalForm.ADDRESS:
+                return {
+                    name: 'Address',
+                    type: 'text',
+                    label: 'Address, City, State Zip',
+                    placeholderIcon: 'address',
+                    textTransform: 'capitalize',
+                    dropdownWidthClass: 'w-col-376',
+                    minLength: 6,
+                    maxLength: 256,
+                };
+
+            case eUserModalForm.ADDRESS_UNIT:
+                return {
+                    name: 'address-unit',
+                    type: 'text',
+                    label: 'Unit #',
+                    textTransform: 'uppercase',
+                    minLength: 1,
+                    maxLength: 10,
+                };
         }
     }
 }

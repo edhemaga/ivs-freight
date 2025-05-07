@@ -30,6 +30,8 @@ import {
     eModalButtonClassType,
     eModalButtonSize,
     InputTestComponent,
+    CaInputAddressDropdownComponent,
+    CaInputNoteComponent,
 } from 'ca-components';
 import { SvgIconComponent } from 'angular-svg-icon';
 
@@ -42,9 +44,14 @@ import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
 // Services
 import { UserService } from '@pages/new-user/services/user.service';
 import { UserStoreService } from '@pages/new-user/state/services/user-store.service';
+import { AddressService } from '@shared/services/address.service';
 
 // Interfaces
 import { IMappedUser, IUserModal } from '@pages/new-user/interfaces';
+
+// Mixins
+import { AddressMixin } from '@shared/mixins';
+import { AddressEntity } from '@ca-shared/models/address-entity.model';
 
 @Component({
     selector: 'app-user-modal',
@@ -63,12 +70,21 @@ import { IMappedUser, IUserModal } from '@pages/new-user/interfaces';
         CaInputDropdownTestComponent,
         InputTestComponent,
         CaCustomCardComponent,
+        CaInputAddressDropdownComponent,
+        CaInputNoteComponent,
 
         // Pipes
         UserModalInputConfigPipe,
     ],
 })
-export class UserModalComponent implements OnInit {
+export class UserModalComponent
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnInit
+{
     // Inputs
     @Input() editData: IUserModal;
 
@@ -99,12 +115,18 @@ export class UserModalComponent implements OnInit {
     public dropdownList: CompanyUserModalResponse;
     public user: CompanyUserResponse;
 
+    // Address
+    public selectedAddress: AddressEntity = null;
+
     constructor(
         private userService: UserService,
         public userStoreService: UserStoreService,
+        public addressService: AddressService,
 
         private ngbActiveModal: NgbActiveModal
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.setupModal();
@@ -125,6 +147,8 @@ export class UserModalComponent implements OnInit {
                 this.userForm = UserModalHelper.createForm(userData || {});
 
                 this.user = userData;
+
+                this.selectedAddress = userData?.address;
 
                 this.modalTitle = UserModalHelper.generateModalTitle(
                     this.isEditMode
@@ -172,6 +196,15 @@ export class UserModalComponent implements OnInit {
                     this.ngbActiveModal
                 );
                 break;
+        }
+    }
+
+    public onHandleAddress(event: {
+        address: AddressEntity;
+        valid: boolean;
+    }): void {
+        if (event.valid) {
+            this.selectedAddress = event.address;
         }
     }
 }

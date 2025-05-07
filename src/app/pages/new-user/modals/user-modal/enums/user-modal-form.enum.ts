@@ -9,4 +9,7 @@ export enum eUserModalForm {
     PHONE_EXTENSION = 'extensionPhone',
     PERSONAL_PHONE = 'personalPhone',
     PERSONAL_EMAIL = 'personalEmail',
+    ADDRESS = 'address',
+    ADDRESS_UNIT = 'addressUnit',
+    NOTE = 'note',
 }
