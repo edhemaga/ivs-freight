@@ -198,6 +198,12 @@ export class UserModalComponent
                 // eslint-disable-next-line no-case-declarations
                 const userData = {
                     ...this.userForm.value,
+                    address: {
+                        ...this.selectedAddress,
+                        addressUnit: this.userForm.get(
+                            eUserModalForm.ADDRESS_UNIT
+                        ).value,
+                    },
                     [eUserModalForm.START_DATE]:
                         MethodsCalculationsHelper.convertDateToBackend(
                             this.userForm.value[eUserModalForm.START_DATE]
