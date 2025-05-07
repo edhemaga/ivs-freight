@@ -13,6 +13,15 @@ import { ITableData } from '@shared/models';
 import { IMappedUser } from '@pages/new-user/interfaces';
 
 export class UsersHelper {
+    static increaseActiveTabCount(toolbarTabs: ITableData[]): ITableData[] {
+        const updatedTabs = [...toolbarTabs];
+        updatedTabs[0] = {
+            ...toolbarTabs[0],
+            length: toolbarTabs[0].length + 1,
+        };
+        return updatedTabs;
+    }
+
     static updateTabsCount(
         payload: CompanyUserListResponse,
         toolbarTabs: ITableData[]

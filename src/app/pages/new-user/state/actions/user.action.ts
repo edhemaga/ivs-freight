@@ -159,4 +159,8 @@ export const onUserEdit = createAction(
     UserStoreConstants.ACTION_DISPATCH_UPDATE_USER,
     props<{ user: CompanyUserResponse }>()
 );
+export const onCreateNewUser = createAction(
+    UserStoreConstants.ACTION_DISPATCH_CREATE_USER,
+    props<{ user: CompanyUserResponse }>()
+);
 //#endregion

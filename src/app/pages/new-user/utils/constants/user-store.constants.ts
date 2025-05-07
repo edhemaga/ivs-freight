@@ -43,4 +43,5 @@ export class UserStoreConstants {
 
     //#region Modal action
     public static ACTION_DISPATCH_UPDATE_USER = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_UPDATE_USER`;
+    public static ACTION_DISPATCH_CREATE_USER = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_CREATE_USER`;
 }

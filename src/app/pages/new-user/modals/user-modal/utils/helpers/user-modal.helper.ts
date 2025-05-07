@@ -45,7 +45,8 @@ export class UserModalHelper {
                 userData?.isAdmin ?? false
             ),
             [eUserModalForm.OFFICE]: new UntypedFormControl(
-                userData?.companyOffice?.id
+                userData?.companyOffice?.id,
+                [Validators.required]
             ),
             [eUserModalForm.PHONE]: new UntypedFormControl(userData?.phone, [
                 phoneFaxRegex,

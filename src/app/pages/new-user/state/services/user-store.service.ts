@@ -85,6 +85,13 @@ export class UserStoreService {
         private modalService: ModalService
     ) {}
 
+    public dispatchCreateNewUser(user: CompanyUserResponse): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_DISPATCH_CREATE_USER,
+            user,
+        });
+    }
+
     public dispatchDeleteUsers(
         modalData: IUserDeleteModal,
         ngbActiveModal: NgbActiveModal

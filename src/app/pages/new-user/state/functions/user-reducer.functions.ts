@@ -252,4 +252,22 @@ export function onUserEdit(
         ),
     };
 }
+
+export function onCreateNewUser(
+    state: IUserState,
+    user: CompanyUserResponse
+): IUserState {
+    const isActiveTab = state.selectedTab === eStatusTab.ACTIVE;
+
+    const mappedUser = UsersHelper.usersMapper([user])[0];
+
+    return {
+        ...state,
+        users: isActiveTab ? [...state.users, mappedUser] : state.users,
+        toolbarTabs: UsersHelper.increaseActiveTabCount(state.toolbarTabs),
+        searchResultsCount: isActiveTab
+            ? state.searchResultsCount + 1
+            : state.searchResultsCount,
+    };
+}
 //#endregion

@@ -119,6 +119,9 @@ export const userReducer = createReducer(
     // #region Modal actions
     on(UserActions.onUserEdit, (state, { user }) =>
         Functions.onUserEdit(state, user)
+    ),
+    on(UserActions.onCreateNewUser, (state, { user }) =>
+        Functions.onCreateNewUser(state, user)
     )
     //#endregion
 );
