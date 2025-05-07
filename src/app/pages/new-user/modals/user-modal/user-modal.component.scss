@@ -18,4 +18,10 @@
     &-personal-address {
         grid-template-columns: 364px 80px;
     }
+
+    &-payroll {
+        &-payment {
+            grid-template-columns: 160px 146px 126px;
+        }
+    }
 }

@@ -23,41 +23,6 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 export class UserModalHelper {
-    static getUserTabs(): Tabs[] {
-        return [
-            {
-                id: 1,
-                name: 'Basic',
-                checked: true,
-            },
-            {
-                id: 2,
-                name: 'Additional',
-                checked: false,
-                disabled: true,
-            },
-        ];
-    }
-
-    static getDepartmentTabs(isAdmin: boolean): Tabs[] {
-        return [
-            {
-                id: 1,
-                name: 'User',
-                checked: !isAdmin,
-            },
-            {
-                id: 2,
-                name: 'Admin',
-                checked: isAdmin,
-            },
-        ];
-    }
-
-    static generateModalTitle(isEdit: boolean): string {
-        return isEdit ? 'Edit User' : 'Invite User';
-    }
-
     static createForm(userData: CompanyUserResponse): UntypedFormGroup {
         return new UntypedFormGroup({
             [eUserModalForm.EMAIL]: new UntypedFormControl(userData?.email, [
@@ -77,7 +42,7 @@ export class UserModalHelper {
                 [Validators.required]
             ),
             [eUserModalForm.IS_ADMIN]: new UntypedFormControl(
-                userData?.isAdmin
+                userData?.isAdmin ?? false
             ),
             [eUserModalForm.OFFICE]: new UntypedFormControl(
                 userData?.companyOffice?.id
@@ -106,6 +71,65 @@ export class UserModalHelper {
                 [...addressUnitValidation]
             ),
             [eUserModalForm.NOTE]: new UntypedFormControl(userData?.note),
+            [eUserModalForm.START_DATE]: new UntypedFormControl(
+                userData?.startDate,
+                [Validators.required]
+            ),
+            [eUserModalForm.SALARY]: new UntypedFormControl(userData?.salary),
+            [eUserModalForm.IS_1099]: new UntypedFormControl(userData?.is1099),
+            [eUserModalForm.INCLUDED_IN_PAYROLL]: new UntypedFormControl(
+                userData?.includeInPayroll ?? false
+            ),
         });
+    }
+
+    static generateModalTitle(isEdit: boolean): string {
+        return isEdit ? 'Edit User' : 'Invite User';
+    }
+
+    static getDepartmentTabs(isAdmin: boolean): Tabs[] {
+        return [
+            {
+                id: 1,
+                name: 'User',
+                checked: !isAdmin,
+            },
+            {
+                id: 2,
+                name: 'Admin',
+                checked: isAdmin,
+            },
+        ];
+    }
+
+    static getTaxFormTabs(is1099: boolean): Tabs[] {
+        return [
+            {
+                id: 1,
+                name: '1099',
+                checked: is1099,
+            },
+            {
+                id: 2,
+                name: 'W-2',
+                checked: !is1099,
+            },
+        ];
+    }
+
+    static getUserTabs(): Tabs[] {
+        return [
+            {
+                id: 1,
+                name: 'Basic',
+                checked: true,
+            },
+            {
+                id: 2,
+                name: 'Additional',
+                checked: false,
+                disabled: true,
+            },
+        ];
     }
 }
