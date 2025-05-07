@@ -47,7 +47,7 @@ export const initialState: IMilesState = {
     },
 
     // Table
-    columns: MilesTableColumnsConfig.columnsConfig,
+    columns: MilesTableColumnsConfig.getTableColumns(),
 
     // Unit list
     isDetailsLoading: false,

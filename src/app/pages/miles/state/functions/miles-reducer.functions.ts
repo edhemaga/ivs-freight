@@ -16,10 +16,7 @@ import {
 } from '@shared/components/new-table/interfaces';
 
 // enums
-import {
-    eActiveViewMode,
-    eCardFlipViewMode,
-} from '@shared/enums';
+import { eActiveViewMode, eCardFlipViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 import { eSharedString } from '@shared/enums';
 
@@ -404,7 +401,7 @@ export function resetTable(state: IMilesState): IMilesState {
 
     return {
         ...state,
-        columns: MilesTableColumnsConfig.columnsConfig,
+        columns: MilesTableColumnsConfig.getTableColumns(),
         tableSettings: {
             isTableLocked: true,
             sortKey: null,
