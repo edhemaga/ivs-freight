@@ -2,7 +2,7 @@
 @let load = loadDetailsSelector.data;
 @let loadId = load?.id;
 @let isLoading = loadDetailsSelector.isLoading;
-@let comments = load?.comments;
+@let comments = loadStoreService?.loadDetailsCommentSelector$ | async;
 @let statusHistory = load?.statusHistory;
 @let reversedStatusHistory = loadDetailsSelector.reveresedHistory;
 

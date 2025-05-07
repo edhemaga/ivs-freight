@@ -33,6 +33,7 @@ import { LoadStoreConstants } from '@pages/new-load/utils/constants';
 // Models
 import { ITableData } from '@shared/models';
 import {
+    CommentResponse,
     LoadPossibleStatusesResponse,
     LoadStatusResponse,
 } from 'appcoretruckassist';
@@ -100,6 +101,9 @@ export class LoadStoreService {
     public loadDetailsSelector$: Observable<ILoadDetails> = this.store.pipe(
         select(LoadSelectors.loadDetailsSelector)
     );
+
+    public loadDetailsCommentSelector$: Observable<CommentResponse[]> =
+        this.store.pipe(select(LoadSelectors.loadDetailsCommentsSelector));
 
     public minimalListSelector$: Observable<ILoadDetailsLoadMinimalList> =
         this.store.pipe(select(LoadSelectors.minimalListSelector));

@@ -9,6 +9,7 @@ import * as Functions from '@pages/new-load/state/functions/load-reducer.functio
 
 // Interfaces
 import { ILoadState, IMappedLoad } from '@pages/new-load/interfaces';
+import { CommentResponse } from 'appcoretruckassist';
 
 // Constants
 import { LoadToolbarTabs } from '@pages/new-load/utils/constants';
@@ -213,10 +214,6 @@ export const loadReducer = createReducer(
     ),
     on(LoadActions.updateLoadStatusError, (state) => ({ ...state })),
 
-    // on(LoadActions.updateLoadStatusSignalR, (state, { response }) =>
-    //     Functions.updateLoadStatusSignalRSuccess(state, response)
-    // ),
-
     on(LoadActions.revertLoadStatus, (state) => ({ ...state })),
     on(LoadActions.revertLoadStatusSuccess, (state, { status, load }) =>
         Functions.updateLoadStatusSuccessResult(state, status, load)
@@ -228,6 +225,9 @@ export const loadReducer = createReducer(
     //#region Comments
     on(LoadActions.onAddLoadComment, (state) => ({ ...state })),
     on(LoadActions.onAddLoadCommentSuccess, (state, { comment, loadId }) => {
+        const commentResponse: CommentResponse = {
+            ...comment,
+        };
         const modifiedState: ILoadState = {
             ...state,
             loads: [
@@ -240,6 +240,16 @@ export const loadReducer = createReducer(
                     return modifiedLoad;
                 }),
             ],
+            details: {
+                ...state.details,
+                data: {
+                    ...state.details?.data,
+                    comments: [
+                        ...state.details?.data?.comments,
+                        { ...commentResponse },
+                    ],
+                },
+            },
         };
         return modifiedState;
     }),
@@ -262,6 +272,17 @@ export const loadReducer = createReducer(
                     return modifiedLoad;
                 }),
             ],
+            details: {
+                ...state.details,
+                data: {
+                    ...state.details?.data,
+                    comments: [
+                        ...state.details?.data?.comments?.filter(
+                            (comment: CommentResponse) => comment?.id !== id
+                        ),
+                    ],
+                },
+            },
         };
         return modifiedState;
     }),
@@ -293,6 +314,24 @@ export const loadReducer = createReducer(
                     return modifiedLoad;
                 }),
             ],
+            details: {
+                ...state.details,
+                data: {
+                    ...state.details?.data,
+                    comments: [
+                        ...state.details?.data?.comments?.map(
+                            (_comment: CommentResponse) => {
+                                if (_comment?.id !== comment?.id)
+                                    return _comment;
+                                const commentFound: CommentResponse = {
+                                    ...comment,
+                                };
+                                return commentFound;
+                            }
+                        ),
+                    ],
+                },
+            },
         };
         return modifiedState;
     }),
