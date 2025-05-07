@@ -7,7 +7,7 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 // Third-party modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -84,7 +84,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
     // boolean flags
     public isSearchActive: boolean = false;
     public isDriverButtonSelected: boolean = false;
-    public hasNewComment: Subject<boolean> = new Subject();
+    public hasNewComment: boolean = false;
 
     // TODO mozda ovo preko nekog id-a odraditi
     public displayedSection:
@@ -131,8 +131,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
     }
 
     public onAddNewComment(): void {
-        this.hasNewComment.next(false);
-        this.hasNewComment.next(true);
+        this.hasNewComment = true;
     }
 
     public onDropdownItemSelect(event: IDropdownItem): void {

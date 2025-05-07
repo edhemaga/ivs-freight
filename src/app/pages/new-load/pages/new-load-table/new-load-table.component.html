@@ -566,6 +566,7 @@
             </ca-dropdown-menu>
         </ng-template>
 
+        <!-- #region Comments -->
         <ng-template let-data="data" #comments>
             @let loadId = data?.id;
             @let isSelected = loadId === selectedCommentsLoadId;
@@ -610,6 +611,7 @@
                 </div>
             }
         </ng-template>
+        <!-- #endregion End of Comments -->
 
         <ng-template let-data="data" #note>
             @let entityType =

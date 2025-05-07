@@ -70,7 +70,6 @@ import { User } from '@shared/models';
 
 // pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
-import { ThousandSeparatorPipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-new-load-table',
@@ -99,7 +98,6 @@ import { ThousandSeparatorPipe } from '@shared/pipes';
 
         // pipes
         TableHighlightSearchTextPipe,
-        ThousandSeparatorPipe,
     ],
 })
 export class NewLoadTableComponent
