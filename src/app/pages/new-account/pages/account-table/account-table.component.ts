@@ -1,11 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
+import { eDateTimeFormat, eDropdownMenu } from '@shared/enums';
+
 // Services
 import { AccountStoreService } from '@pages/new-account/state/services/account-store.service';
 
 // Components
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
+import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
+import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 import {
     CaCheckboxComponent,
     CaCheckboxSelectedCountComponent,
@@ -23,9 +28,17 @@ import {
         NewTableComponent,
         CaCheckboxComponent,
         CaCheckboxSelectedCountComponent,
+        TaPasswordAccountHiddenCharactersComponent,
+        TaInputDropdownLabelComponent,
+
+        // Pipes
+        TableHighlightSearchTextPipe,
     ],
 })
 export class AccountTableComponent {
+    public eDateTimeFormat = eDateTimeFormat;
+    public eDropdownMenu = eDropdownMenu;
+
     constructor(public accountStore: AccountStoreService) {}
 
     public onCheckboxCountClick(action: string): void {

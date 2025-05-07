@@ -9,12 +9,27 @@ export class AccountHelper {
         accounts: CompanyAccountResponse[]
     ): IMappedAccount[] {
         return accounts.map((account) => {
-            const { id, name } = account;
+            const {
+                id,
+                name,
+                url,
+                username,
+                password,
+                companyAccountLabel,
+                createdAt,
+                updatedAt,
+            } = account;
 
             const mapped: IMappedAccount = {
                 id,
                 name,
                 isSelected: false,
+                url,
+                username,
+                password,
+                label: companyAccountLabel,
+                createdAt,
+                updatedAt,
             };
 
             return mapped;

@@ -14,6 +14,12 @@
         {
             select,
             name,
+            url,
+            username,
+            password,
+            label,
+            dateAdded,
+            dateEdited,
         };
 
     @let headerTemplates =
@@ -50,9 +56,67 @@
 
         <!-- #region ACCOUNT NAME COLUMN -->
         <ng-template let-account="data" #name>
-            <div class="text-color-black-2 text-size-14">
+            <div class="text-color-black ta-font-bold text-size-14">
                 {{ account.name }}
             </div>
         </ng-template>
+        <!-- #endregion ACCOUNT NAME COLUMN -->
+
+        <!-- #region URL COLUMN -->
+        <ng-template let-account="data" #url>
+            <div class="text-color-black-2 text-size-14 text-truncate">
+                {{ account.url }}
+            </div>
+        </ng-template>
+        <!-- #endregion URL COLUMN -->
+
+        <!-- #region URL COLUMN -->
+        <ng-template let-account="data" #username>
+            <div class="text-color-black-2 text-size-14 text-truncate">
+                {{ account.username }}
+            </div>
+        </ng-template>
+        <!-- #endregion URL COLUMN -->
+
+        <!-- #region PASSWORD COLUMN -->
+        <ng-template let-account="data" #password>
+            <app-ta-password-account-hidden-characters
+                [passwordOrAccount]="account.password"
+                [isPassword]="true"
+            ></app-ta-password-account-hidden-characters>
+        </ng-template>
+        <!-- #endregion PASSWORD COLUMN -->
+
+        <!-- #region LABEL COLUMN -->
+        <ng-template let-account="data" #label>
+            <div class="text-color-black-2 text-size-14 text-truncate">
+                {{ account?.label?.name }}
+            </div>
+        </ng-template>
+        <!-- #endregion LABEL COLUMN -->
+
+        <!-- #region DATES COLUMNS -->
+        <ng-template let-account="data" #dateAdded>
+            @let formatDate =
+                account.createdAt | date: eDateTimeFormat.ANGULAR_MM_DD_YY;
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    formatDate | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template let-account="data" #dateEdited>
+            @let formatDate =
+                account.updatedAt | date: eDateTimeFormat.ANGULAR_MM_DD_YY;
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    formatDate | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+        <!-- #endregion DATES COLUMNS -->
     </app-new-table>
 }

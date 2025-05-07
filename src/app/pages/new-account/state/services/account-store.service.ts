@@ -33,6 +33,8 @@ export class AccountStoreService {
     public activeViewModeSelector$: Observable<string> = this.store.pipe(
         select(AccountSelector.activeViewModeSelector)
     );
+    public selectedAccountSelector$: Observable<IMappedAccount[]> =
+        this.store.pipe(select(AccountSelector.selectedAccountSelector));
     public selectedCountSelector$: Observable<number> = this.store.pipe(
         select(AccountSelector.selectedCountSelector)
     );
