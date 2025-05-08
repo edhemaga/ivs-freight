@@ -43,6 +43,7 @@ export const initialState: IUserState = {
     activeViewMode: eCommonElement.LIST,
 
     tableColumns: UserTableColumnsConfig.getTableColumns(),
+    tableDropdownMenuOptions: [],
 
     toolbarDropdownMenuOptions:
         DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
@@ -116,6 +117,18 @@ export const userReducer = createReducer(
     ),
     on(UserActions.toggleColumnVisibility, (state, { columnKey, isActive }) =>
         Functions.toggleColumnVisibility(state, columnKey, isActive)
+    ),
+    //#endregion
+
+    // #region Resend invitation
+    on(UserActions.onResendInvitationSuccess, (state, { id }) =>
+        Functions.onResendInvitationSuccess(state, id)
+    ),
+    //#endregion
+
+    // #region Table Dropdown Menu
+    on(UserActions.setTableDropdownMenuOptions, (state, { user }) =>
+        Functions.setTableDropdownMenuOptions(state, user)
     )
     //#endregion
 );

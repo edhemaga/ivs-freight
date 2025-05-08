@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ITableConfig } from '@shared/components/new-table/interfaces';
 import { IStateFilters } from '@shared/interfaces';
@@ -119,6 +119,28 @@ export class UserService {
     public editUserModal(userId: number): Observable<CompanyUserResponse> {
         return this.http.get<CompanyUserResponse>(
             `${environment.API_ENDPOINT}/api/companyuser/${userId}`
+        );
+    }
+
+    // Any is used from AccountService
+    public resetPassword(email: string): Observable<any> {
+        return this.http.put(
+            `${environment.API_ENDPOINT}/api/account/forgotpassword`,
+            { email }
+        );
+    }
+
+    // Any is used from CompanyUserService
+    public resendInvitation(id: number): Observable<any> {
+        return this.http.patch(
+            `${environment.API_ENDPOINT}/api/companyUser/${id}/resend-invitation`,
+            {},
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                }),
+            }
         );
     }
 }

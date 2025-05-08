@@ -180,4 +180,32 @@ export class UserEffects {
             ),
         { dispatch: false }
     );
+
+    public onResetPassword$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(UserActions.onResetPassword),
+            switchMap(({ email }) => {
+                return this.userService.resetPassword(email).pipe(
+                    map(() => {
+                        return UserActions.onResetPasswordSuccess();
+                    }),
+                    catchError(() => of(UserActions.onDeleteUsersError()))
+                );
+            })
+        )
+    );
+
+    public onResendInvitation$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(UserActions.onResendInvitation),
+            switchMap(({ id }) => {
+                return this.userService.resendInvitation(id).pipe(
+                    map(() => {
+                        return UserActions.onResendInvitationSuccess({ id });
+                    }),
+                    catchError(() => of(UserActions.onResendInvitationError()))
+                );
+            })
+        )
+    );
 }

@@ -96,6 +96,9 @@ export class UserStoreService {
         select(UserSelector.searchStringsSelector)
     );
 
+    public tableDropdownMenuOptionsSelector$: Observable<IDropdownMenuItem[]> =
+        this.store.pipe(select(UserSelector.tableDropdownMenuOptionsSelector));
+
     public dispatchSetToolbarDropdownMenuColumnsActive(
         isActive: boolean
     ): void {
@@ -217,6 +220,27 @@ export class UserStoreService {
             type: UserStoreConstants.ACTION_OPEN_USER_MODAL,
             isEdit,
             id,
+        });
+    }
+
+    public dispatchResetPassword(email: string): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_DISPATCH_RESET_PASSWORD,
+            email,
+        });
+    }
+
+    public dispatchResendInvitation(id: number): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_DISPATCH_RESEND_INVITATION,
+            id,
+        });
+    }
+
+    public dispatchSetTableDropdownMenuOptions(user: IMappedUser): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_DISPATCH_SET_TABLE_DROPDOWN_MENU_OPTIONS,
+            user,
         });
     }
 }

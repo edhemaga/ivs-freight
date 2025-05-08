@@ -1,9 +1,11 @@
-// Interface
+// enums
+import { eSharedString, eStatusTab } from '@shared/enums';
+
+// interfaces
 import { IMappedUser } from '@pages/new-user/interfaces';
-import { eStatusTab } from '@shared/enums';
 import { ITableData } from '@shared/models';
 
-// Models
+// models
 import {
     CompanyUserListItemResponse,
     CompanyUserListResponse,
@@ -85,7 +87,7 @@ export class UsersHelper {
                 startDate,
                 createdAt,
                 updatedAt,
-                deactivatedAt
+                deactivatedAt,
             } = user;
 
             const mapped: IMappedUser = {
@@ -113,7 +115,26 @@ export class UsersHelper {
                 startDate,
                 createdAt,
                 updatedAt,
-                deactivatedAt
+                deactivatedAt,
+            };
+
+            return mapped;
+        });
+    }
+
+    static resendInvitationUsersMapper(
+        users: IMappedUser[],
+        resendInvitationUserId: number
+    ): IMappedUser[] {
+        return users.map((user) => {
+            const { id, userStatus } = user;
+            const isInvitationSent = id === resendInvitationUserId;
+
+            const mapped: IMappedUser = {
+                ...user,
+                userStatus: isInvitationSent
+                    ? eSharedString.INVITED
+                    : userStatus,
             };
 
             return mapped;

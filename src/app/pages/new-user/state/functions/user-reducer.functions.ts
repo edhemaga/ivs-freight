@@ -18,6 +18,7 @@ import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers
 import {
     DropdownMenuToolbarContentHelper,
     DropdownMenuColumnsActionsHelper,
+    DropdownMenuContentHelper,
 } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 //#region Tabs
@@ -234,6 +235,42 @@ export function toggleColumnVisibility(
     return {
         ...state,
         tableColumns,
+    };
+}
+//#endregion
+
+// #region Resend Invitation
+export function onResendInvitationSuccess(
+    state: IUserState,
+    id: number
+): IUserState {
+    const { users } = state;
+
+    return {
+        ...state,
+        users: UsersHelper.resendInvitationUsersMapper(users, id),
+    };
+}
+//#endregion
+
+// #region Table Dropdown Menu
+export function setTableDropdownMenuOptions(
+    state: IUserState,
+    user: IMappedUser
+): IUserState {
+    const { selectedTab } = state;
+    const { userStatus } = user;
+
+    const tableDropdownMenuOptions =
+        DropdownMenuContentHelper.getUserDropdownContent(
+            selectedTab.toLowerCase(),
+            userStatus,
+            false
+        );
+
+    return {
+        ...state,
+        tableDropdownMenuOptions,
     };
 }
 //#endregion

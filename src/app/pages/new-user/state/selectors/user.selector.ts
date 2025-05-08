@@ -63,6 +63,12 @@ export const tableSettingsSelector = createSelector(
     selectUserState,
     (state: IUserState) => state.tableSettings
 );
+
+export const tableDropdownMenuOptionsSelector = createSelector(
+    selectUserState,
+    (state: IUserState) => state.tableDropdownMenuOptions
+);
+
 //#endregion
 
 //#region Selection
