@@ -20,6 +20,7 @@ export interface ITableColumn {
     columns?: ITableColumn[];
     isDisabled?: boolean;
     isChecked?: boolean;
+    isUniqueColumn?: boolean;
     labelToolbar?: string;
     sortName?: string;
     removeSort?: boolean;

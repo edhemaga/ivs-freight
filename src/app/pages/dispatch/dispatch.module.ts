@@ -44,6 +44,7 @@ import { DispatchTablePickupDeliveryComponent } from '@pages/dispatch/pages/disp
 import {
     CaInputAddressDropdownComponent,
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaModalComponent,
     PickupDeliveryBlockComponent,
@@ -121,7 +122,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         TruckTrailerColorFinderPipe,
         DispatchConfigPipe,
 
-        //directives
+        // directives
         ResizableDirective,
 
         // components
@@ -147,8 +148,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         LoadRequirementComponent,
         PickupDeliveryBlockComponent,
         ProgressBarComponent,
-
-        //  TaMapsComponent,
+        CaInputDatetimePickerComponent,
     ],
 })
 export class DispatchModule {}

@@ -12,19 +12,24 @@ export interface IMilesModel {
     stopsCount: ISingleValue;
     stopsPickup: ICountPercent;
     stopsDelivery: ICountPercent;
-    fuelCount: ICountPercent;
-    parkingCount: ICountPercent;
     deadHeadCount: ICountPercent;
+    parkingCount: ICountPercent;
+    fuelCount: ICountPercent;
     repairCount: ICountPercent;
     towingCount: ICountPercent;
+    splitCount: ICountPercent;
     loadCount: ISingleValue;
+    loadExtraStops: ISingleValue;
+    loadRatePerMile: ISingleValue;
     fuelGalons: ISingleValue;
-    fuelCost: number;
+    fuelCost: ISingleValue;
     fuelMpg: number;
     milesLoaded: ISingleValue;
     milesEmpty: ISingleValue;
     milesTotal: ISingleValue;
+    milesPerLoad: ISingleValue;
     revenue: ISingleValue;
+    dateDeactivated: ISingleValue;
 }
 
 export interface ICountPercent {

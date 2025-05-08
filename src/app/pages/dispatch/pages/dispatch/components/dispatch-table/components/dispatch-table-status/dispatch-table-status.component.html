@@ -1,4 +1,7 @@
-<div class="main_inside filled">
+<!-- @let isIncompleteDispatch =
+    status?.statusString === 'Off' || status?.statusString === 'Available -->
+<!-- [class.filled]="!isIncompleteDispatch" -->
+<div class="main_inside" filled>
     <div class="padding-inside">
         <div
             class="status-container d-flex flex-column justify-content-center"
@@ -27,7 +30,7 @@
                 <app-load-status-string
                     [status]="{
                         name: status.statusString,
-                        valueForRequest: status.statusValue.name
+                        valueForRequest: status.statusValue.name,
                     }"
                     [justifyStart]="true"
                     [isDispatch]="true"

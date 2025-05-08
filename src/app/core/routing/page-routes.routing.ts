@@ -109,27 +109,30 @@ export class PageRoutes {
             component: MilesComponent,
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: { miles: MilesResolver },
-            data: { title: 'Miles' },
             children: [
                 {
                     path: '',
                     component: MilesTableComponent,
                     resolve: { miles: MilesListResolver },
+                    data: { title: 'Miles' },
                 },
                 {
                     path: eMilesRouting.CARD,
                     component: MilesCardComponent,
                     resolve: { miles: MilesCardsResolver },
+                    data: { title: 'Miles' },
                 },
                 {
                     path: eMilesRouting.LIST,
                     component: MilesTableComponent,
                     resolve: { miles: MilesListResolver },
+                    data: { title: 'Miles' },
                 },
                 {
                     path: `${eMilesRouting.MAP}/:id`,
                     component: MilesMapComponent,
                     resolve: { miles: MilesDetailsResolver },
+                    data: { title: 'Miles Map' },
                 },
             ],
         },

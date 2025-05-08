@@ -78,6 +78,9 @@ export class LoadHelper {
                 delivery: true,
             };
 
+            const tableDropdownContent =
+                DropdownMenuContentHelper.getLoadDropdownContent(selectedTab);
+
             const mappedLoad: IMappedLoad = {
                 id,
                 isSelected: false,
@@ -133,29 +136,19 @@ export class LoadHelper {
                     value: billing?.rpm ?? rpm,
                 },
                 billingLayover: {
-                    value:
-                        additionalBillingRates &&
-                        additionalBillingRates[0]?.rate,
+                    value: additionalBillingRates[0]?.rate,
                 },
                 billinglumper: {
-                    value:
-                        additionalBillingRates &&
-                        additionalBillingRates[1]?.rate,
+                    value: additionalBillingRates[1]?.rate,
                 },
                 billingFuelSurcharge: {
-                    value:
-                        additionalBillingRates &&
-                        additionalBillingRates[2]?.rate,
+                    value: additionalBillingRates[2]?.rate,
                 },
                 billingEscort: {
-                    value:
-                        additionalBillingRates &&
-                        additionalBillingRates[3]?.rate,
+                    value: additionalBillingRates[3]?.rate,
                 },
                 billingDetention: {
-                    value:
-                        additionalBillingRates &&
-                        additionalBillingRates[4]?.rate,
+                    value: additionalBillingRates[4]?.rate,
                 },
                 billingRate: totalRate,
                 billingAdjustedRate: totalAdjustedRate,
@@ -179,10 +172,7 @@ export class LoadHelper {
                     value: updatedAt,
                 },
                 note,
-                tableDropdownContent:
-                    DropdownMenuContentHelper.getLoadDropdownContent(
-                        selectedTab
-                    ),
+                tableDropdownContent,
             };
 
             return mappedLoad;

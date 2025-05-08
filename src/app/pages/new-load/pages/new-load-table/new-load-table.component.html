@@ -437,7 +437,7 @@
 
         <!-- #region STATUS ; PICKUP ; DELIVERY GROUP -->
 
-        <ng-template let-data="data" #loadStatus>
+        <ng-template #loadStatus let-data="data">
             <span
                 class="ta-font-bold text-size-14 text-color-black"
                 #ngbStatus="ngbPopover"
@@ -600,7 +600,7 @@
 
         <!-- #endregion END OF BILLING GROUP -->
 
-        <!-- #region DATES -->
+        <!-- #region DATE COLUMN -->
 
         <ng-template #dateTemplate let-data="data" let-key="key">
             <p class="text-color-black-2 text-size-14">
@@ -611,7 +611,7 @@
             </p>
         </ng-template>
 
-        <!-- #endregion END OF DATES -->
+        <!-- #endregion END OF DATE COLUMN -->
 
         <!-- #region ACTIONS -->
 

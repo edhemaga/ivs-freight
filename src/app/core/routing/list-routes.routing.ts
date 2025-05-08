@@ -21,6 +21,7 @@ import { OwnerInactiveResolver } from '@pages/owner/resolvers/owner-inactive.res
 import { AccountResolver } from '@pages/account/resolvers/account.resolver';
 import { ContactsResolver } from '@pages/contacts/resolvers/contacts.resolver';
 import { LoadResolver } from '@pages/load/resolvers/load.resolver';
+import { AccountResolver as NewAccountResolver } from '@pages/new-account/resolvers/account.resolver';
 
 // Enums
 import { eLoadRouting } from '@pages/new-load/enums';
@@ -141,6 +142,17 @@ export class ListRoutes {
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: {
                 account: AccountResolver,
+            },
+        },
+        {
+            path: 'list/new-account',
+            loadComponent: () =>
+                import('@pages/new-account/new-account.component').then(
+                    (c) => c.NewAccountComponent
+                ),
+            canActivate: [AuthGuard, CompanySettingsGuard],
+            resolve: {
+                accountsResolved: NewAccountResolver,
             },
         },
         {

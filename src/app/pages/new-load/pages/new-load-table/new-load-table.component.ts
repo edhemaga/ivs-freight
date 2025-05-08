@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';

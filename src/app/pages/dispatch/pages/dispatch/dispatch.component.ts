@@ -14,7 +14,10 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { ModalService } from '@shared/services/modal.service';
-import { CaSearchMultipleStatesService, eFilterDropdownEnum } from 'ca-components';
+import {
+    CaSearchMultipleStatesService,
+    eFilterDropdownEnum,
+} from 'ca-components';
 import { DispatchHubService } from '@shared/services/dispatch-hub.service';
 
 // decorators

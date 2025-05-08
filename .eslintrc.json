@@ -1,89 +1,258 @@
 {
-  "root": true,
-  "ignorePatterns": [
-    "projects/**/*"
-  ],
-  "overrides": [
-    {
-      "files": [
-        "*.ts"
-      ],
-      "parserOptions": {
-        "project": [
-          "tsconfig.json",
-          "e2e/tsconfig.json"
-        ],
-        "createDefaultProgram": true
-      },
-      "extends": [
-        "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates",
-        "prettier"
-      ],
-      "plugins": [
-        "unused-imports"
-      ],
-      "rules": {
-        "indent": "off",
-        "unused-imports/no-unused-imports": "error",
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "style": "kebab-case",
-            "type": "element"
-          }
-        ],
-        "@angular-eslint/directive-selector": [
-          "error",
-          {
-            "style": "camelCase",
-            "type": "attribute"
-          }
-        ],
-        "@angular-eslint/no-empty-lifecycle-method": [
-          "off"
-        ],
-        "@angular-eslint/no-host-metadata-property": [
-          "off"
-        ],
-        "@angular-eslint/no-output-rename": [
-          "off"
-        ],
-        "@angular-eslint/no-output-on-prefix": [
-          "off"
-        ],
-        "@angular-eslint/no-output-native": [
-          "off"
-        ],
-        "no-unused-vars": [
-          "warn",
-          {
-            "argsIgnorePattern": "^_",
-            "varsIgnorePattern": "^_"
-          }
-        ]
-      }
-    },
-    {
-      "files": [
-        "*.html"
-      ],
-      "extends": [
-        "plugin:@angular-eslint/template/recommended"
-      ],
-      "rules": {
-        "@angular-eslint/template/eqeqeq": [
-          "off"
-        ]
-      }
-    },
-    {
-      "files": [
-        "*.ts"
-      ],
-      "extends": [
-        "plugin:@ngrx/recommended"
-      ]
+    "root": true,
+    "ignorePatterns": ["projects/**/*"],
+    "plugins": ["@typescript-eslint", "import", "perfectionist"],
+    "overrides": [
+        {
+            "files": ["*.ts"],
+            "parser": "@typescript-eslint/parser",
+            "extends": [
+                "eslint:recommended",
+                "plugin:@typescript-eslint/recommended",
+                "plugin:@angular-eslint/recommended",
+                "plugin:@angular-eslint/template/process-inline-templates",
+                "plugin:import/recommended",
+                "plugin:import/typescript",
+                "plugin:prettier/recommended"
+            ],
+            "rules": {
+                "perfectionist/sort-classes": [
+                    "error",
+                    {
+                        "type": "alphabetical",
+                        "order": "asc",
+                        "newlinesBetween": "always",
+                        "groups": [
+                            "view-child-properties",
+                            "output-properties",
+                            "input-properties",
+                            "protected-property",
+                            "private-property",
+                            "public-property",
+                            "constructor-custom-group",
+                            "angular-lifecycles",
+                            "protected-methods-spaced",
+                            "private-methods-spaced",
+                            "public-methods-spaced",
+                            "angular-lifecycle-ngOnDestroy"
+                        ],
+                        "customGroups": [
+                            {
+                                "groupName": "view-child-properties",
+                                "selector": "property",
+                                "modifiers": ["decorated"],
+                                "decoratorNamePattern": "ViewChild"
+                            },
+                            {
+                                "groupName": "input-properties",
+                                "selector": "property",
+                                "modifiers": ["decorated"],
+                                "decoratorNamePattern": "Input"
+                            },
+                            {
+                                "groupName": "output-properties",
+                                "selector": "property",
+                                "modifiers": ["decorated"],
+                                "decoratorNamePattern": "Output"
+                            },
+                            {
+                                "groupName": "angular-lifecycles",
+                                "type": "unsorted",
+                                "newlinesInside": "always",
+                                "anyOf": [
+                                    {
+                                        "selector": "method",
+                                        "elementNamePattern": "^(ngOnChanges|ngOnInit|ngDoCheck|ngAfterContentInit|ngAfterContentChecked|ngAfterViewInit|ngAfterViewChecked)$"
+                                    }
+                                ]
+                            },
+                            {
+                                "groupName": "angular-lifecycle-ngOnDestroy",
+                                "newlinesInside": "always",
+                                "anyOf": [
+                                    {
+                                        "selector": "method",
+                                        "elementNamePattern": "^(ngOnDestroy)$"
+                                    }
+                                ]
+                            },
+                            {
+                                // we cannot use reserved "constructor" name in "groups": [] from perfectionist because "constructor" belongs to a method selector
+                                // and when I write the custom group with method selector, like I did for protected-methods-spaced etc. "constructor" isn't on the right place
+                                // so I need to write constructor custom group and place it inside "customGroups": [] above method selectors protected-methods-spaced etc.
+                                "groupName": "constructor-custom-group",
+                                "selector": "constructor",
+                                "newlinesInside": "always"
+                            },
+                            {
+                                "groupName": "protected-methods-spaced",
+                                "selector": "method",
+                                "modifiers": ["protected"],
+                                "newlinesInside": "always"
+                            },
+                            {
+                                "groupName": "private-methods-spaced",
+                                "selector": "method",
+                                "modifiers": ["private"],
+                                "newlinesInside": "always"
+                            },
+                            {
+                                "groupName": "public-methods-spaced",
+                                "selector": "method",
+                                "modifiers": ["public"],
+                                "newlinesInside": "always"
+                            }
+                        ]
+                    }
+                ],
+                "perfectionist/sort-imports": [
+                    "error",
+                    {
+                        "type": "alphabetical",
+                        "order": "asc",
+                        "newlinesBetween": "always",
+                        "partitionByComment": false,
+                        "groups": [
+                            "angular",
+                            "external",
+                            "modules",
+                            "pipes",
+                            "enums",
+                            "services",
+                            "components",
+                            "models",
+                            "interfaces",
+                            "helpers",
+                            "configs",
+                            "svg-routes",
+                            "store"
+                        ],
+                        "customGroups": [
+                            {
+                                "groupName": "angular",
+                                "elementNamePattern": ["^@angular/*"]
+                            },
+                            {
+                                "groupName": "enums",
+                                "elementNamePattern": [
+                                    "^@shared/enums",
+                                    "^@pages/.*/enums",
+                                    "^.*enums.*"
+                                ]
+                            },
+                            {
+                                "groupName": "services",
+                                "elementNamePattern": [
+                                    "^@pages/.*/state/services",
+                                    "^@shared/services",
+                                    "^.*service.*"
+                                ]
+                            },
+                            {
+                                "groupName": "components",
+                                "elementNamePattern": [
+                                    "^ca-components",
+                                    "^angular-svg-icon", // from 'angular-svg-icon' here you are importing Module and Component... I don't know what to do here
+                                    "^@pages/.*/components",
+                                    "^@shared/components",
+                                    "^.*component.*"
+                                ]
+                            },
+                            {
+                                "groupName": "models",
+                                "elementNamePattern": ["^@shared/models"]
+                            },
+                            {
+                                "groupName": "interfaces",
+                                "elementNamePattern": [
+                                    "^@ca-shared/.*/interfaces",
+                                    "^@shared/.*/interface",
+                                    "^@pages/.*/interfaces",
+                                    "^.*interfaces.*"
+                                ]
+                            },
+                            {
+                                "groupName": "svg-routes",
+                                "elementNamePattern": ["^@shared/.*/svg-routes"]
+                            },
+                            {
+                                "groupName": "modules",
+                                "elementNamePattern": [
+                                    "^@shared/.*/module",
+                                    "^.*module.*"
+                                ]
+                            },
+                            {
+                                "groupName": "pipes",
+                                "elementNamePattern": [
+                                    "^@shared/pipes",
+                                    "^.*pipes.*"
+                                ]
+                            },
+                            {
+                                "groupName": "helpers",
+                                "elementNamePattern": [
+                                    "^@shared/.*/helpers",
+                                    "^.*helpers.*"
+                                ]
+                            },
+                            {
+                                "groupName": "configs",
+                                "elementNamePattern": ["^.*configs.*"]
+                            },
+                            {
+                                "groupName": "store",
+                                "elementNamePattern": [
+                                    "^@ngrx/store",
+                                    "^.*reducer.*"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "@typescript-eslint/no-explicit-any": "error",
+                "@typescript-eslint/no-shadow": "error",
+                "@typescript-eslint/no-var-requires": "off",
+                "@typescript-eslint/no-unused-vars": [
+                    "error",
+                    {
+                        "argsIgnorePattern": "^_",
+                        "varsIgnorePattern": "^_"
+                    }
+                ],
+                "@angular-eslint/directive-selector": [
+                    "error",
+                    {
+                        "type": "attribute",
+                        "prefix": "app",
+                        "style": "camelCase"
+                    }
+                ],
+                "@angular-eslint/component-selector": [
+                    "error",
+                    {
+                        "type": "element",
+                        "prefix": "app",
+                        "style": "kebab-case"
+                    }
+                ]
+            }
+        },
+        {
+            "files": ["*.html"],
+            "extends": [
+                "plugin:@angular-eslint/template/recommended",
+                "plugin:@angular-eslint/template/accessibility"
+            ],
+            "rules": {}
+        }
+    ],
+    "settings": {
+        "import/resolver": {
+            "typescript": {
+                "alwaysTryTypes": true,
+                "project": "./tsconfig.json"
+            }
+        }
     }
-  ]
 }

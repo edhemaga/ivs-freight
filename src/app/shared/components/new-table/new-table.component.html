@@ -682,7 +682,8 @@
                     | tableGroupLabelIndex;
 
             @let hasMarginRight =
-                isTableLocked && _columnIndex === lastCheckedIndex;
+                (isTableLocked && _columnIndex === lastCheckedIndex) ||
+                (!isTableLocked && _column.isUniqueColumn);
 
             <ng-container
                 *ngTemplateOutlet="
@@ -709,22 +710,18 @@
     >
         @if (column.isChecked) {
             @let tableColumnCellClass =
+                { 'p-l-7': hasPaddingLeft, 'm-r-7': hasMarginRight };
+
+            @let tableColumnCellWidth =
                 {
-                    hasPaddingLeft,
-                    hasMarginRight,
-                } | tableColumnCellClass;
+                    column,
+                    isTableLocked,
+                } | tableColumnCellWidth;
 
             <div
                 [ngClass]="tableColumnCellClass"
-                [style.min-width]="column.minWidth + eUnit.PX"
-                [style.width]="column.width + eUnit.PX"
+                [ngStyle]="tableColumnCellWidth"
             >
-                @let tableColumnCellColorClass =
-                    {
-                        isTableColumnCellColorClass: true,
-                        hasValue: !!row[column.key]?.value,
-                    } | tableColumnCellClass;
-
                 <!-- Display custom template if template exists -->
 
                 @if (templates[column.key]) {
@@ -735,18 +732,13 @@
                                 data: row,
                                 key: column.key,
                                 column,
-                                cellColumnTextColorClass:
-                                    tableColumnCellColorClass,
                             }
                         "
                     ></ng-container>
                 } @else {
                     <!-- Default - text - if no custom template -->
 
-                    <p
-                        class="text-size-14"
-                        [ngClass]="tableColumnCellColorClass"
-                    >
+                    <p class="text-color-black-2 text-size-14">
                         {{ row[column.key] }}
                     </p>
                 }

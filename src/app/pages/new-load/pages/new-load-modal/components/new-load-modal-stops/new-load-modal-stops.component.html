@@ -35,12 +35,12 @@
                                 index: i,
                                 isOpen: activeCardIndex === i,
                             }"
+                            [isCardOpen]="activeCardIndex === i"
                             [animationMarginParams]="{
                                 marginTop: '0',
                                 marginBottom: '12px',
                             }"
-                            [isCardOpen]="activeCardIndex === i"
-                            (onOpenCard)="handleCardOpened($event, i)"
+                            (onOpenCard)="onCardOpened($event, i)"
                         >
                             <div
                                 origin
@@ -78,9 +78,6 @@
                                         [canAddNew]="true"
                                         [canOpenModal]="true"
                                         [options]="shippers"
-                                        (selectedItem)="
-                                            onSelectShipper($event, i)
-                                        "
                                     >
                                     </ca-input-dropdown-test>
                                 </div>
@@ -199,10 +196,14 @@
                     let-index="index"
                     let-isOpen="isOpen"
                 >
-                    @let stopFormControl = stopsFormArray.at(index);
+                    @let stopFormGroup = stopsFormArray.at(index);
+                    @let selectedShipperId =
+                        stopFormGroup.get(eLoadModalStopsForm.SHIPPER_ID)
+                            ?.value;
                     <app-load-modal-stop
-                        [shipper]="selectedShippers[index]"
-                        [stop]="stopFormControl.value"
+                        [stopFormGroup]="stopFormGroup"
+                        [shippers]="shippers"
+                        [selectedShipperId]="selectedShipperId"
                         [isOpen]="isOpen"
                     ></app-load-modal-stop>
                 </ng-template>
