@@ -259,6 +259,7 @@ export class DriverOwnerReportComponent
     public onProccessPayroll(
         payrollData: IPayrollDriverMileageByIdResponseNumberId
     ): void {
+        const totalEarnings = (payrollData as any).debt ?? payrollData.earnings;
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
             {
@@ -268,8 +269,7 @@ export class DriverOwnerReportComponent
                 type: TableStringEnum.NEW,
                 data: {
                     id: payrollData.id,
-                    totalEarnings:
-                        (payrollData as any).debt ?? payrollData.earnings,
+                    totalEarnings: totalEarnings > 0 ? totalEarnings : 0,
                     payrollNumber: payrollData.payrollNumber,
                     selectedTab: this.selectedTab,
                     payrollType: 'owner',
