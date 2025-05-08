@@ -31,6 +31,8 @@ import {
     CaLoadStatusComponent,
     CaCheckboxSelectedCountComponent,
     CaLoadPickupDeliveryComponent,
+    CaCommentsComponent,
+    IComment,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
@@ -55,6 +57,7 @@ import { IMappedLoad } from '@pages/new-load/interfaces';
 
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+import { UserHelper } from '@shared/utils/helpers';
 
 // models
 import {
@@ -65,6 +68,7 @@ import {
 
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { User } from '@shared/models';
 
 // pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
@@ -93,6 +97,7 @@ import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes
         TaNoteComponent,
         LoadTypeComponent,
         TaTruckTrailerIconComponent,
+        CaCommentsComponent,
 
         // pipes
         TableHighlightSearchTextPipe,
@@ -118,6 +123,10 @@ export class NewLoadTableComponent
     public eDateTimeFormat = eDateTimeFormat;
     public eStringPlaceholder = eStringPlaceholder;
     public eThousandSeparatorFormat = eThousandSeparatorFormat;
+
+    public selectedCommentsLoadId: number | null = null;
+
+    public currentUser: User = UserHelper.getUserFromLocalStorage();
 
     constructor(
         protected router: Router,
@@ -205,8 +214,7 @@ export class NewLoadTableComponent
         loadId: number
     ): void {
         this.changeStatusPopover = tooltip;
-
-        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
+        this.loadStoreService.dispatchOpenChangeStatusDropdown(loadId);
     }
 
     public onNextStatus(status: LoadStatusResponse): void {
@@ -223,6 +231,23 @@ export class NewLoadTableComponent
 
     public onPickupDeliveryClick(loadData: IMappedLoad): void {
         this.loadStoreService.dispatchGetLoadStops(loadData);
+    }
+
+    public onToggleComments(id: number): void {
+        this.selectedCommentsLoadId =
+            this.selectedCommentsLoadId === id ? null : id;
+    }
+
+    public onCommentDelete(commentId: number, loadId): void {
+        this.loadStoreService.dispatchDeleteComment(commentId, loadId);
+    }
+
+    public onCommentAdded(comment: IComment, loadId: number): void {
+        this.loadStoreService.dispatchAddComment(comment, loadId);
+    }
+
+    public onCommentEdited(comment: IComment, loadId: number): void {
+        this.loadStoreService.dispatchEditComment(comment, loadId);
     }
 
     ngOnDestroy(): void {

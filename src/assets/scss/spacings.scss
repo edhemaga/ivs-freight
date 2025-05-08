@@ -5,6 +5,9 @@
     margin-right: 12px !important;
 }
 .m {
+    &-auto {
+        margin: auto;
+    }
     &-b {
         &-2 {
             margin-bottom: 2px;
@@ -38,6 +41,9 @@
         }
     }
     &-t {
+        &-1 {
+            margin-top: 1px;
+        }
         &-2 {
             margin-top: 2px;
         }
@@ -300,5 +306,20 @@
     }
     &-8 {
         gap: 8px;
+    }
+}
+
+.top {
+    &-1 {
+        top: 1px;
+    }
+    &-2 {
+        top: 2px;
+    }
+}
+
+.right {
+    &--28 {
+        right: -28px;
     }
 }

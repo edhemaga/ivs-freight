@@ -1125,6 +1125,17 @@ export class LoadTableColumnsConfig {
         },
         {
             id: 38,
+            key: 'comments',
+            label: '',
+            width: 26,
+            minWidth: 26,
+            isResizable: false,
+            isDisabled: false,
+            isChecked: true,
+            hasSort: false,
+        },
+        {
+            id: 39,
             key: 'note',
             label: '',
             labelToolbar: '',
@@ -1137,7 +1148,7 @@ export class LoadTableColumnsConfig {
             hasSort: false,
         },
         {
-            id: 39,
+            id: 40,
             key: 'action',
             label: '',
             labelToolbar: '',

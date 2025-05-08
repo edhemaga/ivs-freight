@@ -31,7 +31,7 @@ import {
 } from '@shared/components/new-table/interfaces';
 
 // Ca components
-import { IFilterAction } from 'ca-components';
+import { IFilterAction, IComment } from 'ca-components';
 
 //#region List request
 export const getLoadsPayload = createAction(
@@ -298,5 +298,51 @@ export const onGetLoadStopsList = createAction(
 export const onGetLoadStopsByIdSuccess = createAction(
     LoadStoreConstants.ACTION_GET_LOAD_STOPS_LIST_SUCCESS,
     props<{ loadId: number; stopsData: LoadListLoadStopResponse }>()
+);
+//#endregion
+
+//#region Comments
+export const onAddLoadComment = createAction(
+    LoadStoreConstants.ACTION_ON_COMMENT_ADD,
+    props<{ comment: IComment; loadId: number }>()
+);
+
+export const onAddLoadCommentSuccess = createAction(
+    LoadStoreConstants.ACTION_ON_COMMENT_ADD_SUCCESS,
+    props<{ comment: IComment; loadId: number }>()
+);
+
+export const onAddLoadCommentError = createAction(
+    LoadStoreConstants.ACTION_ON_COMMENT_ADD_ERROR
+);
+
+export const onDeleteLoadComment = createAction(
+    LoadStoreConstants.ACTION_ON_COMMENT_DELETE,
+    props<{ id: number; loadId: number }>()
+);
+export const onDeleteLoadCommentSuccess = createAction(
+    LoadStoreConstants.ACTION_ON_COMMENT_DELETE_SUCCESS,
+    props<{ id: number; loadId: number }>()
+);
+export const onDeleteLoadCommentError = createAction(
+    LoadStoreConstants.ACTION_ON_COMMENT_DELETE_ERROR
+);
+
+export const onEditLoadComment = createAction(
+    LoadStoreConstants.ACTION_ON_COMMENT_EDIT,
+    props<{
+        comment: IComment;
+        loadId: number;
+    }>()
+);
+export const onEditLoadCommentSuccess = createAction(
+    LoadStoreConstants.ACTION_ON_COMMENT_EDIT_SUCCESS,
+    props<{
+        comment: IComment;
+        loadId: number;
+    }>()
+);
+export const onEditLoadCommentError = createAction(
+    LoadStoreConstants.ACTION_ON_COMMENT_EDIT_ERROR
 );
 //#endregion

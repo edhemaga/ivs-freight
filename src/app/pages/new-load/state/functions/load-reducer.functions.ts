@@ -44,10 +44,8 @@ export const getLoadByIdSuccessResult = function (
     state: ILoadState,
     loadResponse: LoadListResponse | LoadTemplateListResponse
 ): ILoadState {
-    console.log('getLoadByIdSuccessResult');
-
     const { selectedTab } = state;
-    const loads = LoadHelper.loadMapper(
+    const loads: IMappedLoad[] = LoadHelper.loadMapper(
         loadResponse.pagination.data,
         selectedTab
     );
@@ -66,7 +64,6 @@ export const onPageChanges = function (
     state: ILoadState,
     loadResponse: LoadListResponse | LoadTemplateListResponse
 ): ILoadState {
-    console.log('onPageChangesonPageChanges');
     const loads = [
         ...state.loads,
         ...LoadHelper.loadMapper(
@@ -87,7 +84,6 @@ export const getLoadsPayloadOnTabTypeChange = function (
     state: ILoadState,
     selectedTabValue: eLoadStatusType
 ): ILoadState {
-    console.log('getLoadsPayloadOnTabTypeChange');
     const selectedTab = LoadHelper.loadStatusTypeToStringMap[selectedTabValue];
 
     return {
@@ -106,7 +102,6 @@ export const getViewModeChange = function (
     state: ILoadState,
     activeViewMode: eCommonElement
 ): ILoadState {
-    console.log('getViewModeChange');
     const {
         tableSettings,
         cardFlipViewMode,
@@ -131,7 +126,6 @@ export function onFiltersChange(
     state: ILoadState,
     filters: IFilterAction
 ): ILoadState {
-    console.log('onFiltersChange');
     return {
         ...state,
         filters: FilterHelper.mapFilters(filters, state.filters),
@@ -144,7 +138,6 @@ export function setFilterDropdownList(
     dispatcherFilters: DispatcherFilterResponse[],
     statusFilters: LoadStatusFilterResponse[]
 ): ILoadState {
-    console.log('setFilterDropdownList');
     return {
         ...state,
         filtersDropdownList: {
@@ -158,7 +151,6 @@ export function onSeachFilterChange(
     state: ILoadState,
     searchQuery: string[]
 ): ILoadState {
-    console.log('onSeachFilterChange');
     return {
         ...state,
         currentPage: 1,
@@ -260,7 +252,6 @@ export function onGetLoadByIdSuccess(
     minimalList: LoadMinimalListResponse,
     mapRoutes: RoutingResponse
 ): ILoadState {
-    console.log('onGetLoadByIdSuccess');
     return LoadStoreHelper.setLoadDetailsState(
         (state = {
             ...state,
@@ -277,17 +268,14 @@ export function onGetLoadByIdSuccess(
 }
 
 export function onGetLoadById(state: ILoadState): ILoadState {
-    console.log('onGetLoadById');
     return LoadStoreHelper.setLoadDetailsState(state, {}, true, {});
 }
 
 export function onGetLoadByIdError(state: ILoadState): ILoadState {
-    console.log('onGetLoadByIdError');
     return LoadStoreHelper.setLoadDetailsState(state, {}, false, {});
 }
 
 export function onMapVisiblityToggle(state: ILoadState): ILoadState {
-    console.log('onMapVisiblityToggle');
     const { details } = state;
 
     return {
