@@ -29,6 +29,7 @@ import {
     frontSideDataSelector,
     backSideDataSelector,
     getSortableColumn,
+    isFilterEmptySelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // models
@@ -98,6 +99,10 @@ export class MilesStoreService {
 
     public filter$: Observable<IStateFilters> = this.store.pipe(
         select(filterSelector)
+    );
+
+    public isFilterEmpty$: Observable<boolean> = this.store.pipe(
+        select(isFilterEmptySelector)
     );
 
     public detailsSelector$: Observable<MilesByUnitPaginatedStopsResponse> =
@@ -352,6 +357,18 @@ export class MilesStoreService {
     public dispatchOpenColumnsModal(): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_OPEN_COLUMNS_MODAL,
+        });
+    }
+
+    public dispatchResetFilters(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_RESET_FILTERS,
+        });
+    }
+
+    public dispatchGetMiles(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_GET_MILES,
         });
     }
 }
