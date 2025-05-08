@@ -113,7 +113,19 @@
             </ng-template>
         </app-new-table-toolbar>
 
-        <router-outlet></router-outlet>
+        @switch (store.activeViewMode) {
+            @case (eCommonElement.LIST) {
+                <app-miles-table></app-miles-table>
+            }
+
+            @case (eCommonElement.CARD) {
+                <app-miles-card></app-miles-card>
+            }
+
+            @case (eCommonElement.MAP) {
+                <app-miles-map></app-miles-map>
+            }
+        }
 
         <!-- Empty State - List, Card -->
 

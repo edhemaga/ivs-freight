@@ -413,7 +413,7 @@ export function resetTable(state: IMilesState): IMilesState {
 
     return {
         ...state,
-        columns: MilesTableColumnsConfig.columnsConfig,
+        columns: MilesTableColumnsConfig.getTableColumns(),
         tableSettings: {
             isTableLocked: true,
             sortKey: null,

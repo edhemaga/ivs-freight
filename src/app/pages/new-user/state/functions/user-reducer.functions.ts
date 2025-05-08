@@ -5,15 +5,9 @@ import {
     DepartmentFilterResponse,
 } from 'appcoretruckassist';
 
-import { eCardFlipViewMode, eStatusTab } from '@shared/enums';
-
-import { ITableColumn } from '@shared/components/new-table/interfaces';
-import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 // Enums
-import { eCommonElement, eGeneralActions, IFilterAction } from 'ca-components';
-
-// Interfaces
-import { IMappedUser, IUserState } from '@pages/new-user/interfaces';
+import { eGeneralActions, IFilterAction } from 'ca-components';
+import { eCardFlipViewMode, eStatusTab, eCommonElement } from '@shared/enums';
 
 // Helpers
 import { UsersHelper } from '@pages/new-user/utils/helpers';
@@ -22,6 +16,11 @@ import {
     DropdownMenuColumnsActionsHelper,
     DropdownMenuContentHelper,
 } from '@shared/utils/helpers/dropdown-menu-helpers';
+import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
+
+// Interfaces
+import { IMappedUser, IUserState } from '@pages/new-user/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 //#region Tabs
 export const onTabTypeChange = function (

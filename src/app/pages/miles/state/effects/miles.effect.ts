@@ -323,7 +323,8 @@ export class MilesEffects {
                             ])
                         ),
                         catchError(() => {
-                            this.router.navigate(['tools/miles/list']);
+                            this.router.navigate(['tools/miles']);
+
                             return of(MilesAction.getLoadsPayloadError());
                         })
                     );
