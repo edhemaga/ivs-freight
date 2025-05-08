@@ -177,7 +177,9 @@ export const loadIdLoadStatusChangeSelector = createSelector(
 export const selectedLoadForStatusChangeSelector = createSelector(
     selectLoadState,
     (state: ILoadState) => {
-        const loadForChange = state.loads.find(load => load.id === state.loadIdLoadStatusChange)
+        const loadForChange = state.loads.find(
+            (load) => load.id === state.loadIdLoadStatusChange
+        );
         return loadForChange;
     }
 );
@@ -189,4 +191,9 @@ export const cardFlipViewModeSelector = createSelector(
         const { cardFlipViewMode } = state || {};
         return eCardFlipViewMode[cardFlipViewMode];
     }
+);
+
+export const loadPickupDeliveryDataSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.loadPickupDeliveryData
 );

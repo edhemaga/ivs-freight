@@ -11,6 +11,7 @@ import { LoadStoreConstants } from '@pages/new-load/utils/constants';
 // Models
 import {
     DispatcherFilterResponse,
+    LoadListLoadStopResponse,
     LoadListResponse,
     LoadMinimalListResponse,
     LoadPossibleStatusesResponse,
@@ -283,5 +284,19 @@ export const onDeleteLoad = createAction(
 
 export const onDeleteLoadSuccess = createAction(
     LoadStoreConstants.ACTION_ON_DELETE_LOAD_SUCCESS
+);
+//#endregion
+
+//#region Get Load Stops List
+export const onGetLoadStopsList = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_STOPS_LIST,
+    props<{
+        id: number;
+    }>()
+);
+
+export const onGetLoadStopsByIdSuccess = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_STOPS_LIST_SUCCESS,
+    props<{ loadId: number; stopsData: LoadListLoadStopResponse }>()
 );
 //#endregion

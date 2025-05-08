@@ -71,4 +71,9 @@ export class LoadStoreConstants {
     public static ACTION_ON_DELETE_LOAD_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_ON_DELETE_LOAD_SUCCESS`;
 
     //#endregion
+
+    //#region Get Load Pickup Delivery Stops
+    public static ACTION_GET_LOAD_STOPS_LIST = `${this.COMPONENT_NAME_KEY} ACTION_GET_LOAD_STOPS_LIST`;
+    public static ACTION_GET_LOAD_STOPS_LIST_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_GET_LOAD_STOPS_LIST_SUCCESS`;
+    //#endregion
 }

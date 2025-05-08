@@ -233,7 +233,7 @@ export class LoadTableColumnsConfig {
             pinned: null,
             isChecked: true,
             columns: [
-                /*    {
+                {
                     id: 15,
                     key: 'loadPickupDelivery',
                     label: 'Pickup & Delivery',
@@ -244,7 +244,7 @@ export class LoadTableColumnsConfig {
                     isResizable: true,
                     isChecked: true,
                     hasSort: false,
-                }, */
+                },
             ],
         },
         {
@@ -806,7 +806,7 @@ export class LoadTableColumnsConfig {
                     hasSort: true,
                     sortName: LoadSortBy.Status,
                 },
-                /*   {
+                {
                     id: 16,
                     key: 'loadPickupDelivery',
                     label: 'Pickup & Delivery',
@@ -817,7 +817,7 @@ export class LoadTableColumnsConfig {
                     isResizable: true,
                     isChecked: true,
                     hasSort: false,
-                }, */
+                },
             ],
         },
         {
@@ -1379,7 +1379,7 @@ export class LoadTableColumnsConfig {
                     hasSort: true,
                     sortName: LoadSortBy.Status,
                 },
-                /*  {
+                {
                     id: 16,
                     key: 'loadPickupDelivery',
                     label: 'Pickup & Delivery',
@@ -1390,7 +1390,7 @@ export class LoadTableColumnsConfig {
                     isResizable: true,
                     isChecked: true,
                     hasSort: false,
-                }, */
+                },
             ],
         },
         {

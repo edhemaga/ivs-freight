@@ -79,6 +79,8 @@ export const initialState: ILoadState = {
 
     possibleStatuses: null,
     loadIdLoadStatusChange: null,
+
+    loadPickupDeliveryData: null,
 };
 
 export const loadReducer = createReducer(
@@ -220,7 +222,13 @@ export const loadReducer = createReducer(
     on(LoadActions.revertLoadStatusSuccess, (state, { status, load }) =>
         Functions.updateLoadStatusSuccessResult(state, status, load)
     ),
-    on(LoadActions.revertLoadStatusError, (state) => ({ ...state }))
+    on(LoadActions.revertLoadStatusError, (state) => ({ ...state })),
 
+    //#endregion
+
+    //#region Get Load Stops
+    on(LoadActions.onGetLoadStopsByIdSuccess, (state, { loadId, stopsData }) =>
+        Functions.setLoadPickupDeliveryStopsData(state, loadId, stopsData)
+    )
     //#endregion
 );

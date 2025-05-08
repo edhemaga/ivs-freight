@@ -29,6 +29,7 @@ import {
     CaCheckboxComponent,
     CaLoadStatusComponent,
     CaCheckboxSelectedCountComponent,
+    CaLoadPickupDeliveryComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
@@ -49,6 +50,7 @@ import {
     ITableReorderAction,
     ITableResizeAction,
 } from '@shared/components/new-table/interfaces';
+import { IMappedLoad } from '@pages/new-load/interfaces';
 
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
@@ -84,6 +86,7 @@ import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes
         CaCheckboxSelectedCountComponent,
         CaStatusChangeDropdownComponent,
         CaProfileImageComponent,
+        CaLoadPickupDeliveryComponent,
         SvgIconComponent,
         TaAppTooltipV2Component,
         TaNoteComponent,
@@ -215,6 +218,10 @@ export class NewLoadTableComponent
 
     public navigateToLoadDetails(id: number): void {
         this.loadStoreService.navigateToLoadDetails(id);
+    }
+
+    public onPickupDeliveryClick(loadData: IMappedLoad): void {
+        this.loadStoreService.dispatchGetLoadStops(loadData);
     }
 
     ngOnDestroy(): void {

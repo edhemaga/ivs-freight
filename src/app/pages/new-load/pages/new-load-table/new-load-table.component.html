@@ -10,6 +10,8 @@
         isTypeColumnCheckedSelector:
             loadStoreService.isTypeColumnCheckedSelector$ | async,
         searchStrings: loadStoreService.searchStringsSelector$ | async,
+        loadPickupDeliveryData:
+            loadStoreService.loadPickupDeliveryDataSelector$ | async,
     };
 
 @if (store) {
@@ -17,6 +19,7 @@
         {
             select: selectHeaderTemplate,
             weight: additionalLabelHeaderTemplate,
+            loadPickupDelivery: pickupDeliveryHeaderTemplate,
             requirementLength: requirementLengthHeaderTemplate,
             billingPayTerm: additionalLabelHeaderTemplate,
             billingAgeUnpaid: additionalLabelHeaderTemplate,
@@ -42,6 +45,7 @@
             assignedDriverTruckNumber,
             assignedDriverTrailerNumber,
             loadStatus,
+            loadPickupDelivery,
             requirementTruck,
             requirementTrailer,
             requirementLiftgate,
@@ -124,6 +128,42 @@
         </ng-template>
 
         <!-- #endregion END OF ADDITIONAL LABEL HEADER COLUMN -->
+
+        <!-- #region PICKUP & DELIVERY HEADER COLUMN -->
+
+        <ng-template #pickupDeliveryHeaderTemplate>
+            <div class="d-flex align-items-center w-100">
+                <div class="d-flex align-items-center w-50">
+                    <svg-icon
+                        [src]="sharedSvgRoutes.PICKUP_ICON"
+                        class="d-flex svg-fill-green svg-size-14 m-l-6 m-r-6"
+                    >
+                    </svg-icon>
+
+                    <div
+                        class="text-size-11 ta-font-bold color-inherit text-uppercase"
+                    >
+                        PICKUP
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center w-50">
+                    <svg-icon
+                        [src]="sharedSvgRoutes.DELIVERY_ICON"
+                        class="d-flex svg-fill-orange-4 svg-size-14 m-l-6 m-r-6"
+                    >
+                    </svg-icon>
+
+                    <div
+                        class="text-size-11 ta-font-bold color-inherit text-uppercase"
+                    >
+                        DELIVERY
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+        <!-- #endregion PICKUP & DELIVERY HEADER COLUMN -->
 
         <!-- #region REQUIREMENT LENGTH HEADER COLUMN -->
 
@@ -424,6 +464,24 @@
                 >
                 </app-ca-load-status>
             </span>
+        </ng-template>
+
+        <ng-template let-data="data" let-column="column" #loadPickupDelivery>
+            @let pickupDeliveryData =
+                store.loadPickupDeliveryData?.loadId === data.id
+                    ? store.loadPickupDeliveryData
+                    : null;
+
+            @if (data.pickup && data.delivery) {
+                <app-ca-load-pickup-delivery
+                    [columnWidth]="column.width"
+                    [pickup]="data.pickup"
+                    [delivery]="data.delivery"
+                    [stopsData]="pickupDeliveryData"
+                    [loadType]="store.selectedTab"
+                    (onPickupDeliveryClick)="onPickupDeliveryClick(data)"
+                ></app-ca-load-pickup-delivery>
+            }
         </ng-template>
 
         <!-- #endregion END OF STATUS ; PICKUP ; DELIVERY GROUP -->

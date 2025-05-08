@@ -9,6 +9,7 @@ import {
 // Models
 import {
     DispatcherFilterResponse,
+    LoadListLoadStopResponse,
     LoadListResponse,
     LoadMinimalListResponse,
     LoadPossibleStatusesResponse,
@@ -526,3 +527,17 @@ export const updateLoadStatusSuccessResult = function (
 
     return result;
 };
+
+export function setLoadPickupDeliveryStopsData(
+    state: ILoadState,
+    loadId: number,
+    stopsData: LoadListLoadStopResponse
+): ILoadState {
+    return {
+        ...state,
+        loadPickupDeliveryData: {
+            loadId,
+            ...stopsData,
+        },
+    };
+}
