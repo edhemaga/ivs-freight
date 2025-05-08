@@ -5,8 +5,7 @@ import { AccountStoreConstants } from '@pages/new-account/utils/constants';
 import { GetCompanyAccountListResponse } from 'appcoretruckassist';
 import { IMappedAccount } from '@pages/new-account/interfaces';
 
-// Enums
-import { eCommonElement } from 'ca-components';
+import { eCommonElement } from '@shared/enums';
 
 import { createAction, props } from '@ngrx/store';
 

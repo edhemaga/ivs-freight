@@ -1005,7 +1005,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         }
                     }
 
-                    this.ngbActiveModal.close();
+                    this.ngbActiveModal.close(true);
                     if (this.addNewAfterSave)
                         this.modalService.openModal(TruckModalComponent, {
                             size: ContactsModalStringEnum.SMALL,

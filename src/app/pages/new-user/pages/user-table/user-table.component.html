@@ -8,6 +8,8 @@
             userStoreService.selectedTabCountSelector$ | async,
         searchStrings: userStoreService.searchStringsSelector$ | async,
         tableSettings: userStoreService.tableSettingsSelector$ | async,
+        tableDropdownMenuOptions:
+            userStoreService.tableDropdownMenuOptionsSelector$ | async,
     };
 
 @if (store) {
@@ -37,6 +39,7 @@
             dateDeactivated,
             dateAdded,
             dateEdited,
+            action,
         };
     @let headerTemplates =
         {
@@ -406,5 +409,17 @@
             ></div>
         </ng-template>
         <!-- #region END OF DATES GROUP -->
+
+        <ng-template let-data="data" #action>
+            <ca-dropdown-menu
+                [type]="'dots-menu-type'"
+                [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
+                [options]="store.tableDropdownMenuOptions"
+                (dropdownOptionEmitter)="
+                    onToggleDropdownMenuActions($event, data)
+                "
+            >
+            </ca-dropdown-menu>
+        </ng-template>
     </app-new-table>
 }

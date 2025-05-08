@@ -13,8 +13,6 @@ import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolba
 import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
 import {
     CaSearchMultipleStates2Component,
-    CaCheckboxSelectedCountComponent,
-    eCommonElement,
     eColor,
     ePosition,
     CaFilterListDropdownComponent,
@@ -31,6 +29,7 @@ import {
     eGeneralActions,
     eStatusTab,
     eDropdownMenuColumns,
+    eCommonElement,
 } from '@shared/enums';
 
 // Svg routes
@@ -61,7 +60,6 @@ import { IMappedUser } from '@pages/new-user/interfaces';
         CaSearchMultipleStates2Component,
         CaFilterListDropdownComponent,
         SvgIconComponent,
-        CaCheckboxSelectedCountComponent,
         TaAppTooltipV2Component,
         UserTableComponent,
         UserCardsComponent,

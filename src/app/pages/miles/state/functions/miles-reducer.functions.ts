@@ -16,10 +16,7 @@ import {
 } from '@shared/components/new-table/interfaces';
 
 // enums
-import {
-    eActiveViewMode,
-    eCardFlipViewMode,
-} from '@shared/enums';
+import { eActiveViewMode, eCardFlipViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 import { eSharedString } from '@shared/enums';
 
@@ -91,14 +88,19 @@ export const changeViewMode = function (
 
 export const updateMilesData = function (
     state: IMilesState,
-    miles: IMilesModel[]
+    miles: IMilesModel[],
+    activeTruckCount?: number,
+    inactiveTruckCount?: number
 ): IMilesState {
-    return {
+    const newState = {
         ...state,
         items: miles,
         page: 1,
         loading: false,
     };
+    return activeTruckCount || activeTruckCount === 0
+        ? updateTruckCounts(newState, activeTruckCount, inactiveTruckCount)
+        : newState;
 };
 
 export const pageChanges = function (state: IMilesState): IMilesState {
@@ -143,6 +145,13 @@ export function onSeachFilterChange(
         },
     };
 }
+
+export const resetFilters = function (state: IMilesState): IMilesState {
+    return {
+        ...state,
+        filters: {},
+    };
+};
 
 export const updateTabSelection = function (
     state: IMilesState,
@@ -404,7 +413,7 @@ export function resetTable(state: IMilesState): IMilesState {
 
     return {
         ...state,
-        columns: MilesTableColumnsConfig.columnsConfig,
+        columns: MilesTableColumnsConfig.getTableColumns(),
         tableSettings: {
             isTableLocked: true,
             sortKey: null,
