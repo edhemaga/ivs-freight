@@ -2,13 +2,6 @@
 import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 export class AccountTableColumnsConfig {
-    static getTableColumns(): ITableColumn[] {
-        return [
-            AccountTableColumnsConfig.selectColumn,
-            AccountTableColumnsConfig.userNameColumn,
-        ];
-    }
-
     static selectColumn: ITableColumn = {
         id: 1,
         key: 'select',
@@ -22,7 +15,6 @@ export class AccountTableColumnsConfig {
         isChecked: true,
         hasSort: false,
     };
-
     static userNameColumn: ITableColumn = {
         id: 2,
         key: 'name',
@@ -38,4 +30,11 @@ export class AccountTableColumnsConfig {
         // hasSort: true,
         // sortName: CompanyUserSortBy.Name,
     };
+
+    static getTableColumns(): ITableColumn[] {
+        return [
+            AccountTableColumnsConfig.selectColumn,
+            AccountTableColumnsConfig.userNameColumn,
+        ];
+    }
 }

@@ -14,6 +14,8 @@ export enum eGeneralActions {
     CONFIRM_EDIT = 'Confirm Edit',
     ACTIVATE = 'activate',
     DEACTIVATE = 'deactivate',
+    ACTIVATE_CAPITALIZED = 'Activate',
+    DEACTIVATE_CAPITALIZED = 'Deactivate',
     CLOSE = 'close',
     OPEN = 'open',
     OPEN_CAPITALIZED = 'Open',
