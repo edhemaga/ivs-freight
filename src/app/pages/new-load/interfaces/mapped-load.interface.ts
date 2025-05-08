@@ -13,6 +13,7 @@ import { LoadDelivery, LoadPickup } from '@pages/load/pages/load-table/models';
 // interfaces
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { ISingleValue } from '@shared/interfaces';
+import { IComment } from 'ca-components';
 
 export interface IMappedLoad {
     id: number;
@@ -22,6 +23,7 @@ export interface IMappedLoad {
     loadType: EnumValue;
     dispatcher: CompanyUserShortResponse;
     companyName: string;
+    comments: IComment[];
     brokerBusinessName: string;
     brokerContact: string;
     brokerPhone: string;

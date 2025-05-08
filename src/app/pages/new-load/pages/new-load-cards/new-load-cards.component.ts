@@ -225,7 +225,7 @@ export class NewLoadCardsComponent
         loadId: number
     ): void {
         this.changeStatusPopover = tooltip;
-        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
+        this.loadStoreService.dispatchOpenChangeStatusDropdown(loadId);
     }
 
     public initChangeStatusDropdownListener(): void {

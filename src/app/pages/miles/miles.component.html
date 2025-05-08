@@ -40,7 +40,7 @@
 
                 <ng-container *ngTemplateOutlet="divider"></ng-container>
 
-                <div class="d-flex gap-1 align-items-center">
+                <div class="d-flex align-items-center">
                     @if (store.activeViewMode !== eCommonElement.MAP) {
                         <ca-search-multiple-states-2
                             [selectedTab]="selectedTab"
@@ -86,7 +86,7 @@
             <ng-template #rightSide>
                 @if (store?.activeViewMode === eCommonElement.CARD) {
                     @let getSortableColumn = store.getSortableColumnSelector;
-    
+
                     <div>
                         <app-ca-sorting-card-dropdown
                             [options]="getSortableColumn"
