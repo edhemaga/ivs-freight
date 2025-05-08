@@ -52,15 +52,15 @@ export class UserModalHelper {
                 phoneFaxRegex,
             ]),
             [eUserModalForm.PHONE_EXTENSION]: new UntypedFormControl(
-                userData?.extensionPhone,
+                userData?.extensionPhone ?? null,
                 [...phoneExtension]
             ),
             [eUserModalForm.PERSONAL_EMAIL]: new UntypedFormControl(
-                userData?.personalEmail,
+                userData?.personalEmail ?? null,
                 [Validators.email]
             ),
             [eUserModalForm.PERSONAL_PHONE]: new UntypedFormControl(
-                userData?.personalPhone,
+                userData?.personalPhone ?? null,
                 [phoneFaxRegex]
             ),
             [eUserModalForm.ADDRESS]: new UntypedFormControl(
