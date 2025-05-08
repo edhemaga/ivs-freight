@@ -1,17 +1,27 @@
-// enums
+// Enums
 import { eSharedString, eStatusTab } from '@shared/enums';
 
-// interfaces
-import { IMappedUser } from '@pages/new-user/interfaces';
-import { ITableData } from '@shared/models';
-
-// models
+// Models
 import {
     CompanyUserListItemResponse,
     CompanyUserListResponse,
+    CompanyUserResponse,
 } from 'appcoretruckassist';
 
+// Interface
+import { IMappedUser } from '@pages/new-user/interfaces';
+import { ITableData } from '@shared/models';
+
 export class UsersHelper {
+    static increaseActiveTabCount(toolbarTabs: ITableData[]): ITableData[] {
+        const updatedTabs = [...toolbarTabs];
+        updatedTabs[0] = {
+            ...toolbarTabs[0],
+            length: toolbarTabs[0].length + 1,
+        };
+        return updatedTabs;
+    }
+
     static updateTabsCount(
         payload: CompanyUserListResponse,
         toolbarTabs: ITableData[]
@@ -60,7 +70,9 @@ export class UsersHelper {
         return updatedTabs;
     }
 
-    static usersMapper(users: CompanyUserListItemResponse[]): IMappedUser[] {
+    static usersMapper(
+        users: CompanyUserListItemResponse[] | CompanyUserResponse[]
+    ): IMappedUser[] {
         return users.map((user) => {
             const {
                 firstName,
@@ -95,7 +107,12 @@ export class UsersHelper {
                 isSelected: false,
                 fullName: `${firstName} ${lastName}`,
                 avatar: avatarFile?.url,
-                department,
+                // For edit we get department as object inside list it is string
+                // TODO: Should we ask back to be same response maybe there is more changes?
+                department:
+                    typeof department === 'object'
+                        ? department.name
+                        : department,
                 companyOffice,
                 email,
                 phone,

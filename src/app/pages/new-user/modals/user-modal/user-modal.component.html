@@ -5,6 +5,7 @@
 >
     <div class="new-modal" origin>
         @if (userForm) {
+            @let noteValue = userForm.get(eUserModalForm.NOTE).value;
             <form [formGroup]="userForm">
                 <app-ca-tab-switch
                     [tabs]="userTabs"
@@ -133,8 +134,39 @@
                                 ></ca-input-test>
                             </div>
                             <div
-                                class="d-grid gap-12 d-grid-personal-address m-t-26"
-                            ></div>
+                                class="d-grid gap-12 d-grid-personal-address m-t-26 p-b-14"
+                            >
+                                @let addressInputConfig =
+                                    {
+                                        configType: eUserModalForm.ADDRESS,
+                                    } | userModalInputConfig;
+
+                                <app-ca-input-address-dropdown
+                                    formControlName="address"
+                                    [inputConfig]="addressInputConfig"
+                                    [placeholderType]="'longAddress'"
+                                    [activeAddress]="selectedAddress"
+                                    [receivedAddressList]="addressList"
+                                    [receivedAddressData]="addressData"
+                                    (selectedAddress)="onHandleAddress($event)"
+                                    (sentAddressData)="
+                                        onAddressChange($event, addressService)
+                                    "
+                                    (sentAddressValue)="
+                                        getAddressData($event, addressService)
+                                    "
+                                ></app-ca-input-address-dropdown>
+
+                                @let addressUnitInputConfig =
+                                    {
+                                        configType: eUserModalForm.ADDRESS_UNIT,
+                                    } | userModalInputConfig;
+
+                                <ca-input-test
+                                    formControlName="addressUnit"
+                                    [inputConfig]="addressUnitInputConfig"
+                                ></ca-input-test>
+                            </div>
                         </div>
                     </app-ca-custom-card>
                 </div>
@@ -178,6 +210,11 @@
                         </div>
                     </div>
                 </app-ca-custom-card>
+                <app-ca-input-note
+                    formControlName="note"
+                    [isVisibleNote]="true"
+                    [note]="noteValue && noteValue !== 'null' ? noteValue : ''"
+                ></app-ca-input-note>
             </form>
         }
     </div>

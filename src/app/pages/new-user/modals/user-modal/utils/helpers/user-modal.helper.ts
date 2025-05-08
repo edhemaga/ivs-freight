@@ -14,6 +14,8 @@ import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
 
 // Validators
 import {
+    addressUnitValidation,
+    addressValidation,
     firstNameValidation,
     lastNameValidation,
     phoneExtension,
@@ -40,34 +42,45 @@ export class UserModalHelper {
                 [Validators.required]
             ),
             [eUserModalForm.IS_ADMIN]: new UntypedFormControl(
-                userData?.isAdmin
+                userData?.isAdmin ?? false
             ),
             [eUserModalForm.OFFICE]: new UntypedFormControl(
-                userData?.companyOffice?.id
+                userData?.companyOffice?.id,
+                [Validators.required]
             ),
             [eUserModalForm.PHONE]: new UntypedFormControl(userData?.phone, [
                 phoneFaxRegex,
             ]),
             [eUserModalForm.PHONE_EXTENSION]: new UntypedFormControl(
-                userData?.extensionPhone,
+                userData?.extensionPhone ?? null,
                 [...phoneExtension]
             ),
             [eUserModalForm.PERSONAL_EMAIL]: new UntypedFormControl(
-                userData?.personalEmail,
+                userData?.personalEmail ?? null,
                 [Validators.email]
             ),
             [eUserModalForm.PERSONAL_PHONE]: new UntypedFormControl(
-                userData?.personalPhone,
+                userData?.personalPhone ?? null,
                 [phoneFaxRegex]
             ),
+            [eUserModalForm.ADDRESS]: new UntypedFormControl(
+                userData?.address,
+                [...addressValidation]
+            ),
+            [eUserModalForm.ADDRESS_UNIT]: new UntypedFormControl(
+                userData?.address?.addressUnit,
+                [...addressUnitValidation]
+            ),
+            [eUserModalForm.NOTE]: new UntypedFormControl(userData?.note),
             [eUserModalForm.START_DATE]: new UntypedFormControl(
                 userData?.startDate,
                 [Validators.required]
             ),
-            [eUserModalForm.SALARY]: new UntypedFormControl(userData?.salary, [
-                Validators.required,
-            ]),
+            [eUserModalForm.SALARY]: new UntypedFormControl(userData?.salary),
             [eUserModalForm.IS_1099]: new UntypedFormControl(userData?.is1099),
+            [eUserModalForm.INCLUDED_IN_PAYROLL]: new UntypedFormControl(
+                userData?.includeInPayroll ?? false
+            ),
         });
     }
 

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 
@@ -72,6 +72,15 @@ export class MilesComponent
     extends DropdownMenuActionsBase
     implements OnInit, OnDestroy
 {
+    @ViewChild(CaSearchMultipleStates2Component)
+    searchComponent: CaSearchMultipleStates2Component;
+    @ViewChild(CaFilterStateDropdownComponent)
+    stateFilter: CaFilterStateDropdownComponent;
+    @ViewChild(CaFilterTimeDropdownComponent)
+    timeFilter: CaFilterTimeDropdownComponent;
+    @ViewChild(CaFilterComponent)
+    moneyFilter: CaFilterComponent;
+
     protected destroy$ = new Subject<void>();
 
     private filter: IStateFilters = {};
@@ -120,9 +129,14 @@ export class MilesComponent
     }
 
     private handleTableEmptyAddClick(): void {
-        this.modalService.openModal(TruckModalComponent, {
-            size: eSharedString.SMALL,
-        });
+        this.modalService
+            .openModalNew(TruckModalComponent, {
+                size: eSharedString.SMALL,
+                isDispatchCall: true,
+            })
+            .closed.subscribe((value) => {
+                if (value) this.milesStoreService.dispatchGetMiles();
+            });
     }
 
     private handleTableLockingStatus(isTableLocked?: boolean): void {
@@ -203,10 +217,18 @@ export class MilesComponent
 
                 break;
             default:
-                // reset filters
+                this.handleFilterReset();
 
                 break;
         }
+    }
+
+    public handleFilterReset(): void {
+        this.milesStoreService.dispatchResetFilters();
+        this.searchComponent.clearAll();
+        this.stateFilter.clearValues(true);
+        this.timeFilter.clearValues(true);
+        this.moneyFilter.clearAllValues();
     }
 
     public onSearchQueryChange(query: string[]): void {

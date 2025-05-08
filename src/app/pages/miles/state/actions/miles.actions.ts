@@ -37,8 +37,14 @@ export const getLoadsPayloadError = createAction(
 
 export const loadMilesSuccess = createAction(
     MilesStoreConstants.LOAD_MILES_SUCCESS,
-    props<{ miles: IMilesModel[]; totalResultsCount: number }>()
+    props<{
+        miles: IMilesModel[];
+        activeTruckCount: number;
+        inactiveTruckCount: number;
+    }>()
 );
+
+export const getMiles = createAction(MilesStoreConstants.ACTION_GET_MILES);
 
 export const updateMilesList = createAction(
     MilesStoreConstants.UPDATE_MILES_LIST,
@@ -70,6 +76,10 @@ export const onSeachFilterChange = createAction(
     props<{
         query: string[];
     }>()
+);
+
+export const resetFilters = createAction(
+    MilesStoreConstants.ACTION_RESET_FILTERS
 );
 
 export const setStates = createAction(

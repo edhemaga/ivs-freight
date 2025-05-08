@@ -2,21 +2,31 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 
+import { AddressEntity } from '@ca-shared/models/address-entity.model';
+// Models
 import { Tabs } from '@ca-shared/models/tabs.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+// Mixins
+import { AddressMixin } from '@shared/mixins';
 import {
     CompanyUserModalResponse,
     CompanyUserResponse,
 } from 'appcoretruckassist';
 import { forkJoin, of } from 'rxjs';
 
+// Pipes
 import { UserModalInputConfigPipe } from '@pages/new-user/modals/user-modal/pipes/user-modal-input-config.pipe';
 
+// Enums
 import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
+import { eGeneralActions } from '@shared/enums';
 
+// Services
 import { UserService } from '@pages/new-user/services/user.service';
 import { UserStoreService } from '@pages/new-user/state/services/user-store.service';
+import { AddressService } from '@shared/services/address.service';
 
+// Components
 import { SvgIconComponent } from 'angular-svg-icon';
 import {
     CaCustomCardComponent,
@@ -25,16 +35,21 @@ import {
     CaModalButtonComponent,
     CaModalComponent,
     CaTabSwitchComponent,
-    eGeneralActions,
     eModalButtonClassType,
     eModalButtonSize,
     InputTestComponent,
+    CaInputAddressDropdownComponent,
+    CaInputNoteComponent,
 } from 'ca-components';
 
+// Interfaces
 import { IMappedUser, IUserModal } from '@pages/new-user/interfaces';
 
+// Helpers
 import { UserModalHelper } from '@pages/new-user/modals/user-modal/utils/helpers';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers';
 
+// Svg Routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
@@ -54,13 +69,22 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaInputDropdownTestComponent,
         InputTestComponent,
         CaCustomCardComponent,
+        CaInputAddressDropdownComponent,
+        CaInputNoteComponent,
         CaInputDatetimePickerComponent,
 
         // Pipes
         UserModalInputConfigPipe,
     ],
 })
-export class UserModalComponent implements OnInit {
+export class UserModalComponent
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnInit
+{
     // Inputs
     @Input() editData: IUserModal;
 
@@ -77,6 +101,8 @@ export class UserModalComponent implements OnInit {
     public isEditMode: boolean;
     // Modal title
     public modalTitle: string;
+    // Address
+    public selectedAddress: AddressEntity = null;
     // Icon routes
     public svgRoutes = SharedSvgRoutes;
     public taxFormTabs: Tabs[];
@@ -87,9 +113,12 @@ export class UserModalComponent implements OnInit {
     constructor(
         private userService: UserService,
         public userStoreService: UserStoreService,
+        public addressService: AddressService,
 
         private ngbActiveModal: NgbActiveModal
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.setupModal();
@@ -111,6 +140,8 @@ export class UserModalComponent implements OnInit {
 
                 this.user = userData;
 
+                this.selectedAddress = userData?.address;
+
                 this.modalTitle = UserModalHelper.generateModalTitle(
                     this.isEditMode
                 );
@@ -131,6 +162,15 @@ export class UserModalComponent implements OnInit {
         this.userForm.get(eUserModalForm.IS_ADMIN).setValue(isAdmin);
     }
 
+    public onHandleAddress(event: {
+        address: AddressEntity;
+        valid: boolean;
+    }): void {
+        if (event.valid) {
+            this.selectedAddress = event.address;
+        }
+    }
+
     public onModalAction(action: eGeneralActions): void {
         const users: Partial<IMappedUser>[] = [
             {
@@ -139,6 +179,8 @@ export class UserModalComponent implements OnInit {
                 id: this.user?.id,
             },
         ];
+
+        this.activeAction = action;
 
         switch (action) {
             case this.eGeneralActions.CLOSE:
@@ -157,6 +199,74 @@ export class UserModalComponent implements OnInit {
                     { users },
                     this.ngbActiveModal
                 );
+                break;
+            case eGeneralActions.SAVE_AND_ADD_NEW:
+            case eGeneralActions.SAVE:
+                // eslint-disable-next-line no-case-declarations
+                const userData = {
+                    ...this.userForm.value,
+                    address: {
+                        ...this.selectedAddress,
+                        addressUnit: this.userForm.get(
+                            eUserModalForm.ADDRESS_UNIT
+                        ).value,
+                    },
+                    [eUserModalForm.START_DATE]:
+                        MethodsCalculationsHelper.convertDateToBackend(
+                            this.userForm.value[eUserModalForm.START_DATE]
+                        ),
+                    [eUserModalForm.SALARY]:
+                        MethodsCalculationsHelper.convertThousandSepInNumber(
+                            this.userForm.value[eUserModalForm.SALARY]
+                        ),
+                };
+
+                if (this.isEditMode) {
+                    this.userService
+                        .editUser({
+                            ...userData,
+                            id: this.editData.id,
+                        })
+                        .subscribe(() => {
+                            this.userService
+                                .editUserModal(this.editData.id)
+                                .subscribe((user) =>
+                                    this.userStoreService.dispatchUpdateUser(
+                                        user
+                                    )
+                                );
+                            this.ngbActiveModal.close();
+                        });
+                } else {
+                    this.userService
+                        .createNewUser(userData)
+                        .subscribe((newUser) => {
+                            if (action === eGeneralActions.SAVE_AND_ADD_NEW) {
+                                this.userForm.patchValue(
+                                    UserModalHelper.createForm({}).value
+                                );
+
+                                // Reset tabs
+                                this.departmentTabs =
+                                    UserModalHelper.getDepartmentTabs(false);
+                                this.taxFormTabs =
+                                    UserModalHelper.getTaxFormTabs(true);
+
+                                this.activeAction = null;
+                            } else {
+                                this.ngbActiveModal.close();
+                            }
+
+                            this.userService
+                                .editUserModal(newUser.id)
+                                .subscribe((user) =>
+                                    this.userStoreService.dispatchCreateNewUser(
+                                        user
+                                    )
+                                );
+                        });
+                }
+
                 break;
         }
     }
