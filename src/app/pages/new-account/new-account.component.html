@@ -12,14 +12,6 @@
             accountStoreService.selectedTabCountSelector$ | async,
     };
 
-<!-- <ng-template #divider>
-    <div class="new-table--toolbar-divider">
-        <div
-            class="new-table--toolbar-divider-border background-light-grey-6"
-        ></div>
-    </div>
-</ng-template> -->
-
 <div
     class="d-inline-block"
     [class.w-100]="store?.activeViewMode !== eCommonElement.LIST"
@@ -38,10 +30,17 @@
             "
             (toolbarDropdownAction)="onToolbarDropdownMenuActions($event)"
         >
+            <ng-template #divider>
+                <div class="new-table--toolbar-divider">
+                    <div
+                        class="new-table--toolbar-divider-border background-light-grey-6"
+                    ></div>
+                </div>
+            </ng-template>
+
             <ng-template #leftSide>
                 <app-toolbar-tabs-wrapper
                     class="d-flex align-items-center"
-                    [data]="store.toolbarTabs"
                     [viewMode]="store.activeViewMode"
                     [isTableLocked]="isTableLocked"
                     (onTabChange)="onToolBarAction($event)"
