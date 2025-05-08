@@ -1,3 +1,6 @@
+// Enums
+import { eSharedString, eStatusTab } from '@shared/enums';
+
 // Models
 import {
     CompanyUserListItemResponse,
@@ -5,12 +8,9 @@ import {
     CompanyUserResponse,
 } from 'appcoretruckassist';
 
-import { eStatusTab } from '@shared/enums';
-
-import { ITableData } from '@shared/models';
-
 // Interface
 import { IMappedUser } from '@pages/new-user/interfaces';
+import { ITableData } from '@shared/models';
 
 export class UsersHelper {
     static increaseActiveTabCount(toolbarTabs: ITableData[]): ITableData[] {
@@ -133,6 +133,25 @@ export class UsersHelper {
                 createdAt,
                 updatedAt,
                 deactivatedAt,
+            };
+
+            return mapped;
+        });
+    }
+
+    static resendInvitationUsersMapper(
+        users: IMappedUser[],
+        resendInvitationUserId: number
+    ): IMappedUser[] {
+        return users.map((user) => {
+            const { id, userStatus } = user;
+            const isInvitationSent = id === resendInvitationUserId;
+
+            const mapped: IMappedUser = {
+                ...user,
+                userStatus: isInvitationSent
+                    ? eSharedString.INVITED
+                    : userStatus,
             };
 
             return mapped;

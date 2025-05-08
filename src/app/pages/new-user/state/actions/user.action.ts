@@ -164,3 +164,45 @@ export const onCreateNewUser = createAction(
     props<{ user: CompanyUserResponse }>()
 );
 //#endregion
+
+//#region Reset Password
+export const onResetPassword = createAction(
+    UserStoreConstants.ACTION_DISPATCH_RESET_PASSWORD,
+    props<{
+        email: string;
+    }>()
+);
+export const onResetPasswordSuccess = createAction(
+    UserStoreConstants.ACTION_DISPATCH_RESET_PASSWORD_SUCCESS
+);
+export const onResetPasswordError = createAction(
+    UserStoreConstants.ACTION_DISPATCH_RESET_PASSWORD_ERROR
+);
+//#endregion
+
+//#region Resend Invitation
+export const onResendInvitation = createAction(
+    UserStoreConstants.ACTION_DISPATCH_RESEND_INVITATION,
+    props<{
+        id: number;
+    }>()
+);
+export const onResendInvitationSuccess = createAction(
+    UserStoreConstants.ACTION_DISPATCH_RESEND_INVITATION_SUCCESS,
+    props<{
+        id: number;
+    }>()
+);
+export const onResendInvitationError = createAction(
+    UserStoreConstants.ACTION_DISPATCH_RESEND_INVITATION_ERROR
+);
+//#endregion
+
+//#region Table Dropdown Menu
+export const setTableDropdownMenuOptions = createAction(
+    UserStoreConstants.ACTION_DISPATCH_SET_TABLE_DROPDOWN_MENU_OPTIONS,
+    props<{
+        user: IMappedUser;
+    }>()
+);
+//#endregion
