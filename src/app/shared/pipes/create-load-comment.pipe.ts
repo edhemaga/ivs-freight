@@ -4,8 +4,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { MethodsCalculationsHelper, UserHelper } from '@shared/utils/helpers';
 
 // models
-import { CommentCompanyUser, User } from '@shared/models';
+import { User } from '@shared/models';
 import { CommentResponse } from 'appcoretruckassist';
+import { IComment } from 'ca-components';
 
 @Pipe({
     name: 'createLoadComment',
@@ -16,12 +17,12 @@ export class CreateLoadCommentsPipe implements PipeTransform {
         comments: CommentResponse[] | null,
         filter?: string,
         isDriver?: boolean
-    ): CommentCompanyUser[] {
+    ): IComment[] {
         if (!comments) return [];
 
         const currentUser: User = UserHelper.getUserFromLocalStorage();
 
-        const _comments = [
+        const _comments: IComment[] = [
             ...comments?.map((comment: CommentResponse) => {
                 const {
                     companyUser,
@@ -32,15 +33,17 @@ export class CreateLoadCommentsPipe implements PipeTransform {
                     isDriver,
                 } = comment;
 
-                return {
+                const { fileId, fileName, url } = companyUser?.avatarFile || {};
+
+                let _comment: IComment = {
+                    id,
                     companyUser: {
                         id: companyUser.id,
-                        name: companyUser.fullName,
-                        avatarFile: companyUser.avatarFile,
+                        fullName: companyUser.fullName,
+                        avatarFile: { fileId, fileName, url },
                     },
-                    commentId: id,
                     commentContent,
-                    commentDate:
+                    createdAt:
                         MethodsCalculationsHelper.convertDateFromBackendToDateAndTime(
                             createdAt
                         ),
@@ -49,15 +52,16 @@ export class CreateLoadCommentsPipe implements PipeTransform {
                     isMe: companyUser.id === currentUser.userId,
                     isDriver,
                 };
+                return _comment;
             }),
         ];
 
-        const commentsWithIsDriverFilter = isDriver
+        const commentsWithIsDriverFilter: IComment[] = isDriver
             ? _comments.filter((comment) => comment.isDriver)
             : _comments;
 
-        const filteredComments = commentsWithIsDriverFilter?.filter((comment) =>
-            comment.commentContent?.includes(filter)
+        const filteredComments: IComment[] = commentsWithIsDriverFilter?.filter(
+            (comment) => comment.commentContent?.includes(filter)
         );
 
         return filter ? filteredComments : commentsWithIsDriverFilter;
