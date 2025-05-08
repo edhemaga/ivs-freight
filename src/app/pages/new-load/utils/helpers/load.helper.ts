@@ -58,6 +58,7 @@ export class LoadHelper {
                 dateCreated,
                 updatedAt,
                 note,
+                comments,
             } = load;
 
             const requirementLength =
@@ -82,6 +83,7 @@ export class LoadHelper {
                     broker?.phoneExt ?? brokerContact?.extensionPhone,
                 referenceNumber:
                     loadDetails?.referenceNumber ?? referenceNumber,
+                comments,
                 commodity:
                     loadDetails?.generalCommodityName ?? generalCommodity?.name,
                 weight: {
