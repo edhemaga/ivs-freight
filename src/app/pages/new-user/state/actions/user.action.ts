@@ -7,12 +7,12 @@ import {
     DepartmentFilterResponse,
 } from 'appcoretruckassist';
 
-import { eStatusTab } from '@shared/enums';
+import { eCommonElement, eStatusTab } from '@shared/enums';
 
 // Interface
 import { ITableColumn } from '@shared/components/new-table/interfaces';
 // Enums
-import { eCommonElement, IFilterAction } from 'ca-components';
+import { IFilterAction } from 'ca-components';
 
 import { IMappedUser } from '@pages/new-user/interfaces';
 
