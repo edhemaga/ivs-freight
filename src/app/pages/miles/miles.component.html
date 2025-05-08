@@ -10,6 +10,7 @@
             milesStoreService.toolbarDropdownMenuOptionsSelector$ | async,
         getSortableColumnSelector:
             milesStoreService.getSortableColumnSelector$ | async,
+        isFilterEmpty: milesStoreService.isFilterEmpty$ | async,
     };
 
 <div
@@ -44,6 +45,7 @@
                     @if (store.activeViewMode !== eCommonElement.MAP) {
                         <ca-search-multiple-states-2
                             [selectedTab]="selectedTab"
+                            [isDisabled]="store.isFilterEmpty && !store.miles.length"
                             (onSearchQueryChange)="onSearchQueryChange($event)"
                         ></ca-search-multiple-states-2>
                         <ng-container
@@ -54,12 +56,14 @@
                     <app-ca-filter-state-dropdown
                         [states]="store.statesSelector"
                         [entityType]="store.selectedTab"
+                        [isDisabled]="store.isFilterEmpty && !store.miles.length"
                         (setFilter)="setFilters($event)"
                     ></app-ca-filter-state-dropdown>
 
                     <app-ca-filter-time-dropdown
                         type="TimeFilter"
                         subType="past"
+                        [isDisabled]="store.isFilterEmpty && !store.miles.length"
                         [entityType]="store.selectedTab"
                         (setFilter)="setFilters($event)"
                     >
@@ -75,6 +79,7 @@
                             [isFuelType]="false"
                             [isLoadType]="false"
                             [isRepairFilter]="true"
+                            [isDisabled]="store.isFilterEmpty && !store.miles.length"
                             (setFilter)="setFilters($event)"
                             (clearAll)="setFilters($event)"
                         >
@@ -92,6 +97,7 @@
                             [options]="getSortableColumn"
                             (onSortChange)="onSelectSortItem($event)"
                             (onSelectItem)="onSelectSortItem($event)"
+                            [isDisabled]="store.isFilterEmpty && !store.miles.length"
                         ></app-ca-sorting-card-dropdown>
                     </div>
                     <ng-container *ngTemplateOutlet="divider"></ng-container>
@@ -115,6 +121,7 @@
             [activeViewMode]="store.activeViewMode"
             [btnText]="eSharedString.TRUCK_CAPITALIZED"
             [hasResults]="!!store.miles.length"
+            [filteredResults]="!store.isFilterEmpty && !store.miles.length"
             [isNewTableLayout]="true"
             (onBtnClick)="onTableEmptyBtnClick($event)"
         ></app-ta-table-empty>

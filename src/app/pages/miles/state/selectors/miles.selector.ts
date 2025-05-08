@@ -39,6 +39,26 @@ export const filterSelector = createSelector(selectMilesState, (state) => {
     return filters;
 });
 
+export const isFilterEmptySelector = createSelector(
+    selectMilesState,
+    (state) => {
+        const { filters } = state || {};
+
+        if (!filters || Object.keys(filters).length === 0) {
+            return true;
+        }
+
+        return Object.values(filters).every((value) => {
+            if (Array.isArray(value)) {
+                return value.length === 0;
+            } else if (typeof value === 'object' && value) {
+                return Object.keys(value).length === 0;
+            }
+            return false;
+        });
+    }
+);
+
 export const statesSelector = createSelector(selectMilesState, (state) => {
     const { states } = state || {};
     return states;
