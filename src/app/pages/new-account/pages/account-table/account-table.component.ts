@@ -29,7 +29,6 @@ export class AccountTableComponent {
     constructor(public accountStore: AccountStoreService) {}
 
     public onCheckboxCountClick(action: string): void {
-        console.log(action);
         this.accountStore.dispatchSelectAll(action);
     }
 

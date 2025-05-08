@@ -28,6 +28,7 @@ export * from './avatar-color.enum';
 export * from './date-time-format.enum';
 export * from './thousand-separator-format.enum';
 export * from './sort-direction.enum';
+export * from './form-control-name.enum';
 
 // Files
 export * from './file/file-form-controls.enum';

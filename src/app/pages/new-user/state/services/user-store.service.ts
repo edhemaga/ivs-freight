@@ -168,7 +168,7 @@ export class UserStoreService {
         });
     }
 
-    public dispatchToggleColumnsVisiblity(
+    public dispatchToggleColumnsVisibility(
         columnKey: string,
         isActive: boolean
     ) {

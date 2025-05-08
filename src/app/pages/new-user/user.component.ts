@@ -165,7 +165,7 @@ export class UserComponent {
     }
 
     private toggleColumnVisibility(columnType: string, isChecked): void {
-        this.userStoreService.dispatchToggleColumnsVisiblity(
+        this.userStoreService.dispatchToggleColumnsVisibility(
             columnType,
             isChecked
         );

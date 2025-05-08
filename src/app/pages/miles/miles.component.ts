@@ -151,7 +151,7 @@ export class MilesComponent
     }
 
     private toggleColumnVisibility(columnType: string, isChecked): void {
-        this.milesStoreService.dispatchToggleColumnsVisiblity(
+        this.milesStoreService.dispatchToggleColumnsVisibility(
             columnType,
             isChecked
         );

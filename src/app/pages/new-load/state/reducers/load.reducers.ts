@@ -139,8 +139,8 @@ export const loadReducer = createReducer(
         Functions.onGetLoadByIdError(state)
     ),
 
-    on(LoadActions.onMapVisiblityToggle, (state) =>
-        Functions.onMapVisiblityToggle(state)
+    on(LoadActions.onMapVisibilityToggle, (state) =>
+        Functions.onMapVisibilityToggle(state)
     ),
     //#endregion
 
@@ -162,6 +162,7 @@ export const loadReducer = createReducer(
     on(LoadActions.onDeleteLoad, (state, { id }) =>
         Functions.onDeleteLoad(state, id)
     ),
+    //#endregion
 
     //#region Toolbar hamburger menu
     on(LoadActions.setToolbarDropdownMenuColumnsActive, (state, { isActive }) =>
@@ -196,17 +197,17 @@ export const loadReducer = createReducer(
     //#endregion
 
     //#region Change dropdown status
-    on(LoadActions.openChangeStatuDropdown, (state) => ({ ...state })),
+    on(LoadActions.openChangeStatusDropdown, (state) => ({ ...state })),
     on(
-        LoadActions.openChangeStatuDropdownSuccess,
+        LoadActions.openChangeStatusDropdownSuccess,
         (state, { possibleStatuses, loadId }) =>
-            Functions.openChangeStatuDropdownSuccessResult(
+            Functions.openChangeStatusDropdownSuccessResult(
                 state,
                 possibleStatuses,
                 loadId
             )
     ),
-    on(LoadActions.openChangeStatuDropdownError, (state) => ({ ...state })),
+    on(LoadActions.openChangeStatusDropdownError, (state) => ({ ...state })),
 
     on(LoadActions.updateLoadStatus, (state) => ({ ...state })),
     on(LoadActions.updateLoadStatusSuccess, (state, { status, load }) =>

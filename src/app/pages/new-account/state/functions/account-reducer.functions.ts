@@ -11,6 +11,7 @@ import { IAccountState } from '@pages/new-account/interfaces';
 
 // Helpers
 import { AccountHelper } from '@pages/new-account/utils/helpers';
+import { IMappedAccount } from '../../interfaces/mapped-account.interface';
 import {
     DropdownMenuColumnsActionsHelper,
     DropdownMenuToolbarContentHelper,
@@ -145,3 +146,12 @@ export function toggleColumnVisibility(
     };
 }
 //#endregion
+export function onAddCompanyAccount(
+    state: IAccountState,
+    account: IMappedAccount
+): IAccountState {
+    return {
+        ...state,
+        accountList: [...state.accountList, account],
+    };
+}

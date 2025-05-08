@@ -1,4 +1,4 @@
-import { Injectable, TemplateRef } from '@angular/core';
+import { Component, Injectable, TemplateRef } from '@angular/core';
 
 import { Subject } from 'rxjs';
 
@@ -142,7 +142,7 @@ export class ModalService {
     }
 
     public openModal(
-        component: any,
+        component: unknown,
         options: ModalOptions,
         editData?: any | ConfirmationReset,
         backdropClass?: string,

@@ -1,11 +1,25 @@
+import { UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+
+// Validations
+import {
+    labelValidation,
+    passwordAccountValidation,
+    urlValidation,
+    usernameValidation,
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
+
 // Models
 import { CompanyAccountResponse } from 'appcoretruckassist';
 
 // Interfaces
 import { IMappedAccount } from '@pages/new-account/interfaces';
 
+// Enums
+import { eFormControlName } from '@shared/enums';
+
 export class AccountHelper {
-    static accountsMapper(
+    public static accountsMapper(
         accounts: CompanyAccountResponse[]
     ): IMappedAccount[] {
         return accounts.map((account) => {
@@ -18,6 +32,27 @@ export class AccountHelper {
             };
 
             return mapped;
+        });
+    }
+
+    public static createAccountModalForm(): UntypedFormGroup {
+        const formBuilder: FormBuilder = new FormBuilder();
+        return formBuilder.group({
+            [eFormControlName.NAME]: [
+                null,
+                [Validators.required, ...labelValidation],
+            ],
+            [eFormControlName.USERNAME]: [
+                null,
+                [Validators.required, ...usernameValidation],
+            ],
+            [eFormControlName.PASSWORD]: [
+                null,
+                [Validators.required, ...passwordAccountValidation],
+            ],
+            [eFormControlName.URL]: [null, urlValidation],
+            [eFormControlName.COMPANY_ACCOUNT_LABEL_ID]: [null],
+            [eFormControlName.NOTE]: [null],
         });
     }
 }

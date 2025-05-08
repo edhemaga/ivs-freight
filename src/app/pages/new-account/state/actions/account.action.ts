@@ -1,8 +1,11 @@
 // Constants
 import { AccountStoreConstants } from '@pages/new-account/utils/constants';
+
 // Models
 import { GetCompanyAccountListResponse } from 'appcoretruckassist';
+import { IMappedAccount } from '@pages/new-account/interfaces';
 
+// Enums
 import { eCommonElement } from 'ca-components';
 
 import { createAction, props } from '@ngrx/store';
@@ -49,4 +52,28 @@ export const onViewModeChange = createAction(
     props<{
         viewMode: eCommonElement;
     }>()
+);
+
+export const onOpenModal = createAction(
+    AccountStoreConstants.ACTION_OPEN_ACCOUNT_MODAL,
+    props<{
+        data;
+        isEdit: boolean;
+        id: number;
+    }>()
+);
+
+export const onAddAccount = createAction(
+    AccountStoreConstants.ACTION_ON_ADD_ACCOUNT,
+    props<{ account: IMappedAccount }>()
+);
+
+export const onAddAccountSuccess = createAction(
+    AccountStoreConstants.ACTION_ON_ADD_ACCOUNT_SUCCESS,
+    props<{ account: IMappedAccount }>()
+);
+
+export const onAddAccountError = createAction(
+    AccountStoreConstants.ACTION_ON_ADD_ACCOUNT_ERROR,
+    props<{ error: Error }>()
 );

@@ -138,6 +138,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         this.companyAccountModal();
         this.companyAccountColorLabels();
         this.confirmationActivationSubscribe();
+        console.log(this.editData);
     }
 
     private confirmationActivationSubscribe(): void {
@@ -180,7 +181,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.accountForm);
                     return;
                 }
-                this.setModalSpinner(TaModalActionEnum.SAVE_AND_ADD_NEW, false);
+                this.setModalSpinner(eGeneralActions.SAVE_AND_ADD_NEW, false);
                 this.addCompanyAccount();
                 this.addNewAfterSave = true;
                 break;
@@ -191,7 +192,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                this.setModalSpinner(TaModalActionEnum.SAVE, false);
+                this.setModalSpinner(eGeneralActions.SAVE, false);
 
                 if (this.editData) this.updateCompanyAccount(this.editData.id);
                 else this.addCompanyAccount();

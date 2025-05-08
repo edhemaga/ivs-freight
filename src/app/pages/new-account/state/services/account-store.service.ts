@@ -80,6 +80,7 @@ export class AccountStoreService {
     //             }
     //         });
     // }
+
     public dispatchSearchChange(query: string[]): void {
         this.store.dispatch({
             type: AccountStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
@@ -110,7 +111,7 @@ export class AccountStoreService {
         });
     }
 
-    public dispatchToggleColumnsVisiblity(
+    public dispatchToggleColumnsVisibility(
         columnKey: string,
         isActive: boolean
     ) {
@@ -137,6 +138,13 @@ export class AccountStoreService {
     public loadAccounts(): void {
         this.store.dispatch({
             type: AccountStoreConstants.LOAD_ACCOUNTS,
+        });
+    }
+
+    public dispatchOnAddAccount(account: IMappedAccount): void {
+        this.store.dispatch({
+            type: AccountStoreConstants.ACTION_ON_ADD_ACCOUNT,
+            account,
         });
     }
 }

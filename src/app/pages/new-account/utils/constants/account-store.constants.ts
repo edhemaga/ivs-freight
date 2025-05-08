@@ -12,4 +12,8 @@ export class AccountStoreConstants {
     static LOAD_ACCOUNTS = `${AccountStoreConstants.COMPONENT_NAME_KEY} Load Accounts`;
     static LOAD_ACCOUNTS_FAILURE = `${AccountStoreConstants.COMPONENT_NAME_KEY} Load Accounts Failure`;
     static LOAD_ACCOUNTS_SUCCESS = `${AccountStoreConstants.COMPONENT_NAME_KEY} Load Accounts Success`;
+
+    static ACTION_ON_ADD_ACCOUNT = `${this.COMPONENT_NAME_KEY} ACTION_ON_ADD_ACCOUNT`;
+    static ACTION_ON_ADD_ACCOUNT_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_ON_ADD_SUCCESS`;
+    static ACTION_ON_ADD_ACCOUNT_ERROR = `${this.COMPONENT_NAME_KEY} ACTION_ON_ADD_ERROR`;
 }

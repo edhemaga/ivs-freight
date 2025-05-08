@@ -1,0 +1,172 @@
+@let isEdit = editData?.type === eGeneralActions.EDIT_LOWERCASE;
+@let modalTitle = isEdit ? 'Add Account' : 'Edit Account';
+<app-ca-modal
+    [modalTitle]="modalTitle"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
+    [rightHeaderTemplate]="rightModalContent"
+>
+    <div class="new-modal" origin>
+        <div class="divider divider--dark divider--small"></div>
+        <form
+            origin
+            [formGroup]="accountForm"
+            class="form-container form-container-without-mb"
+        >
+            <div class="row">
+                <div class="col-12">
+                    <app-ca-input
+                        [formControlName]="eFormControlName.NAME"
+                        [inputConfig]="
+                            eAccountInputConfigKeys.NAME
+                                | accountInputConfig: isEdit
+                        "
+                    ></app-ca-input>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <app-ta-input-dropdown-label
+                        formControlName="companyAccountLabelId"
+                        [inputConfig]="
+                            eAccountInputConfigKeys.COMPANY_LABEL
+                                | accountInputConfig
+                        "
+                        [colors]="colors"
+                        [options]="accountLabels"
+                        [selectedLabel]="selectedAccountLabel"
+                        [selectedLabelColor]="selectedAccountColor"
+                        (pickExistLabel)="onPickExistLabel($event)"
+                        (pickColorLabel)="onSelectColorLabel($event)"
+                        (editModeLabel)="
+                            onCompanyAccountLabelModeChange($event)
+                        "
+                        (saveLabel)="onSaveLabel($event)"
+                    >
+                    </app-ta-input-dropdown-label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <app-ca-input
+                        [formControlName]="eFormControlName.USERNAME"
+                        [inputConfig]="
+                            eAccountInputConfigKeys.USERNAME
+                                | accountInputConfig
+                        "
+                    ></app-ca-input>
+                </div>
+                <div class="col-6">
+                    <app-ca-input
+                        [formControlName]="eFormControlName.PASSWORD"
+                        [inputConfig]="
+                            eAccountInputConfigKeys.PASSWORD
+                                | accountInputConfig
+                        "
+                    ></app-ca-input>
+                </div>
+            </div>
+
+            <div class="row last-row">
+                <div class="col-12">
+                    <app-ca-input
+                        [formControlName]="eFormControlName.URL"
+                        [inputConfig]="
+                            eAccountInputConfigKeys.URL | accountInputConfig
+                        "
+                    ></app-ca-input>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+            @let noteValue = accountForm?.get(eFormControlName.NOTE)?.value;
+            <app-ca-input-note
+                [formControlName]="eFormControlName.NOTE"
+                [isVisibleNote]="!!noteValue"
+                [note]="noteValue ?? eStringPlaceholder.EMPTY"
+            ></app-ca-input-note>
+        </form>
+    </div>
+</app-ca-modal>
+
+<ng-template #leftModalContent>
+    @if (editData?.data?.name) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ editData?.data?.name }}
+        </div>
+    }
+</ng-template>
+
+<ng-template #footerTemplate>
+    @let isFormValidAndDirty = accountForm.valid && accountForm.dirty;
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider"></div>
+        @if (editData?.data?.name) {
+            <div class="d-flex justify-content-between w-full">
+                <button
+                    class="modal-delete-btn ta-font-bold mr-12 valid"
+                    (click)="onModalAction(eGeneralActions.DELETE)"
+                >
+                    Delete
+                </button>
+                <button
+                    class="modal-save-btn ta-font-bold"
+                    (click)="onModalAction(eGeneralActions.SAVE)"
+                    [class.valid]="isFormValidAndDirty"
+                >
+                    Save Changes
+                </button>
+            </div>
+        } @else {
+            <button
+                class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
+                [class.valid]="isFormValidAndDirty"
+                (click)="onModalAction(eGeneralActions.SAVE_AND_ADD_NEW)"
+            >
+                Save and Add New
+            </button>
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="onModalAction(eGeneralActions.SAVE)"
+                [class.valid]="isFormValidAndDirty"
+            >
+                Save
+            </button>
+        }
+    </div>
+</ng-template>
+
+<ng-template #rightModalContent>
+    @if (editData?.type === eGeneralActions.EDIT_LOWERCASE) {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.data?.createdAt | formatDateP
+            }} <br> Edited    {{ editData?.data?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(eGeneralActions.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>

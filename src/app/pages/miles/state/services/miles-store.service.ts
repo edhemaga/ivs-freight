@@ -229,7 +229,7 @@ export class MilesStoreService {
         });
     }
 
-    public dispatchToggleColumnsVisiblity(
+    public dispatchToggleColumnsVisibility(
         columnKey: string,
         isActive: boolean
     ) {

@@ -71,26 +71,30 @@ export class NewAccountComponent {
         );
     }
 
-    private toggleColumnVisibility(columnType: string, isChecked): void {
-        this.accountStoreService.dispatchToggleColumnsVisiblity(
+    private toggleColumnVisibility(
+        columnType: string,
+        isChecked: boolean
+    ): void {
+        this.accountStoreService.dispatchToggleColumnsVisibility(
             columnType,
             isChecked
         );
     }
 
+    // TODO Waiting for BE
     // public onDeleteAccountList(accounts: IMappedAccount[]): void {
     //     this.accountStoreService.dispatchDeleteAccounts(
     //         { accounts },
     //         this.ngbActiveModal
     //     );
     // }
+
     public onSearchQueryChange(query: string[]): void {
         this.accountStoreService.dispatchSearchChange(query);
     }
 
     public onToolBarAction(event: TableToolbarActions): void {
         if (!event) return;
-
         const { action, mode } = event;
 
         switch (action) {
