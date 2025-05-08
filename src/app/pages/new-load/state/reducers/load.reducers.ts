@@ -8,7 +8,8 @@ import * as LoadActions from '@pages/new-load/state/actions/load.actions';
 import * as Functions from '@pages/new-load/state/functions/load-reducer.functions';
 
 // Interfaces
-import { ILoadState } from '@pages/new-load/interfaces';
+import { ILoadState, IMappedLoad } from '@pages/new-load/interfaces';
+import { CommentResponse } from 'appcoretruckassist';
 
 // Constants
 import { LoadToolbarTabs } from '@pages/new-load/utils/constants';
@@ -22,6 +23,7 @@ import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
 
 // Helpers
 import { DropdownMenuToolbarContentHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+import { IComment } from 'ca-components';
 
 export const initialState: ILoadState = {
     loads: [],
@@ -212,15 +214,128 @@ export const loadReducer = createReducer(
     ),
     on(LoadActions.updateLoadStatusError, (state) => ({ ...state })),
 
-    // on(LoadActions.updateLoadStatusSignalR, (state, { response }) =>
-    //     Functions.updateLoadStatusSignalRSuccess(state, response)
-    // ),
-
     on(LoadActions.revertLoadStatus, (state) => ({ ...state })),
     on(LoadActions.revertLoadStatusSuccess, (state, { status, load }) =>
         Functions.updateLoadStatusSuccessResult(state, status, load)
     ),
-    on(LoadActions.revertLoadStatusError, (state) => ({ ...state }))
+    on(LoadActions.revertLoadStatusError, (state) => ({ ...state })),
+
+    //#endregion
+
+    //#region Comments
+    on(LoadActions.onAddLoadComment, (state) => ({ ...state })),
+    on(LoadActions.onAddLoadCommentSuccess, (state, { comment, loadId }) => {
+        const commentResponse: CommentResponse = {
+            ...comment,
+        };
+        const modifiedState: ILoadState = {
+            ...state,
+            loads: [
+                ...state.loads.map((load: IMappedLoad) => {
+                    if (load?.id !== loadId) return load;
+                    const modifiedLoad: IMappedLoad = {
+                        ...load,
+                        comments: [...load?.comments, { ...comment }],
+                    };
+                    return modifiedLoad;
+                }),
+            ],
+            details: {
+                ...state.details,
+                data: {
+                    ...state.details?.data,
+                    comments: [
+                        ...state.details?.data?.comments,
+                        { ...commentResponse },
+                    ],
+                },
+            },
+        };
+        return modifiedState;
+    }),
+    on(LoadActions.onAddLoadCommentError, (state) => ({ ...state })),
+
+    on(LoadActions.onDeleteLoadComment, (state) => ({ ...state })),
+    on(LoadActions.onDeleteLoadCommentSuccess, (state, { id, loadId }) => {
+        const modifiedState: ILoadState = {
+            ...state,
+            loads: [
+                ...state.loads.map((load: IMappedLoad) => {
+                    if (load?.id !== loadId) return load;
+
+                    const modifiedLoad: IMappedLoad = {
+                        ...load,
+                        comments: load?.comments?.filter(
+                            (comment: IComment) => comment?.id !== id
+                        ),
+                    };
+                    return modifiedLoad;
+                }),
+            ],
+            details: {
+                ...state.details,
+                data: {
+                    ...state.details?.data,
+                    comments: [
+                        ...state.details?.data?.comments?.filter(
+                            (comment: CommentResponse) => comment?.id !== id
+                        ),
+                    ],
+                },
+            },
+        };
+        return modifiedState;
+    }),
+    on(LoadActions.onDeleteLoadCommentError, (state) => ({
+        ...state,
+    })),
+
+    on(LoadActions.onEditLoadComment, (state) => ({ ...state })),
+    on(LoadActions.onEditLoadCommentSuccess, (state, { comment, loadId }) => {
+        const modifiedState: ILoadState = {
+            ...state,
+            loads: [
+                ...state.loads.map((load: IMappedLoad) => {
+                    if (load?.id !== loadId) return load;
+
+                    const modifiedComments: IComment[] = load.comments.map(
+                        (_comment: IComment) => {
+                            if (_comment?.id !== comment?.id) return _comment;
+                            return {
+                                ...comment,
+                            };
+                        }
+                    );
+
+                    const modifiedLoad: IMappedLoad = {
+                        ...load,
+                        comments: modifiedComments,
+                    };
+                    return modifiedLoad;
+                }),
+            ],
+            details: {
+                ...state.details,
+                data: {
+                    ...state.details?.data,
+                    comments: [
+                        ...state.details?.data?.comments?.map(
+                            (_comment: CommentResponse) => {
+                                if (_comment?.id !== comment?.id)
+                                    return _comment;
+                                const commentFound: CommentResponse = {
+                                    ...comment,
+                                };
+                                return commentFound;
+                            }
+                        ),
+                    ],
+                },
+            },
+        };
+        return modifiedState;
+    }),
+    on(LoadActions.onEditLoadCommentError, (state) => ({ ...state }))
 
     //#endregion
 );

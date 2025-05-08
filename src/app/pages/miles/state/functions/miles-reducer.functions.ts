@@ -88,14 +88,19 @@ export const changeViewMode = function (
 
 export const updateMilesData = function (
     state: IMilesState,
-    miles: IMilesModel[]
+    miles: IMilesModel[],
+    activeTruckCount?: number,
+    inactiveTruckCount?: number
 ): IMilesState {
-    return {
+    const newState = {
         ...state,
         items: miles,
         page: 1,
         loading: false,
     };
+    return activeTruckCount || activeTruckCount === 0
+        ? updateTruckCounts(newState, activeTruckCount, inactiveTruckCount)
+        : newState;
 };
 
 export const pageChanges = function (state: IMilesState): IMilesState {
@@ -140,6 +145,13 @@ export function onSeachFilterChange(
         },
     };
 }
+
+export const resetFilters = function (state: IMilesState): IMilesState {
+    return {
+        ...state,
+        filters: {},
+    };
+};
 
 export const updateTabSelection = function (
     state: IMilesState,

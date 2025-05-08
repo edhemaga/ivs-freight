@@ -1,8 +1,8 @@
-// Interfaces
-import { IMappedAccount } from '@pages/new-account/interfaces';
-
 // Models
 import { CompanyAccountResponse } from 'appcoretruckassist';
+
+// Interfaces
+import { IMappedAccount } from '@pages/new-account/interfaces';
 
 export class AccountHelper {
     static accountsMapper(
@@ -14,6 +14,7 @@ export class AccountHelper {
             const mapped: IMappedAccount = {
                 id,
                 name,
+                isSelected: false,
             };
 
             return mapped;

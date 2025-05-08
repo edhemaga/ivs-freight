@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { act, Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 // rxjs
 import {
@@ -7,7 +7,6 @@ import {
     exhaustMap,
     filter,
     map,
-    mergeMap,
     of,
     tap,
     withLatestFrom,
@@ -41,7 +40,6 @@ import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 
 // helpers
 import { LoadStoreEffectsHelper } from '@pages/load/pages/load-table/utils/helpers';
-import { getEditLoadModalOnlyDataSuccess } from '../actions/load.action';
 
 @Injectable()
 export class LoadEffect {
@@ -51,11 +49,9 @@ export class LoadEffect {
         // services
         private loadService: LoadLocalService,
         private loadStoreService: LoadStoreService,
-        private brokerService: BrokerService,
         private apiLoadService: LoadService,
         private commentService: CommentsService,
         private modalService: ModalService,
-        private tableService: TruckassistTableService,
 
         // store
         private store: Store

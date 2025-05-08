@@ -1,15 +1,27 @@
-// Interface
-import { IMappedUser } from '@pages/new-user/interfaces';
-import { eStatusTab } from '@shared/enums';
-import { ITableData } from '@shared/models';
+// Enums
+import { eSharedString, eStatusTab } from '@shared/enums';
 
 // Models
 import {
     CompanyUserListItemResponse,
     CompanyUserListResponse,
+    CompanyUserResponse,
 } from 'appcoretruckassist';
 
+// Interface
+import { IMappedUser } from '@pages/new-user/interfaces';
+import { ITableData } from '@shared/models';
+
 export class UsersHelper {
+    static increaseActiveTabCount(toolbarTabs: ITableData[]): ITableData[] {
+        const updatedTabs = [...toolbarTabs];
+        updatedTabs[0] = {
+            ...toolbarTabs[0],
+            length: toolbarTabs[0].length + 1,
+        };
+        return updatedTabs;
+    }
+
     static updateTabsCount(
         payload: CompanyUserListResponse,
         toolbarTabs: ITableData[]
@@ -58,7 +70,9 @@ export class UsersHelper {
         return updatedTabs;
     }
 
-    static usersMapper(users: CompanyUserListItemResponse[]): IMappedUser[] {
+    static usersMapper(
+        users: CompanyUserListItemResponse[] | CompanyUserResponse[]
+    ): IMappedUser[] {
         return users.map((user) => {
             const {
                 firstName,
@@ -85,7 +99,7 @@ export class UsersHelper {
                 startDate,
                 createdAt,
                 updatedAt,
-                deactivatedAt
+                deactivatedAt,
             } = user;
 
             const mapped: IMappedUser = {
@@ -93,7 +107,12 @@ export class UsersHelper {
                 isSelected: false,
                 fullName: `${firstName} ${lastName}`,
                 avatar: avatarFile?.url,
-                department,
+                // For edit we get department as object inside list it is string
+                // TODO: Should we ask back to be same response maybe there is more changes?
+                department:
+                    typeof department === 'object'
+                        ? department.name
+                        : department,
                 companyOffice,
                 email,
                 phone,
@@ -113,7 +132,26 @@ export class UsersHelper {
                 startDate,
                 createdAt,
                 updatedAt,
-                deactivatedAt
+                deactivatedAt,
+            };
+
+            return mapped;
+        });
+    }
+
+    static resendInvitationUsersMapper(
+        users: IMappedUser[],
+        resendInvitationUserId: number
+    ): IMappedUser[] {
+        return users.map((user) => {
+            const { id, userStatus } = user;
+            const isInvitationSent = id === resendInvitationUserId;
+
+            const mapped: IMappedUser = {
+                ...user,
+                userStatus: isInvitationSent
+                    ? eSharedString.INVITED
+                    : userStatus,
             };
 
             return mapped;

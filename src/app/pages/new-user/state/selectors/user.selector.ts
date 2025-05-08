@@ -1,8 +1,8 @@
-// Store
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-
 // Interface
 import { IUserState } from '@pages/new-user/interfaces';
+
+// Store
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 export const userFeatureKey: string = 'user';
 
@@ -45,7 +45,7 @@ export const selectedTabSelector = createSelector(
     (state: IUserState) => state.selectedTab
 );
 
-//  View: CARD | LIST
+//  View: CARD |LIST
 export const activeViewModeSelector = createSelector(
     selectUserState,
     (state: IUserState) => state.activeViewMode
@@ -63,6 +63,12 @@ export const tableSettingsSelector = createSelector(
     selectUserState,
     (state: IUserState) => state.tableSettings
 );
+
+export const tableDropdownMenuOptionsSelector = createSelector(
+    selectUserState,
+    (state: IUserState) => state.tableDropdownMenuOptions
+);
+
 //#endregion
 
 //#region Selection

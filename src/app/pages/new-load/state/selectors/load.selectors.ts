@@ -131,9 +131,15 @@ export const tableSettingsSelector = createSelector(
 //#region Details
 export const loadDetailsSelector = createSelector(selectLoadState, (state) => {
     const { details } = state;
-    console.log('loadDetailsSelectorloadDetailsSelector');
     return details;
 });
+
+export const loadDetailsCommentsSelector = createSelector(
+    selectLoadState,
+    (state) => {
+        return state.details.data.comments;
+    }
+);
 
 export const minimalListSelector = createSelector(selectLoadState, (state) => {
     const { minimalList } = state;
@@ -177,7 +183,9 @@ export const loadIdLoadStatusChangeSelector = createSelector(
 export const selectedLoadForStatusChangeSelector = createSelector(
     selectLoadState,
     (state: ILoadState) => {
-        const loadForChange = state.loads.find(load => load.id === state.loadIdLoadStatusChange)
+        const loadForChange = state.loads.find(
+            (load) => load.id === state.loadIdLoadStatusChange
+        );
         return loadForChange;
     }
 );

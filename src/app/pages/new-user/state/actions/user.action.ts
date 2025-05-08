@@ -1,22 +1,23 @@
-// ngrx
-import { createAction, props } from '@ngrx/store';
-
-// Enums
-import { IFilterAction } from 'ca-components';
-import { eStatusTab, eCommonElement } from '@shared/enums';
-
 // Const
 import { UserStoreConstants } from '@pages/new-user/utils/constants';
-
 // Models
 import {
     CompanyUserListResponse,
+    CompanyUserResponse,
     DepartmentFilterResponse,
 } from 'appcoretruckassist';
 
+import { eStatusTab } from '@shared/enums';
+
 // Interface
 import { ITableColumn } from '@shared/components/new-table/interfaces';
+// Enums
+import { eCommonElement, IFilterAction } from 'ca-components';
+
 import { IMappedUser } from '@pages/new-user/interfaces';
+
+// ngrx
+import { createAction, props } from '@ngrx/store';
 
 //#region List
 export const onGetInitalList = createAction(
@@ -149,6 +150,59 @@ export const onOpenUserModal = createAction(
     props<{
         isEdit: boolean;
         id: number;
+    }>()
+);
+//#endregion
+
+//#region Modal
+export const onUserEdit = createAction(
+    UserStoreConstants.ACTION_DISPATCH_UPDATE_USER,
+    props<{ user: CompanyUserResponse }>()
+);
+export const onCreateNewUser = createAction(
+    UserStoreConstants.ACTION_DISPATCH_CREATE_USER,
+    props<{ user: CompanyUserResponse }>()
+);
+//#endregion
+
+//#region Reset Password
+export const onResetPassword = createAction(
+    UserStoreConstants.ACTION_DISPATCH_RESET_PASSWORD,
+    props<{
+        email: string;
+    }>()
+);
+export const onResetPasswordSuccess = createAction(
+    UserStoreConstants.ACTION_DISPATCH_RESET_PASSWORD_SUCCESS
+);
+export const onResetPasswordError = createAction(
+    UserStoreConstants.ACTION_DISPATCH_RESET_PASSWORD_ERROR
+);
+//#endregion
+
+//#region Resend Invitation
+export const onResendInvitation = createAction(
+    UserStoreConstants.ACTION_DISPATCH_RESEND_INVITATION,
+    props<{
+        id: number;
+    }>()
+);
+export const onResendInvitationSuccess = createAction(
+    UserStoreConstants.ACTION_DISPATCH_RESEND_INVITATION_SUCCESS,
+    props<{
+        id: number;
+    }>()
+);
+export const onResendInvitationError = createAction(
+    UserStoreConstants.ACTION_DISPATCH_RESEND_INVITATION_ERROR
+);
+//#endregion
+
+//#region Table Dropdown Menu
+export const setTableDropdownMenuOptions = createAction(
+    UserStoreConstants.ACTION_DISPATCH_SET_TABLE_DROPDOWN_MENU_OPTIONS,
+    props<{
+        user: IMappedUser;
     }>()
 );
 //#endregion

@@ -26,7 +26,7 @@ import { LoadResponse } from 'appcoretruckassist';
 
 // Enums
 import { eLoadRouting } from '@pages/new-load/enums';
-import { eDropdownMenu, TableStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // Interfaces
 import {

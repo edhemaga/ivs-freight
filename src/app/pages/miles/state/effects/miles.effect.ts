@@ -121,7 +121,8 @@ export class MilesEffects {
 
                             const milesAction = MilesAction.loadMilesSuccess({
                                 miles,
-                                totalResultsCount: response.pagination.count,
+                                activeTruckCount: response.activeTruckCount,
+                                inactiveTruckCount: response.inactiveTruckCount,
                             });
 
                             if (!firstUnitId) {
@@ -170,7 +171,9 @@ export class MilesEffects {
                 MilesAction.milesTabChange,
                 MilesAction.changeFilters,
                 MilesAction.tableSortingChange,
-                MilesAction.onSeachFilterChange
+                MilesAction.onSeachFilterChange,
+                MilesAction.resetFilters,
+                MilesAction.getMiles
             ),
             exhaustMap(() =>
                 this.store.select(activeViewModeSelector).pipe(
