@@ -20,7 +20,6 @@
         {
             select: selectHeaderTemplate,
         };
-    {{ store.accountList | json }}
     <app-new-table
         [rows]="store.accountList"
         [templates]="templates"
