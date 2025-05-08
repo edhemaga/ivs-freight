@@ -108,7 +108,7 @@
                     [comments]="_comments"
                     [currentUser]="currentUser"
                     [isSearchDisplayed]="isSearchActive"
-                    [hasNewComment]="hasNewComment | async"
+                    [hasNewComment]="hasNewComment"
                     (onCommentDelete)="onCommentDelete($event, loadId)"
                     (onCommentAdded)="onCommentAdded($event, loadId)"
                     (onCommentEdited)="onCommentEdited($event, loadId)"
