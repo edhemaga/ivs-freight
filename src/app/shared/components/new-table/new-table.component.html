@@ -150,7 +150,7 @@
                 <!-- Left Scroll Border -->
 
                 <div
-                    class="position-absolute w-8 new-table--scroll-border new-table--scroll-border-left"
+                    class="position-absolute w-8 new-table--scroll-border new-table--scroll-border-left z-1"
                     [ngStyle]="{
                         left: leftPinnedBorderWidth + eUnit.PX,
                     }"
@@ -162,7 +162,7 @@
                 <!-- Right Scroll Border -->
 
                 <div
-                    class="position-absolute w-8 new-table--scroll-border new-table--scroll-border-right"
+                    class="position-absolute w-8 new-table--scroll-border new-table--scroll-border-right z-1"
                     [ngStyle]="{
                         right: rightPinnedBorderWidth + eUnit.PX,
                     }"
@@ -173,11 +173,11 @@
 
                 @for (row of rows; track row.id) {
                     <div
-                        class="d-flex align-items-center background-white p-x-4 br-3 m-b-2 scrollable-columns overflow-hidden"
+                        class="d-flex align-items-center background-white p-x-4 br-3 m-b-2 scrollable-columns"
                     >
                         @if (row) {
                             <div
-                                class="d-flex align-items-center p-l-4 br-3 p-y-1 m-t-4 m-b-4 h-26 overflow-hidden"
+                                class="d-flex align-items-center p-l-4 br-3 p-y-1 m-t-4 m-b-4 h-26 max-w-100"
                                 [class]="
                                     row.isSelected
                                         ? 'background-light-grey'
@@ -719,6 +719,7 @@
                 } | tableColumnCellWidth;
 
             <div
+                class="flex-shrink-0"
                 [ngClass]="tableColumnCellClass"
                 [ngStyle]="tableColumnCellWidth"
             >

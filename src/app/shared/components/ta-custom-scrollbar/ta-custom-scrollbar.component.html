@@ -63,7 +63,7 @@
                         : tableScrollWidth,
                 }"
                 [ngClass]="{
-                    'horizontal-bar-sticky': scrollBarOptions.dataLength > 25,
+                    'horizontal-bar-sticky': showStickyHorizontalScrollbar,
                 }"
                 (mousedown)="setDraggingStart($event)"
                 (mouseup)="isMouseDown = false"
