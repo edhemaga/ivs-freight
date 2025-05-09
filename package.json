@@ -13,7 +13,6 @@
         "dev": "lite-server",
         "svg:preview": "node ./src/assets/svg-definitions/svg-converter.js",
         "lint": "npx eslint \"src/**/*.{ts,html}\" --quiet --fix",
-        "lint-chat": "npx eslint \"src/app/pages/chat/**/*.{js,ts,html,scss}\" --quiet --fix",
         "format": "npx prettier \"src/**/*.{js,ts,html,scss}\" --write",
         "format-chat": "npx prettier \"src/app/pages/chat/**/*.{js,ts,html,scss}\" --write",
         "prepare": "husky install",
