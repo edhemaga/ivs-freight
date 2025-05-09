@@ -243,7 +243,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                 this.selectedCustomPeriodRange)
         ) {
             if (
-                type === DispatchHistoryModalStringEnum.TRAILER &&
+                event &&
                 this.selectedDispatchBoard &&
                 this.selectedTruck &&
                 this.selectedTrailer &&
