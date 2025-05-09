@@ -53,4 +53,10 @@ export class AccountService {
     ): Observable<void> {
         return this.http.put<void>(this.API_COMPANY_ACCOUNT, companyAccount);
     }
+
+    public getCompanyAccountById(id: number): Observable<IMappedAccount> {
+        return this.http.get<IMappedAccount>(
+            `${this.API_COMPANY_ACCOUNT}/${id}`
+        );
+    }
 }

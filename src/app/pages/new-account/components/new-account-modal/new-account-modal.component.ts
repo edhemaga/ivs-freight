@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { map, Subject, switchMap, takeUntil } from 'rxjs';
+import { forkJoin, map, of, Subject, switchMap, takeUntil } from 'rxjs';
 
 import {
     FormsModule,
@@ -79,7 +79,7 @@ import { ModalService } from '@shared/services';
     styleUrl: './new-account-modal.component.scss',
 })
 export class NewAccountModalComponent implements OnInit, OnDestroy {
-    @Input() editData: { id: number; type: string };
+    @Input() editData: { id: number; type: string; isEdit: boolean };
 
     private destroy$ = new Subject<void>();
 
@@ -97,6 +97,7 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
 
     // flags
     public disabledFormValidation: boolean = false;
+    public isEditMode!: boolean;
 
     // enums
     public eGeneralActions = eGeneralActions;
@@ -113,7 +114,7 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.companyAccountColorLabels();
         this.getCompanyAccountModal();
-        this.getSelectedAccount();
+        this.setupModal();
     }
 
     public onModalAction(
@@ -128,13 +129,13 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
                 this.accountStoreService.dispatchOnEditAccount({
                     id: this.editData?.id,
                     ...this.accountForm.value,
-                    companyAccountLabelId: this.selectedAccountLabel.id,
+                    companyAccountLabelId: this.selectedAccountLabel?.id,
                 });
                 break;
             case eGeneralActions.SAVE_AND_ADD_NEW:
                 this.accountStoreService.dispatchOnAddAccount({
                     ...this.accountForm.value,
-                    companyAccountLabelId: this.selectedAccountLabel.id,
+                    companyAccountLabelId: this.selectedAccountLabel?.id,
                 });
                 break;
             case eGeneralActions.CLOSE:
@@ -202,16 +203,19 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
         this.disabledFormValidation = mode;
     }
 
-    public getSelectedAccount(): void {
-        this.accountStoreService.selectAccountById(this.editData?.id);
-        this.accountStoreService.accountSelector$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((account: IMappedAccount) => {
-                this.accountForm = AccountHelper.patchAccountModalForm(
-                    this.accountForm,
-                    account
-                );
-            });
+    private setupModal(): void {
+        this.isEditMode = this.editData?.isEdit;
+
+        const userData$ = this.isEditMode
+            ? this.accountService.getCompanyAccountById(this.editData.id)
+            : of(null);
+
+        forkJoin([userData$]).subscribe(([account]) => {
+            this.accountForm = AccountHelper.patchAccountModalForm(
+                this.accountForm,
+                account
+            );
+        });
     }
 
     ngOnDestroy(): void {

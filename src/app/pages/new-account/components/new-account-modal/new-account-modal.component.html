@@ -1,5 +1,4 @@
-@let isEdit = editData?.type === eGeneralActions.EDIT_LOWERCASE;
-@let modalTitle = isEdit ? 'Edit Account' : 'Add Account';
+@let modalTitle = isEditMode ? 'Edit Account' : 'Add Account';
 <app-ca-modal
     [modalTitle]="modalTitle"
     [leftHeaderTemplate]="leftModalContent"
@@ -19,7 +18,7 @@
                         [formControlName]="eFormControlName.NAME"
                         [inputConfig]="
                             eAccountInputConfigKeys.NAME
-                                | accountInputConfig: isEdit
+                                | accountInputConfig: isEditMode
                         "
                     ></app-ca-input>
                 </div>
@@ -122,16 +121,14 @@
         } @else {
             <button
                 class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
-                [class.valid]="isFormValidAndDirty && !isEdit"
-                [disabled]="isEdit"
+                [class.valid]="isFormValidAndDirty"
                 (click)="onModalAction(eGeneralActions.SAVE_AND_ADD_NEW)"
             >
                 Save and Add New
             </button>
             <button
                 class="modal-save-btn ta-font-bold"
-                [disabled]="!isEdit"
-                [class.valid]="isFormValidAndDirty && isEdit"
+                [class.valid]="isFormValidAndDirty"
                 (click)="onModalAction(eGeneralActions.SAVE)"
             >
                 Save

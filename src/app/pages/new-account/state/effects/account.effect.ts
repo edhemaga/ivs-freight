@@ -53,7 +53,7 @@ export class AccountEffect {
                     },
                     {
                         type: item?.isEdit && eGeneralActions.EDIT_LOWERCASE,
-                        id: item.id,
+                        ...item,
                     }
                 )
             )
