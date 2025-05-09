@@ -364,5 +364,6 @@ export class MilesTableColumnsConfig {
         isResizable: true,
         isChecked: false,
         hasSort: true,
+        sortName: MilesStopSortBy.Deactivated,
     };
 }

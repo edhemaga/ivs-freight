@@ -33,6 +33,9 @@ import {
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
 
+// interfaces
+import { NoGroupItemEmitAction } from '@pages/dispatch/pages/dispatch/components/dispatch-table/interfaces';
+
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
@@ -251,6 +254,42 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                 this.getDispatchHistory();
             }
         }
+    }
+
+    public onNoGroupItemClick(action: NoGroupItemEmitAction): void {
+        const { clickedItem, selectedDrodpownListName } = action;
+
+        switch (selectedDrodpownListName) {
+            case DispatchHistoryModalStringEnum.DISPATCH_BOARD_UPPERCASE:
+                this.selectedDispatchBoard =
+                    this.dispatchBoardsDropdownList.find(
+                        (dispatchBoard) => dispatchBoard.name === clickedItem
+                    );
+
+                break;
+            case DispatchHistoryModalStringEnum.TRUCK_UPPERCASE:
+                this.selectedTruck = this.trucksDropdownList.find(
+                    (truck) => truck.name === clickedItem
+                );
+
+                break;
+            case DispatchHistoryModalStringEnum.TRAILER_UPPERCASE:
+                this.selectedTrailer = this.trailersDropdownList.find(
+                    (trailer) => trailer.name === clickedItem
+                );
+
+                break;
+            case DispatchHistoryModalStringEnum.DRIVER_UPPERCASE:
+                this.selectedDriver = this.driversDropdownList.find(
+                    (driver) => driver.name === clickedItem
+                );
+
+                break;
+            default:
+                break;
+        }
+
+        this.getDispatchHistory();
     }
 
     private createDispatchHistoryGroupData(
