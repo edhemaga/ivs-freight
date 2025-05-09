@@ -5,45 +5,40 @@
         class="align-items-center no-group-container-header"
         [ngClass]="noGroupClass"
     >
-        <ng-container
-            *ngFor="
-                let noGroupHeaderItem of noGroupHeaderItems;
-                let last = last;
-                trackBy: trackByIdentity
-            "
-        >
+        @for (
+            noGroupHeaderItem of noGroupHeaderItems;
+            let noGroupHeaderItemIndex = $index;
+            track noGroupHeaderItemIndex
+        ) {
             <div
                 class="d-flex align-items-center no-group-container-header-box"
                 [ngClass]="{
-                    'justify-content-end': last
+                    'justify-content-end':
+                        noGroupHeaderItemIndex ===
+                        noGroupHeaderItems.length - 1,
                 }"
             >
                 <p class="m-0 ta-font-bold">
                     {{ noGroupHeaderItem }}
                 </p>
             </div>
-        </ng-container>
+        }
     </div>
 
     <!-- No Group Main -->
 
     <div class="no-group-container-main">
-        <ng-container
-            *ngFor="
-                let noGroupItemData of noGroupData;
-                let noGroupItemDataIndex = index;
-                trackBy: trackByIdentity
-            "
-        >
+        @for (
+            noGroupItemData of noGroupData;
+            let noGroupItemDataIndex = $index;
+            track noGroupItemDataIndex
+        ) {
             <div class="no-group-container-main-item" [ngClass]="noGroupClass">
-                <ng-container
-                    *ngFor="
-                        let noGroupItem of noGroupItemData;
-                        let noGroupItemIndex = index;
-                        let last = last;
-                        trackBy: trackByIdentity
-                    "
-                >
+                @for (
+                    noGroupItem of noGroupItemData;
+                    let noGroupItemIndex = $index;
+                    track noGroupItemIndex
+                ) {
                     <div
                         class="align-items-center item-box"
                         [class]="
@@ -52,19 +47,30 @@
                             ]
                         "
                         [ngClass]="{
-                            'd-flex justify-content-end': last,
+                            'd-flex justify-content-end':
+                                noGroupItemIndex === noGroupItemData.length - 1,
                             'hover-group':
                                 noGroupItemSpanClassNameArray[
                                     noGroupItemDataIndex
-                                ][noGroupItemIndex] === hoveredSpanGroup
+                                ][noGroupItemIndex] === hoveredSpanGroup,
                         }"
                         [ngStyle]="{
                             'grid-row':
                                 'span ' +
                                 noGroupItemSpanArray[noGroupItemDataIndex][
                                     noGroupItemIndex
-                                ]
+                                ],
                         }"
+                        (click)="
+                            onNoGroupItemClick(
+                                noGroupItem,
+                                noGroupItemIndex,
+                                noGroupItemDataIndex,
+                                noGroupItemSpanClassNameArray[
+                                    noGroupItemDataIndex
+                                ][noGroupItemIndex]
+                            )
+                        "
                         (mouseenter)="
                             handleSpanGroupHover(
                                 true,
@@ -78,8 +84,8 @@
                             {{ noGroupItem ?? '\u00A0' }}
                         </p>
                     </div>
-                </ng-container>
+                }
             </div>
-        </ng-container>
+        }
     </div>
 </div>
