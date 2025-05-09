@@ -31,6 +31,8 @@ import {
     CompanyAccountModalResponse,
 } from 'appcoretruckassist';
 import { ICompanyAccountLabel } from '@pages/new-account/interfaces';
+import { IMappedAccount } from '../../interfaces/mapped-account.interface';
+import { CompanyAccountLabelResponse } from '../../../../../../appcoretruckassist/model/companyAccountLabelResponse';
 
 // Enums
 import {
@@ -42,13 +44,14 @@ import { eAccountInputConfigKeys } from '@pages/new-account/enums';
 
 // Assets
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Helpers
 import { AccountHelper } from '@pages/new-account/utils/helpers';
 
 // Services
 import { AccountService } from '@pages/new-account/services/account.service';
-import { CompanyAccountLabelResponse } from '../../../../../../appcoretruckassist/model/companyAccountLabelResponse';
 import { AccountStoreService } from '@pages/new-account/state/services/account-store.service';
-import { IMappedAccount } from '../../interfaces/mapped-account.interface';
+import { ModalService } from '@shared/services';
 
 @Component({
     selector: 'app-new-account-modal',
@@ -103,7 +106,8 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private accountService: AccountService,
-        public accountStoreService: AccountStoreService
+        public accountStoreService: AccountStoreService,
+        private modalService: ModalService
     ) {}
 
     ngOnInit(): void {
@@ -117,14 +121,24 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
             | eGeneralActions.DELETE
             | eGeneralActions.SAVE
             | eGeneralActions.SAVE_AND_ADD_NEW
+            | eGeneralActions.CLOSE
     ): void {
         switch (action) {
             case eGeneralActions.SAVE:
+                this.accountStoreService.dispatchOnEditAccount({
+                    id: this.editData?.id,
+                    ...this.accountForm.value,
+                    companyAccountLabelId: this.selectedAccountLabel.id,
+                });
+                break;
+            case eGeneralActions.SAVE_AND_ADD_NEW:
                 this.accountStoreService.dispatchOnAddAccount({
                     ...this.accountForm.value,
                     companyAccountLabelId: this.selectedAccountLabel.id,
                 });
                 break;
+            case eGeneralActions.CLOSE:
+                this.modalService.closeModal();
             default:
                 return;
         }

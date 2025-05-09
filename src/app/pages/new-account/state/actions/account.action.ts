@@ -76,3 +76,18 @@ export const onAddAccountError = createAction(
     AccountStoreConstants.ACTION_ON_ADD_ACCOUNT_ERROR,
     props<{ error: Error }>()
 );
+
+export const onEditAccount = createAction(
+    AccountStoreConstants.ACTION_ON_EDIT_ACCOUNT,
+    props<{ account: IMappedAccount }>()
+);
+
+export const onEditAccountSuccess = createAction(
+    AccountStoreConstants.ACTION_ON_EDIT_ACCOUNT_SUCCESS,
+    props<{ account: IMappedAccount }>()
+);
+
+export const onEditAccountError = createAction(
+    AccountStoreConstants.ACTION_ON_EDIT_ACCOUNT_ERROR,
+    props<{ error: Error }>()
+);

@@ -160,6 +160,13 @@ export class AccountStoreService {
         });
     }
 
+    public dispatchOnEditAccount(account: IMappedAccount): void {
+        this.store.dispatch({
+            type: AccountStoreConstants.ACTION_ON_EDIT_ACCOUNT,
+            account,
+        });
+    }
+
     public selectAccountById(id: number): void {
         this.selectedAccountId$.next(id);
     }

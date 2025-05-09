@@ -47,4 +47,10 @@ export class AccountService {
             newCompanyAccount
         );
     }
+
+    public editCompanyAccount(
+        companyAccount: IMappedAccount
+    ): Observable<void> {
+        return this.http.put<void>(this.API_COMPANY_ACCOUNT, companyAccount);
+    }
 }

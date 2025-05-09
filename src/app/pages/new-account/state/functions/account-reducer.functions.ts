@@ -158,3 +158,20 @@ export function onAddCompanyAccount(
         accountList: [account, ...state.accountList],
     };
 }
+
+export function onEditCompanyAccount(
+    state: IAccountState,
+    account: IMappedAccount
+): IAccountState {
+    const modifiedAccountList: IMappedAccount[] = state.accountList.map(
+        (_account: IMappedAccount) => {
+            if (_account.id === account.id) return account;
+            return _account;
+        }
+    );
+
+    return {
+        ...state,
+        accountList: [...modifiedAccountList],
+    };
+}

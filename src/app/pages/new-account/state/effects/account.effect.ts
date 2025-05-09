@@ -15,8 +15,10 @@ import * as AccountActions from '@pages/new-account/state/actions/account.action
 
 // Components
 import { NewAccountModalComponent } from '@pages/new-account/components/new-account-modal/new-account-modal.component';
-import { IMappedAccount } from '../../interfaces/mapped-account.interface';
+
+// Enums
 import { eGeneralActions } from '@shared/enums';
+import { IMappedAccount } from '../../interfaces/mapped-account.interface';
 
 @Injectable()
 export class AccountEffect {
@@ -50,9 +52,8 @@ export class AccountEffect {
                         size: 'medium',
                     },
                     {
-                        type: eGeneralActions.EDIT_LOWERCASE,
+                        type: item?.isEdit && eGeneralActions.EDIT_LOWERCASE,
                         id: item.id,
-                        isEdit: item.isEdit,
                     }
                 )
             )
@@ -62,7 +63,7 @@ export class AccountEffect {
     public onAddAccount$ = createEffect(() =>
         this.actions$.pipe(
             ofType(AccountActions.onAddAccount),
-            exhaustMap((data) =>
+            exhaustMap((data: { account: IMappedAccount }) =>
                 this.accountService.addCompanyAccount(data.account).pipe(
                     map((res: { id: number }) => {
                         this.modalService.closeModal();
@@ -75,6 +76,23 @@ export class AccountEffect {
                     }),
                     catchError((error) => {
                         return of(AccountActions.onAddAccountError({ error }));
+                    })
+                )
+            )
+        )
+    );
+
+    public onEditAccount$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AccountActions.onEditAccount),
+            exhaustMap((data: { account: IMappedAccount }) =>
+                this.accountService.editCompanyAccount(data.account).pipe(
+                    map(() => {
+                        this.modalService.closeModal();
+                        return AccountActions.onEditAccountSuccess(data);
+                    }),
+                    catchError((error) => {
+                        return of(AccountActions.onEditAccountError({ error }));
                     })
                 )
             )

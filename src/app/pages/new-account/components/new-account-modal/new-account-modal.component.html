@@ -122,15 +122,17 @@
         } @else {
             <button
                 class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
-                [class.valid]="isFormValidAndDirty"
+                [class.valid]="isFormValidAndDirty && !isEdit"
+                [disabled]="isEdit"
                 (click)="onModalAction(eGeneralActions.SAVE_AND_ADD_NEW)"
             >
                 Save and Add New
             </button>
             <button
                 class="modal-save-btn ta-font-bold"
+                [disabled]="!isEdit"
+                [class.valid]="isFormValidAndDirty && isEdit"
                 (click)="onModalAction(eGeneralActions.SAVE)"
-                [class.valid]="isFormValidAndDirty"
             >
                 Save
             </button>

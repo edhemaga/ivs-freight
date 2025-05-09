@@ -95,6 +95,9 @@ export const accountReducer = createReducer(
     ),
     on(AccountActions.onAddAccountSuccess, (state, { account }) =>
         AccountFunctions.onAddCompanyAccount(state, account)
+    ),
+    on(AccountActions.onEditAccountSuccess, (state, { account }) =>
+        AccountFunctions.onEditCompanyAccount(state, account)
     )
     //#endregion
 );
