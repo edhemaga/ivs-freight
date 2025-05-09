@@ -116,6 +116,7 @@ export enum eDropdownMenu {
     MOVE_TO_DNU_LIST_TYPE = 'move-to-dnu-list',
     REMOVE_FROM_BAN_LIST_TYPE = 'remove-from-ban-list',
     REMOVE_FROM_DNU_LIST_TYPE = 'remove-from-dnu-list',
+    OPEN_TYPE = 'Open',
 
     // table types
     ACCOUNT = 'account',

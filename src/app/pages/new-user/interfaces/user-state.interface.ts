@@ -33,6 +33,7 @@ export interface IUserState {
 
     // Table
     tableColumns: ITableColumn[];
+    tableDropdownMenuOptions: IDropdownMenuItem[];
 
     // Hamburger menu options
     toolbarDropdownMenuOptions: IDropdownMenuItem[];

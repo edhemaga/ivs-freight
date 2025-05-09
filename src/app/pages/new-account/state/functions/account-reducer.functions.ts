@@ -1,10 +1,13 @@
 // Models
 import { GetCompanyAccountListResponse } from 'appcoretruckassist';
 
-import { eCardFlipViewMode, eGeneralActions } from '@shared/enums';
+import {
+    eCardFlipViewMode,
+    eGeneralActions,
+    eCommonElement,
+} from '@shared/enums';
 
 import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
-import { eCommonElement } from 'ca-components';
 
 // Interfaces
 import { IAccountState } from '@pages/new-account/interfaces';

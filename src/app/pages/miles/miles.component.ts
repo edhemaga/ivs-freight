@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { combineLatest, Subject, takeUntil } from 'rxjs';
 
@@ -18,6 +18,9 @@ import {
 import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
+import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
+import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
+import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
 
 // base classes
 import { DropdownMenuActionsBase } from '@shared/base-classes';
@@ -55,9 +58,8 @@ import { ITableColumn } from '@shared/components/new-table/interfaces';
     standalone: true,
     imports: [
         CommonModule,
-        RouterOutlet,
 
-        // Components
+        // components
         NewTableToolbarComponent,
         ToolbarTabsWrapperComponent,
         CaFilterComponent,
@@ -66,12 +68,24 @@ import { ITableColumn } from '@shared/components/new-table/interfaces';
         CaFilterTimeDropdownComponent,
         TaTableEmptyComponent,
         CaSortingCardDropdownComponent,
+        MilesTableComponent,
+        MilesCardComponent,
+        MilesMapComponent,
     ],
 })
 export class MilesComponent
     extends DropdownMenuActionsBase
     implements OnInit, OnDestroy
 {
+    @ViewChild(CaSearchMultipleStates2Component)
+    searchComponent: CaSearchMultipleStates2Component;
+    @ViewChild(CaFilterStateDropdownComponent)
+    stateFilter: CaFilterStateDropdownComponent;
+    @ViewChild(CaFilterTimeDropdownComponent)
+    timeFilter: CaFilterTimeDropdownComponent;
+    @ViewChild(CaFilterComponent)
+    moneyFilter: CaFilterComponent;
+
     protected destroy$ = new Subject<void>();
 
     private filter: IStateFilters = {};
@@ -84,11 +98,13 @@ export class MilesComponent
     public firstUnit: IMilesModel;
 
     constructor(
+        public router: Router,
+
+        // services
         protected modalService: ModalService,
         protected tableService: TruckassistTableService,
         protected confirmationResetService: ConfirmationResetService,
-        public milesStoreService: MilesStoreService,
-        public router: Router
+        public milesStoreService: MilesStoreService
     ) {
         super();
     }
@@ -120,9 +136,14 @@ export class MilesComponent
     }
 
     private handleTableEmptyAddClick(): void {
-        this.modalService.openModal(TruckModalComponent, {
-            size: eSharedString.SMALL,
-        });
+        this.modalService
+            .openModalNew(TruckModalComponent, {
+                size: eSharedString.SMALL,
+                isDispatchCall: true,
+            })
+            .closed.subscribe((value) => {
+                if (value) this.milesStoreService.dispatchGetMiles();
+            });
     }
 
     private handleTableLockingStatus(isTableLocked?: boolean): void {
@@ -174,17 +195,16 @@ export class MilesComponent
     }
 
     private redirectUserToNewView(mode: eMileTabs): void {
-        this.milesStoreService.dispatchSetActiveViewMode(eActiveViewMode[mode]);
-
         if (mode === eActiveViewMode[eActiveViewMode.Map]) {
-            // What if we don't have a unit? should user be able to go to map?
             this.router.navigate([
                 `/${eMilesRouting.BASE}/${eMilesRouting.MAP}/${this.firstUnit.truckId}`,
             ]);
         } else {
-            this.router.navigate([
-                `/${eMilesRouting.BASE}/${mode.toLowerCase()}`,
-            ]);
+            this.router.navigate([`/${eMilesRouting.BASE}`]);
+
+            this.milesStoreService.dispatchSetActiveViewMode(
+                eActiveViewMode[mode]
+            );
         }
     }
 
@@ -203,10 +223,18 @@ export class MilesComponent
 
                 break;
             default:
-                // reset filters
+                this.handleFilterReset();
 
                 break;
         }
+    }
+
+    public handleFilterReset(): void {
+        this.milesStoreService.dispatchResetFilters();
+        this.searchComponent.clearAll();
+        this.stateFilter.clearValues(true);
+        this.timeFilter.clearValues(true);
+        this.moneyFilter.clearAllValues();
     }
 
     public onSearchQueryChange(query: string[]): void {

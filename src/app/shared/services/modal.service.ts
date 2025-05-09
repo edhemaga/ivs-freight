@@ -184,7 +184,10 @@ export class ModalService {
 
         const modal = this.ngbModal.open(component, options);
 
-        if (modalData) modal.componentInstance.modalData = modalData;
+        if (modalData) {
+            modal.componentInstance.modalData = modalData;
+            modal.componentInstance.editData = modalData; // for current modals still using this editData
+        }
 
         const instance = (modal as any)._windowCmptRef.instance;
         setTimeout(() => {

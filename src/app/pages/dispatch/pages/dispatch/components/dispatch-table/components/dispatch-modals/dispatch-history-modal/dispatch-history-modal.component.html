@@ -31,7 +31,7 @@
                         (closeDropdown)="handleTimeDropdown(false)"
                     ></app-ca-input-dropdown>
 
-                    <ng-container *ngIf="isDisplayingCustomPeriodRange">
+                    @if (isDisplayingCustomPeriodRange) {
                         <div class="custom-period-range-container">
                             <app-ta-custom-period-range
                                 [isOnlyDateInputsLayout]="true"
@@ -43,7 +43,7 @@
                                 "
                             ></app-ta-custom-period-range>
                         </div>
-                    </ng-container>
+                    }
                 </div>
 
                 <!-- Dispatch Board -->
@@ -126,23 +126,21 @@
             >
                 <!-- Has Content -->
 
-                <ng-container *ngIf="hasContent; else noContent">
+                @if (hasContent) {
                     <div
                         class="d-flex dispatch-history-modal-main-container-content"
                     >
                         <!-- Group -->
 
-                        <ng-container *ngIf="isGroup; else noGroup">
+                        @if (isGroup) {
                             <app-dispatch-history-modal-group
                                 [groupHeaderItems]="groupHeaderItems"
                                 [groupData]="groupData"
                             >
                             </app-dispatch-history-modal-group>
-                        </ng-container>
+                        } @else {
+                            <!-- No Group -->
 
-                        <!-- No Group -->
-
-                        <ng-template #noGroup>
                             <app-dispatch-history-modal-no-group
                                 [noGroupClass]="noGroupClass"
                                 [noGroupHeaderItems]="noGroupHeaderItems"
@@ -151,21 +149,22 @@
                                 [noGroupItemSpanClassNameArray]="
                                     noGroupItemSpanClassNameArray
                                 "
+                                (onNoGroupItemAction)="
+                                    onNoGroupItemClick($event)
+                                "
                             >
                             </app-dispatch-history-modal-no-group>
-                        </ng-template>
+                        }
                     </div>
-                </ng-container>
+                } @else {
+                    <!-- No Content -->
 
-                <!-- No Content -->
-
-                <ng-template #noContent>
                     <app-dispatch-history-modal-no-content
                         [hasNoneSelected]="hasNoneSelected"
                         (resetFiltersEmitter)="handleResetFiltersClick()"
                     >
                     </app-dispatch-history-modal-no-content>
-                </ng-template>
+                }
             </div>
         </div>
     </div>
