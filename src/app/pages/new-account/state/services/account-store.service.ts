@@ -66,6 +66,13 @@ export class AccountStoreService {
         });
     }
 
+    public dispatchSortingChange(column: ITableColumn): void {
+        this.store.dispatch({
+            type: AccountStoreConstants.ACTION_SORTING_CHANGE,
+            column,
+        });
+    }
+
     // public dispatchDeleteAccounts(
     //     modalData: IAccountDeleteModal,
     //     ngbActiveModal: NgbActiveModal

@@ -50,3 +50,7 @@ export const onViewModeChange = createAction(
         viewMode: eCommonElement;
     }>()
 );
+
+export const getLoadsOnPageChange = createAction(
+    AccountStoreConstants.ACTION_GET_NEW_PAGE_RESULTS
+);

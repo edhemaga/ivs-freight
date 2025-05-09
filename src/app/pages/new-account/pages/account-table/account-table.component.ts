@@ -16,6 +16,7 @@ import {
     CaCheckboxSelectedCountComponent,
 } from 'ca-components';
 import { AccountModalConfig } from '@pages/account/utils/account-modal.config';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 @Component({
     selector: 'app-account-table',
@@ -57,5 +58,8 @@ export class AccountTableComponent {
 
     public openEditModal(accountId: number): void {
         this.accountStore.dispatchOpenUserModal(true, accountId);
+    }
+    public onSortingChange(column: ITableColumn): void {
+        this.accountStore.dispatchSortingChange(column);
     }
 }

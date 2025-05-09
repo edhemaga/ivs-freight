@@ -69,3 +69,20 @@ export const activeViewModeSelector = createSelector(
     (state: IAccountState) => state.activeViewMode
 );
 //#endregion
+
+// #region Filters
+export const pageSelector = createSelector(
+    selectAccountState,
+    (state: IAccountState) => state.currentPage
+);
+
+export const filterSelector = createSelector(
+    selectAccountState,
+    (state: IAccountState) => state.filters
+);
+
+export const searchStringsSelector = createSelector(
+    selectAccountState,
+    (state: IAccountState) => state.filters?.searchQuery
+);
+//#endregion

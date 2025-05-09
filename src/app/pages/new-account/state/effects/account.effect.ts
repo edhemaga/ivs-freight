@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 
 // NgRx
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 
 // RxJS
-import { catchError, map, mergeMap, of } from 'rxjs';
+import { catchError, forkJoin, map, of, switchMap, withLatestFrom } from 'rxjs';
 
 // Services
 import { AccountService } from '@pages/new-account/services/account.service';
@@ -12,24 +13,66 @@ import { AccountService } from '@pages/new-account/services/account.service';
 // Actions
 import * as AccountActions from '@pages/new-account/state/actions/account.action';
 
+// Selectors
+import * as AccountSelector from '@pages/new-account/state/selectors/account.selector';
+
 @Injectable()
 export class AccountEffect {
     constructor(
         private actions$: Actions,
+        private store: Store,
+
         private accountService: AccountService
     ) {}
 
-    loadAccounts$ = createEffect(() =>
+    public loadAccounts$ = createEffect(() =>
         this.actions$.pipe(
             ofType(AccountActions.loadAccounts),
-            mergeMap(() =>
-                this.accountService.getAccountList().pipe(
-                    map((data) => AccountActions.loadAccountsSuccess({ data })),
-                    catchError((error) =>
-                        of(AccountActions.loadAccountsFailure())
-                    )
-                )
-            )
+            withLatestFrom(
+                this.store.select(AccountSelector.filterSelector),
+                this.store.select(AccountSelector.tableSettingsSelector)
+            ),
+            switchMap(([_, filters, tableSettings]) => {
+                return forkJoin([
+                    this.accountService.getAccountList(
+                        1,
+                        filters,
+                        tableSettings
+                    ),
+                ]).pipe(
+                    map(([data]) =>
+                        AccountActions.loadAccountsSuccess({
+                            data,
+                        })
+                    ),
+                    catchError(() => of(AccountActions.loadAccountsFailure()))
+                );
+            })
+        )
+    );
+
+    public getAccountsListOnPageChange$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AccountActions.getLoadsOnPageChange),
+            withLatestFrom(
+                this.store.select(AccountSelector.pageSelector),
+                this.store.select(AccountSelector.filterSelector),
+                this.store.select(AccountSelector.tableSettingsSelector)
+            ),
+            switchMap(([_, page, filters, tableSettings]) => {
+                return this.accountService
+                    .getAccountList(page + 1, filters, tableSettings)
+                    .pipe(
+                        map((data) =>
+                            AccountActions.loadAccountsSuccess({
+                                data,
+                            })
+                        ),
+                        catchError(() =>
+                            of(AccountActions.loadAccountsFailure())
+                        )
+                    );
+            })
         )
     );
 }

@@ -34,6 +34,8 @@
         [headerTemplates]="headerTemplates"
         [isTableLocked]="isTableLocked"
         [totalDataCount]="store.selectedTabCountSelector"
+        (onSortingChange)="onSortingChange($event)"
+        (onShowMore)="onShowMoreClick()"
     >
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox-selected-count
@@ -94,7 +96,7 @@
             </div>
 
             <div>
-                <app-ta-input-dropdown-label
+                <!-- <app-ta-input-dropdown-label
                     formControlName="companyAccountLabelId"
                     [inputConfig]="
                         accountModalConfig.COMPANY_LABEL_INPUT_CONFIG
@@ -108,7 +110,7 @@
                     (editModeLabel)="companyAccountLabelMode($event)"
                     (saveLabel)="onSaveLabel($event)"
                 >
-                </app-ta-input-dropdown-label>
+                </app-ta-input-dropdown-label> -->
             </div>
         </ng-template>
         <!-- #endregion LABEL COLUMN -->
