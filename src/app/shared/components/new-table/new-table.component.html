@@ -14,12 +14,10 @@
         <div>
             <!-- Header -->
 
-            <div
-                class="d-flex m-b-6 p-x-8 prevent-text-selection new-table--header"
-            >
+            <div class="d-flex p-x-8 prevent-text-selection new-table--header">
                 <!-- Pinned Left Disabled Columns -->
 
-                <div class="d-flex background-inherit left-0">
+                <div class="d-flex background-inherit left-0 p-b-6">
                     @for (
                         column of leftPinnedDisabledColumns;
                         track column.key
@@ -43,7 +41,7 @@
                 <!-- Pinned Left Columns -->
 
                 <div
-                    class="d-flex background-inherit left-0 new-table--pinned-left"
+                    class="d-flex background-inherit left-0 new-table--pinned-left p-b-6"
                     cdkDropList
                     cdkDropListOrientation="horizontal"
                     (cdkDropListDropped)="
@@ -87,11 +85,7 @@
                 <div
                     #scrollableColumns
                     id="table-not-pined-scroll-container"
-                    class="d-flex not-pined-columns scrollable-columns"
-                    [ngClass]="{
-                        'overflow-hidden':
-                            !groupHeadingHoverLabel && !headingHoverId,
-                    }"
+                    class="d-flex not-pined-columns scrollable-columns overflow-hidden p-b-6 p-l-6"
                     cdkDropList
                     cdkDropListOrientation="horizontal"
                     (cdkDropListDropped)="
@@ -129,7 +123,7 @@
                 <!-- Pinned Right Columns -->
 
                 <div
-                    class="d-flex right-0 background-inherit new-table--pinned-right"
+                    class="d-flex right-0 background-inherit new-table--pinned-right p-b-6"
                 >
                     @for (column of rightPinnedColumns; track column.key) {
                         <ng-container
@@ -230,7 +224,7 @@
 
                                 <div
                                     #scrollableColumns
-                                    class="d-flex align-items-center not-pined-columns overflow-hidden scrollable-columns"
+                                    class="d-flex align-items-center not-pined-columns overflow-hidden scrollable-columns p-l-6"
                                 >
                                     @for (
                                         column of mainColumns;
