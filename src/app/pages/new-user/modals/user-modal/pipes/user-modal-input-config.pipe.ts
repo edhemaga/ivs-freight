@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-// Interface
-import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-
 // Enum
 import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
+
+// Interface
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 @Pipe({
     name: 'userModalInputConfig',
@@ -98,6 +98,52 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     label: 'Personal Email',
                     placeholderIcon: 'email',
                 };
+
+            case eUserModalForm.ADDRESS:
+                return {
+                    name: 'Address',
+                    type: 'text',
+                    label: 'Address, City, State Zip',
+                    placeholderIcon: 'address',
+                    textTransform: 'capitalize',
+                    dropdownWidthClass: 'w-col-376',
+                    minLength: 6,
+                    maxLength: 256,
+                };
+
+            case eUserModalForm.ADDRESS_UNIT:
+                return {
+                    name: 'address-unit',
+                    type: 'text',
+                    label: 'Unit #',
+                    textTransform: 'uppercase',
+                    minLength: 1,
+                    maxLength: 10,
+                };
+            case eUserModalForm.START_DATE: {
+                return {
+                    name: 'datepicker',
+                    label: 'Start Date',
+                    type: 'text',
+                    isDropdown: true,
+                    placeholderIcon: 'date',
+                    isRequired: true,
+                    customClass: 'datetimeclass',
+                };
+            }
+
+            case eUserModalForm.SALARY: {
+                return {
+                    name: 'Salary',
+                    type: 'text',
+                    label: 'Salary',
+                    isRequired: true,
+                    placeholderIcon: 'dollar',
+                    thousandSeparator: true,
+                    minLength: 4,
+                    maxLength: 8,
+                };
+            }
         }
     }
 }

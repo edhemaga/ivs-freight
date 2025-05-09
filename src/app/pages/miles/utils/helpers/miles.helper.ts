@@ -13,12 +13,12 @@ export class MilesHelper {
                 pickupPercentage,
                 deliveryCount,
                 deliveryPercentage,
-                fuelCount,
-                fuelPercentage,
-                parkingCount,
-                parkingPercentage,
                 deadHeadCount,
                 deadHeadPercentage,
+                parkingCount,
+                parkingPercentage,
+                fuelCount,
+                fuelPercentage,
                 repairCount,
                 repairPercentage,
                 towingCount,
@@ -50,17 +50,17 @@ export class MilesHelper {
                     count: deliveryCount,
                     percent: deliveryPercentage,
                 },
-                fuelCount: {
-                    count: fuelCount,
-                    percent: fuelPercentage,
+                deadHeadCount: {
+                    count: deadHeadCount,
+                    percent: deadHeadPercentage,
                 },
                 parkingCount: {
                     count: parkingCount,
                     percent: parkingPercentage,
                 },
-                deadHeadCount: {
-                    count: deadHeadCount,
-                    percent: deadHeadPercentage,
+                fuelCount: {
+                    count: fuelCount,
+                    percent: fuelPercentage,
                 },
                 repairCount: {
                     count: repairCount,
@@ -70,13 +70,25 @@ export class MilesHelper {
                     count: towingCount,
                     percent: towingPercentage,
                 },
+                splitCount: {
+                    count: null, // w8 for back,
+                    percent: null, // w8 for back,
+                },
                 loadCount: {
                     value: loadCount,
+                },
+                loadExtraStops: {
+                    value: null, // w8 for back,
+                },
+                loadRatePerMile: {
+                    value: null, // w8 for back,
                 },
                 fuelGalons: {
                     value: fuelTotalGalons,
                 },
-                fuelCost,
+                fuelCost: {
+                    value: fuelCost,
+                },
                 fuelMpg: milesPerGalon,
                 milesLoaded: {
                     value: loadedMiles,
@@ -87,8 +99,14 @@ export class MilesHelper {
                 milesTotal: {
                     value: totalMiles,
                 },
+                milesPerLoad: {
+                    value: null, // w8 for back,
+                },
                 revenue: {
                     value: revenue,
+                },
+                dateDeactivated: {
+                    value: null, // w8 for back,
                 },
             };
 

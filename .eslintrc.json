@@ -1,7 +1,7 @@
 {
     "root": true,
     "ignorePatterns": ["projects/**/*"],
-    "plugins": ["@typescript-eslint", "import", "perfectionist"],
+    // "plugins": ["@typescript-eslint", "import", "perfectionist"],
     "overrides": [
         {
             "files": ["*.ts"],
@@ -16,6 +16,7 @@
                 "plugin:prettier/recommended"
             ],
             "rules": {
+                "@angular-eslint/no-output-on-prefix": "off",
                 "perfectionist/sort-classes": [
                     "error",
                     {
@@ -184,7 +185,10 @@
                             },
                             {
                                 "groupName": "pipes",
-                                "elementNamePattern": ["^@shared/pipes"]
+                                "elementNamePattern": [
+                                    "^@shared/pipes",
+                                    "^.*pipes.*"
+                                ]
                             },
                             {
                                 "groupName": "helpers",
@@ -234,15 +238,15 @@
                     }
                 ]
             }
-        },
-        {
-            "files": ["*.html"],
-            "extends": [
-                "plugin:@angular-eslint/template/recommended",
-                "plugin:@angular-eslint/template/accessibility"
-            ],
-            "rules": {}
         }
+        // {
+        //     "files": ["*.html"],
+        //     "extends": [
+        //         "plugin:@angular-eslint/template/recommended",
+        //         "plugin:@angular-eslint/template/accessibility"
+        //     ],
+        //     "rules": {}
+        // }
     ],
     "settings": {
         "import/resolver": {

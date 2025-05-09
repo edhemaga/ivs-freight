@@ -1,24 +1,26 @@
-// Interfaces
-import { IMappedUser, IUserState } from '@pages/new-user/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interfaces';
-
 // Models
 import {
     CompanyUserListResponse,
+    CompanyUserResponse,
     DepartmentFilterResponse,
 } from 'appcoretruckassist';
 
 // Enums
-import { eCommonElement, eGeneralActions, IFilterAction } from 'ca-components';
-import { eCardFlipViewMode, eStatusTab } from '@shared/enums';
+import { eGeneralActions, IFilterAction } from 'ca-components';
+import { eCardFlipViewMode, eStatusTab, eCommonElement } from '@shared/enums';
 
 // Helpers
 import { UsersHelper } from '@pages/new-user/utils/helpers';
-import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 import {
     DropdownMenuToolbarContentHelper,
     DropdownMenuColumnsActionsHelper,
+    DropdownMenuContentHelper,
 } from '@shared/utils/helpers/dropdown-menu-helpers';
+import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
+
+// Interfaces
+import { IMappedUser, IUserState } from '@pages/new-user/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 //#region Tabs
 export const onTabTypeChange = function (
@@ -234,6 +236,74 @@ export function toggleColumnVisibility(
     return {
         ...state,
         tableColumns,
+    };
+}
+
+export function onUserEdit(
+    state: IUserState,
+    user: CompanyUserResponse
+): IUserState {
+    return {
+        ...state,
+        users: state.users.map((_user) =>
+            _user.id === user.id
+                ? { ..._user, ...UsersHelper.usersMapper([user])[0] }
+                : _user
+        ),
+    };
+}
+
+export function onCreateNewUser(
+    state: IUserState,
+    user: CompanyUserResponse
+): IUserState {
+    const isActiveTab = state.selectedTab === eStatusTab.ACTIVE;
+
+    const mappedUser = UsersHelper.usersMapper([user])[0];
+
+    return {
+        ...state,
+        users: isActiveTab ? [...state.users, mappedUser] : state.users,
+        toolbarTabs: UsersHelper.increaseActiveTabCount(state.toolbarTabs),
+        searchResultsCount: isActiveTab
+            ? state.searchResultsCount + 1
+            : state.searchResultsCount,
+    };
+}
+//#endregion
+
+// #region Resend Invitation
+export function onResendInvitationSuccess(
+    state: IUserState,
+    id: number
+): IUserState {
+    const { users } = state;
+
+    return {
+        ...state,
+        users: UsersHelper.resendInvitationUsersMapper(users, id),
+    };
+}
+//#endregion
+
+// #region Table Dropdown Menu
+export function setTableDropdownMenuOptions(
+    state: IUserState,
+    user: IMappedUser
+): IUserState {
+    const { selectedTab } = state;
+    const { userStatus } = user;
+
+    const tableDropdownMenuOptions =
+        DropdownMenuContentHelper.getUserDropdownContent(
+            selectedTab.toLowerCase(),
+            userStatus,
+            false
+        );
+
+    return {
+        ...state,
+        tableDropdownMenuOptions,
     };
 }
 //#endregion

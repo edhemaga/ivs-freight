@@ -22,7 +22,7 @@ import {
     ITableResizeAction,
 } from '@shared/components/new-table/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { IFilterAction } from 'ca-components';
+import { IFilterAction, IComment } from 'ca-components';
 
 // Selectors
 import * as LoadSelectors from '@pages/new-load/state/selectors/load.selectors';
@@ -33,6 +33,7 @@ import { LoadStoreConstants } from '@pages/new-load/utils/constants';
 // Models
 import { ITableData } from '@shared/models';
 import {
+    CommentResponse,
     LoadPossibleStatusesResponse,
     LoadStatusResponse,
 } from 'appcoretruckassist';
@@ -100,6 +101,9 @@ export class LoadStoreService {
     public loadDetailsSelector$: Observable<ILoadDetails> = this.store.pipe(
         select(LoadSelectors.loadDetailsSelector)
     );
+
+    public loadDetailsCommentSelector$: Observable<CommentResponse[]> =
+        this.store.pipe(select(LoadSelectors.loadDetailsCommentsSelector));
 
     public minimalListSelector$: Observable<ILoadDetailsLoadMinimalList> =
         this.store.pipe(select(LoadSelectors.minimalListSelector));
@@ -345,7 +349,7 @@ export class LoadStoreService {
         });
     }
 
-    public dispatchOpenChangeStatuDropdown(loadId: number): void {
+    public dispatchOpenChangeStatusDropdown(loadId: number): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN,
             loadId,
@@ -379,4 +383,30 @@ export class LoadStoreService {
             reorderAction,
         });
     }
+
+    //#region Comments
+    public dispatchAddComment(comment: IComment, loadId: number): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_ON_COMMENT_ADD,
+            comment,
+            loadId,
+        });
+    }
+
+    public dispatchDeleteComment(id: number, loadId: number): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_ON_COMMENT_DELETE,
+            id,
+            loadId,
+        });
+    }
+
+    public dispatchEditComment(comment: IComment, loadId: number): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_ON_COMMENT_EDIT,
+            comment,
+            loadId,
+        });
+    }
+    //#endregion
 }

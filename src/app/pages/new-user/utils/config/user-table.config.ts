@@ -18,6 +18,7 @@ export class UserTableColumnsConfig {
             UserTableColumnsConfig.bankDetailGroup,
             UserTableColumnsConfig.payrollDetailGroup,
             UserTableColumnsConfig.datesColumn,
+            UserTableColumnsConfig.action,
         ];
     }
 
@@ -394,5 +395,19 @@ export class UserTableColumnsConfig {
                 sortName: CompanyUserSortBy.DateUpdated,
             },
         ],
+    };
+
+    static action: ITableColumn = {
+        id: 38,
+        key: 'action',
+        label: '',
+        labelToolbar: '',
+        pinned: 'right',
+        width: 26,
+        minWidth: 26,
+        isResizable: false,
+        isChecked: true,
+        isDisabled: true,
+        hasSort: false,
     };
 }

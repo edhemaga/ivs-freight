@@ -407,6 +407,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                     : null,
         };
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { customDateFrom, customDateTo, ...filteredData } = data;
 
         this.isGroup =
@@ -429,6 +430,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             this.dispatcherService
                 .getDispatchHistoryGroups(data)
                 .pipe(takeUntil(this.destroy$))
+                // eslint-disable-next-line @typescript-eslint/no-shadow
                 .subscribe(({ pagination: { data } }) =>
                     this.createDispatchHistoryGroupData(data)
                 );
@@ -436,6 +438,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             this.dispatcherService
                 .getDispatchHistory(data)
                 .pipe(takeUntil(this.destroy$))
+                // eslint-disable-next-line @typescript-eslint/no-shadow
                 .subscribe(({ pagination: { data } }) => {
                     this.createDispatchHistoryData(data);
                 });

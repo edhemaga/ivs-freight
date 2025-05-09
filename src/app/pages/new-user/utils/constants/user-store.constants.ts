@@ -1,3 +1,4 @@
+/* eslint-disable perfectionist/sort-classes */
 export class UserStoreConstants {
     static COMPONENT_NAME_KEY = '[User Store]';
     public static ACTION_DISPATCH_LOAD_USER_LIST = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_LOAD_USER_LIST`;
@@ -38,5 +39,26 @@ export class UserStoreConstants {
 
     //#region  Modal
     public static ACTION_OPEN_USER_MODAL = `${this.COMPONENT_NAME_KEY} ACTION_OPEN_USER_MODAL`;
+    //#endregion
+
+    //#region Modal action
+    public static ACTION_DISPATCH_UPDATE_USER = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_UPDATE_USER`;
+    public static ACTION_DISPATCH_CREATE_USER = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_CREATE_USER`;
+    //#endregion
+
+    //#region  Reset Password
+    public static ACTION_DISPATCH_RESET_PASSWORD = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_RESET_PASSWORD`;
+    public static ACTION_DISPATCH_RESET_PASSWORD_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_RESET_PASSWORD_SUCCESS`;
+    public static ACTION_DISPATCH_RESET_PASSWORD_ERROR = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_RESET_PASSWORD_ERROR`;
+    //#endregion
+
+    //#region  Resend Invitation
+    public static ACTION_DISPATCH_RESEND_INVITATION = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_RESEND_INVITATION`;
+    public static ACTION_DISPATCH_RESEND_INVITATION_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_RESEND_INVITATION_SUCCESS`;
+    public static ACTION_DISPATCH_RESEND_INVITATION_ERROR = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_RESEND_INVITATION_ERROR`;
+    //#endregion
+
+    //#region  Table Dropdown Menu
+    public static ACTION_DISPATCH_SET_TABLE_DROPDOWN_MENU_OPTIONS = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_SET_TABLE_DROPDOWN_MENU_OPTIONS`;
     //#endregion
 }

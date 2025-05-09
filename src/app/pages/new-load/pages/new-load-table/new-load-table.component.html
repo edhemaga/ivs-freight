@@ -34,6 +34,7 @@
             companyName,
             brokerBusinessName,
             brokerContact,
+            comments,
             brokerPhone,
             referenceNumber,
             commodity,
@@ -542,7 +543,7 @@
 
         <!-- #endregion END OF BILLING GROUP -->
 
-        <!-- #region DATES -->
+        <!-- #region DATE COLUMN -->
 
         <ng-template #dateTemplate let-data="data" let-key="key">
             <p class="text-color-black-2 text-size-14">
@@ -553,9 +554,64 @@
             </p>
         </ng-template>
 
-        <!-- #endregion END OF DATES -->
+        <ng-template let-data="data" #action>
+            <ca-dropdown-menu
+                [type]="'dots-menu-type'"
+                [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
+                [options]="data.tableDropdownContent"
+                (dropdownOptionEmitter)="
+                    onToggleDropdownMenuActions($event, data, store.selectedTab)
+                "
+            >
+            </ca-dropdown-menu>
+        </ng-template>
 
-        <!-- #region ACTIONS -->
+        <!-- #region Comments -->
+        <ng-template let-data="data" #comments>
+            @let loadId = data?.id;
+            @let isSelected = loadId === selectedCommentsLoadId;
+            @let commentCount = data?.comments?.length;
+            <div
+                class="w-26 h-26 d-flex place-items-center c-pointer br-2 m-t-1"
+                [class.background-black]="isSelected"
+                (click)="onToggleComments(loadId)"
+            >
+                <div class="position-relative d-flex place-items-center m-auto">
+                    <span
+                        class="comments-count z-0 position-absolute text-color-white text-size-9 ta-font-semi-bold"
+                        >{{ commentCount }}</span
+                    >
+                    <svg-icon
+                        class="svg-fill-grey svg-size-16"
+                        [src]="sharedSvgRoutes.COMMENT_ICON"
+                    ></svg-icon>
+                </div>
+            </div>
+            @if (isSelected) {
+                <div class="position-absolute z-1">
+                    <div class="position-relative">
+                        <div class="position-absolute top-2 right--28">
+                            <ca-comments
+                                [comments]="data?.comments"
+                                [commentCount]="commentCount"
+                                [currentUser]="currentUser"
+                                [isDarkmode]="true"
+                                (onCommentDelete)="
+                                    onCommentDelete($event, loadId)
+                                "
+                                (onCommentAdded)="
+                                    onCommentAdded($event, loadId)
+                                "
+                                (onCommentEdited)="
+                                    onCommentEdited($event, loadId)
+                                "
+                            ></ca-comments>
+                        </div>
+                    </div>
+                </div>
+            }
+        </ng-template>
+        <!-- #endregion End of Comments -->
 
         <ng-template let-data="data" #note>
             @let entityType =

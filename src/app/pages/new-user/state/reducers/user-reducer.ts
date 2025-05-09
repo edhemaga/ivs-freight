@@ -1,26 +1,23 @@
-// Store
-import { createReducer, on } from '@ngrx/store';
-
-// Interface
-import { IUserState } from '@pages/new-user/interfaces';
-
-// Constants
-import { UserToolbarTabs } from '@pages/new-user/utils/constants';
-
 // Actions
 import * as UserActions from '@pages/new-user/state/actions/user.action';
-
-// Functions
-import * as Functions from '@pages/new-user/state/functions/user-reducer.functions';
-
 // Config
 import { UserTableColumnsConfig } from '@pages/new-user/utils/config';
+// Constants
+import { UserToolbarTabs } from '@pages/new-user/utils/constants';
 
 // Enums
 import { eCommonElement, eStatusTab, eCardFlipViewMode } from '@shared/enums';
 
+// Interface
+import { IUserState } from '@pages/new-user/interfaces';
+
 // Helpers
 import { DropdownMenuToolbarContentHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+
+// Store
+import { createReducer, on } from '@ngrx/store';
+// Functions
+import * as Functions from '@pages/new-user/state/functions/user-reducer.functions';
 
 export const initialState: IUserState = {
     users: [],
@@ -43,6 +40,7 @@ export const initialState: IUserState = {
     activeViewMode: eCommonElement.LIST,
 
     tableColumns: UserTableColumnsConfig.getTableColumns(),
+    tableDropdownMenuOptions: [],
 
     toolbarDropdownMenuOptions:
         DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
@@ -116,6 +114,27 @@ export const userReducer = createReducer(
     ),
     on(UserActions.toggleColumnVisibility, (state, { columnKey, isActive }) =>
         Functions.toggleColumnVisibility(state, columnKey, isActive)
+    ),
+    //#endregion
+
+    // #region Modal actions
+    on(UserActions.onUserEdit, (state, { user }) =>
+        Functions.onUserEdit(state, user)
+    ),
+    on(UserActions.onCreateNewUser, (state, { user }) =>
+        Functions.onCreateNewUser(state, user)
+    ),
+    //#endregion
+
+    // #region Resend invitation
+    on(UserActions.onResendInvitationSuccess, (state, { id }) =>
+        Functions.onResendInvitationSuccess(state, id)
+    ),
+    //#endregion
+
+    // #region Table Dropdown Menu
+    on(UserActions.setTableDropdownMenuOptions, (state, { user }) =>
+        Functions.setTableDropdownMenuOptions(state, user)
     )
     //#endregion
 );
