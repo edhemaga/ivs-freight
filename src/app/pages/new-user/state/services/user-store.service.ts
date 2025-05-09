@@ -79,6 +79,8 @@ export class UserStoreService {
     public userListSelector$: Observable<IMappedUser[]> = this.store.pipe(
         select(UserSelector.userListSelector)
     );
+    public tableDropdownMenuOptionsSelector$: Observable<IDropdownMenuItem[]> =
+        this.store.pipe(select(UserSelector.tableDropdownMenuOptionsSelector));
 
     constructor(
         private store: Store,
@@ -220,6 +222,27 @@ export class UserStoreService {
     public getNewPage(): void {
         this.store.dispatch({
             type: UserStoreConstants.ACTION_GET_NEW_PAGE_RESULTS,
+        });
+    }
+
+    public dispatchResetPassword(email: string): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_DISPATCH_RESET_PASSWORD,
+            email,
+        });
+    }
+
+    public dispatchResendInvitation(id: number): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_DISPATCH_RESEND_INVITATION,
+            id,
+        });
+    }
+
+    public dispatchSetTableDropdownMenuOptions(user: IMappedUser): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_DISPATCH_SET_TABLE_DROPDOWN_MENU_OPTIONS,
+            user,
         });
     }
 }
