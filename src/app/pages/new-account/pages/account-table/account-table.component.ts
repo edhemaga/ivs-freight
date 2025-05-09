@@ -40,7 +40,7 @@ export class AccountTableComponent {
         this.accountStore.getNewPage();
     }
 
-    public openEditModal(accountId: number): void {
-        this.accountStore.dispatchOpenUserModal(true, accountId);
+    public onOpenEditModal(accountId: number): void {
+        this.accountStore.dispatchOpenCompanyAccountModal(true, accountId);
     }
 }

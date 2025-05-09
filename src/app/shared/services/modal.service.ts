@@ -1,4 +1,4 @@
-import { Component, Injectable, TemplateRef } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { Subject } from 'rxjs';
 
@@ -144,7 +144,7 @@ export class ModalService {
     public openModal(
         component: unknown,
         options: ModalOptions,
-        editData?: any | ConfirmationReset,
+        editData?: unknown | ConfirmationReset,
         backdropClass?: string,
         keyboardEsc: boolean = true
     ): Promise<any> {
@@ -202,5 +202,9 @@ export class ModalService {
         };
 
         return modal;
+    }
+
+    public closeModal(): void {
+        this.ngbModal.dismissAll();
     }
 }

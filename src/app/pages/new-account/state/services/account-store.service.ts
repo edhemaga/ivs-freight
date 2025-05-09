@@ -5,7 +5,7 @@ import * as AccountSelector from '@pages/new-account/state/selectors/account.sel
 // Constants
 import { AccountStoreConstants } from '@pages/new-account/utils/constants';
 // RxJS
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 
 import { eCommonElement } from '@shared/enums';
 
@@ -27,9 +27,21 @@ import { select, Store } from '@ngrx/store';
     providedIn: 'root',
 })
 export class AccountStoreService {
+    private selectedAccountId$ = new BehaviorSubject<number | null>(null);
+
     public accountListSelector$: Observable<IMappedAccount[]> = this.store.pipe(
         select(AccountSelector.accountsListSelector)
     );
+
+    public accountSelector$: Observable<IMappedAccount> =
+        this.selectedAccountId$.pipe(
+            switchMap(
+                (id) =>
+                    id &&
+                    this.store.pipe(select(AccountSelector.accountSelector(id)))
+            )
+        );
+
     public activeViewModeSelector$: Observable<string> = this.store.pipe(
         select(AccountSelector.activeViewModeSelector)
     );
@@ -56,7 +68,7 @@ export class AccountStoreService {
         private modalService: ModalService
     ) {}
 
-    public dispatchOpenUserModal(isEdit: boolean, id: number): void {
+    public dispatchOpenCompanyAccountModal(isEdit: boolean, id: number): void {
         this.store.dispatch({
             type: AccountStoreConstants.ACTION_OPEN_ACCOUNT_MODAL,
             isEdit,
@@ -146,5 +158,9 @@ export class AccountStoreService {
             type: AccountStoreConstants.ACTION_ON_ADD_ACCOUNT,
             account,
         });
+    }
+
+    public selectAccountById(id: number): void {
+        this.selectedAccountId$.next(id);
     }
 }

@@ -76,7 +76,7 @@ import { IMappedAccount } from '../../interfaces/mapped-account.interface';
     styleUrl: './new-account-modal.component.scss',
 })
 export class NewAccountModalComponent implements OnInit, OnDestroy {
-    @Input() editData: any;
+    @Input() editData: { id: number; type: string };
 
     private destroy$ = new Subject<void>();
 
@@ -100,12 +100,13 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private accountService: AccountService,
-        private accountStoreService: AccountStoreService
+        public accountStoreService: AccountStoreService
     ) {}
 
     ngOnInit(): void {
         this.companyAccountColorLabels();
         this.getCompanyAccountModal();
+        this.getSelectedAccount();
     }
 
     public onModalAction(
@@ -162,8 +163,8 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
     public onSaveLabel(event): void {
         console.log(event);
     }
+
     public onSelectColorLabel(color: AccountColorResponse): void {
-        console.log(color);
         this.selectedAccountColor = color;
 
         const { id, name, code, hoverCode } = this.selectedAccountColor || {};
@@ -178,13 +179,24 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
     }
 
     public onPickExistLabel(label: ICompanyAccountLabel): void {
-        console.log(label);
         this.selectedAccountLabel = label;
     }
 
     public onCompanyAccountLabelModeChange(mode: boolean) {
-        console.log(event);
+        console.log(mode);
         // this.disabledFormValidation = event;
+    }
+
+    public getSelectedAccount(): void {
+        this.accountStoreService.selectAccountById(this.editData?.id);
+        this.accountStoreService.accountSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((account: IMappedAccount) => {
+                this.accountForm = AccountHelper.patchAccountModalForm(
+                    this.accountForm,
+                    account
+                );
+            });
     }
 
     ngOnDestroy(): void {

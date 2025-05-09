@@ -16,6 +16,7 @@ import * as AccountActions from '@pages/new-account/state/actions/account.action
 // Components
 import { NewAccountModalComponent } from '@pages/new-account/components/new-account-modal/new-account-modal.component';
 import { IMappedAccount } from '../../interfaces/mapped-account.interface';
+import { eGeneralActions } from '@shared/enums';
 
 @Injectable()
 export class AccountEffect {
@@ -42,10 +43,18 @@ export class AccountEffect {
     public openModal$ = createEffect(() =>
         this.actions$.pipe(
             ofType(AccountActions.onOpenModal),
-            mergeMap(() =>
-                this.modalService.openModal(NewAccountModalComponent, {
-                    size: 'medium',
-                })
+            mergeMap((item) =>
+                this.modalService.openModal(
+                    NewAccountModalComponent,
+                    {
+                        size: 'medium',
+                    },
+                    {
+                        type: eGeneralActions.EDIT_LOWERCASE,
+                        id: item.id,
+                        isEdit: item.isEdit,
+                    }
+                )
             )
         )
     );
@@ -55,7 +64,15 @@ export class AccountEffect {
             ofType(AccountActions.onAddAccount),
             exhaustMap((data) =>
                 this.accountService.addCompanyAccount(data.account).pipe(
-                    map((res) => AccountActions.onAddAccountSuccess(data)),
+                    map((res: { id: number }) => {
+                        this.modalService.closeModal();
+                        return AccountActions.onAddAccountSuccess({
+                            account: {
+                                id: res.id,
+                                ...data.account,
+                            },
+                        });
+                    }),
                     catchError((error) => {
                         return of(AccountActions.onAddAccountError({ error }));
                     })

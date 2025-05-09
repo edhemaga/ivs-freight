@@ -99,7 +99,10 @@ export class NewAccountComponent {
 
         switch (action) {
             case eGeneralActions.OPEN_MODAL:
-                this.accountStoreService.dispatchOpenUserModal(false, null);
+                this.accountStoreService.dispatchOpenCompanyAccountModal(
+                    false,
+                    null
+                );
                 break;
 
             case eGeneralActions.VIEW_MODE:

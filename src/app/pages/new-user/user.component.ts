@@ -91,7 +91,10 @@ export class UserComponent {
 
         switch (action) {
             case eGeneralActions.OPEN_MODAL:
-                this.userStoreService.dispatchOpenUserModal(false, null);
+                this.userStoreService.dispatchOpenCompanyAccountModal(
+                    false,
+                    null
+                );
                 break;
 
             case eGeneralActions.TAB_SELECTED:

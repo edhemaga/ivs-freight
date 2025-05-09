@@ -155,6 +155,6 @@ export function onAddCompanyAccount(
 ): IAccountState {
     return {
         ...state,
-        accountList: [...state.accountList, account],
+        accountList: [account, ...state.accountList],
     };
 }

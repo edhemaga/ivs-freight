@@ -55,4 +55,20 @@ export class AccountHelper {
             [eFormControlName.NOTE]: [null],
         });
     }
+
+    public static patchAccountModalForm(
+        form: UntypedFormGroup,
+        data: IMappedAccount
+    ): UntypedFormGroup {
+        form.patchValue({
+            [eFormControlName.NAME]: data.name ?? null,
+            [eFormControlName.USERNAME]: data.username ?? null,
+            [eFormControlName.PASSWORD]: data.password ?? null,
+            [eFormControlName.URL]: data.url ?? null,
+            [eFormControlName.COMPANY_ACCOUNT_LABEL_ID]:
+                data.companyAccountLabelId ?? data.label?.id ?? null,
+            [eFormControlName.NOTE]: null, // or data.note if this field exists in the interface
+        });
+        return form;
+    }
 }

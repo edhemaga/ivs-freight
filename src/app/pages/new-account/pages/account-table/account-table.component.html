@@ -49,8 +49,24 @@
 
         <!-- #region ACCOUNT NAME COLUMN -->
         <ng-template let-account="data" #name>
-            <div class="text-color-black-2 text-size-14">
+            <div
+                class="text-color-black-2 text-size-14"
+                (click)="onOpenEditModal(account.id)"
+            >
                 {{ account.name }}
+            </div>
+        </ng-template>
+
+        <ng-template let-account="data" #url>
+            <div class="text-color-black-2 text-size-14">
+                {{ account.url }}
+            </div>
+        </ng-template>
+
+        <!-- TODO Move to separate column -->
+        <ng-template let-account="data" #username>
+            <div class="text-color-black-2 text-size-14">
+                {{ account.username }}
             </div>
         </ng-template>
     </app-new-table>
