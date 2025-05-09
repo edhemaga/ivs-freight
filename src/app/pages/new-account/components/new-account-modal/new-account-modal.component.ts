@@ -92,6 +92,9 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
     public selectedAccountLabel!: ICompanyAccountLabel;
     public selectedAccountColor!: AccountColorResponse;
 
+    // flags
+    public disabledFormValidation: boolean = false;
+
     // enums
     public eGeneralActions = eGeneralActions;
     public eFormControlName = eFormControlName;
@@ -160,9 +163,8 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSaveLabel(event): void {
-        console.log(event);
-    }
+    // TODO Needs to be defined and expanded
+    public onSaveLabel(event): void {}
 
     public onSelectColorLabel(color: AccountColorResponse): void {
         this.selectedAccountColor = color;
@@ -183,8 +185,7 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
     }
 
     public onCompanyAccountLabelModeChange(mode: boolean) {
-        console.log(mode);
-        // this.disabledFormValidation = event;
+        this.disabledFormValidation = mode;
     }
 
     public getSelectedAccount(): void {
