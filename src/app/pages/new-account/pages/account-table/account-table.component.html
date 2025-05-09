@@ -92,6 +92,24 @@
             <div class="text-color-black-2 text-size-14 text-truncate">
                 {{ account?.label?.name }}
             </div>
+
+            <div>
+                <app-ta-input-dropdown-label
+                    formControlName="companyAccountLabelId"
+                    [inputConfig]="
+                        accountModalConfig.COMPANY_LABEL_INPUT_CONFIG
+                    "
+                    [colors]="colors"
+                    [options]="accountLabels"
+                    [selectedLabel]="selectedAccountLabel"
+                    [selectedLabelColor]="selectedAccountColor"
+                    (pickExistLabel)="onPickExistLabel($event)"
+                    (pickColorLabel)="onSelectColorLabel($event)"
+                    (editModeLabel)="companyAccountLabelMode($event)"
+                    (saveLabel)="onSaveLabel($event)"
+                >
+                </app-ta-input-dropdown-label>
+            </div>
         </ng-template>
         <!-- #endregion LABEL COLUMN -->
 

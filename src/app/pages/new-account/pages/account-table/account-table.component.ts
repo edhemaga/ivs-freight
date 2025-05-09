@@ -15,6 +15,7 @@ import {
     CaCheckboxComponent,
     CaCheckboxSelectedCountComponent,
 } from 'ca-components';
+import { AccountModalConfig } from '@pages/account/utils/account-modal.config';
 
 @Component({
     selector: 'app-account-table',
@@ -38,6 +39,7 @@ import {
 export class AccountTableComponent {
     public eDateTimeFormat = eDateTimeFormat;
     public eDropdownMenu = eDropdownMenu;
+    public accountModalConfig = AccountModalConfig;
 
     constructor(public accountStore: AccountStoreService) {}
 
