@@ -1135,8 +1135,8 @@ export class DispatchHistoryModalHelper {
         return pickupStatus.includes(statusString)
             ? DispatchHistoryModalStringEnum.PICKUP
             : deliveryStatus.includes(statusString)
-            ? DispatchHistoryModalStringEnum.DELIVERY
-            : DispatchHistoryModalStringEnum.EMPTY_STRING;
+              ? DispatchHistoryModalStringEnum.DELIVERY
+              : DispatchHistoryModalStringEnum.EMPTY_STRING;
     }
 
     static addExtraItemsInDispatchHistoryHeader(
