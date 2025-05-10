@@ -34,6 +34,7 @@
                             [headerLeftSideContext]="{
                                 index: i,
                                 isOpen: activeCardIndex === i,
+                                last,
                             }"
                             [isCardOpen]="activeCardIndex === i"
                             [animationMarginParams]="{
@@ -216,13 +217,17 @@
                 <ng-template
                     #headerLeftSideTemplate
                     let-index="index"
+                    let-last="last"
                     let-isOpen="isOpen"
                 >
                     @let stopFormGroup = stopsFormArray.at(index);
                     @let selectedShipperId =
                         stopFormGroup.get(eLoadModalStopsForm.SHIPPER_ID)
                             ?.value;
+
                     <app-load-modal-stop
+                        [index]="index"
+                        [isLast]="last"
                         [stopFormGroup]="stopFormGroup"
                         [shippers]="shippers"
                         [selectedShipperId]="selectedShipperId"

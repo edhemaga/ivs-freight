@@ -41,6 +41,8 @@ export class LoadModalStopComponent {
         this.setShipper(shipperId);
     }
     @Input() isOpen: boolean = false;
+    @Input() isLast: boolean;
+    @Input() index: number;
 
     public _stopFormGroup!: UntypedFormGroup;
 

@@ -41,9 +41,13 @@ import {
     ShipperContactGroupResponse,
     ShipperLoadModalResponse,
 } from 'appcoretruckassist';
+import { Tabs } from '@shared/models';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Services
+import { RoutingService } from '@shared/services/routing.service';
 
 @Component({
     selector: 'app-new-load-modal-stops',
@@ -92,7 +96,10 @@ export class NewLoadModalStopsComponent implements OnInit {
         return this.stopsForm.get('stops') as FormArray;
     }
 
-    constructor(private fb: FormBuilder) {}
+    constructor(
+        private fb: FormBuilder,
+        private routingService: RoutingService
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -148,5 +155,10 @@ export class NewLoadModalStopsComponent implements OnInit {
     ): void {
         const stop = this.stopsFormArray.at(index) as FormGroup;
         LoadModalStopsHelper.setTimeBasedOnShipperWorkingTime(shipper, stop);
+    }
+
+    public onStopTypeChange(tab: Tabs, index: number): void {
+        const stop = this.stopsFormArray.at(index) as FormGroup;
+        stop.get(eLoadModalStopsForm.STOP_TYPE).patchValue(tab.id);
     }
 }

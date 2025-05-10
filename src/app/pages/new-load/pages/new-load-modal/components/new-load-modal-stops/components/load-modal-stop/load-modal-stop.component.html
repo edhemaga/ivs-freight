@@ -55,10 +55,16 @@
                               ? 'text-size-14 text-color-white'
                               : 'text-size-14 text-color-black'
                     "
-                    >{{
-                        shipper?.businessName ??
-                            (stopType === 1 ? 'ORIGIN' : 'DESTINATION')
-                    }}
+                >
+                    @let extraTitle =
+                        'EXTRA ' + (stopType === 1 ? 'PICKUP' : 'DELIVERY');
+                    @let title =
+                        isLast
+                            ? 'DESTINATION'
+                            : index === 0
+                              ? 'ORIGIN'
+                              : extraTitle;
+                    {{ shipper?.businessName ?? title }}
 
                     @if (!isShipperValid) {
                         <span class="text-color-red-11">*</span>
