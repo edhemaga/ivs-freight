@@ -119,14 +119,14 @@ export class NewLoadModalStopsComponent implements OnInit {
     public onAddDateTo(index: number, isAppointment: boolean): void {
         if (isAppointment) return;
 
-        const stopGroup = this.stopsFormArray.at(index) as FormGroup;
-        LoadModalStopsHelper.addDateToControl(stopGroup);
+        const stop = this.stopsFormArray.at(index) as FormGroup;
+        LoadModalStopsHelper.addDateToControl(stop);
     }
 
     public onTabChange(tab: EnumValue, i: number): void {
-        const group = this.stopsFormArray.at(i) as FormGroup;
-        LoadModalStopsHelper.updateTimeValidators(group, tab);
-        LoadModalStopsHelper.removeDateToControl(group);
+        const stop = this.stopsFormArray.at(i) as FormGroup;
+        LoadModalStopsHelper.updateTimeValidators(stop, tab);
+        LoadModalStopsHelper.removeDateToControl(stop);
     }
 
     public onAddNewStop(): void {
@@ -139,5 +139,13 @@ export class NewLoadModalStopsComponent implements OnInit {
 
     public onCardOpened(opened: boolean, index: number): void {
         this.activeCardIndex = opened ? index : -1;
+    }
+
+    public onShipperChange(
+        shipper: ShipperLoadModalResponse,
+        index: number
+    ): void {
+        const stop = this.stopsFormArray.at(index) as FormGroup;
+        LoadModalStopsHelper.setTimeBasedOnShipperWorkingTime(shipper, stop);
     }
 }

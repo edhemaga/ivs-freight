@@ -78,6 +78,9 @@
                                         [canAddNew]="true"
                                         [canOpenModal]="true"
                                         [options]="shippers"
+                                        (selectedItem)="
+                                            onShipperChange($event, i)
+                                        "
                                     >
                                     </ca-input-dropdown-test>
                                 </div>
