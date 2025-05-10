@@ -141,10 +141,29 @@
                                     ></ca-input-datetime-picker>
 
                                     @if (!isDateRange) {
+                                        @let addDateRangeButtonClass =
+                                            isAppointment
+                                                ? 'background-light-grey-5 svg-fill-light-grey-6'
+                                                : 'background-bw2 background-hover-bw-9 svg-fill-muted svg-hover-black c-pointer';
+
                                         <div
-                                            class="w-26 h-26 d-flex background-muted"
-                                            (click)="onAddDateTo(i)"
-                                        ></div>
+                                            class="w-26 h-26 d-flex br-2 align-items-center justify-content-center"
+                                            ngbTooltip
+                                            position="bottom"
+                                            [tooltipBackground]="eColor.BLACK"
+                                            [mainTooltip]="
+                                                !isAppointment && 'Date Range'
+                                            "
+                                            [ngClass]="addDateRangeButtonClass"
+                                            (click)="
+                                                onAddDateTo(i, isAppointment)
+                                            "
+                                        >
+                                            <svg-icon
+                                                class="svg-size-16"
+                                                [src]="svgRoutes.PLUS_ICON"
+                                            ></svg-icon>
+                                        </div>
                                     } @else {
                                         @let dateToInputConfig =
                                             {

@@ -8,6 +8,9 @@ import {
     UntypedFormGroup,
 } from '@angular/forms';
 
+// NgbModule
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 // Constants
 import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants';
 
@@ -20,8 +23,11 @@ import {
     CaInputDatetimePickerComponent,
     CaInputDropdownTestComponent,
     CaTabSwitchComponent,
+    eColor,
 } from 'ca-components';
 import { LoadModalStopComponent } from './components/load-modal-stop/load-modal-stop.component';
+import { SvgIconComponent } from 'angular-svg-icon';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Enum
 import { eLoadModalStopsForm } from '@pages/new-load/pages/new-load-modal/enums';
@@ -36,6 +42,9 @@ import {
     ShipperLoadModalResponse,
 } from 'appcoretruckassist';
 
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
 @Component({
     selector: 'app-new-load-modal-stops',
     standalone: true,
@@ -43,6 +52,7 @@ import {
         // Modules
         CommonModule,
         ReactiveFormsModule,
+        NgbModule,
 
         // Components
         CaCustomCardComponent,
@@ -50,6 +60,8 @@ import {
         CaInputDropdownTestComponent,
         CaInputDatetimePickerComponent,
         LoadModalStopComponent,
+        SvgIconComponent,
+        TaAppTooltipV2Component,
 
         // Pipes
         LoadStopInputConfigPipe,
@@ -63,6 +75,10 @@ export class NewLoadModalStopsComponent implements OnInit {
     public LoadModalConfig = LoadModalConfig;
     // Enums
     public eLoadModalStopsForm = eLoadModalStopsForm;
+    public eColor = eColor;
+
+    // Icon routes
+    public svgRoutes = SharedSvgRoutes;
 
     // Each stop will have it's own tabs
     public tabs = LoadModalStopsHelper.tabs;
@@ -100,7 +116,9 @@ export class NewLoadModalStopsComponent implements OnInit {
         });
     }
 
-    public onAddDateTo(index: number): void {
+    public onAddDateTo(index: number, isAppointment: boolean): void {
+        if (isAppointment) return;
+
         const stopGroup = this.stopsFormArray.at(index) as FormGroup;
         LoadModalStopsHelper.addDateToControl(stopGroup);
     }
@@ -108,6 +126,7 @@ export class NewLoadModalStopsComponent implements OnInit {
     public onTabChange(tab: EnumValue, i: number): void {
         const group = this.stopsFormArray.at(i) as FormGroup;
         LoadModalStopsHelper.updateTimeValidators(group, tab);
+        LoadModalStopsHelper.removeDateToControl(group);
     }
 
     public onAddNewStop(): void {

@@ -43,6 +43,12 @@ export class LoadModalStopsHelper {
         }
     }
 
+    static removeDateToControl(stopGroup: FormGroup): void {
+        if (stopGroup.contains(eLoadModalStopsForm.DATE_TO)) {
+            stopGroup.removeControl(eLoadModalStopsForm.DATE_TO);
+        }
+    }
+
     static createStop(fb: FormBuilder, data: { stopType: number }): FormGroup {
         const group = fb.group({
             [eLoadModalStopsForm.STOP_TYPE]: [data.stopType],
