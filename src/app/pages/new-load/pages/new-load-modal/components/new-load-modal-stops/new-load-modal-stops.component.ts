@@ -134,7 +134,8 @@ export class NewLoadModalStopsComponent implements OnInit {
             stopType: 1,
         });
 
-        this.stopsFormArray.push(newStop);
+        const index = Math.max(this.stopsFormArray.length - 1, 0);
+        this.stopsFormArray.insert(index, newStop);
     }
 
     public onCardOpened(opened: boolean, index: number): void {
