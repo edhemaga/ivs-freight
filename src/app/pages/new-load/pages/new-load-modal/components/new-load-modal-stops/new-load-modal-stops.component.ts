@@ -131,6 +131,13 @@ export class NewLoadModalStopsComponent {
     ): void {
         const stop = this.stopsFormArray.at(index) as FormGroup;
         LoadModalStopsHelper.setTimeBasedOnShipperWorkingTime(shipper, stop);
+        this.emitShipperChange(shipper, index);
+    }
+
+    public emitShipperChange(
+        shipper: ShipperLoadModalResponse,
+        index: number
+    ): void {
         this.onShipperSelection.emit({
             index,
             shipper,
