@@ -38,6 +38,7 @@ import { LoadStopInputConfigPipe } from '@pages/new-load/pages/new-load-modal/pi
 // Models
 import {
     EnumValue,
+    RoutingResponse,
     ShipperContactGroupResponse,
     ShipperLoadModalResponse,
 } from 'appcoretruckassist';
@@ -71,6 +72,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     styleUrl: './new-load-modal-stops.component.scss',
 })
 export class NewLoadModalStopsComponent {
+    @Input() routing: RoutingResponse = {};
     @Input() shippers: ShipperLoadModalResponse[] = [];
     @Input() shipperContacts: ShipperContactGroupResponse[] = [];
     @Output() onShipperSelection = new EventEmitter<{

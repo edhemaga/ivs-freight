@@ -139,6 +139,9 @@
                 class="ta-font-medium text-size-11"
                 [ngClass]="isOpen ? 'text-color-white-4' : 'text-color-bw6-2'"
             >
+                @if (hours || minutes) {
+                    ≈
+                }
                 {{ hours ? hours + 'h' : '' }}
                 {{ minutes ?? '0' }}m</span
             >

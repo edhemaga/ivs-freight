@@ -103,4 +103,5 @@ export class SharedSvgRoutes {
     static USER_STATUS_INVITED_ICON: string =
         'assets/svg/common/user-status-invited-icon.svg';
     static GREEN_CIRCLE: string = 'assets/svg/common/colors/ic_circle.svg';
+    static LOAD_ICON = 'assets/svg/common/load/ic_load-.svg';
 }
