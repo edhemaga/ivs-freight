@@ -13,4 +13,6 @@ export enum eLoadModalStopsForm {
     LEG_HOURS = 'legHours',
     LEG_MINUTES = 'legMinutes',
     SHAPE = 'shape',
+    STOP_ORDER = 'stopOrder',
+    STOP_LOAD_ORDER = 'stopLoadOrder',
 }

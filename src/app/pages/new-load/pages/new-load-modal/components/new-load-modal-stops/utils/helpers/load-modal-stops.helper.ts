@@ -92,6 +92,9 @@ export class LoadModalStopsHelper {
             [eLoadModalStopsForm.LEG_MILES]: [null],
             [eLoadModalStopsForm.LEG_MINUTES]: [null],
             [eLoadModalStopsForm.SHAPE]: [null],
+
+            [eLoadModalStopsForm.STOP_ORDER]: [null],
+            [eLoadModalStopsForm.STOP_LOAD_ORDER]: [null],
         });
 
         // Apply initial validators

@@ -184,12 +184,14 @@ export class NewLoadModalComponent<T> implements OnInit {
 
         saveObservable
             .pipe(
-                catchError((error) => {
+                catchError(() => {
                     this.activeAction = null;
                     return of(null);
                 })
             )
-            .subscribe((result) => this.onSaveAndAddNew(isSaveAndAddNew));
+            .subscribe((result) => {
+                if (result) this.onSaveAndAddNew(isSaveAndAddNew);
+            });
     }
 
     private onSaveAndAddNew(isSaveAndAddNew: boolean): void {
@@ -329,7 +331,7 @@ export class NewLoadModalComponent<T> implements OnInit {
         this.updateRouting();
     }
 
-    updateRouting(): void {
+    public updateRouting(): void {
         if (!this.driverLocation || this.stopsLocations.length === 0) return;
 
         const locations = [this.driverLocation, ...this.stopsLocations];
@@ -345,6 +347,12 @@ export class NewLoadModalComponent<T> implements OnInit {
                         [eLoadModalStopsForm.LEG_MILES]: [leg.minutes],
                         [eLoadModalStopsForm.LEG_MINUTES]: [leg.minutes],
                         [eLoadModalStopsForm.SHAPE]: [leg.shape],
+
+                        // TODO: Maybe save this on load, it could affter reodering?
+                        [eLoadModalStopsForm.STOP_ORDER]: [index + 1],
+
+                        // Stop load orders should have different count, it is count separate based on load type
+                        [eLoadModalStopsForm.STOP_LOAD_ORDER]: [index + 1],
                     });
             });
         });
