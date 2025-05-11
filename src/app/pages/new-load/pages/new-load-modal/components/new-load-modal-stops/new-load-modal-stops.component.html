@@ -34,6 +34,7 @@
                             [headerLeftSideContext]="{
                                 index: i,
                                 isOpen: activeCardIndex === i,
+                                last,
                             }"
                             [isCardOpen]="activeCardIndex === i"
                             [animationMarginParams]="{
@@ -78,6 +79,9 @@
                                         [canAddNew]="true"
                                         [canOpenModal]="true"
                                         [options]="shippers"
+                                        (selectedItem)="
+                                            onShipperChange($event, i)
+                                        "
                                     >
                                     </ca-input-dropdown-test>
                                 </div>
@@ -141,10 +145,29 @@
                                     ></ca-input-datetime-picker>
 
                                     @if (!isDateRange) {
+                                        @let addDateRangeButtonClass =
+                                            isAppointment
+                                                ? 'background-light-grey-5 svg-fill-light-grey-6'
+                                                : 'background-bw2 background-hover-bw-9 svg-fill-muted svg-hover-black c-pointer';
+
                                         <div
-                                            class="w-26 h-26 d-flex background-muted"
-                                            (click)="onAddDateTo(i)"
-                                        ></div>
+                                            class="w-26 h-26 d-flex br-2 align-items-center justify-content-center"
+                                            ngbTooltip
+                                            position="bottom"
+                                            [tooltipBackground]="eColor.BLACK"
+                                            [mainTooltip]="
+                                                !isAppointment && 'Date Range'
+                                            "
+                                            [ngClass]="addDateRangeButtonClass"
+                                            (click)="
+                                                onAddDateTo(i, isAppointment)
+                                            "
+                                        >
+                                            <svg-icon
+                                                class="svg-size-16"
+                                                [src]="svgRoutes.PLUS_ICON"
+                                            ></svg-icon>
+                                        </div>
                                     } @else {
                                         @let dateToInputConfig =
                                             {
@@ -194,13 +217,17 @@
                 <ng-template
                     #headerLeftSideTemplate
                     let-index="index"
+                    let-last="last"
                     let-isOpen="isOpen"
                 >
                     @let stopFormGroup = stopsFormArray.at(index);
                     @let selectedShipperId =
                         stopFormGroup.get(eLoadModalStopsForm.SHIPPER_ID)
                             ?.value;
+
                     <app-load-modal-stop
+                        [index]="index"
+                        [isLast]="last"
                         [stopFormGroup]="stopFormGroup"
                         [shippers]="shippers"
                         [selectedShipperId]="selectedShipperId"

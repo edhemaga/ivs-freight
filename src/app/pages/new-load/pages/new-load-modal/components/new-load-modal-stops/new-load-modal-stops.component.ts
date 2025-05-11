@@ -8,6 +8,9 @@ import {
     UntypedFormGroup,
 } from '@angular/forms';
 
+// NgbModule
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 // Constants
 import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants';
 
@@ -20,8 +23,11 @@ import {
     CaInputDatetimePickerComponent,
     CaInputDropdownTestComponent,
     CaTabSwitchComponent,
+    eColor,
 } from 'ca-components';
 import { LoadModalStopComponent } from './components/load-modal-stop/load-modal-stop.component';
+import { SvgIconComponent } from 'angular-svg-icon';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Enum
 import { eLoadModalStopsForm } from '@pages/new-load/pages/new-load-modal/enums';
@@ -35,6 +41,13 @@ import {
     ShipperContactGroupResponse,
     ShipperLoadModalResponse,
 } from 'appcoretruckassist';
+import { Tabs } from '@shared/models';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Services
+import { RoutingService } from '@shared/services/routing.service';
 
 @Component({
     selector: 'app-new-load-modal-stops',
@@ -43,6 +56,7 @@ import {
         // Modules
         CommonModule,
         ReactiveFormsModule,
+        NgbModule,
 
         // Components
         CaCustomCardComponent,
@@ -50,6 +64,8 @@ import {
         CaInputDropdownTestComponent,
         CaInputDatetimePickerComponent,
         LoadModalStopComponent,
+        SvgIconComponent,
+        TaAppTooltipV2Component,
 
         // Pipes
         LoadStopInputConfigPipe,
@@ -63,6 +79,10 @@ export class NewLoadModalStopsComponent implements OnInit {
     public LoadModalConfig = LoadModalConfig;
     // Enums
     public eLoadModalStopsForm = eLoadModalStopsForm;
+    public eColor = eColor;
+
+    // Icon routes
+    public svgRoutes = SharedSvgRoutes;
 
     // Each stop will have it's own tabs
     public tabs = LoadModalStopsHelper.tabs;
@@ -76,7 +96,10 @@ export class NewLoadModalStopsComponent implements OnInit {
         return this.stopsForm.get('stops') as FormArray;
     }
 
-    constructor(private fb: FormBuilder) {}
+    constructor(
+        private fb: FormBuilder,
+        private routingService: RoutingService
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -100,14 +123,17 @@ export class NewLoadModalStopsComponent implements OnInit {
         });
     }
 
-    public onAddDateTo(index: number): void {
-        const stopGroup = this.stopsFormArray.at(index) as FormGroup;
-        LoadModalStopsHelper.addDateToControl(stopGroup);
+    public onAddDateTo(index: number, isAppointment: boolean): void {
+        if (isAppointment) return;
+
+        const stop = this.stopsFormArray.at(index) as FormGroup;
+        LoadModalStopsHelper.addDateToControl(stop);
     }
 
     public onTabChange(tab: EnumValue, i: number): void {
-        const group = this.stopsFormArray.at(i) as FormGroup;
-        LoadModalStopsHelper.updateTimeValidators(group, tab);
+        const stop = this.stopsFormArray.at(i) as FormGroup;
+        LoadModalStopsHelper.updateTimeValidators(stop, tab);
+        LoadModalStopsHelper.removeDateToControl(stop);
     }
 
     public onAddNewStop(): void {
@@ -115,10 +141,24 @@ export class NewLoadModalStopsComponent implements OnInit {
             stopType: 1,
         });
 
-        this.stopsFormArray.push(newStop);
+        const index = Math.max(this.stopsFormArray.length - 1, 0);
+        this.stopsFormArray.insert(index, newStop);
     }
 
     public onCardOpened(opened: boolean, index: number): void {
         this.activeCardIndex = opened ? index : -1;
+    }
+
+    public onShipperChange(
+        shipper: ShipperLoadModalResponse,
+        index: number
+    ): void {
+        const stop = this.stopsFormArray.at(index) as FormGroup;
+        LoadModalStopsHelper.setTimeBasedOnShipperWorkingTime(shipper, stop);
+    }
+
+    public onStopTypeChange(tab: Tabs, index: number): void {
+        const stop = this.stopsFormArray.at(index) as FormGroup;
+        stop.get(eLoadModalStopsForm.STOP_TYPE).patchValue(tab.id);
     }
 }

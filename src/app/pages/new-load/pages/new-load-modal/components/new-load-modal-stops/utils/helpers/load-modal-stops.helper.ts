@@ -13,9 +13,13 @@ import {
 import { eLoadModalStopsForm } from '@pages/new-load/pages/new-load-modal/enums';
 
 // Models
-import { EnumValue } from 'appcoretruckassist';
+import { EnumValue, ShipperLoadModalResponse } from 'appcoretruckassist';
 
 export class LoadModalStopsHelper {
+    static isStopAppointment(stopFormControl: FormGroup): boolean {
+        return stopFormControl.get(eLoadModalStopsForm.TIME_TYPE).value === 2;
+    }
+
     static updateTimeValidators(group: FormGroup, tab: EnumValue): void {
         group.patchValue({ [eLoadModalStopsForm.TIME_TYPE]: tab.id });
 
@@ -28,6 +32,7 @@ export class LoadModalStopsHelper {
         } else {
             timeFrom?.setValidators(Validators.required);
             timeTo?.clearValidators();
+            timeTo.patchValue(null);
         }
 
         timeFrom?.updateValueAndValidity();
@@ -40,6 +45,35 @@ export class LoadModalStopsHelper {
                 eLoadModalStopsForm.DATE_TO,
                 new FormControl(null, Validators.required)
             );
+        }
+    }
+
+    static removeDateToControl(stopGroup: FormGroup): void {
+        if (stopGroup.contains(eLoadModalStopsForm.DATE_TO)) {
+            stopGroup.removeControl(eLoadModalStopsForm.DATE_TO);
+        }
+    }
+
+    static setTimeBasedOnShipperWorkingTime(
+        shipper: ShipperLoadModalResponse,
+        stop: FormGroup
+    ) {
+        const { TIME_FROM, TIME_TO } = eLoadModalStopsForm;
+        const timeFromControl = stop.get(TIME_FROM);
+        const timeToControl = stop.get(TIME_TO);
+        const isAppointment = LoadModalStopsHelper.isStopAppointment(stop);
+
+        if (!timeFromControl || !timeToControl) return;
+
+        if (shipper?.shippingOpenTwentyFourHours) {
+            timeFromControl.patchValue('00:00');
+            if (!isAppointment) timeToControl.patchValue('00:00');
+            return;
+        }
+
+        if (shipper?.receivingFrom) {
+            timeFromControl.patchValue(shipper.receivingFrom);
+            if (!isAppointment) timeToControl.patchValue(shipper.receivingTo);
         }
     }
 
