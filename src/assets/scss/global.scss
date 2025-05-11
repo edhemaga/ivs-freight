@@ -105,7 +105,9 @@ body {
         .map-list-body
     ):not(.cluster-marker-container):not(
         .shop-details-item-repair-main-dropdown
-    ):not(.description-items):not(.ca-scroll-bar):not(.dropdown-content) {
+    ):not(.description-items):not(.ca-scroll-bar):not(.dropdown-content):not(
+        .load-stops-scroll-container
+    ) {
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {

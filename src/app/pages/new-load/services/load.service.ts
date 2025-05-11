@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 // Models
 import {
     DispatcherFilterResponse,
+    LoadListLoadStopResponse,
     LoadListResponse,
     LoadMinimalListResponse,
     LoadPossibleStatusesResponse,
@@ -163,6 +164,12 @@ export class LoadService {
         return this.http.delete<boolean>(
             `${basePath}${isTemplate ? '/template/list' : '/list'}`,
             { params }
+        );
+    }
+
+    public getLoadStopsList(id: number): Observable<LoadListLoadStopResponse> {
+        return this.http.get<LoadListLoadStopResponse>(
+            `${environment.API_ENDPOINT}/api/load/list/loadstop/${id}`
         );
     }
 }

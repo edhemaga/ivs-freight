@@ -4,6 +4,7 @@ import {
     ILoadDetailsLoadMinimalList,
     IMappedLoad,
     ILoadPageFilters,
+    ILoadPickupDeliveryData,
 } from '@pages/new-load/interfaces';
 import {
     ITableColumn,
@@ -55,4 +56,7 @@ export interface ILoadState {
     // Change status dropdown
     possibleStatuses: LoadPossibleStatusesResponse;
     loadIdLoadStatusChange: number;
+
+    // Load Pickup Delivery Stops
+    loadPickupDeliveryData: ILoadPickupDeliveryData;
 }

@@ -198,3 +198,8 @@ export const cardFlipViewModeSelector = createSelector(
         return eCardFlipViewMode[cardFlipViewMode];
     }
 );
+
+export const loadPickupDeliveryDataSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.loadPickupDeliveryData
+);
