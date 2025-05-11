@@ -1,1 +1,1 @@
-export * from 'load-modal-stops.helper';
+export * from './load-modal-stops.helper';

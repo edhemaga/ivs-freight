@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
     FormArray,
     FormBuilder,
@@ -46,9 +46,6 @@ import { Tabs } from '@shared/models';
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-// Services
-import { RoutingService } from '@shared/services/routing.service';
-
 @Component({
     selector: 'app-new-load-modal-stops',
     standalone: true,
@@ -73,9 +70,13 @@ import { RoutingService } from '@shared/services/routing.service';
     templateUrl: './new-load-modal-stops.component.html',
     styleUrl: './new-load-modal-stops.component.scss',
 })
-export class NewLoadModalStopsComponent implements OnInit {
+export class NewLoadModalStopsComponent {
     @Input() shippers: ShipperLoadModalResponse[] = [];
     @Input() shipperContacts: ShipperContactGroupResponse[] = [];
+    @Output() onShipperSelection = new EventEmitter<{
+        shipper: ShipperLoadModalResponse;
+        index: number;
+    }>();
     public LoadModalConfig = LoadModalConfig;
     // Enums
     public eLoadModalStopsForm = eLoadModalStopsForm;
@@ -88,40 +89,15 @@ export class NewLoadModalStopsComponent implements OnInit {
     public tabs = LoadModalStopsHelper.tabs;
     public stopTabs = LoadModalStopsHelper.stopTabs;
 
-    public stopsForm: UntypedFormGroup;
+    @Input() loadForm: UntypedFormGroup;
 
     public activeCardIndex: number = -1;
 
     get stopsFormArray(): FormArray {
-        return this.stopsForm.get('stops') as FormArray;
+        return this.loadForm.get('stops') as FormArray;
     }
 
-    constructor(
-        private fb: FormBuilder,
-        private routingService: RoutingService
-    ) {}
-
-    ngOnInit(): void {
-        this.createForm();
-    }
-
-    public createForm(): void {
-        const stopsArray = this.fb.array(
-            [
-                LoadModalStopsHelper.createStop(this.fb, {
-                    stopType: 1,
-                }),
-                LoadModalStopsHelper.createStop(this.fb, {
-                    stopType: 2,
-                }),
-            ],
-            [LoadModalStopsHelper.minStopsValidator(2)]
-        );
-
-        this.stopsForm = this.fb.group({
-            stops: stopsArray,
-        });
-    }
+    constructor(private fb: FormBuilder) {}
 
     public onAddDateTo(index: number, isAppointment: boolean): void {
         if (isAppointment) return;
@@ -155,6 +131,17 @@ export class NewLoadModalStopsComponent implements OnInit {
     ): void {
         const stop = this.stopsFormArray.at(index) as FormGroup;
         LoadModalStopsHelper.setTimeBasedOnShipperWorkingTime(shipper, stop);
+        this.emitShipperChange(shipper, index);
+    }
+
+    public emitShipperChange(
+        shipper: ShipperLoadModalResponse,
+        index: number
+    ): void {
+        this.onShipperSelection.emit({
+            index,
+            shipper,
+        });
     }
 
     public onStopTypeChange(tab: Tabs, index: number): void {

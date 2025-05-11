@@ -19,8 +19,8 @@
                 Leg
             </div>
         </div>
-        @if (stopsForm) {
-            <form [formGroup]="stopsForm">
+        @if (loadForm) {
+            <form [formGroup]="loadForm">
                 <div class="d-flex gap-1 flex-column" formArrayName="stops">
                     @for (
                         stop of stopsFormArray.controls;
@@ -224,7 +224,6 @@
                     @let selectedShipperId =
                         stopFormGroup.get(eLoadModalStopsForm.SHIPPER_ID)
                             ?.value;
-
                     <app-load-modal-stop
                         [index]="index"
                         [isLast]="last"
