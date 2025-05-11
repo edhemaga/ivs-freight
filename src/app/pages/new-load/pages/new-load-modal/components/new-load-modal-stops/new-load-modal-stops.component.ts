@@ -1,13 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnInit,
-    Output,
-    SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
     FormArray,
     FormBuilder,
@@ -46,7 +38,6 @@ import { LoadStopInputConfigPipe } from '@pages/new-load/pages/new-load-modal/pi
 // Models
 import {
     EnumValue,
-    RoutingResponse,
     ShipperContactGroupResponse,
     ShipperLoadModalResponse,
 } from 'appcoretruckassist';
@@ -79,10 +70,9 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     templateUrl: './new-load-modal-stops.component.html',
     styleUrl: './new-load-modal-stops.component.scss',
 })
-export class NewLoadModalStopsComponent implements OnInit, OnChanges {
+export class NewLoadModalStopsComponent {
     @Input() shippers: ShipperLoadModalResponse[] = [];
     @Input() shipperContacts: ShipperContactGroupResponse[] = [];
-    @Input() routing: RoutingResponse = {};
     @Output() onShipperSelection = new EventEmitter<{
         shipper: ShipperLoadModalResponse;
         index: number;
@@ -99,51 +89,15 @@ export class NewLoadModalStopsComponent implements OnInit, OnChanges {
     public tabs = LoadModalStopsHelper.tabs;
     public stopTabs = LoadModalStopsHelper.stopTabs;
 
-    public stopsForm: UntypedFormGroup;
+    @Input() loadForm: UntypedFormGroup;
 
     public activeCardIndex: number = -1;
 
     get stopsFormArray(): FormArray {
-        return this.stopsForm.get('stops') as FormArray;
+        return this.loadForm.get('stops') as FormArray;
     }
 
     constructor(private fb: FormBuilder) {}
-
-    ngOnInit(): void {
-        this.createForm();
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        // Move to parent component
-        if (changes['routing'] && !changes['routing'].firstChange) {
-            this.routing.legs.forEach((leg, index) => {
-                this.stopsFormArray.at(index).patchValue({
-                    [eLoadModalStopsForm.LEG_HOURS]: [leg.hours],
-                    [eLoadModalStopsForm.LEG_MILES]: [leg.minutes],
-                    [eLoadModalStopsForm.LEG_MINUTES]: [leg.minutes],
-                    [eLoadModalStopsForm.SHAPE]: [leg.shape],
-                });
-            });
-        }
-    }
-
-    public createForm(): void {
-        const stopsArray = this.fb.array(
-            [
-                LoadModalStopsHelper.createStop(this.fb, {
-                    stopType: 1,
-                }),
-                LoadModalStopsHelper.createStop(this.fb, {
-                    stopType: 2,
-                }),
-            ],
-            [LoadModalStopsHelper.minStopsValidator(2)]
-        );
-
-        this.stopsForm = this.fb.group({
-            stops: stopsArray,
-        });
-    }
 
     public onAddDateTo(index: number, isAppointment: boolean): void {
         if (isAppointment) return;

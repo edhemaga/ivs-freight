@@ -7,7 +7,11 @@ import {
     NgbModule,
     NgbPopover,
 } from '@ng-bootstrap/ng-bootstrap';
-import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import {
+    FormArray,
+    ReactiveFormsModule,
+    UntypedFormGroup,
+} from '@angular/forms';
 
 // rxjs
 import { catchError, forkJoin, Observable, of } from 'rxjs';
@@ -15,7 +19,10 @@ import { catchError, forkJoin, Observable, of } from 'rxjs';
 // Enums
 import { eGeneralActions } from '@shared/enums';
 import { eLoadModalActions } from '@pages/new-load/enums';
-import { eLoadModalForm } from '@pages/new-load/pages/new-load-modal/enums';
+import {
+    eLoadModalForm,
+    eLoadModalStopsForm,
+} from '@pages/new-load/pages/new-load-modal/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -327,9 +334,20 @@ export class NewLoadModalComponent<T> implements OnInit {
 
         const locations = [this.driverLocation, ...this.stopsLocations];
 
-        this.routingService
-            .getRoutingMiles(locations)
-            .subscribe((routing) => (this.routing = routing));
+        this.routingService.getRoutingMiles(locations).subscribe((routing) => {
+            this.routing = routing;
+
+            this.routing.legs.forEach((leg, index) => {
+                (this.loadForm.get(eLoadModalForm.STOPS) as FormArray)
+                    .at(index)
+                    .patchValue({
+                        [eLoadModalStopsForm.LEG_HOURS]: [leg.hours],
+                        [eLoadModalStopsForm.LEG_MILES]: [leg.minutes],
+                        [eLoadModalStopsForm.LEG_MINUTES]: [leg.minutes],
+                        [eLoadModalStopsForm.SHAPE]: [leg.shape],
+                    });
+            });
+        });
     }
 
     public onSelectTemplate(template: EnumValue): void {
