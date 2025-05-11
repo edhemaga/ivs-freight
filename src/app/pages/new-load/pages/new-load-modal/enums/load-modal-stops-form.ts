@@ -9,4 +9,8 @@ export enum eLoadModalStopsForm {
     TIME_TYPE = 'timeType',
     ITEMS = 'items',
     STOP_TYPE = 'stopType',
+    LEG_MILES = 'legMiles',
+    LEG_HOURS = 'legHours',
+    LEG_MINUTES = 'legMinutes',
+    SHAPE = 'shape',
 }

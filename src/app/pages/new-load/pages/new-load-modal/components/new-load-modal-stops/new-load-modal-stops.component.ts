@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 import {
     FormArray,
     FormBuilder,
@@ -38,6 +46,7 @@ import { LoadStopInputConfigPipe } from '@pages/new-load/pages/new-load-modal/pi
 // Models
 import {
     EnumValue,
+    RoutingResponse,
     ShipperContactGroupResponse,
     ShipperLoadModalResponse,
 } from 'appcoretruckassist';
@@ -45,9 +54,6 @@ import { Tabs } from '@shared/models';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-
-// Services
-import { RoutingService } from '@shared/services/routing.service';
 
 @Component({
     selector: 'app-new-load-modal-stops',
@@ -73,9 +79,14 @@ import { RoutingService } from '@shared/services/routing.service';
     templateUrl: './new-load-modal-stops.component.html',
     styleUrl: './new-load-modal-stops.component.scss',
 })
-export class NewLoadModalStopsComponent implements OnInit {
+export class NewLoadModalStopsComponent implements OnInit, OnChanges {
     @Input() shippers: ShipperLoadModalResponse[] = [];
     @Input() shipperContacts: ShipperContactGroupResponse[] = [];
+    @Input() routing: RoutingResponse = {};
+    @Output() onShipperSelection = new EventEmitter<{
+        shipper: ShipperLoadModalResponse;
+        index: number;
+    }>();
     public LoadModalConfig = LoadModalConfig;
     // Enums
     public eLoadModalStopsForm = eLoadModalStopsForm;
@@ -96,13 +107,24 @@ export class NewLoadModalStopsComponent implements OnInit {
         return this.stopsForm.get('stops') as FormArray;
     }
 
-    constructor(
-        private fb: FormBuilder,
-        private routingService: RoutingService
-    ) {}
+    constructor(private fb: FormBuilder) {}
 
     ngOnInit(): void {
         this.createForm();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        // Move to parent component
+        if (changes['routing'] && !changes['routing'].firstChange) {
+            this.routing.legs.forEach((leg, index) => {
+                this.stopsFormArray.at(index).patchValue({
+                    [eLoadModalStopsForm.LEG_HOURS]: [leg.hours],
+                    [eLoadModalStopsForm.LEG_MILES]: [leg.minutes],
+                    [eLoadModalStopsForm.LEG_MINUTES]: [leg.minutes],
+                    [eLoadModalStopsForm.SHAPE]: [leg.shape],
+                });
+            });
+        }
     }
 
     public createForm(): void {
@@ -155,6 +177,10 @@ export class NewLoadModalStopsComponent implements OnInit {
     ): void {
         const stop = this.stopsFormArray.at(index) as FormGroup;
         LoadModalStopsHelper.setTimeBasedOnShipperWorkingTime(shipper, stop);
+        this.onShipperSelection.emit({
+            index,
+            shipper,
+        });
     }
 
     public onStopTypeChange(tab: Tabs, index: number): void {

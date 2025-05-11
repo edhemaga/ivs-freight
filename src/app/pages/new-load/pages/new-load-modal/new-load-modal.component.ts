@@ -23,6 +23,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Services
 import { LoadService } from '@shared/services/load.service';
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
+import { RoutingService } from '@shared/services/routing.service';
 
 // Interface
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
@@ -32,10 +33,14 @@ import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/utils/help
 
 // Models
 import {
+    DispatchLoadModalResponse,
     EnumValue,
     LoadModalResponse,
     LoadResponse,
     LoadTemplateResponseCreateGenericWithUploadsResponse,
+    LongLat,
+    RoutingResponse,
+    ShipperLoadModalResponse,
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models';
 
@@ -99,6 +104,9 @@ export class NewLoadModalComponent<T> implements OnInit {
     // Inputs
     @Input() editData: ILoadModal;
 
+    private driverLocation: LongLat;
+    private stopsLocations: LongLat[] = [];
+
     public isModalValidToSubmit = false;
 
     // Show spinner when saving modal
@@ -115,6 +123,7 @@ export class NewLoadModalComponent<T> implements OnInit {
     // Show dropdown list options
     public dropdownList: LoadModalResponse;
     public tabs: Tabs[] = LoadModalHelper.getLoadTypeTabs();
+    public routing: RoutingResponse;
 
     // Enums
     public eModalButtonClassType = eModalButtonClassType;
@@ -138,7 +147,8 @@ export class NewLoadModalComponent<T> implements OnInit {
 
         // Services
         private loadService: LoadService,
-        private loadStoreService: LoadStoreService
+        private loadStoreService: LoadStoreService,
+        private routingService: RoutingService
     ) {}
 
     ngOnInit(): void {
@@ -292,6 +302,34 @@ export class NewLoadModalComponent<T> implements OnInit {
             isDetailsPage: false,
             ngbActiveModal: this.ngbActiveModal,
         });
+    }
+
+    public onDispatcherSelection(dispatcher: DispatchLoadModalResponse): void {
+        this.driverLocation = dispatcher.currentLocationCoordinates;
+
+        this.updateRouting();
+    }
+
+    public onShipperSelection(stop: {
+        shipper: ShipperLoadModalResponse;
+        index: number;
+    }): void {
+        this.stopsLocations[stop.index] = {
+            latitude: stop.shipper.latitude,
+            longitude: stop.shipper.longitude,
+        };
+
+        this.updateRouting();
+    }
+
+    updateRouting(): void {
+        if (!this.driverLocation || this.stopsLocations.length === 0) return;
+
+        const locations = [this.driverLocation, ...this.stopsLocations];
+
+        this.routingService
+            .getRoutingMiles(locations)
+            .subscribe((routing) => (this.routing = routing));
     }
 
     public onSelectTemplate(template: EnumValue): void {

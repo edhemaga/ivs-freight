@@ -124,15 +124,23 @@
             }
         </div>
         <div class="d-flex flex-column text-right">
+            @let miles =
+                _stopFormGroup.get(eLoadModalStopsForm.LEG_MILES)?.value;
+            @let hours =
+                _stopFormGroup.get(eLoadModalStopsForm.LEG_HOURS)?.value;
+            @let minutes =
+                _stopFormGroup.get(eLoadModalStopsForm.LEG_MINUTES)?.value;
             <span
                 class="ta-font-medium text-size-11"
                 [ngClass]="isOpen ? 'text-color-white' : 'text-color-black'"
-                >0.0 mi</span
+                >{{ miles ?? '0.0' }} mi</span
             >
             <span
                 class="ta-font-medium text-size-11"
                 [ngClass]="isOpen ? 'text-color-white-4' : 'text-color-bw6-2'"
-                >0m</span
+            >
+                {{ hours ? hours + 'h' : '' }}
+                {{ minutes ?? '0' }}m</span
             >
         </div>
     </div>
