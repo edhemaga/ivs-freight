@@ -247,5 +247,52 @@
                                                     : isDeadhead
     -->
         }
+
+        @if (routing) {
+            <div class="d-flex gap-12 justify-content-between m-t-8">
+                <div>
+                    <svg-icon
+                        [src]="svgRoutes.LOAD_ICON"
+                        class="svg-size-14 svg-fill-muted"
+                    ></svg-icon>
+
+                    <span
+                        class="ml-1 text-size-11 text-color-muted ca-font-bold"
+                        >200.0 mi</span
+                    >
+                </div>
+                <div class="d-flex gap-12">
+                    <div>
+                        <svg-icon
+                            [src]="svgRoutes.MILEAGE_ICON"
+                            class="svg-size-14 svg-fill-muted"
+                        ></svg-icon>
+
+                        <span
+                            class="ml-1 text-size-11 text-color-muted ca-font-bold"
+                            >{{ routing.totalMiles }}</span
+                        >
+                    </div>
+                    <div>
+                        <svg-icon
+                            [src]="svgRoutes.TIME_ICON"
+                            class="svg-size-14 svg-fill-muted"
+                        ></svg-icon>
+
+                        <span
+                            class="ml-1 text-size-11 text-color-muted ca-font-bold"
+                        >
+                            @let hours = routing.totalHours;
+                            @let minutes = routing.totalMinutes;
+                            @if (hours || minutes) {
+                                ≈
+                            }
+                            {{ hours ? hours + 'h' : '' }}
+                            {{ minutes ?? '0' }}m</span
+                        >
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </app-ca-custom-card>
