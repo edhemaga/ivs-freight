@@ -16,6 +16,8 @@ import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
 // Forms
 import {
+    FormArray,
+    FormBuilder,
     UntypedFormControl,
     UntypedFormGroup,
     Validators,
@@ -26,6 +28,7 @@ import { Tabs } from '@ca-shared/models/tabs.model';
 
 // Helpers
 import { LoadModalFormHelper } from '@pages/new-load/pages/new-load-modal/utils/helpers';
+import { LoadModalStopsHelper } from '@pages/new-load/pages/new-load-modal/components/new-load-modal-stops/utils/helpers';
 
 export class LoadModalHelper {
     static getLoadTypeTabs(): Tabs[] {
@@ -113,6 +116,16 @@ export class LoadModalHelper {
                 loadRequirements
             ),
             invoicedDate: new UntypedFormControl(load?.invoicedDate),
+
+            // TODO: Once edit is working we need to connect stops, for now show origin and destination
+            stops: new FormArray([
+                LoadModalStopsHelper.createStop(new FormBuilder(), {
+                    stopType: 1,
+                }),
+                LoadModalStopsHelper.createStop(new FormBuilder(), {
+                    stopType: 2,
+                }),
+            ]),
         });
     }
 

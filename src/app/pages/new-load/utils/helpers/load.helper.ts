@@ -12,6 +12,7 @@ import {
     LoadTemplateResponse,
 } from 'appcoretruckassist';
 import { ITableData } from '@shared/models';
+import { LoadPickup } from '@pages/load/pages/load-table/models';
 
 // helpers
 import { DropdownMenuContentHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
@@ -42,6 +43,7 @@ export class LoadHelper {
                 status,
                 pickup,
                 delivery,
+                stops,
                 loadRequirements,
                 miles,
                 totalMiles,
@@ -64,6 +66,18 @@ export class LoadHelper {
             const requirementLength =
                 loadRequirements?.trailerLength?.name?.replace(/\D/g, '');
             const billingPayTerm = billing?.payTermName?.replace(/\D/g, '');
+
+            const templatePickup: LoadPickup = {
+                count: stops?.[0]?.stopLoadOrder,
+                location: stops?.[0]?.shipper?.address?.city,
+                delivery: false,
+            };
+
+            const templateDelivery: LoadPickup = {
+                count: stops?.[stops.length - 1]?.stopLoadOrder,
+                location: stops?.[stops.length - 1]?.shipper?.address?.city,
+                delivery: true,
+            };
 
             const tableDropdownContent =
                 DropdownMenuContentHelper.getLoadDropdownContent(selectedTab);
@@ -95,8 +109,9 @@ export class LoadHelper {
                 assignedDriverTrailerNumber:
                     driver?.trailerNumber ?? dispatch?.trailer?.trailerNumber,
                 status,
-                pickup,
-                delivery,
+                pickup: pickup || templatePickup,
+                delivery: delivery || templateDelivery,
+                loadStops: stops,
                 requirementTruck: loadRequirements?.truckType,
                 requirementTrailer: loadRequirements?.trailerType,
                 requirementLength,

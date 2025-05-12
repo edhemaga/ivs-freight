@@ -7,7 +7,11 @@ import {
     NgbModule,
     NgbPopover,
 } from '@ng-bootstrap/ng-bootstrap';
-import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import {
+    FormArray,
+    ReactiveFormsModule,
+    UntypedFormGroup,
+} from '@angular/forms';
 
 // rxjs
 import { catchError, forkJoin, Observable, of } from 'rxjs';
@@ -15,7 +19,10 @@ import { catchError, forkJoin, Observable, of } from 'rxjs';
 // Enums
 import { eGeneralActions } from '@shared/enums';
 import { eLoadModalActions } from '@pages/new-load/enums';
-import { eLoadModalForm } from '@pages/new-load/pages/new-load-modal/enums';
+import {
+    eLoadModalForm,
+    eLoadModalStopsForm,
+} from '@pages/new-load/pages/new-load-modal/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -23,6 +30,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Services
 import { LoadService } from '@shared/services/load.service';
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
+import { RoutingService } from '@shared/services/routing.service';
 
 // Interface
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
@@ -32,10 +40,14 @@ import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/utils/help
 
 // Models
 import {
+    DispatchLoadModalResponse,
     EnumValue,
     LoadModalResponse,
     LoadResponse,
     LoadTemplateResponseCreateGenericWithUploadsResponse,
+    LongLat,
+    RoutingResponse,
+    ShipperLoadModalResponse,
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models';
 
@@ -99,6 +111,9 @@ export class NewLoadModalComponent<T> implements OnInit {
     // Inputs
     @Input() editData: ILoadModal;
 
+    private driverLocation: LongLat;
+    private stopsLocations: LongLat[] = [];
+
     public isModalValidToSubmit = false;
 
     // Show spinner when saving modal
@@ -115,6 +130,7 @@ export class NewLoadModalComponent<T> implements OnInit {
     // Show dropdown list options
     public dropdownList: LoadModalResponse;
     public tabs: Tabs[] = LoadModalHelper.getLoadTypeTabs();
+    public routing: RoutingResponse;
 
     // Enums
     public eModalButtonClassType = eModalButtonClassType;
@@ -138,7 +154,8 @@ export class NewLoadModalComponent<T> implements OnInit {
 
         // Services
         private loadService: LoadService,
-        private loadStoreService: LoadStoreService
+        private loadStoreService: LoadStoreService,
+        private routingService: RoutingService
     ) {}
 
     ngOnInit(): void {
@@ -167,12 +184,14 @@ export class NewLoadModalComponent<T> implements OnInit {
 
         saveObservable
             .pipe(
-                catchError((error) => {
+                catchError(() => {
                     this.activeAction = null;
                     return of(null);
                 })
             )
-            .subscribe((result) => this.onSaveAndAddNew(isSaveAndAddNew));
+            .subscribe((result) => {
+                if (result) this.onSaveAndAddNew(isSaveAndAddNew);
+            });
     }
 
     private onSaveAndAddNew(isSaveAndAddNew: boolean): void {
@@ -290,6 +309,51 @@ export class NewLoadModalComponent<T> implements OnInit {
             loads: [this.load],
             isDetailsPage: false,
             ngbActiveModal: this.ngbActiveModal,
+        });
+    }
+
+    public onDispatcherSelection(dispatcher: DispatchLoadModalResponse): void {
+        this.driverLocation = dispatcher.currentLocationCoordinates;
+
+        this.updateRouting();
+    }
+
+    public onShipperSelection(stop: {
+        shipper: ShipperLoadModalResponse;
+        index: number;
+    }): void {
+        this.stopsLocations[stop.index] = {
+            latitude: stop.shipper.latitude,
+            longitude: stop.shipper.longitude,
+        };
+
+        this.updateRouting();
+    }
+
+    public updateRouting(): void {
+        if (!this.driverLocation || this.stopsLocations.length === 0) return;
+
+        const locations = [this.driverLocation, ...this.stopsLocations];
+
+        this.routingService.getRoutingMiles(locations).subscribe((routing) => {
+            this.routing = routing;
+
+            this.routing.legs.forEach((leg, index) => {
+                (this.loadForm.get(eLoadModalForm.STOPS) as FormArray)
+                    .at(index)
+                    .patchValue({
+                        [eLoadModalStopsForm.LEG_HOURS]: [leg.hours],
+                        [eLoadModalStopsForm.LEG_MILES]: [leg.minutes],
+                        [eLoadModalStopsForm.LEG_MINUTES]: [leg.minutes],
+                        [eLoadModalStopsForm.SHAPE]: [leg.shape],
+
+                        // TODO: Maybe save this on load, it could affter reodering?
+                        [eLoadModalStopsForm.STOP_ORDER]: [index + 1],
+
+                        // Stop load orders should have different count, it is count separate based on load type
+                        [eLoadModalStopsForm.STOP_LOAD_ORDER]: [index + 1],
+                    });
+            });
         });
     }
 

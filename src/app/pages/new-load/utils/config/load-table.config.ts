@@ -98,7 +98,7 @@ export class LoadTableColumnsConfig {
             isChecked: true,
             columns: [
                 ...(isTemplateTable ? [] : [loadStatusColumn]),
-                /*   {
+                {
                     id: 16,
                     key: 'loadPickupDelivery',
                     label: 'Pickup & Delivery',
@@ -109,7 +109,7 @@ export class LoadTableColumnsConfig {
                     isResizable: true,
                     isChecked: true,
                     hasSort: false,
-                }, */
+                },
             ],
         };
     }

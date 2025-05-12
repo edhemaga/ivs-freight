@@ -81,6 +81,8 @@ export const initialState: ILoadState = {
 
     possibleStatuses: null,
     loadIdLoadStatusChange: null,
+
+    loadPickupDeliveryData: null,
 };
 
 export const loadReducer = createReducer(
@@ -336,7 +338,13 @@ export const loadReducer = createReducer(
         };
         return modifiedState;
     }),
-    on(LoadActions.onEditLoadCommentError, (state) => ({ ...state }))
+    on(LoadActions.onEditLoadCommentError, (state) => ({ ...state })),
 
+    //#endregion
+
+    //#region Get Load Stops
+    on(LoadActions.onGetLoadStopsByIdSuccess, (state, { loadId, stopsData }) =>
+        Functions.setLoadPickupDeliveryStopsData(state, loadId, stopsData)
+    )
     //#endregion
 );
