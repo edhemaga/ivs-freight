@@ -16,7 +16,7 @@
         "format": "npx prettier \"src/**/*.{js,ts,html,scss}\" --write",
         "format-chat": "npx prettier \"src/app/pages/chat/**/*.{js,ts,html,scss}\" --write",
         "prepare": "husky install",
-        "postinstall": "rm -rf ./src/assets/ca-components && cp -R ./node_modules/ca-components/src/assets/ca-components ./src/assets/ca-components"
+        "postinstall": "rimraf ./src/assets/ca-components && ncp ./node_modules/ca-components/src/assets/ca-components ./src/assets/ca-components"
     },
     "private": true,
     "dependencies": {
@@ -60,7 +60,7 @@
         "angular-svg-icon-preloader": "^8.0.0",
         "bank-routing-number-validator": "0.0.4",
         "bootstrap": "^5.2.3",
-        "ca-components": "1.7.99",
+        "ca-components": "1.7.991",
         "chart.js": "^4.4.5",
         "chartjs-plugin-annotation": "^3.1.0",
         "croppie": "^2.6.5",
@@ -131,9 +131,11 @@
         "karma-jasmine-html-reporter": "~1.7.0",
         "lint-staged": "^13.1.0",
         "lite-server": "^2.6.1",
+        "ncp": "^2.0.0",
         "prettier": "^3.5.3",
         "prettier-eslint": "^16.3.0",
         "pretty-quick": "^4.0.0",
+        "rimraf": "^6.0.1",
         "typescript": "~5.4.5"
     },
     "lint-staged": {
