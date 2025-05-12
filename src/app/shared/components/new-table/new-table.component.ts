@@ -190,13 +190,20 @@ export class NewTableComponent<T> {
     }
 
     private processScrollProperties(): void {
-        this.hasActiveLeftPinnedColumns = !!this.leftPinnedColumns?.length;
+        this.hasActiveLeftPinnedColumns =
+            !!this.leftPinnedColumns?.length ||
+            !!this.leftPinnedDisabledColumns?.length;
         this.hasActiveRightPinnedColumns = !!this.rightPinnedColumns?.length;
 
         this.leftPinnedBorderWidth =
-            TableScrollHelper.getTotalColumnWidth(this.leftPinnedColumns) + 8;
+            TableScrollHelper.getTotalColumnWidth([
+                ...this.leftPinnedDisabledColumns,
+                ...this.leftPinnedColumns,
+            ]) + 8;
         this.rightPinnedBorderWidth =
-            TableScrollHelper.getTotalColumnWidth(this.rightPinnedColumns) + 8;
+            TableScrollHelper.getTotalColumnWidth([
+                ...this.rightPinnedColumns,
+            ]) + 4;
     }
 
     public onHeadingHover(columnId: number, groupLabel: string): void {

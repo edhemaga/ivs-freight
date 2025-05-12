@@ -87,6 +87,14 @@ export class LoadModalStopsHelper {
             [eLoadModalStopsForm.DATE_FROM]: [null, Validators.required],
             [eLoadModalStopsForm.TIME_TYPE]: [],
             [eLoadModalStopsForm.ITEMS]: [],
+
+            [eLoadModalStopsForm.LEG_HOURS]: [null],
+            [eLoadModalStopsForm.LEG_MILES]: [null],
+            [eLoadModalStopsForm.LEG_MINUTES]: [null],
+            [eLoadModalStopsForm.SHAPE]: [null],
+
+            [eLoadModalStopsForm.STOP_ORDER]: [null],
+            [eLoadModalStopsForm.STOP_LOAD_ORDER]: [null],
         });
 
         // Apply initial validators
