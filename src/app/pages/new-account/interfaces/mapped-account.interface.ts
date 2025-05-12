@@ -1,4 +1,4 @@
-import { ICompanyAccountLabel } from './company-account-label.interface';
+import { ICompanyAccountLabel } from '@pages/new-account/interfaces';
 
 export interface IMappedAccount {
     id?: number;

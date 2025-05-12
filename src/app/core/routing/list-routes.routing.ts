@@ -155,7 +155,7 @@ export class ListRoutes {
                 accountsResolved: NewAccountResolver,
             },
             data: {
-                title: 'New Account',
+                title: 'Account',
             },
         },
         {

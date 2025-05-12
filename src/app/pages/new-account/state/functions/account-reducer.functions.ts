@@ -14,7 +14,7 @@ import { IAccountState } from '@pages/new-account/interfaces';
 
 // Helpers
 import { AccountHelper } from '@pages/new-account/utils/helpers';
-import { IMappedAccount } from '../../interfaces/mapped-account.interface';
+import { IMappedAccount } from '@pages/new-account/interfaces/mapped-account.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
     DropdownMenuColumnsActionsHelper,

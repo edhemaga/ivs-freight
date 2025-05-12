@@ -5,7 +5,7 @@ import { ICaInput } from 'ca-components';
 
 // Enums
 import { eGeneralActions } from '@shared/enums';
-import { eAccountInputConfigKeys } from '../enums';
+import { eAccountInputConfigKeys } from '@pages/new-account/enums';
 
 @Pipe({
     name: 'accountInputConfig',

@@ -28,11 +28,13 @@ import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropd
 // Models
 import {
     AccountColorResponse,
+    CompanyAccountLabelResponse,
     CompanyAccountModalResponse,
 } from 'appcoretruckassist';
-import { ICompanyAccountLabel } from '@pages/new-account/interfaces';
-import { IMappedAccount } from '../../interfaces/mapped-account.interface';
-import { CompanyAccountLabelResponse } from '../../../../../../appcoretruckassist/model/companyAccountLabelResponse';
+import {
+    ICompanyAccountLabel,
+    IMappedAccount,
+} from '@pages/new-account/interfaces';
 
 // Enums
 import {
@@ -55,7 +57,6 @@ import { ModalService } from '@shared/services';
 
 @Component({
     selector: 'app-new-account-modal',
-    standalone: true,
     imports: [
         // modules
         CommonModule,
@@ -77,6 +78,7 @@ import { ModalService } from '@shared/services';
     ],
     templateUrl: './new-account-modal.component.html',
     styleUrl: './new-account-modal.component.scss',
+    standalone: true,
 })
 export class NewAccountModalComponent implements OnInit, OnDestroy {
     @Input() editData: { id: number; type: string; isEdit: boolean };
@@ -107,10 +109,18 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
     public eStringPlaceholder = eStringPlaceholder;
     public eAccountInputConfigKeys = eAccountInputConfigKeys;
 
+    // actions
+    public;
+
     constructor(
-        private accountService: AccountService,
-        public accountStoreService: AccountStoreService,
+        // services
         private modalService: ModalService,
+        private accountService: AccountService,
+
+        // store
+        public accountStoreService: AccountStoreService,
+
+        // modal
         private ngbActiveModal: NgbActiveModal
     ) {}
 
@@ -130,17 +140,19 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
     ): void {
         switch (action) {
             case eGeneralActions.SAVE:
-                this.accountStoreService.dispatchOnEditAccount({
+                const onEditData = {
                     id: this.editData?.id,
                     ...this.accountForm.value,
                     companyAccountLabelId: this.selectedAccountLabel?.id,
-                });
+                };
+                this.accountStoreService.dispatchOnEditAccount(onEditData);
                 break;
             case eGeneralActions.SAVE_AND_ADD_NEW:
-                this.accountStoreService.dispatchOnAddAccount({
+                const onAddData = {
                     ...this.accountForm.value,
                     companyAccountLabelId: this.selectedAccountLabel?.id,
-                });
+                };
+                this.accountStoreService.dispatchOnAddAccount(onAddData);
                 break;
             case eGeneralActions.DELETE:
                 this.accountStoreService.dispatchOnDeleteAccount(
