@@ -61,13 +61,14 @@ export class AccountHelper {
         data: IMappedAccount
     ): UntypedFormGroup {
         form.patchValue({
-            [eFormControlName.NAME]: data.name,
-            [eFormControlName.USERNAME]: data.username,
-            [eFormControlName.PASSWORD]: data.password,
-            [eFormControlName.URL]: data.url,
+            [eFormControlName.NAME]: data?.name ?? [null],
+            [eFormControlName.USERNAME]: data?.username ?? [null],
+            [eFormControlName.PASSWORD]: data?.password ?? [null],
+            [eFormControlName.URL]: data?.url ?? [null],
             [eFormControlName.COMPANY_ACCOUNT_LABEL_ID]:
-                data.companyAccountLabelId ?? data.companyAccountLabel?.name,
-            [eFormControlName.NOTE]: data?.note ?? null,
+                (data?.companyAccountLabelId ??
+                    data?.companyAccountLabel?.name) || [null],
+            [eFormControlName.NOTE]: data?.note,
         });
         return form;
     }

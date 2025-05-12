@@ -155,15 +155,18 @@ export class AccountStoreService {
         });
     }
 
-    public dispatchOnAddAccount(account: IMappedAccount): void {
+    public dispatchOnAddAccount(
+        account: IMappedAccount,
+        isAddNew: boolean
+    ): void {
         this.store.dispatch({
             type: AccountStoreConstants.ACTION_ON_ADD_ACCOUNT,
             account,
+            isAddNew,
         });
     }
 
     public dispatchOnEditAccount(account: IMappedAccount): void {
-        console.log(account);
         this.store.dispatch({
             type: AccountStoreConstants.ACTION_ON_EDIT_ACCOUNT,
             account,

@@ -12,6 +12,7 @@ import {
     switchMap,
     of,
     from,
+    tap,
 } from 'rxjs';
 
 // Services
@@ -32,6 +33,7 @@ import { eGeneralActions, eSize } from '@shared/enums';
 import { IMappedAccount } from '../../interfaces/mapped-account.interface';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { UntypedFormArray, UntypedFormGroup } from '@angular/forms';
 
 @Injectable()
 export class AccountEffect {
@@ -76,16 +78,18 @@ export class AccountEffect {
     public onAddAccount$ = createEffect(() =>
         this.actions$.pipe(
             ofType(AccountActions.onAddAccount),
-            exhaustMap((data: { account: IMappedAccount }) =>
+            exhaustMap((data: { account: IMappedAccount; isAddNew: boolean }) =>
                 this.accountService.addCompanyAccount(data.account).pipe(
                     map((res: { id: number }) => {
-                        this.modalService.closeModal();
                         return AccountActions.onAddAccountSuccess({
                             account: {
                                 id: res.id,
                                 ...data.account,
                             },
                         });
+                    }),
+                    tap(() => {
+                        !data?.isAddNew && this.modalService.closeModal();
                     }),
                     catchError((error) =>
                         of(AccountActions.onAddAccountError({ error }))

@@ -155,19 +155,26 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
             this.activeAction = action;
         switch (action) {
             case eGeneralActions.SAVE:
-                const onEditData = {
+                const onSaveData = {
                     id: this.editData?.id,
                     ...this.accountForm.value,
                     companyAccountLabelId: this.selectedAccountLabel?.id,
                 };
-                this.accountStoreService.dispatchOnEditAccount(onEditData);
+                this.editData?.id
+                    ? this.accountStoreService.dispatchOnEditAccount(onSaveData)
+                    : this.accountStoreService.dispatchOnAddAccount(
+                          onSaveData,
+                          false
+                      );
                 break;
             case eGeneralActions.SAVE_AND_ADD_NEW:
                 const onAddData = {
                     ...this.accountForm.value,
                     companyAccountLabelId: this.selectedAccountLabel?.id,
                 };
-                this.accountStoreService.dispatchOnAddAccount(onAddData);
+                this.accountStoreService.dispatchOnAddAccount(onAddData, true);
+                this.accountForm.reset();
+                this.activeAction = null;
                 break;
             case eGeneralActions.DELETE:
                 if (!this.editData?.id) return;
@@ -250,10 +257,11 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
 
         forkJoin([userData$]).subscribe(([account]) => {
             this.editAccountData = account;
-            this.accountForm = AccountHelper.patchAccountModalForm(
-                this.accountForm,
-                account
-            );
+            if (this.isEditMode)
+                this.accountForm = AccountHelper.patchAccountModalForm(
+                    this.accountForm,
+                    account
+                );
         });
     }
 
