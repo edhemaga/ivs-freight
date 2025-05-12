@@ -1,16 +1,24 @@
 // Actions
 import * as AccountActions from '@pages/new-account/state/actions/account.action';
+
 // Config
 import { AccountTableColumnsConfig } from '@pages/new-account/utils/config';
 
-import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
+// Enums
+import {
+    eCardFlipViewMode,
+    eCommonElement,
+    eStringPlaceholder,
+} from '@shared/enums';
 
 // Interfaces
 import { IAccountState } from '@pages/new-account/interfaces';
 
+// Helpers
 import { DropdownMenuToolbarContentHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 import { createReducer, on } from '@ngrx/store';
+
 // Functions
 import * as AccountFunctions from '@pages/new-account/state/functions/account-reducer.functions';
 
@@ -25,7 +33,7 @@ export const initialState: IAccountState = {
         isTableLocked: true,
         sortKey: null,
         sortDirection: null,
-        label: '',
+        label: eStringPlaceholder.EMPTY,
     },
     activeViewMode: eCommonElement.LIST,
 
@@ -83,6 +91,16 @@ export const accountReducer = createReducer(
         AccountActions.toggleColumnVisibility,
         (state, { columnKey, isActive }) =>
             AccountFunctions.toggleColumnVisibility(state, columnKey, isActive)
-    )
+    ),
+    on(AccountActions.onAddAccountSuccess, (state, { account }) =>
+        AccountFunctions.onAddCompanyAccount(state, account)
+    ),
+    on(AccountActions.onEditAccountSuccess, (state, { account }) =>
+        AccountFunctions.onEditCompanyAccount(state, account)
+    ),
+    on(AccountActions.onDeleteAccountSuccess, (state, { id, activeModal }) =>
+        AccountFunctions.onDeleteCompanyAccount(state, id, activeModal)
+    ),
+    on(AccountActions.onOpenModal, (state) => state)
     //#endregion
 );

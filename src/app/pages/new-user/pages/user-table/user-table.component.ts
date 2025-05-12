@@ -112,7 +112,7 @@ export class UserTableComponent {
     }
 
     public openEditModal(userId: number): void {
-        this.userStoreService.dispatchOpenUserModal(true, userId);
+        this.userStoreService.dispatchOpenCompanyAccountModal(true, userId);
     }
 
     public onToggleDropdownMenuActions(

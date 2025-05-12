@@ -62,7 +62,10 @@ export class MilesTableComponent {
     }
 
     public onColumnRemove(columnKey: string): void {
-        this.milesStoreService.dispatchToggleColumnsVisiblity(columnKey, false);
+        this.milesStoreService.dispatchToggleColumnsVisibility(
+            columnKey,
+            false
+        );
     }
 
     public onColumnResize(resizeAction: ITableResizeAction): void {
