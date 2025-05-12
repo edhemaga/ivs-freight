@@ -15,6 +15,7 @@ import { IAccountState } from '@pages/new-account/interfaces';
 // Helpers
 import { AccountHelper } from '@pages/new-account/utils/helpers';
 import { IMappedAccount } from '../../interfaces/mapped-account.interface';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
     DropdownMenuColumnsActionsHelper,
     DropdownMenuToolbarContentHelper,
@@ -173,5 +174,22 @@ export function onEditCompanyAccount(
     return {
         ...state,
         accountList: [...modifiedAccountList],
+    };
+}
+
+export function onDeleteCompanyAccount(
+    state: IAccountState,
+    id: number,
+    activeModal: NgbActiveModal
+): IAccountState {
+    activeModal.close();
+
+    return {
+        ...state,
+        accountList: [
+            ...state.accountList.filter(
+                (account: IMappedAccount) => account.id !== id
+            ),
+        ],
     };
 }

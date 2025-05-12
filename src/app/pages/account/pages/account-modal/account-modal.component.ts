@@ -138,7 +138,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         this.companyAccountModal();
         this.companyAccountColorLabels();
         this.confirmationActivationSubscribe();
-        console.log(this.editData);
     }
 
     private confirmationActivationSubscribe(): void {

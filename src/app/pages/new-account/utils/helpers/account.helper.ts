@@ -67,7 +67,7 @@ export class AccountHelper {
             [eFormControlName.URL]: data.url,
             [eFormControlName.COMPANY_ACCOUNT_LABEL_ID]:
                 data.companyAccountLabelId ?? data.companyAccountLabel?.name,
-            [eFormControlName.NOTE]: data?.note, // or data.note if this field exists in the interface
+            [eFormControlName.NOTE]: data?.note,
         });
         return form;
     }

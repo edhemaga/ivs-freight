@@ -59,4 +59,8 @@ export class AccountService {
             `${this.API_COMPANY_ACCOUNT}/${id}`
         );
     }
+
+    public deleteCompanyAccount(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.API_COMPANY_ACCOUNT}/${id}`);
+    }
 }

@@ -4,7 +4,15 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 // RxJS
-import { catchError, map, mergeMap, exhaustMap, of } from 'rxjs';
+import {
+    catchError,
+    map,
+    mergeMap,
+    exhaustMap,
+    switchMap,
+    of,
+    from,
+} from 'rxjs';
 
 // Services
 import { ModalService } from '@shared/services';
@@ -15,10 +23,15 @@ import * as AccountActions from '@pages/new-account/state/actions/account.action
 
 // Components
 import { NewAccountModalComponent } from '@pages/new-account/components/new-account-modal/new-account-modal.component';
+import { NewDeleteAccountModalComponent } from '@pages/new-account/components/new-delete-account-modal/new-delete-account-modal.component';
 
 // Enums
-import { eGeneralActions } from '@shared/enums';
+import { eGeneralActions, eSize } from '@shared/enums';
+
+// Models
 import { IMappedAccount } from '../../interfaces/mapped-account.interface';
+
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable()
 export class AccountEffect {
@@ -45,11 +58,11 @@ export class AccountEffect {
     public openModal$ = createEffect(() =>
         this.actions$.pipe(
             ofType(AccountActions.onOpenModal),
-            mergeMap((item) =>
+            exhaustMap((item) =>
                 this.modalService.openModal(
                     NewAccountModalComponent,
                     {
-                        size: 'medium',
+                        size: eSize.MEDIUM_LOWERCASE,
                     },
                     {
                         type: item?.isEdit && eGeneralActions.EDIT_LOWERCASE,
@@ -74,9 +87,9 @@ export class AccountEffect {
                             },
                         });
                     }),
-                    catchError((error) => {
-                        return of(AccountActions.onAddAccountError({ error }));
-                    })
+                    catchError((error) =>
+                        of(AccountActions.onAddAccountError({ error }))
+                    )
                 )
             )
         )
@@ -91,10 +104,59 @@ export class AccountEffect {
                         this.modalService.closeModal();
                         return AccountActions.onEditAccountSuccess(data);
                     }),
-                    catchError((error) => {
-                        return of(AccountActions.onEditAccountError({ error }));
-                    })
+                    catchError((error) =>
+                        of(AccountActions.onEditAccountError({ error }))
+                    )
                 )
+            )
+        )
+    );
+
+    public onDeleteAccount$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AccountActions.onDeleteAccount),
+            exhaustMap(
+                (data: {
+                    account: IMappedAccount;
+                    activeModal: NgbActiveModal;
+                }) => {
+                    const id: number = data?.account?.id;
+                    const activeModal: NgbActiveModal = data?.activeModal;
+
+                    return from(
+                        this.modalService.openModalNew(
+                            NewDeleteAccountModalComponent,
+                            [data.account]
+                        )?.closed
+                    ).pipe(
+                        switchMap((isConfirmed: boolean) => {
+                            if (isConfirmed)
+                                return this.accountService
+                                    .deleteCompanyAccount(id)
+                                    .pipe(
+                                        map(() => {
+                                            activeModal.close();
+                                            return AccountActions.onDeleteAccountSuccess(
+                                                { id, activeModal }
+                                            );
+                                        }),
+                                        catchError((error) =>
+                                            of(
+                                                AccountActions.onEditAccountError(
+                                                    {
+                                                        error,
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    );
+                            else activeModal?.close();
+                        }),
+                        catchError((error) =>
+                            of(AccountActions.onEditAccountError({ error }))
+                        )
+                    );
+                }
             )
         )
     );

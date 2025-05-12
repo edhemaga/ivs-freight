@@ -5,9 +5,13 @@ import { AccountStoreConstants } from '@pages/new-account/utils/constants';
 import { GetCompanyAccountListResponse } from 'appcoretruckassist';
 import { IMappedAccount } from '@pages/new-account/interfaces';
 
+// Enums
 import { eCommonElement } from '@shared/enums';
 
 import { createAction, props } from '@ngrx/store';
+
+// Modal
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 export const loadAccounts = createAction(AccountStoreConstants.LOAD_ACCOUNTS);
 
@@ -89,5 +93,20 @@ export const onEditAccountSuccess = createAction(
 
 export const onEditAccountError = createAction(
     AccountStoreConstants.ACTION_ON_EDIT_ACCOUNT_ERROR,
+    props<{ error: Error }>()
+);
+
+export const onDeleteAccount = createAction(
+    AccountStoreConstants.ACTION_ON_DELETE_ACCOUNT,
+    props<{ account: IMappedAccount; activeModal: NgbActiveModal }>()
+);
+
+export const onDeleteAccountSuccess = createAction(
+    AccountStoreConstants.ACTION_ON_DELETE_ACCOUNT_SUCCESS,
+    props<{ id: number; activeModal: NgbActiveModal }>()
+);
+
+export const onDeleteAccountError = createAction(
+    AccountStoreConstants.ACTION_ON_DELETE_ACCOUNT_ERROR,
     props<{ error: Error }>()
 );

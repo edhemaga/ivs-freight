@@ -21,7 +21,6 @@ import { createReducer, on } from '@ngrx/store';
 
 // Functions
 import * as AccountFunctions from '@pages/new-account/state/functions/account-reducer.functions';
-import { IMappedAccount } from '../../interfaces/mapped-account.interface';
 
 export const initialState: IAccountState = {
     accountList: [],
@@ -98,6 +97,10 @@ export const accountReducer = createReducer(
     ),
     on(AccountActions.onEditAccountSuccess, (state, { account }) =>
         AccountFunctions.onEditCompanyAccount(state, account)
-    )
+    ),
+    on(AccountActions.onDeleteAccountSuccess, (state, { id, activeModal }) =>
+        AccountFunctions.onDeleteCompanyAccount(state, id, activeModal)
+    ),
+    on(AccountActions.onOpenModal, (state) => state)
     //#endregion
 );

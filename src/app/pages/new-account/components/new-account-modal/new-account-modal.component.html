@@ -102,7 +102,7 @@
     @let isFormValidAndDirty = accountForm.valid && accountForm.dirty;
     <div class="modal-footer modal-footer-payroll">
         <div class="divider"></div>
-        @if (editData?.data?.name) {
+        @if (isEditMode) {
             <div class="d-flex justify-content-between w-full">
                 <button
                     class="modal-delete-btn ta-font-bold mr-12 valid"
@@ -138,7 +138,7 @@
 </ng-template>
 
 <ng-template #rightModalContent>
-    @if (editData?.type === eGeneralActions.EDIT_LOWERCASE) {
+    @if (isEditMode) {
         <div
             ngbTooltip
             mainTooltip="Added    {{

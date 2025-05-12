@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { forkJoin, map, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { forkJoin, map, of, Subject, takeUntil, Observable } from 'rxjs';
 
 import {
     FormsModule,
@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 
 // Third-party modules
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Pipes
@@ -95,6 +95,8 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
     public selectedAccountLabel!: ICompanyAccountLabel;
     public selectedAccountColor!: AccountColorResponse;
 
+    public editAccountData!: IMappedAccount;
+
     // flags
     public disabledFormValidation: boolean = false;
     public isEditMode!: boolean;
@@ -108,7 +110,8 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
     constructor(
         private accountService: AccountService,
         public accountStoreService: AccountStoreService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit(): void {
@@ -123,6 +126,7 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
             | eGeneralActions.SAVE
             | eGeneralActions.SAVE_AND_ADD_NEW
             | eGeneralActions.CLOSE
+            | eGeneralActions.DELETE
     ): void {
         switch (action) {
             case eGeneralActions.SAVE:
@@ -137,6 +141,12 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
                     ...this.accountForm.value,
                     companyAccountLabelId: this.selectedAccountLabel?.id,
                 });
+                break;
+            case eGeneralActions.DELETE:
+                this.accountStoreService.dispatchOnDeleteAccount(
+                    this.editAccountData,
+                    this.ngbActiveModal
+                );
                 break;
             case eGeneralActions.CLOSE:
                 this.modalService.closeModal();
@@ -179,7 +189,7 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
     }
 
     // TODO Needs to be defined and expanded
-    public onSaveLabel(event): void {}
+    public onSaveLabel(event: unknown): void {}
 
     public onSelectColorLabel(color: AccountColorResponse): void {
         this.selectedAccountColor = color;
@@ -206,11 +216,12 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
     private setupModal(): void {
         this.isEditMode = this.editData?.isEdit;
 
-        const userData$ = this.isEditMode
+        const userData$: Observable<IMappedAccount> = this.isEditMode
             ? this.accountService.getCompanyAccountById(this.editData.id)
             : of(null);
 
         forkJoin([userData$]).subscribe(([account]) => {
+            this.editAccountData = account;
             this.accountForm = AccountHelper.patchAccountModalForm(
                 this.accountForm,
                 account
