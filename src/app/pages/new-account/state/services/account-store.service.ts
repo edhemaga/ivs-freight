@@ -163,6 +163,7 @@ export class AccountStoreService {
     }
 
     public dispatchOnEditAccount(account: IMappedAccount): void {
+        console.log(account);
         this.store.dispatch({
             type: AccountStoreConstants.ACTION_ON_EDIT_ACCOUNT,
             account,

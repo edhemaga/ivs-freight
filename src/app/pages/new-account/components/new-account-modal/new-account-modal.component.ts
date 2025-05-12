@@ -22,6 +22,9 @@ import {
     CaInputComponent,
     CaInputNoteComponent,
     CaAppTooltipV2Component,
+    CaModalButtonComponent,
+    eModalButtonSize,
+    eModalButtonClassType,
 } from 'ca-components';
 import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
 
@@ -41,6 +44,7 @@ import {
     eGeneralActions,
     eFormControlName,
     eStringPlaceholder,
+    eSize,
 } from '@shared/enums';
 import { eAccountInputConfigKeys } from '@pages/new-account/enums';
 
@@ -66,13 +70,14 @@ import { ModalService } from '@shared/services';
         NgbTooltipModule,
 
         // components
+        TaInputDropdownLabelComponent,
         CaModalComponent,
         CaInputComponent,
-        TaInputDropdownLabelComponent,
         CaInputNoteComponent,
         CaAppTooltipV2Component,
+        CaModalButtonComponent,
 
-        // Pipes
+        // pipes
         FormatDatePipe,
         AccountInputConfigPipe,
     ],
@@ -96,6 +101,12 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
     public accountLabels!: ICompanyAccountLabel[];
     public selectedAccountLabel!: ICompanyAccountLabel;
     public selectedAccountColor!: AccountColorResponse;
+    public activeAction:
+        | eGeneralActions.DELETE
+        | eGeneralActions.SAVE
+        | eGeneralActions.SAVE_AND_ADD_NEW
+        | eGeneralActions.CLOSE
+        | eGeneralActions.DELETE;
 
     public editAccountData!: IMappedAccount;
 
@@ -108,6 +119,8 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
     public eFormControlName = eFormControlName;
     public eStringPlaceholder = eStringPlaceholder;
     public eAccountInputConfigKeys = eAccountInputConfigKeys;
+    public eModalButtonSize = eModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
 
     // actions
     public;
@@ -138,6 +151,8 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
             | eGeneralActions.CLOSE
             | eGeneralActions.DELETE
     ): void {
+        if (this.accountForm.valid && this.accountForm.dirty)
+            this.activeAction = action;
         switch (action) {
             case eGeneralActions.SAVE:
                 const onEditData = {
@@ -155,6 +170,7 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
                 this.accountStoreService.dispatchOnAddAccount(onAddData);
                 break;
             case eGeneralActions.DELETE:
+                if (!this.editData?.id) return;
                 this.accountStoreService.dispatchOnDeleteAccount(
                     this.editAccountData,
                     this.ngbActiveModal

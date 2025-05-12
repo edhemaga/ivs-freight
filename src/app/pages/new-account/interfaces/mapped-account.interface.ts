@@ -6,7 +6,6 @@ export interface IMappedAccount {
     isSelected: boolean;
     username?: string;
     password?: string;
-
     companyAccountLabel?: ICompanyAccountLabel;
     url?: string;
     note?: string;
