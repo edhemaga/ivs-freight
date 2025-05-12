@@ -314,7 +314,6 @@ export class NewLoadModalComponent<T> implements OnInit {
 
     public onDispatcherSelection(dispatcher: DispatchLoadModalResponse): void {
         this.driverLocation = dispatcher.currentLocationCoordinates;
-
         this.updateRouting();
     }
 
@@ -333,7 +332,9 @@ export class NewLoadModalComponent<T> implements OnInit {
     public updateRouting(): void {
         if (!this.driverLocation || this.stopsLocations.length === 0) return;
 
-        const locations = [this.driverLocation, ...this.stopsLocations];
+        const locations = [this.driverLocation, ...this.stopsLocations].filter(
+            (location) => !!location
+        );
 
         this.routingService.getRoutingMiles(locations).subscribe((routing) => {
             this.routing = routing;
