@@ -150,4 +150,14 @@ export class NewLoadModalStopsComponent {
         const stop = this.stopsFormArray.at(index) as FormGroup;
         stop.get(eLoadModalStopsForm.STOP_TYPE).patchValue(tab.id);
     }
+
+    public onActionEventEmit(actionEvent: {
+        check: boolean;
+        action: string;
+    }): void {
+        const { action } = actionEvent;
+        if (action === 'plus-action') {
+            this.onAddNewStop();
+        }
+    }
 }

@@ -60,6 +60,12 @@
                 background: rgb(183, 183, 183, 0.2) !important;
             }
         }
+
+        &-yellow {
+            &-5 {
+                color: $ta-yellow-5;
+            }
+        }
     }
     // transform
     &-uppercase {

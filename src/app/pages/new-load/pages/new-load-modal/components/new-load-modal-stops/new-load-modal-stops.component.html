@@ -3,10 +3,13 @@
     cardName="Stops"
     [hasDivider]="true"
     [isCardOpen]="true"
+    [hasArrow]="true"
+    [hasPlusIcon]="true"
+    [counter]="stopsFormArray.length"
+    [headerLeftSideTemplate]="stopsLeftSideTemplate"
+    (onActionEvent)="onActionEventEmit($event)"
 >
     <div origin>
-        <!-- // TODO: ADD TO custom card template, now there is bug if we add it to header it closed stops -->
-        <div (click)="onAddNewStop()">add new stop</div>
         <div class="d-grid d-grid-stops-heading p-x-8 gap-1 mb-1">
             <div class="text-color-muted text-size-11 ta-font-bold">#</div>
             <div class="text-color-muted text-size-11 ta-font-bold">
@@ -21,196 +24,225 @@
         </div>
         @if (loadForm) {
             <form [formGroup]="loadForm">
-                <div class="d-flex gap-1 flex-column" formArrayName="stops">
+                <div
+                    class="d-flex gap-12 flex-column align-items-center"
+                    formArrayName="stops"
+                >
                     @for (
                         stop of stopsFormArray.controls;
                         let i = $index, first = $first, last = $last;
                         track i
                     ) {
-                        <app-ca-custom-card
-                            [hasDivider]="false"
-                            [hasArrow]="false"
-                            [headerLeftSideTemplate]="headerLeftSideTemplate"
-                            [headerLeftSideContext]="{
-                                index: i,
-                                isOpen: activeCardIndex === i,
-                                last,
-                            }"
-                            [isCardOpen]="activeCardIndex === i"
-                            [animationMarginParams]="{
-                                marginTop: '0',
-                                marginBottom: '12px',
-                            }"
-                            (onOpenCard)="onCardOpened($event, i)"
+                        <div
+                            [ngClass]="
+                                activeCardIndex === i
+                                    ? 'w-624 shadow-100 p-x-4 p-y-4 br-3'
+                                    : 'w-616'
+                            "
                         >
-                            <div
-                                origin
-                                [formGroupName]="i"
-                                class="w-620 m-t-20"
+                            <app-ca-custom-card
+                                [hasDivider]="false"
+                                [hasArrow]="false"
+                                [headerLeftSideTemplate]="
+                                    headerLeftSideTemplate
+                                "
+                                [headerLeftSideContext]="{
+                                    index: i,
+                                    isOpen: activeCardIndex === i,
+                                    last,
+                                }"
+                                [isCardOpen]="activeCardIndex === i"
+                                [animationMarginParams]="{
+                                    marginTop: '0',
+                                    marginBottom: '12px',
+                                }"
+                                (onOpenCard)="onCardOpened($event, i)"
                             >
-                                @if (!first && !last) {
-                                    <div class="m-b-12">
+                                <div
+                                    origin
+                                    [formGroupName]="i"
+                                    class="w-616 m-t-20"
+                                >
+                                    @if (!first && !last) {
+                                        <div class="m-b-24">
+                                            <app-ca-tab-switch
+                                                [type]="'type4-modal-popup'"
+                                                [tabs]="stopTabs"
+                                                (switchClicked)="
+                                                    onStopTypeChange($event, i)
+                                                "
+                                            >
+                                            </app-ca-tab-switch>
+                                        </div>
+                                    }
+
+                                    @let shipperInputConfig =
+                                        {
+                                            configType:
+                                                eLoadModalStopsForm.SHIPPER_ID,
+                                        } | loadStopInputConfig;
+
+                                    <div class="d-grid d-grid-shipper">
+                                        <ca-input-dropdown-test
+                                            [formControlName]="
+                                                eLoadModalStopsForm.SHIPPER_ID
+                                            "
+                                            [label]="'businessName'"
+                                            [optionValue]="'id'"
+                                            [template]="'load-shipper'"
+                                            [inputConfig]="shipperInputConfig"
+                                            [canAddNew]="true"
+                                            [canOpenModal]="true"
+                                            [options]="shippers"
+                                            (selectedItem)="
+                                                onShipperChange($event, i)
+                                            "
+                                        >
+                                        </ca-input-dropdown-test>
+                                    </div>
+
+                                    <div
+                                        class="d-grid d-grid-working-time m-t-26"
+                                    >
                                         <app-ca-tab-switch
                                             [type]="'type4-modal-popup'"
-                                            [tabs]="stopTabs"
+                                            [tabs]="tabs"
                                             (switchClicked)="
-                                                onStopTypeChange($event, i)
+                                                onTabChange($event, i)
                                             "
                                         >
                                         </app-ca-tab-switch>
-                                    </div>
-                                }
 
-                                @let shipperInputConfig =
-                                    {
-                                        configType:
-                                            eLoadModalStopsForm.SHIPPER_ID,
-                                    } | loadStopInputConfig;
-
-                                <div class="d-grid d-grid-shipper">
-                                    <ca-input-dropdown-test
-                                        [formControlName]="
-                                            eLoadModalStopsForm.SHIPPER_ID
-                                        "
-                                        [label]="'businessName'"
-                                        [optionValue]="'id'"
-                                        [template]="'load-shipper'"
-                                        [inputConfig]="shipperInputConfig"
-                                        [canAddNew]="true"
-                                        [canOpenModal]="true"
-                                        [options]="shippers"
-                                        (selectedItem)="
-                                            onShipperChange($event, i)
-                                        "
-                                    >
-                                    </ca-input-dropdown-test>
-                                </div>
-
-                                <div class="d-grid d-grid-working-time m-t-26">
-                                    <app-ca-tab-switch
-                                        [type]="'type4-modal-popup'"
-                                        [tabs]="tabs"
-                                        (switchClicked)="onTabChange($event, i)"
-                                    >
-                                    </app-ca-tab-switch>
-
-                                    @let brokerContactInputConfig =
-                                        {
-                                            configType:
-                                                eLoadModalStopsForm.SHIPPER_CONTACT_ID,
-                                        } | loadStopInputConfig;
-
-                                    <ca-input-dropdown-test
-                                        [formControlName]="
-                                            eLoadModalStopsForm.SHIPPER_CONTACT_ID
-                                        "
-                                        [label]="'fullName'"
-                                        [optionValue]="'id'"
-                                        [template]="'load-broker-contact'"
-                                        [inputConfig]="brokerContactInputConfig"
-                                        [options]="shipperContacts"
-                                    >
-                                    </ca-input-dropdown-test>
-                                </div>
-                                @let stopFormControl = stopsFormArray.at(i);
-                                @let isDateRange =
-                                    stopFormControl.get(
-                                        eLoadModalStopsForm.DATE_TO
-                                    ) !== null;
-
-                                @let isAppointment =
-                                    stopFormControl.get(
-                                        eLoadModalStopsForm.TIME_TYPE
-                                    ).value === 2;
-                                <div
-                                    class="d-grid m-t-26"
-                                    [ngClass]="
-                                        isDateRange
-                                            ? 'd-grid-date-from-to'
-                                            : 'd-grid-time-picker'
-                                    "
-                                >
-                                    @let dateFromInputConfig =
-                                        {
-                                            configType:
-                                                eLoadModalStopsForm.DATE_FROM,
-                                            isDateRange,
-                                        } | loadStopInputConfig;
-
-                                    <ca-input-datetime-picker
-                                        [formControlName]="
-                                            eLoadModalStopsForm.DATE_FROM
-                                        "
-                                        [inputConfig]="dateFromInputConfig"
-                                    ></ca-input-datetime-picker>
-
-                                    @if (!isDateRange) {
-                                        @let addDateRangeButtonClass =
-                                            isAppointment
-                                                ? 'background-light-grey-5 svg-fill-light-grey-6'
-                                                : 'background-bw2 background-hover-bw-9 svg-fill-muted svg-hover-black c-pointer';
-
-                                        <div
-                                            class="w-26 h-26 d-flex br-2 align-items-center justify-content-center"
-                                            ngbTooltip
-                                            position="bottom"
-                                            [tooltipBackground]="eColor.BLACK"
-                                            [mainTooltip]="
-                                                !isAppointment && 'Date Range'
-                                            "
-                                            [ngClass]="addDateRangeButtonClass"
-                                            (click)="
-                                                onAddDateTo(i, isAppointment)
-                                            "
-                                        >
-                                            <svg-icon
-                                                class="svg-size-16"
-                                                [src]="svgRoutes.PLUS_ICON"
-                                            ></svg-icon>
-                                        </div>
-                                    } @else {
-                                        @let dateToInputConfig =
+                                        @let brokerContactInputConfig =
                                             {
                                                 configType:
-                                                    eLoadModalStopsForm.DATE_TO,
+                                                    eLoadModalStopsForm.SHIPPER_CONTACT_ID,
+                                            } | loadStopInputConfig;
+
+                                        <ca-input-dropdown-test
+                                            [formControlName]="
+                                                eLoadModalStopsForm.SHIPPER_CONTACT_ID
+                                            "
+                                            [label]="'fullName'"
+                                            [optionValue]="'id'"
+                                            [template]="'load-broker-contact'"
+                                            [inputConfig]="
+                                                brokerContactInputConfig
+                                            "
+                                            [options]="shipperContacts"
+                                        >
+                                        </ca-input-dropdown-test>
+                                    </div>
+                                    @let stopFormControl = stopsFormArray.at(i);
+                                    @let isDateRange =
+                                        stopFormControl.get(
+                                            eLoadModalStopsForm.DATE_TO
+                                        ) !== null;
+
+                                    @let isAppointment =
+                                        stopFormControl.get(
+                                            eLoadModalStopsForm.TIME_TYPE
+                                        ).value === 2;
+                                    <div
+                                        class="d-grid m-t-26"
+                                        [ngClass]="
+                                            isDateRange
+                                                ? 'd-grid-date-from-to'
+                                                : 'd-grid-time-picker'
+                                        "
+                                    >
+                                        @let dateFromInputConfig =
+                                            {
+                                                configType:
+                                                    eLoadModalStopsForm.DATE_FROM,
+                                                isDateRange,
                                             } | loadStopInputConfig;
 
                                         <ca-input-datetime-picker
                                             [formControlName]="
-                                                eLoadModalStopsForm.DATE_TO
+                                                eLoadModalStopsForm.DATE_FROM
                                             "
-                                            [inputConfig]="dateToInputConfig"
+                                            [inputConfig]="dateFromInputConfig"
                                         ></ca-input-datetime-picker>
-                                    }
 
-                                    @let timeFromInputConfig =
-                                        {
-                                            configType:
-                                                eLoadModalStopsForm.TIME_FROM,
-                                            isAppointment,
-                                        } | loadStopInputConfig;
-                                    <ca-input-datetime-picker
-                                        [formControlName]="
-                                            eLoadModalStopsForm.TIME_FROM
-                                        "
-                                        [inputConfig]="timeFromInputConfig"
-                                    ></ca-input-datetime-picker>
+                                        @if (!isDateRange) {
+                                            @let addDateRangeButtonClass =
+                                                isAppointment
+                                                    ? 'background-light-grey-5 svg-fill-light-grey-6'
+                                                    : 'background-bw2 background-hover-bw-9 svg-fill-muted svg-hover-black c-pointer';
 
-                                    @let timeToInputConfig =
-                                        {
-                                            configType:
-                                                eLoadModalStopsForm.TIME_TO,
-                                            isAppointment,
-                                        } | loadStopInputConfig;
-                                    <ca-input-datetime-picker
-                                        [formControlName]="
-                                            eLoadModalStopsForm.TIME_TO
-                                        "
-                                        [inputConfig]="timeToInputConfig"
-                                    ></ca-input-datetime-picker>
+                                            <div
+                                                class="w-26 h-26 d-flex br-2 align-items-center justify-content-center"
+                                                ngbTooltip
+                                                position="bottom"
+                                                [tooltipBackground]="
+                                                    eColor.BLACK
+                                                "
+                                                [mainTooltip]="
+                                                    !isAppointment &&
+                                                    'Date Range'
+                                                "
+                                                [ngClass]="
+                                                    addDateRangeButtonClass
+                                                "
+                                                (click)="
+                                                    onAddDateTo(
+                                                        i,
+                                                        isAppointment
+                                                    )
+                                                "
+                                            >
+                                                <svg-icon
+                                                    class="svg-size-16"
+                                                    [src]="svgRoutes.PLUS_ICON"
+                                                ></svg-icon>
+                                            </div>
+                                        } @else {
+                                            @let dateToInputConfig =
+                                                {
+                                                    configType:
+                                                        eLoadModalStopsForm.DATE_TO,
+                                                } | loadStopInputConfig;
+
+                                            <ca-input-datetime-picker
+                                                [formControlName]="
+                                                    eLoadModalStopsForm.DATE_TO
+                                                "
+                                                [inputConfig]="
+                                                    dateToInputConfig
+                                                "
+                                            ></ca-input-datetime-picker>
+                                        }
+
+                                        @let timeFromInputConfig =
+                                            {
+                                                configType:
+                                                    eLoadModalStopsForm.TIME_FROM,
+                                                isAppointment,
+                                            } | loadStopInputConfig;
+                                        <ca-input-datetime-picker
+                                            [formControlName]="
+                                                eLoadModalStopsForm.TIME_FROM
+                                            "
+                                            [inputConfig]="timeFromInputConfig"
+                                        ></ca-input-datetime-picker>
+
+                                        @let timeToInputConfig =
+                                            {
+                                                configType:
+                                                    eLoadModalStopsForm.TIME_TO,
+                                                isAppointment,
+                                            } | loadStopInputConfig;
+                                        <ca-input-datetime-picker
+                                            [formControlName]="
+                                                eLoadModalStopsForm.TIME_TO
+                                            "
+                                            [inputConfig]="timeToInputConfig"
+                                        ></ca-input-datetime-picker>
+                                    </div>
                                 </div>
-                            </div>
-                        </app-ca-custom-card>
+                            </app-ca-custom-card>
+                        </div>
                     }
                 </div>
 
@@ -296,3 +328,17 @@
         }
     </div>
 </app-ca-custom-card>
+
+<ng-template #stopsLeftSideTemplate>
+    @if (stopsFormArray.length - 2 > 0) {
+        <p
+            class="margin-l-4 text-size-11 br-60 background-gray-2 text-color-white-2 ca-font-bold d-flex align-items-center justify-content-center p-x-5 p-y-2"
+        >
+            {{ stopsFormArray.length - 2 }} EXTRA
+        </p>
+    }
+
+    <p class="m-l-4 ta-font-medium text-size-11 text-color-muted">
+        Extra stops are added between origin and destination
+    </p>
+</ng-template>
