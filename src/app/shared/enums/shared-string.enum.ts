@@ -32,6 +32,7 @@ export enum eSharedString {
 
     YES = 'Yes',
     EMPTY_STRING_PLACEHOLDER = '',
+    DELETE = 'Delete',
 
     // Miles Stop Types
     PICKUP = 'Pickup',
