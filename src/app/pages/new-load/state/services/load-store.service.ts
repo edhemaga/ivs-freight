@@ -13,6 +13,7 @@ import {
     IMappedLoad,
     ILoadPageFilters,
     ILoadDeleteModal,
+    ILoadPickupDeliveryData,
 } from '@pages/new-load/interfaces';
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 import {
@@ -143,6 +144,9 @@ export class LoadStoreService {
     public cardFlipViewModeSelector$: Observable<string> = this.store.pipe(
         select(LoadSelectors.cardFlipViewModeSelector)
     );
+
+    public loadPickupDeliveryDataSelector$: Observable<ILoadPickupDeliveryData> =
+        this.store.pipe(select(LoadSelectors.loadPickupDeliveryDataSelector));
 
     public dispatchLoadList(): void {
         this.store.dispatch({
@@ -382,6 +386,28 @@ export class LoadStoreService {
             type: LoadStoreConstants.ACTION_REORDER_CHANGE,
             reorderAction,
         });
+    }
+
+    public dispatchGetLoadStops(load: IMappedLoad): void {
+        const { id, loadStops } = load;
+
+        if (loadStops) {
+            const totalMiles = load.milesTotal.value;
+            const stopsData = {
+                loadStops,
+                totalMiles,
+            };
+
+            this.store.dispatch({
+                type: LoadStoreConstants.ACTION_GET_LOAD_STOPS_LIST_SUCCESS,
+                loadId: id,
+                stopsData,
+            });
+        } else
+            this.store.dispatch({
+                type: LoadStoreConstants.ACTION_GET_LOAD_STOPS_LIST,
+                id,
+            });
     }
 
     //#region Comments

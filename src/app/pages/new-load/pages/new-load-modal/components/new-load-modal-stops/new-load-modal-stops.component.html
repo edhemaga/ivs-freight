@@ -19,8 +19,8 @@
                 Leg
             </div>
         </div>
-        @if (stopsForm) {
-            <form [formGroup]="stopsForm">
+        @if (loadForm) {
+            <form [formGroup]="loadForm">
                 <div class="d-flex gap-1 flex-column" formArrayName="stops">
                     @for (
                         stop of stopsFormArray.controls;
@@ -34,6 +34,7 @@
                             [headerLeftSideContext]="{
                                 index: i,
                                 isOpen: activeCardIndex === i,
+                                last,
                             }"
                             [isCardOpen]="activeCardIndex === i"
                             [animationMarginParams]="{
@@ -78,6 +79,9 @@
                                         [canAddNew]="true"
                                         [canOpenModal]="true"
                                         [options]="shippers"
+                                        (selectedItem)="
+                                            onShipperChange($event, i)
+                                        "
                                     >
                                     </ca-input-dropdown-test>
                                 </div>
@@ -141,10 +145,29 @@
                                     ></ca-input-datetime-picker>
 
                                     @if (!isDateRange) {
+                                        @let addDateRangeButtonClass =
+                                            isAppointment
+                                                ? 'background-light-grey-5 svg-fill-light-grey-6'
+                                                : 'background-bw2 background-hover-bw-9 svg-fill-muted svg-hover-black c-pointer';
+
                                         <div
-                                            class="w-26 h-26 d-flex background-muted"
-                                            (click)="onAddDateTo(i)"
-                                        ></div>
+                                            class="w-26 h-26 d-flex br-2 align-items-center justify-content-center"
+                                            ngbTooltip
+                                            position="bottom"
+                                            [tooltipBackground]="eColor.BLACK"
+                                            [mainTooltip]="
+                                                !isAppointment && 'Date Range'
+                                            "
+                                            [ngClass]="addDateRangeButtonClass"
+                                            (click)="
+                                                onAddDateTo(i, isAppointment)
+                                            "
+                                        >
+                                            <svg-icon
+                                                class="svg-size-16"
+                                                [src]="svgRoutes.PLUS_ICON"
+                                            ></svg-icon>
+                                        </div>
                                     } @else {
                                         @let dateToInputConfig =
                                             {
@@ -194,6 +217,7 @@
                 <ng-template
                     #headerLeftSideTemplate
                     let-index="index"
+                    let-last="last"
                     let-isOpen="isOpen"
                 >
                     @let stopFormGroup = stopsFormArray.at(index);
@@ -201,6 +225,8 @@
                         stopFormGroup.get(eLoadModalStopsForm.SHIPPER_ID)
                             ?.value;
                     <app-load-modal-stop
+                        [index]="index"
+                        [isLast]="last"
                         [stopFormGroup]="stopFormGroup"
                         [shippers]="shippers"
                         [selectedShipperId]="selectedShipperId"
@@ -220,6 +246,53 @@
                                                     : isDelivery
                                                     : isDeadhead
     -->
+        }
+
+        @if (routing) {
+            <div class="d-flex gap-12 justify-content-between m-t-8">
+                <div>
+                    <svg-icon
+                        [src]="svgRoutes.LOAD_ICON"
+                        class="svg-size-14 svg-fill-muted"
+                    ></svg-icon>
+
+                    <span
+                        class="ml-1 text-size-11 text-color-muted ca-font-bold"
+                        >200.0 mi</span
+                    >
+                </div>
+                <div class="d-flex gap-12">
+                    <div>
+                        <svg-icon
+                            [src]="svgRoutes.MILEAGE_ICON"
+                            class="svg-size-14 svg-fill-muted"
+                        ></svg-icon>
+
+                        <span
+                            class="ml-1 text-size-11 text-color-muted ca-font-bold"
+                            >{{ routing.totalMiles }}</span
+                        >
+                    </div>
+                    <div>
+                        <svg-icon
+                            [src]="svgRoutes.TIME_ICON"
+                            class="svg-size-14 svg-fill-muted"
+                        ></svg-icon>
+
+                        <span
+                            class="ml-1 text-size-11 text-color-muted ca-font-bold"
+                        >
+                            @let hours = routing.totalHours;
+                            @let minutes = routing.totalMinutes;
+                            @if (hours || minutes) {
+                                ≈
+                            }
+                            {{ hours ? hours + 'h' : '' }}
+                            {{ minutes ?? '0' }}m</span
+                        >
+                    </div>
+                </div>
+            </div>
         }
     </div>
 </app-ca-custom-card>

@@ -84,4 +84,9 @@ export class LoadStoreConstants {
     public static ACTION_ON_COMMENT_EDIT_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_ON_COMMENT_EDIT_SUCCESS`;
     public static ACTION_ON_COMMENT_EDIT_ERROR = `${this.COMPONENT_NAME_KEY} ACTION_ON_COMMENT_EDIT_ERROR`;
     //#endregion
+
+    //#region Get Load Pickup Delivery Stops
+    public static ACTION_GET_LOAD_STOPS_LIST = `${this.COMPONENT_NAME_KEY} ACTION_GET_LOAD_STOPS_LIST`;
+    public static ACTION_GET_LOAD_STOPS_LIST_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_GET_LOAD_STOPS_LIST_SUCCESS`;
+    //#endregion
 }
