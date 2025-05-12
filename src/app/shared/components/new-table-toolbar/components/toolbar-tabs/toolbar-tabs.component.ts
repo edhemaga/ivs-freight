@@ -35,6 +35,6 @@ export class ToolbarTabsComponent {
     public toolbarVariant = eToolbarVariant;
 
     public onTabClick(tab: string) {
-        this.tabSelected.emit(tab);
+        if (tab !== this.selectedTab) this.tabSelected.emit(tab);
     }
 }

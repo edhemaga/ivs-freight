@@ -7,4 +7,5 @@ export enum eLoadModalForm {
     COMPANY_ID = 'companyId',
     INVOICED_DATE = 'invoicedDate',
     BASE_RATE = 'baseRate',
+    STOPS = 'stops',
 }
