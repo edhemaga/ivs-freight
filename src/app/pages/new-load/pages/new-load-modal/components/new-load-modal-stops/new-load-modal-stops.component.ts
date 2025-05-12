@@ -119,7 +119,9 @@ export class NewLoadModalStopsComponent {
 
     public onAddNewStop(): void {
         const newStop = LoadModalStopsHelper.createStop(this.fb, {
-            stopType: 1,
+            stopType: {
+                id: 1,
+            },
         });
 
         const index = Math.max(this.stopsFormArray.length - 1, 0);

@@ -25,7 +25,9 @@
             _stopFormGroup.get(eLoadModalStopsForm.DATE_FROM).invalid ||
             _stopFormGroup.get(eLoadModalStopsForm.TIME_FROM).invalid ||
             _stopFormGroup.get(eLoadModalStopsForm.TIME_TO).invalid;
-
+        @let stopLoadOrder =
+            _stopFormGroup.get(eLoadModalStopsForm.STOP_LOAD_ORDER)?.value;
+        @let isDeadHead = stopType === 0;
         @if (hasDelete && isStopHovered) {
             <div
                 class="h-26 w-26 d-flex align-items-start justify-content-center"
@@ -50,10 +52,14 @@
             <div
                 class="h-26 w-26 br-2 text-color-white ta-font-bold text-size-14 d-flex align-items-center justify-content-center"
                 [ngClass]="
-                    stopType === 1 ? 'background-green' : 'background-orange-4'
+                    isDeadHead
+                        ? 'background-muted'
+                        : stopType === 1
+                          ? 'background-green'
+                          : 'background-orange-4'
                 "
             >
-                1
+                {{ isDeadHead ? 0 : stopLoadOrder }}
             </div>
         }
 

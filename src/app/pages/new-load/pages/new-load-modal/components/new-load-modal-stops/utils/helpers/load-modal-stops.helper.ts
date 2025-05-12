@@ -13,7 +13,11 @@ import {
 import { eLoadModalStopsForm } from '@pages/new-load/pages/new-load-modal/enums';
 
 // Models
-import { EnumValue, ShipperLoadModalResponse } from 'appcoretruckassist';
+import {
+    EnumValue,
+    LoadStopResponse,
+    ShipperLoadModalResponse,
+} from 'appcoretruckassist';
 
 export class LoadModalStopsHelper {
     static isStopAppointment(stopFormControl: FormGroup): boolean {
@@ -77,24 +81,35 @@ export class LoadModalStopsHelper {
         }
     }
 
-    static createStop(fb: FormBuilder, data: { stopType: number }): FormGroup {
+    static createStop(fb: FormBuilder, data?: LoadStopResponse): FormGroup {
         const group = fb.group({
-            [eLoadModalStopsForm.STOP_TYPE]: [data.stopType],
-            [eLoadModalStopsForm.SHIPPER_ID]: [null, Validators.required],
-            [eLoadModalStopsForm.SHIPPER_CONTACT_ID]: [],
-            [eLoadModalStopsForm.TIME_TO]: [null],
-            [eLoadModalStopsForm.TIME_FROM]: [null],
-            [eLoadModalStopsForm.DATE_FROM]: [null, Validators.required],
-            [eLoadModalStopsForm.TIME_TYPE]: [],
-            [eLoadModalStopsForm.ITEMS]: [],
+            [eLoadModalStopsForm.STOP_TYPE]: [data?.stopType?.id],
+            [eLoadModalStopsForm.SHIPPER_ID]: [
+                data?.shipper?.id ?? null,
+                Validators.required,
+            ],
+            [eLoadModalStopsForm.SHIPPER_CONTACT_ID]: [
+                data?.shipperContact?.id ?? null,
+            ],
+            [eLoadModalStopsForm.TIME_TO]: [data?.timeTo ?? null],
+            [eLoadModalStopsForm.TIME_FROM]: [data?.timeFrom ?? null],
+            [eLoadModalStopsForm.DATE_FROM]: [
+                data?.dateFrom ?? null,
+                Validators.required,
+            ],
+            [eLoadModalStopsForm.DATE_TO]: [data?.dateTo ?? null],
+            [eLoadModalStopsForm.TIME_TYPE]: [data?.timeType ?? null],
+            [eLoadModalStopsForm.ITEMS]: [data?.items || []],
 
-            [eLoadModalStopsForm.LEG_HOURS]: [null],
-            [eLoadModalStopsForm.LEG_MILES]: [null],
-            [eLoadModalStopsForm.LEG_MINUTES]: [null],
-            [eLoadModalStopsForm.SHAPE]: [null],
+            [eLoadModalStopsForm.LEG_HOURS]: [data?.legHours ?? null],
+            [eLoadModalStopsForm.LEG_MILES]: [data?.legMiles ?? null],
+            [eLoadModalStopsForm.LEG_MINUTES]: [data?.legMinutes ?? null],
+            [eLoadModalStopsForm.SHAPE]: [data?.shape ?? null],
 
-            [eLoadModalStopsForm.STOP_ORDER]: [null],
-            [eLoadModalStopsForm.STOP_LOAD_ORDER]: [null],
+            [eLoadModalStopsForm.STOP_ORDER]: [data?.stopOrder ?? null],
+            [eLoadModalStopsForm.STOP_LOAD_ORDER]: [
+                data?.stopLoadOrder ?? null,
+            ],
         });
 
         // Apply initial validators

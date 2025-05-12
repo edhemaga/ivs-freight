@@ -47,6 +47,10 @@
             @include svg-fill($white-2);
         }
 
+        &-white-4 {
+            @include svg-fill($white-4);
+        }
+
         &-muted {
             @include svg-fill($muted);
         }
