@@ -1,6 +1,6 @@
-import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
+import { eGeneralActions } from '@shared/enums';
 
 export type ModalActionType =
-    | TaModalActionEnum.SAVE_AND_ADD_NEW
-    | TaModalActionEnum.SAVE
+    | eGeneralActions.SAVE_AND_ADD_NEW
+    | eGeneralActions.SAVE
     | null;

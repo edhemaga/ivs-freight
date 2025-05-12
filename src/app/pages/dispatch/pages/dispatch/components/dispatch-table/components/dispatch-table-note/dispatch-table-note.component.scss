@@ -27,6 +27,24 @@
 
     &.filled {
         .padding-inside {
+            transition: $transition;
+
+            .note-container::after {
+                content: 'Write Something...';
+                position: absolute;
+                top: 11px;
+                left: 11px;
+
+                font-size: 11px;
+                line-height: 12px;
+                font-weight: 400;
+                color: $bw5;
+                pointer-events: none;
+
+                opacity: 0;
+                transition: $transition;
+            }
+
             &.hovering {
                 .info-item {
                     transition: $transition;
@@ -41,19 +59,8 @@
                 }
             }
 
-            &.hovering-note-content {
-                .note-container::after {
-                    content: 'Write Something...';
-                    position: absolute;
-                    top: 11px;
-                    left: 11px;
-
-                    font-size: 11px;
-                    line-height: 12px;
-                    font-weight: 400;
-                    color: $bw5;
-                    pointer-events: none;
-                }
+            &.hovering-note-content .note-container::after {
+                opacity: 1;
             }
         }
     }

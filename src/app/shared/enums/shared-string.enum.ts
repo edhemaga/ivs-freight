@@ -9,6 +9,7 @@ export enum eSharedString {
     TRAILER = 'trailer',
     DRIVER = 'driver',
     MILES = 'Miles',
+    ACCOUNT_LOWERCASE = 'account',
 
     CDL = 'cdl',
     DRUG_ALCOHOL = 'drug-alcohol',

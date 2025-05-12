@@ -219,7 +219,7 @@ export class NewLoadComponent<T> {
         this.loadStoreService.dispatchToggleCardFlipViewMode();
     }
     private toggleColumnVisibility(columnType: string, isChecked): void {
-        this.loadStoreService.dispatchToggleColumnsVisiblity(
+        this.loadStoreService.dispatchToggleColumnsVisibility(
             columnType,
             isChecked
         );

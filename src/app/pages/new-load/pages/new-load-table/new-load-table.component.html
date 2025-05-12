@@ -720,16 +720,22 @@
         <!-- #region ACTIONS COLUMN -->
 
         <ng-template #action let-data="data">
-            <ca-dropdown-menu
-                [type]="'dots-menu-type'"
-                [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
-                [options]="data.tableDropdownContent"
-                [isDarkBackground]="selectedFilesLoadId === data.id"
-                (dropdownOptionEmitter)="
-                    onToggleDropdownMenuActions($event, data, store.selectedTab)
-                "
-            >
-            </ca-dropdown-menu>
+            <div class="d-flex h-26">
+                <ca-dropdown-menu
+                    [type]="'dots-menu-type'"
+                    [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
+                    [options]="data.tableDropdownContent"
+                    [isDarkBackground]="selectedFilesLoadId === data.id"
+                    (dropdownOptionEmitter)="
+                        onToggleDropdownMenuActions(
+                            $event,
+                            data,
+                            store.selectedTab
+                        )
+                    "
+                >
+                </ca-dropdown-menu>
+            </div>
         </ng-template>
 
         <!-- #endregion END OF ACTIONS COLUMN -->

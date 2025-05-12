@@ -9,5 +9,6 @@
     <app-ca-map
         [data]="mapData"
         (routingMarkerClick)="handleRoutingMarkerClick($event)"
+        (resetSelectedMarkerItem)="handleResetSelectedMarker()"
     ></app-ca-map>
 </div>
