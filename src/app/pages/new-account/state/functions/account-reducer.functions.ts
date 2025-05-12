@@ -36,6 +36,21 @@ export function onLoadAccountsSuccess(
     };
 }
 
+export function loadAccountsOnPageChangeSuccess(
+    state: IAccountState,
+    payload: GetCompanyAccountListResponse
+): IAccountState {
+    const accountList = [
+        ...state.accountList,
+        ...AccountHelper.accountsMapper(payload.pagination.data),
+    ];
+    return {
+        ...state,
+        accountList,
+        currentPage: state.currentPage + 1,
+    };
+}
+
 export function onLoadAccountsError(state: IAccountState): IAccountState {
     return {
         ...state,

@@ -53,19 +53,20 @@ export class AccountEffect {
 
     public getAccountsListOnPageChange$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(AccountActions.getLoadsOnPageChange),
+            ofType(AccountActions.getAccountsOnPageChange),
             withLatestFrom(
                 this.store.select(AccountSelector.pageSelector),
                 this.store.select(AccountSelector.filterSelector),
                 this.store.select(AccountSelector.tableSettingsSelector)
             ),
             switchMap(([_, page, filters, tableSettings]) => {
+                console.log(this);
                 return this.accountService
-                    .getAccountList(page + 1, filters, tableSettings)
+                    .getAccountList(page, filters, tableSettings)
                     .pipe(
                         map((data) =>
-                            AccountActions.loadAccountsSuccess({
-                                data,
+                            AccountActions.loadAccountsOnPageChangeSuccess({
+                                payload: data,
                             })
                         ),
                         catchError(() =>

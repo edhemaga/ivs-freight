@@ -24,7 +24,7 @@ export class AccountService {
         let params = new HttpParams();
 
         if (page) {
-            params = params.append('PageIndex', page);
+            params = params.append('pageIndex', page);
         }
 
         if (tableSorting.sortKey)
@@ -45,7 +45,8 @@ export class AccountService {
         }
 
         return this.http.get<GetCompanyAccountListResponse>(
-            `${environment.API_ENDPOINT}/api/companyaccount/list`
+            `${environment.API_ENDPOINT}/api/companyaccount/list`,
+            { params }
         );
     }
 }

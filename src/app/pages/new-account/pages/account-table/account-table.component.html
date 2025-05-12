@@ -17,7 +17,6 @@
             url,
             username,
             password,
-            label,
             dateAdded,
             dateEdited,
         };
@@ -90,29 +89,54 @@
         <!-- #endregion PASSWORD COLUMN -->
 
         <!-- #region LABEL COLUMN -->
-        <ng-template let-account="data" #label>
-            <div class="text-color-black-2 text-size-14 text-truncate">
+        <!-- <ng-template let-account="data" #label> -->
+        <!-- <div class="text-color-black-2 text-size-14 text-truncate">
                 {{ account?.label?.name }}
-            </div>
-
-            <div>
-                <!-- <app-ta-input-dropdown-label
-                    formControlName="companyAccountLabelId"
-                    [inputConfig]="
-                        accountModalConfig.COMPANY_LABEL_INPUT_CONFIG
-                    "
-                    [colors]="colors"
-                    [options]="accountLabels"
-                    [selectedLabel]="selectedAccountLabel"
-                    [selectedLabelColor]="selectedAccountColor"
-                    (pickExistLabel)="onPickExistLabel($event)"
-                    (pickColorLabel)="onSelectColorLabel($event)"
-                    (editModeLabel)="companyAccountLabelMode($event)"
-                    (saveLabel)="onSaveLabel($event)"
+            </div> -->
+        <!-- <app-ta-input-dropdown-label
+                    [formControl]="account.formControl"
+                    [inputConfig]="{
+                        name: 'Input Dropdown Label',
+                        type: 'text',
+                        placeholderIcon: 'ic_dynamic_label',
+                        dropdownLabel: true,
+                        dropdownWidthClass: 'w-col-200',
+                        textTransform: 'lowercase',
+                        minLength: 1,
+                        blackInput: true,
+                        hideClear: true,
+                        hideDropdownArrow: true,
+                        multiselectDropdown: true,
+                        maxLength: 12,
+                        showCount: false,
+                        customClass: 'input-dropdown-table',
+                        commands: {
+                            active: false,
+                            type: 'confirm-cancel',
+                            firstCommand: {
+                                popup: {
+                                    name: 'Confirm',
+                                    backgroundColor: '#3074d3',
+                                },
+                                name: 'confirm',
+                                svg: 'assets/svg/ic_spec-confirm.svg',
+                            },
+                            secondCommand: {
+                                popup: {
+                                    name: 'Cancel',
+                                    backgroundColor: '#2f2f2f',
+                                },
+                                name: 'cancel',
+                                svg: 'assets/svg/ic_x.svg',
+                            },
+                        },
+                    }"
+                    [colors]="colorRes"
+                    [options]="colorLabels"
+                    [selectedLabel]="account?.label"
                 >
                 </app-ta-input-dropdown-label> -->
-            </div>
-        </ng-template>
+        <!-- </ng-template> -->
         <!-- #endregion LABEL COLUMN -->
 
         <!-- #region DATES COLUMNS -->

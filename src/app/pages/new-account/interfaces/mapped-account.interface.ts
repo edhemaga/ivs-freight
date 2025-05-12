@@ -1,3 +1,4 @@
+// import { FormControl } from '@angular/forms';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist/model/models';
 
 export interface IMappedAccount {
@@ -10,4 +11,5 @@ export interface IMappedAccount {
     label: CompanyAccountLabelResponse;
     createdAt: string | null;
     updatedAt: string | null;
+    // formControl: FormControl;
 }

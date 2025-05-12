@@ -3,7 +3,6 @@ import { CompanyAccountSortBy } from 'appcoretruckassist/model/models';
 // Interfaces
 import { ITableColumn } from '@shared/components/new-table/interfaces';
 
-/* eslint perfectionist/sort-classes: 0 */
 export class AccountTableColumnsConfig {
     static getTableColumns(): ITableColumn[] {
         return [
@@ -12,7 +11,7 @@ export class AccountTableColumnsConfig {
             AccountTableColumnsConfig.accountUrlColumn,
             AccountTableColumnsConfig.accountUsernameColumn,
             AccountTableColumnsConfig.accountPassowordColumn,
-            AccountTableColumnsConfig.labelColumn,
+            // AccountTableColumnsConfig.labelColumn,
             AccountTableColumnsConfig.dateAddedColumn,
             AccountTableColumnsConfig.dateEditedColumn,
         ];
@@ -95,21 +94,21 @@ export class AccountTableColumnsConfig {
         hasSort: false,
     };
 
-    static labelColumn: ITableColumn = {
-        id: 6,
-        key: 'label',
-        label: 'Label',
-        labelToolbar: 'Label',
-        pinned: null,
-        width: 180,
-        minWidth: 50,
-        maxWidth: 550,
-        isResizable: true,
-        isChecked: true,
-        isDisabled: false,
-        hasSort: true,
-        sortName: CompanyAccountSortBy.Label,
-    };
+    // static labelColumn: ITableColumn = {
+    //     id: 6,
+    //     key: 'label',
+    //     label: 'Label',
+    //     labelToolbar: 'Label',
+    //     pinned: null,
+    //     width: 180,
+    //     minWidth: 50,
+    //     maxWidth: 550,
+    //     isResizable: true,
+    //     isChecked: true,
+    //     isDisabled: false,
+    //     hasSort: true,
+    //     sortName: CompanyAccountSortBy.Label,
+    // };
 
     static dateAddedColumn: ITableColumn = {
         id: 7,

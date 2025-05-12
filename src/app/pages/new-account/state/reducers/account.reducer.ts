@@ -49,6 +49,9 @@ export const accountReducer = createReducer(
     on(AccountActions.loadAccountsSuccess, (state, { data }) =>
         AccountFunctions.onLoadAccountsSuccess(state, data)
     ),
+    on(AccountActions.loadAccountsOnPageChangeSuccess, (state, { payload }) =>
+        AccountFunctions.loadAccountsOnPageChangeSuccess(state, payload)
+    ),
     on(AccountActions.loadAccountsFailure, (state) =>
         AccountFunctions.onLoadAccountsError(state)
     ),

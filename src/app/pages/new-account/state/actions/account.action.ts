@@ -1,12 +1,20 @@
+// ngrx
+import { createAction, props } from '@ngrx/store';
+
 // Constants
 import { AccountStoreConstants } from '@pages/new-account/utils/constants';
+
 // Models
 import { GetCompanyAccountListResponse } from 'appcoretruckassist';
 
+// Enums
+import { IFilterAction } from 'ca-components';
 import { eCommonElement } from '@shared/enums';
 
-import { createAction, props } from '@ngrx/store';
+// Interface
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
+//#region List
 export const loadAccounts = createAction(AccountStoreConstants.LOAD_ACCOUNTS);
 
 export const loadAccountsSuccess = createAction(
@@ -14,9 +22,21 @@ export const loadAccountsSuccess = createAction(
     props<{ data: GetCompanyAccountListResponse }>()
 );
 
+export const loadAccountsOnPageChangeSuccess = createAction(
+    AccountStoreConstants.ACTION_NEW_PAGE_LIST_SUCCESS,
+    props<{
+        payload: GetCompanyAccountListResponse;
+    }>()
+);
+
 export const loadAccountsFailure = createAction(
     AccountStoreConstants.LOAD_ACCOUNTS_FAILURE
 );
+
+export const getAccountsOnPageChange = createAction(
+    AccountStoreConstants.ACTION_GET_NEW_PAGE_RESULTS
+);
+//#endregion
 
 //#region Selection
 export const onAccountSelection = createAction(
@@ -51,6 +71,23 @@ export const onViewModeChange = createAction(
     }>()
 );
 
-export const getLoadsOnPageChange = createAction(
-    AccountStoreConstants.ACTION_GET_NEW_PAGE_RESULTS
+// #region Filters
+export const onSeachFilterChange = createAction(
+    AccountStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
+    props<{
+        query: string[];
+    }>()
 );
+
+export const onFiltersChange = createAction(
+    AccountStoreConstants.ACTION_FILTER_CHANGED,
+    props<{
+        filters: IFilterAction;
+    }>()
+);
+
+export const tableSortingChange = createAction(
+    AccountStoreConstants.ACTION_SORTING_CHANGE,
+    props<{ column: ITableColumn }>()
+);
+//#endregion

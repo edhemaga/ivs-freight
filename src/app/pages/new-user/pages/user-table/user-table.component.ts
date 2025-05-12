@@ -45,7 +45,6 @@ import {
     ActivityTimePipe,
     FormatCurrencyPipe,
     NameInitialsPipe,
-    ThousandSeparatorPipe,
 } from '@shared/pipes';
 import { AddressFullnamePipe } from '@shared/pipes/address-fullname.pipe';
 
