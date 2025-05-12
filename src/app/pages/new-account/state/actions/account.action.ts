@@ -66,6 +66,14 @@ export const onOpenModal = createAction(
     }>()
 );
 
+export const onAddAndSaveAccount = createAction(
+    AccountStoreConstants.ACTION_ON_ADD_AND_SAVE_ACCOUNT,
+    props<{
+        account: IMappedAccount;
+        isAddNew: boolean;
+    }>()
+);
+
 export const onAddAccount = createAction(
     AccountStoreConstants.ACTION_ON_ADD_ACCOUNT,
     props<{

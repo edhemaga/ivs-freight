@@ -166,6 +166,13 @@ export class AccountStoreService {
         });
     }
 
+    public dispatchOnAddAndSaveAccount(account: IMappedAccount): void {
+        this.store.dispatch({
+            type: AccountStoreConstants.ACTION_ON_ADD_AND_SAVE_ACCOUNT,
+            account,
+        });
+    }
+
     public dispatchOnEditAccount(account: IMappedAccount): void {
         this.store.dispatch({
             type: AccountStoreConstants.ACTION_ON_EDIT_ACCOUNT,

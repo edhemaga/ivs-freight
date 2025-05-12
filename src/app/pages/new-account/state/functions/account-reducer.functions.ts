@@ -154,6 +154,7 @@ export function onAddCompanyAccount(
     state: IAccountState,
     account: IMappedAccount
 ): IAccountState {
+    console.log(account);
     return {
         ...state,
         accountList: [account, ...state.accountList],

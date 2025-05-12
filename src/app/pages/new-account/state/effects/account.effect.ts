@@ -79,12 +79,15 @@ export class AccountEffect {
         this.actions$.pipe(
             ofType(AccountActions.onAddAccount),
             exhaustMap((data: { account: IMappedAccount; isAddNew: boolean }) =>
-                this.accountService.addCompanyAccount(data.account).pipe(
+                this.accountService.addCompanyAccount(data?.account).pipe(
                     map((res: { id: number }) => {
+                        const newAccount: IMappedAccount = {
+                            id: res?.id,
+                            ...data.account,
+                        };
                         return AccountActions.onAddAccountSuccess({
                             account: {
-                                id: res.id,
-                                ...data.account,
+                                ...newAccount,
                             },
                         });
                     }),
