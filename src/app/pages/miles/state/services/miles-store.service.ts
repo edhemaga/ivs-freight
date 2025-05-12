@@ -347,6 +347,12 @@ export class MilesStoreService {
         });
     }
 
+    public dispatchResetMapStopData(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_RESET_MAP_STOP_DATA,
+        });
+    }
+
     public dispatchSearchChange(query: string[]): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SEARCH_FILTER_CHANGED,

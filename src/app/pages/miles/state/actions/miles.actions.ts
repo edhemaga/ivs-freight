@@ -126,6 +126,10 @@ export const getMapStopDataSuccess = createAction(
     props<{ unitStopData: MilesStopDetailsResponse }>()
 );
 
+export const resetMapStopData = createAction(
+    MilesStoreConstants.ACTION_RESET_MAP_STOP_DATA
+);
+
 export const toggleTableLockingStatus = createAction(
     MilesStoreConstants.ACTION_TOGGLE_TABLE_LOCK_STATUS,
     props<{ isLocked?: boolean }>()

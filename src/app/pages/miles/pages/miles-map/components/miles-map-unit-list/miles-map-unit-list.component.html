@@ -2,6 +2,7 @@
 @let stops = milesStoreService.stopsSelector$ | async;
 @let minimalList = milesStoreService.minimalListSelector$ | async;
 @let minimalListFilters = milesStoreService.minimalListFiltersSelector$ | async;
+@let mapData = milesStoreService.unitMapDataSelector$ | async;
 
 @let isPreviousButtonDisabled = minimalListFilters.isFirst;
 @let isNextButtonDisabled = minimalListFilters.isLast;
@@ -306,9 +307,18 @@
         isStopListWidthExpanded
             ? 'stops-container-large'
             : 'stops-container-small';
+    @let isSelectedStop =
+        mapData?.selectedRoutingMarkerData?.data?.id === stop.id;
+
     <div
-        class="stops-container h-26 br-2 background-white background-hover-light-grey d-grid align-items-center p-r-6 gap-1 c-pointer m-b-2"
-        [ngClass]="widthClass"
+        class="stops-container h-26 br-2 d-grid align-items-center p-r-6 gap-1 c-pointer m-b-2"
+        [ngClass]="[
+            widthClass,
+            isSelectedStop
+                ? 'background-light-grey'
+                : 'background-white background-hover-bw2',
+        ]"
+        (click)="onStopClick(stop, isSelectedStop)"
     >
         <div class="text-color-muted text-size-11 text-center">
             {{ index + 1 }}
