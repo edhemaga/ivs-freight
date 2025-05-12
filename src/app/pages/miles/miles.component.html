@@ -45,7 +45,9 @@
                     @if (store.activeViewMode !== eCommonElement.MAP) {
                         <ca-search-multiple-states-2
                             [selectedTab]="selectedTab"
-                            [isDisabled]="store.isFilterEmpty && !store.miles.length"
+                            [isDisabled]="
+                                store.isFilterEmpty && !store.miles.length
+                            "
                             (onSearchQueryChange)="onSearchQueryChange($event)"
                         ></ca-search-multiple-states-2>
                         <ng-container
@@ -56,18 +58,11 @@
                     <app-ca-filter-state-dropdown
                         [states]="store.statesSelector"
                         [entityType]="store.selectedTab"
-                        [isDisabled]="store.isFilterEmpty && !store.miles.length"
+                        [isDisabled]="
+                            store.isFilterEmpty && !store.miles.length
+                        "
                         (setFilter)="setFilters($event)"
                     ></app-ca-filter-state-dropdown>
-
-                    <app-ca-filter-time-dropdown
-                        type="TimeFilter"
-                        subType="past"
-                        [isDisabled]="store.isFilterEmpty && !store.miles.length"
-                        [entityType]="store.selectedTab"
-                        (setFilter)="setFilters($event)"
-                    >
-                    </app-ca-filter-time-dropdown>
 
                     @if (store.activeViewMode !== eCommonElement.MAP) {
                         <app-ca-filter
@@ -79,7 +74,9 @@
                             [isFuelType]="false"
                             [isLoadType]="false"
                             [isRepairFilter]="true"
-                            [isDisabled]="store.isFilterEmpty && !store.miles.length"
+                            [isDisabled]="
+                                store.isFilterEmpty && !store.miles.length
+                            "
                             (setFilter)="setFilters($event)"
                             (clearAll)="setFilters($event)"
                         >
@@ -97,11 +94,26 @@
                             [options]="getSortableColumn"
                             (onSortChange)="onSelectSortItem($event)"
                             (onSelectItem)="onSelectSortItem($event)"
-                            [isDisabled]="store.isFilterEmpty && !store.miles.length"
+                            [isDisabled]="
+                                store.isFilterEmpty && !store.miles.length
+                            "
                         ></app-ca-sorting-card-dropdown>
                     </div>
                     <ng-container *ngTemplateOutlet="divider"></ng-container>
                 }
+
+                <app-ca-filter
+                    type="timeFilterDropdown"
+                    filterTitle="Time Filter"
+                    [isMilesFilter]="false"
+                    [isFuelType]="false"
+                    [isLoadType]="false"
+                    (setFilter)="setFilters($event)"
+                    (clearAll)="setFilters($event)"
+                >
+                </app-ca-filter>
+
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
             </ng-template>
 
             <ng-template #divider>

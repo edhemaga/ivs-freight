@@ -52,6 +52,7 @@ export class TaCustomScrollbarComponent
     scrollHeight: number = 0;
     scrollRatio: number = 0;
     scrollRatioFull: number = 0;
+    showStickyHorizontalScrollbar: boolean = false;
 
     isMouseDown: boolean = false;
     startingBarOffsetTop: number = 0;
@@ -205,6 +206,14 @@ export class TaCustomScrollbarComponent
                     this.showScrollbar = true;
                     this.chng.detectChanges();
                 }
+
+                const content_height =
+                    this.elRef.nativeElement.children[0].scrollHeight - 1;
+                const visible_height = window.innerHeight;
+
+                if (content_height >= visible_height - 60) {
+                    this.showStickyHorizontalScrollbar = true;
+                } else this.showStickyHorizontalScrollbar = false;
 
                 this.scrollEvent.emit({
                     eventAction: 'isScrollShowing',
