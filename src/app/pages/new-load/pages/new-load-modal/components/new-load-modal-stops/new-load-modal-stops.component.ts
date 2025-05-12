@@ -30,7 +30,10 @@ import { SvgIconComponent } from 'angular-svg-icon';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Enum
-import { eLoadModalStopsForm } from '@pages/new-load/pages/new-load-modal/enums';
+import {
+    eLoadModalStopsForm,
+    eLoadStopsAction,
+} from '@pages/new-load/pages/new-load-modal/enums';
 
 // Pipes
 import { LoadStopInputConfigPipe } from '@pages/new-load/pages/new-load-modal/pipes/load-stop-input-config.pipe';
@@ -151,5 +154,16 @@ export class NewLoadModalStopsComponent {
     public onStopTypeChange(tab: Tabs, index: number): void {
         const stop = this.stopsFormArray.at(index) as FormGroup;
         stop.get(eLoadModalStopsForm.STOP_TYPE).patchValue(tab.id);
+    }
+
+    public onActionEventEmit(actionEvent: {
+        check: boolean;
+        action: string;
+    }): void {
+        const { action } = actionEvent;
+
+        if (action === eLoadStopsAction.PLUS_ACTION) {
+            this.onAddNewStop();
+        }
     }
 }
