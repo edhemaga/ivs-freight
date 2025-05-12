@@ -23,5 +23,13 @@
         &-payment {
             grid-template-columns: 160px 146px 126px;
         }
+
+        &-bank {
+            grid-template-columns: 160px 106px 166px;
+        }
+
+        &-salary-commission {
+            grid-template-columns: 160px 284px;
+        }
     }
 }
