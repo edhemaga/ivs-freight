@@ -37,6 +37,23 @@
                     col-resize;
             }
         }
+
+        // documents drawer
+        &-documents-drawer-row {
+            max-width: 0;
+
+            &.active {
+                max-width: 100%;
+
+                .new-table--row-documents-drawer-row-tag {
+                    visibility: visible;
+                }
+            }
+
+            &-tag {
+                visibility: hidden;
+            }
+        }
     }
 
     &--pinned-left,

@@ -119,6 +119,10 @@
             background-color: $ta-blue-16;
         }
 
+        &-18 {
+            background-color: $ta-blue-18;
+        }
+
         &-26 {
             background-color: $ta-blue-26;
         }
@@ -147,6 +151,10 @@
             @include hover($dark-2);
         }
 
+        &-dark-3 {
+            @include hover($dark-3);
+        }
+
         &-blue {
             &-15 {
                 @include hover($ta-blue-15);
@@ -167,6 +175,10 @@
 
         &-bw2 {
             @include hover($bw2);
+        }
+
+        &-bw6-2 {
+            @include hover($bw6-2);
         }
 
         &-light-grey {

@@ -170,7 +170,6 @@
         &-bw6-2 {
             @include svg-fill($bw6-2);
         }
-
     }
 
     // Hovers
@@ -195,6 +194,10 @@
         }
 
         &-bw6-2 {
+            @include svg-hover($bw6-2);
+        }
+
+        &-bw-9 {
             @include svg-hover($bw6-2);
         }
 
@@ -244,7 +247,7 @@
         &-42-18 {
             @include svg-size(42px, 18px);
         }
-        
+
         &-90 {
             @include svg-size(90px, 90px);
         }

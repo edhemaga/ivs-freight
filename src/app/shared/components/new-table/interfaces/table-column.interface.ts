@@ -21,6 +21,7 @@ export interface ITableColumn {
     isDisabled?: boolean;
     isChecked?: boolean;
     isUniqueColumn?: boolean;
+    isDocumentsDrawerColumn?: boolean;
     labelToolbar?: string;
     sortName?: string;
     removeSort?: boolean;

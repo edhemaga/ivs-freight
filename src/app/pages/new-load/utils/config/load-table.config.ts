@@ -6,6 +6,11 @@ import { eLoadStatusStringType } from '@pages/new-load/enums';
 import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 export class LoadTableColumnsConfig {
+    /* 
+    
+        if new column needs to be added, make sure that every ID is unique
+
+    */
     static getLoadTableColumns(
         selectedTab: eLoadStatusStringType
     ): ITableColumn[] {
@@ -48,8 +53,13 @@ export class LoadTableColumnsConfig {
                 LoadTableColumnsConfig.datePaidColumn,
                 LoadTableColumnsConfig.dateCreatedColumn,
                 LoadTableColumnsConfig.dateEditedColumn,
+                LoadTableColumnsConfig.filesColumn,
+                LoadTableColumnsConfig.commentsColumn,
                 LoadTableColumnsConfig.noteColumn,
                 LoadTableColumnsConfig.actionColumn,
+                LoadTableColumnsConfig.documentsDrawerDownloadAllColumn,
+                LoadTableColumnsConfig.closeDocumentsDrawerColumn,
+                LoadTableColumnsConfig.documentsDrawerActionColumn,
             ];
         } else {
             return [
@@ -68,15 +78,20 @@ export class LoadTableColumnsConfig {
                 LoadTableColumnsConfig.generateBillingGroupColumn(false),
                 LoadTableColumnsConfig.dateCreatedColumn,
                 LoadTableColumnsConfig.dateEditedColumn,
+                LoadTableColumnsConfig.filesColumn,
+                LoadTableColumnsConfig.commentsColumn,
                 LoadTableColumnsConfig.noteColumn,
                 LoadTableColumnsConfig.actionColumn,
+                LoadTableColumnsConfig.documentsDrawerDownloadAllColumn,
+                LoadTableColumnsConfig.closeDocumentsDrawerColumn,
+                LoadTableColumnsConfig.documentsDrawerActionColumn,
             ];
         }
     }
 
     static generateStatusGroupColumn(isTemplateTable: boolean): ITableColumn {
         const loadStatusColumn = {
-            id: 15,
+            id: 16,
             key: 'loadStatus',
             label: 'Status',
             labelToolbar: 'Status',
@@ -99,7 +114,7 @@ export class LoadTableColumnsConfig {
             columns: [
                 ...(isTemplateTable ? [] : [loadStatusColumn]),
                 {
-                    id: 16,
+                    id: 17,
                     key: 'loadPickupDelivery',
                     label: 'Pickup & Delivery',
                     labelToolbar: 'Pickup & Delivery',
@@ -116,7 +131,7 @@ export class LoadTableColumnsConfig {
 
     static generateBillingGroupColumn(isClosedTable: boolean): ITableColumn {
         const billingPayTermColumn = {
-            id: 28,
+            id: 29,
             key: 'billingPayTerm',
             label: 'Term',
             additionalLabel: 'd.',
@@ -130,7 +145,7 @@ export class LoadTableColumnsConfig {
         };
 
         const billingAgeUnpaidColumn = {
-            id: 29,
+            id: 30,
             key: 'billingAgeUnpaid',
             label: 'Age',
             additionalLabel: 'unp.',
@@ -144,7 +159,7 @@ export class LoadTableColumnsConfig {
         };
 
         const billingAgePaidColumn = {
-            id: 30,
+            id: 31,
             key: 'billingAgePaid',
             label: 'Age',
             additionalLabel: 'paid',
@@ -158,7 +173,7 @@ export class LoadTableColumnsConfig {
         };
 
         const billingDueColumn = {
-            id: 39,
+            id: 32,
             key: 'billingDue',
             label: 'Due',
             labelToolbar: 'Due',
@@ -185,7 +200,7 @@ export class LoadTableColumnsConfig {
                       ]
                     : []),
                 {
-                    id: 31,
+                    id: 33,
                     key: 'billingRatePerMile',
                     label: 'RPM',
                     labelToolbar: 'Rate Per Mile',
@@ -197,7 +212,7 @@ export class LoadTableColumnsConfig {
                     hasSort: true,
                 },
                 {
-                    id: 32,
+                    id: 34,
                     key: 'billingLayover',
                     label: 'Layover',
                     labelToolbar: 'Layover',
@@ -209,7 +224,7 @@ export class LoadTableColumnsConfig {
                     hasSort: true,
                 },
                 {
-                    id: 33,
+                    id: 35,
                     key: 'billinglumper',
                     label: 'Lumper',
                     labelToolbar: 'Lumper',
@@ -221,7 +236,7 @@ export class LoadTableColumnsConfig {
                     hasSort: true,
                 },
                 {
-                    id: 34,
+                    id: 36,
                     key: 'billingFuelSurcharge',
                     label: 'Fuel Surch',
                     labelToolbar: 'Fuel Surcharge',
@@ -233,7 +248,7 @@ export class LoadTableColumnsConfig {
                     hasSort: true,
                 },
                 {
-                    id: 35,
+                    id: 37,
                     key: 'billingEscort',
                     label: 'Escort',
                     labelToolbar: 'Escort',
@@ -245,7 +260,7 @@ export class LoadTableColumnsConfig {
                     hasSort: true,
                 },
                 {
-                    id: 36,
+                    id: 38,
                     key: 'billingDetention',
                     label: 'Detention',
                     labelToolbar: 'Detention',
@@ -257,7 +272,7 @@ export class LoadTableColumnsConfig {
                     hasSort: true,
                 },
                 {
-                    id: 37,
+                    id: 39,
                     key: 'billingRate',
                     label: 'Rate',
                     labelToolbar: 'Rate',
@@ -269,7 +284,7 @@ export class LoadTableColumnsConfig {
                     hasSort: true,
                 },
                 {
-                    id: 38,
+                    id: 40,
                     key: 'billingPaid',
                     label: 'Paid',
                     labelToolbar: 'Paid',
@@ -317,7 +332,7 @@ export class LoadTableColumnsConfig {
     };
 
     static loadNumberColumn: ITableColumn = {
-        id: 2,
+        id: 3,
         key: 'loadNumber',
         label: 'Load No',
         labelToolbar: 'Load No.',
@@ -333,7 +348,7 @@ export class LoadTableColumnsConfig {
     };
 
     static loadTypeColumn: ITableColumn = {
-        id: 3,
+        id: 4,
         key: 'loadType',
         label: 'Type',
         labelToolbar: 'Type',
@@ -347,7 +362,7 @@ export class LoadTableColumnsConfig {
     };
 
     static loadDispatcherColumn: ITableColumn = {
-        id: 4,
+        id: 5,
         key: 'loadDispatcher',
         label: 'Dispatcher',
         labelToolbar: 'Dispatcher',
@@ -362,7 +377,7 @@ export class LoadTableColumnsConfig {
     };
 
     static companyNameColumn: ITableColumn = {
-        id: 5,
+        id: 6,
         key: 'companyName',
         label: 'Company',
         labelToolbar: 'Company',
@@ -383,7 +398,7 @@ export class LoadTableColumnsConfig {
         isChecked: true,
         columns: [
             {
-                id: 6,
+                id: 7,
                 key: 'brokerBusinessName',
                 label: 'Business Name',
                 labelToolbar: 'Business name',
@@ -391,12 +406,12 @@ export class LoadTableColumnsConfig {
                 minWidth: 50,
                 maxWidth: 1020,
                 isResizable: true,
-                isChecked: true,
+                isChecked: false,
                 hasSort: true,
                 sortName: LoadSortBy.BrokerBusinessName,
             },
             {
-                id: 7,
+                id: 8,
                 key: 'brokerContact',
                 label: 'Contact',
                 labelToolbar: 'Contact',
@@ -404,12 +419,12 @@ export class LoadTableColumnsConfig {
                 minWidth: 50,
                 maxWidth: 550,
                 isResizable: true,
-                isChecked: true,
+                isChecked: false,
                 hasSort: true,
                 sortName: LoadSortBy.BrokerContactName,
             },
             {
-                id: 8,
+                id: 9,
                 key: 'brokerPhone',
                 label: 'Phone',
                 labelToolbar: 'Phone',
@@ -417,7 +432,7 @@ export class LoadTableColumnsConfig {
                 minWidth: 154,
                 maxWidth: 224,
                 isResizable: true,
-                isChecked: true,
+                isChecked: false,
                 hasSort: true,
                 sortName: LoadSortBy.BrokerContactPhone,
             },
@@ -432,7 +447,7 @@ export class LoadTableColumnsConfig {
         isChecked: true,
         columns: [
             {
-                id: 9,
+                id: 10,
                 key: 'referenceNumber',
                 label: 'REF NO',
                 labelToolbar: 'Ref Number',
@@ -444,7 +459,7 @@ export class LoadTableColumnsConfig {
                 hasSort: true,
             },
             {
-                id: 10,
+                id: 11,
                 key: 'commodity',
                 label: 'Commodity',
                 labelToolbar: 'Commodity',
@@ -456,7 +471,7 @@ export class LoadTableColumnsConfig {
                 hasSort: true,
             },
             {
-                id: 11,
+                id: 12,
                 key: 'weight',
                 label: 'Weight',
                 additionalLabel: 'lbs.',
@@ -480,7 +495,7 @@ export class LoadTableColumnsConfig {
         isChecked: false,
         columns: [
             {
-                id: 12,
+                id: 13,
                 key: 'assignedDriver',
                 label: 'Driver',
                 labelToolbar: 'Driver',
@@ -492,7 +507,7 @@ export class LoadTableColumnsConfig {
                 hasSort: true,
             },
             {
-                id: 13,
+                id: 14,
                 key: 'assignedDriverTruckNumber',
                 label: 'Truck',
                 labelToolbar: 'Truck',
@@ -504,7 +519,7 @@ export class LoadTableColumnsConfig {
                 hasSort: true,
             },
             {
-                id: 14,
+                id: 15,
                 key: 'assignedDriverTrailerNumber',
                 label: 'Trailer',
                 labelToolbar: 'Trailer',
@@ -526,7 +541,7 @@ export class LoadTableColumnsConfig {
         isChecked: false,
         columns: [
             {
-                id: 16,
+                id: 18,
                 key: 'requirementTruck',
                 label: 'Truck',
                 labelToolbar: 'Truck Type',
@@ -539,7 +554,7 @@ export class LoadTableColumnsConfig {
                 sortName: LoadSortBy.TruckType,
             },
             {
-                id: 17,
+                id: 19,
                 key: 'requirementTrailer',
                 label: 'Trailer',
                 labelToolbar: 'Trailer Type',
@@ -552,7 +567,7 @@ export class LoadTableColumnsConfig {
                 sortName: LoadSortBy.TrailerType,
             },
             {
-                id: 18,
+                id: 20,
                 key: 'requirementLength',
                 label: '',
                 additionalLabel: 'ft',
@@ -566,7 +581,7 @@ export class LoadTableColumnsConfig {
                 sortName: LoadSortBy.TrailerLength,
             },
             {
-                id: 19,
+                id: 21,
                 key: 'requirementDoor',
                 label: 'Door',
                 labelToolbar: 'Door Type',
@@ -578,7 +593,7 @@ export class LoadTableColumnsConfig {
                 hasSort: true,
             },
             {
-                id: 20,
+                id: 22,
                 key: 'requirementSuspension',
                 label: 'Suspension',
                 labelToolbar: 'Suspension',
@@ -591,7 +606,7 @@ export class LoadTableColumnsConfig {
                 sortName: LoadSortBy.Suspension,
             },
             {
-                id: 21,
+                id: 23,
                 key: 'requirementYear',
                 label: 'Year',
                 labelToolbar: 'Year',
@@ -604,7 +619,7 @@ export class LoadTableColumnsConfig {
                 sortName: LoadSortBy.Year,
             },
             {
-                id: 22,
+                id: 24,
                 key: 'requirementLiftgate',
                 label: 'Liftgate',
                 labelToolbar: 'Liftgate',
@@ -626,7 +641,7 @@ export class LoadTableColumnsConfig {
         isChecked: false,
         columns: [
             {
-                id: 23,
+                id: 25,
                 key: 'driverMessage',
                 label: 'Driver Message',
                 labelToolbar: 'Driver Message',
@@ -649,7 +664,7 @@ export class LoadTableColumnsConfig {
         isChecked: true,
         columns: [
             {
-                id: 24,
+                id: 26,
                 key: 'milesLoaded',
                 label: 'Loaded',
                 labelToolbar: 'Loaded',
@@ -662,7 +677,7 @@ export class LoadTableColumnsConfig {
                 sortName: MilesStopSortBy.LoadedMiles,
             },
             {
-                id: 25,
+                id: 27,
                 key: 'milesEmpty',
                 label: 'Empty',
                 labelToolbar: 'Empty',
@@ -675,7 +690,7 @@ export class LoadTableColumnsConfig {
                 sortName: MilesStopSortBy.EmptyMiles,
             },
             {
-                id: 26,
+                id: 28,
                 key: 'milesTotal',
                 label: 'Total',
                 labelToolbar: 'Total',
@@ -691,7 +706,7 @@ export class LoadTableColumnsConfig {
     };
 
     static dateInvoicedColumn: ITableColumn = {
-        id: 40,
+        id: 41,
         key: 'dateInvoiced',
         label: 'Invoiced',
         labelToolbar: 'Invoiced Date',
@@ -706,7 +721,7 @@ export class LoadTableColumnsConfig {
     };
 
     static datePaidColumn: ITableColumn = {
-        id: 41,
+        id: 42,
         key: 'datePaid',
         label: 'Date Paid',
         labelToolbar: 'Paid Date',
@@ -721,7 +736,7 @@ export class LoadTableColumnsConfig {
     };
 
     static dateCreatedColumn: ITableColumn = {
-        id: 35,
+        id: 43,
         key: 'dateCreated',
         label: 'Created',
         labelToolbar: 'Date Created',
@@ -736,7 +751,7 @@ export class LoadTableColumnsConfig {
     };
 
     static dateEditedColumn: ITableColumn = {
-        id: 36,
+        id: 44,
         key: 'dateEdited',
         label: 'Edited',
         labelToolbar: 'Date Edited',
@@ -750,8 +765,36 @@ export class LoadTableColumnsConfig {
         sortName: LoadSortBy.EditedDate,
     };
 
+    static filesColumn: ITableColumn = {
+        id: 45,
+        key: 'files',
+        label: '',
+        labelToolbar: '',
+        pinned: 'right',
+        width: 46,
+        minWidth: 46,
+        isResizable: false,
+        isDisabled: true,
+        isChecked: true,
+        hasSort: false,
+    };
+
+    static commentsColumn: ITableColumn = {
+        id: 46,
+        key: 'comments',
+        label: '',
+        labelToolbar: '',
+        pinned: 'right',
+        width: 26,
+        minWidth: 26,
+        isResizable: false,
+        isDisabled: true,
+        isChecked: true,
+        hasSort: false,
+    };
+
     static noteColumn: ITableColumn = {
-        id: 37,
+        id: 47,
         key: 'note',
         label: '',
         labelToolbar: '',
@@ -765,7 +808,7 @@ export class LoadTableColumnsConfig {
     };
 
     static actionColumn: ITableColumn = {
-        id: 38,
+        id: 48,
         key: 'action',
         label: '',
         labelToolbar: '',
@@ -775,6 +818,52 @@ export class LoadTableColumnsConfig {
         isResizable: false,
         isChecked: true,
         isDisabled: true,
+        hasSort: false,
+    };
+
+    /* Documents Drawer Columns */
+    static documentsDrawerDownloadAllColumn: ITableColumn = {
+        id: 49,
+        key: 'documentsDrawerDownloadAll',
+        label: '',
+        labelToolbar: '',
+        pinned: 'right',
+        width: 26,
+        minWidth: 26,
+        isResizable: false,
+        isChecked: true,
+        isDisabled: true,
+        isDocumentsDrawerColumn: true,
+        hasSort: false,
+    };
+
+    static closeDocumentsDrawerColumn: ITableColumn = {
+        id: 50,
+        key: 'closeDocumentsDrawer',
+        label: '',
+        labelToolbar: '',
+        pinned: 'right',
+        width: 26,
+        minWidth: 26,
+        isResizable: false,
+        isChecked: true,
+        isDisabled: true,
+        isDocumentsDrawerColumn: true,
+        hasSort: false,
+    };
+
+    static documentsDrawerActionColumn: ITableColumn = {
+        id: 51,
+        key: 'documentsDrawerAction',
+        label: '',
+        labelToolbar: '',
+        pinned: 'right',
+        width: 26,
+        minWidth: 26,
+        isResizable: false,
+        isChecked: true,
+        isDisabled: true,
+        isDocumentsDrawerColumn: true,
         hasSort: false,
     };
 }

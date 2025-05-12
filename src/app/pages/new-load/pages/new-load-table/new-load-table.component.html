@@ -37,7 +37,6 @@
             companyName,
             brokerBusinessName,
             brokerContact,
-            comments,
             brokerPhone,
             referenceNumber,
             commodity,
@@ -69,8 +68,13 @@
             datePaid: dateTemplate,
             dateCreated: dateTemplate,
             dateEdited: dateTemplate,
+            files,
+            comments,
             note,
             action,
+            documentsDrawerDownloadAll,
+            closeDocumentsDrawer,
+            documentsDrawerAction: action,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
@@ -78,6 +82,8 @@
     <app-new-table
         [columns]="store.columns"
         [rows]="store.viewData"
+        [documentsDrawerActiveRowId]="selectedFilesLoadId"
+        [isDownloadAllFilesAction]="isDownloadAllFilesAction"
         [isTableLocked]="isTableLocked"
         [totalDataCount]="store.selectedTabCountSelector"
         [headerTemplates]="headerTemplates"
@@ -87,7 +93,8 @@
         (onColumnRemove)="onColumnRemove($event)"
         (onColumnResize)="onColumnResize($event)"
         (onColumnReorder)="onColumnReorder($event)"
-        (onShowMore)="onShowMoreClick()"
+        (onShowMore)="onShowMore()"
+        (onDocumentsDrawerTag)="onDocumentsDrawerTag($event)"
     >
         <!-- Header Templates -->
 
@@ -238,7 +245,12 @@
                 }
 
                 <span
-                    class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
+                    class="c-pointer text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
+                    [class]="
+                        selectedFilesLoadId === data.id
+                            ? 'text-color-white'
+                            : 'text-color-black'
+                    "
                     ngbTooltip
                     [mainTooltip]="eGeneralActions.VIEW_DETAILS"
                     [tooltipBackground]="eColor.BLACK"
@@ -267,7 +279,14 @@
                     </app-load-type>
                 }
 
-                <p class="text-color-black text-size-14 ta-font-bold">
+                <p
+                    class="text-size-14 ta-font-bold"
+                    [class]="
+                        selectedFilesLoadId === data.id
+                            ? 'text-color-white'
+                            : 'text-color-black'
+                    "
+                >
                     {{ data.templateName }}
                 </p>
             </div>
@@ -612,23 +631,27 @@
             </p>
         </ng-template>
 
-        <ng-template let-data="data" #action>
-            <ca-dropdown-menu
-                [type]="'dots-menu-type'"
-                [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
-                [options]="data.tableDropdownContent"
-                (dropdownOptionEmitter)="
-                    onToggleDropdownMenuActions($event, data, store.selectedTab)
-                "
-            >
-            </ca-dropdown-menu>
+        <!-- #endregion END OF DATE COLUMN -->
+
+        <!-- #region DOCUMENTS COLUMN -->
+
+        <ng-template #files let-data="data">
+            <app-ca-files-count
+                [rowId]="data.id"
+                [filesCount]="data.fileCount"
+                (onFilesCountAction)="onFilesCountClick($event)"
+            ></app-ca-files-count>
         </ng-template>
 
-        <!-- #region Comments -->
-        <ng-template let-data="data" #comments>
+        <!-- #endregion END OF DOCUMENTS COLUMN -->
+
+        <!-- #region COMMENTS COLUMN -->
+
+        <ng-template #comments let-data="data">
             @let loadId = data?.id;
             @let isSelected = loadId === selectedCommentsLoadId;
             @let commentCount = data?.comments?.length;
+
             <div
                 class="w-26 h-26 d-flex place-items-center c-pointer br-2 m-t-1"
                 [class.background-black]="isSelected"
@@ -645,6 +668,7 @@
                     ></svg-icon>
                 </div>
             </div>
+
             @if (isSelected) {
                 <div class="position-absolute z-1">
                     <div class="position-relative">
@@ -669,9 +693,12 @@
                 </div>
             }
         </ng-template>
-        <!-- #endregion End of Comments -->
 
-        <ng-template let-data="data" #note>
+        <!-- #endregion END OF COMMENTS COLUMN -->
+
+        <!-- #region NOTE COLUMN -->
+
+        <ng-template #note let-data="data">
             @let entityType =
                 store.selectedTab === eSharedString.TEMPLATE
                     ? eSharedString.LOAD_TEMPLATE
@@ -688,11 +715,16 @@
             </app-ta-note>
         </ng-template>
 
-        <ng-template let-data="data" #action>
+        <!-- #endregion END OF NOTE COLUMN -->
+
+        <!-- #region ACTIONS COLUMN -->
+
+        <ng-template #action let-data="data">
             <ca-dropdown-menu
                 [type]="'dots-menu-type'"
                 [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
                 [options]="data.tableDropdownContent"
+                [isDarkBackground]="selectedFilesLoadId === data.id"
                 (dropdownOptionEmitter)="
                     onToggleDropdownMenuActions($event, data, store.selectedTab)
                 "
@@ -700,7 +732,47 @@
             </ca-dropdown-menu>
         </ng-template>
 
-        <!-- #endregion END OF ACTIONS -->
+        <!-- #endregion END OF ACTIONS COLUMN -->
+
+        <!-- #region DOCUMENTS DRAWER DOWNLOAD ALL COLUMN -->
+
+        <ng-template #documentsDrawerDownloadAll>
+            <div
+                class="d-flex align-items-center justify-content-center c-pointer br-2 background-hover-dark-3 svg-hover-bw-9"
+                ngbTooltip
+                [mainTooltip]="eGeneralActions.DOWNLOAD_ALL"
+                [tooltipBackground]="eColor.BLACK"
+                [position]="ePosition.BOTTOM"
+                (click)="onDocumentsDrawerAction(eGeneralActions.DOWNLOAD_ALL)"
+            >
+                <svg-icon
+                    class="svg-size-18 svg-fill-grey position-relative bottom-1"
+                    [src]="sharedSvgRoutes.DOWNLOAD_ALL"
+                ></svg-icon>
+            </div>
+        </ng-template>
+
+        <!-- #endregion DOCUMENTS DRAWER DOWNLOAD ALL COLUMN -->
+
+        <!-- #region CLOSE DOCUMENTS DRAWER COLUMN -->
+
+        <ng-template #closeDocumentsDrawer>
+            <div
+                class="d-flex align-items-center justify-content-center c-pointer br-2 background-hover-dark-3 svg-hover-bw-9"
+                ngbTooltip
+                [mainTooltip]="eGeneralActions.CLOSE"
+                [tooltipBackground]="eColor.BLACK"
+                [position]="ePosition.BOTTOM"
+                (click)="onDocumentsDrawerAction(eGeneralActions.CLOSE)"
+            >
+                <svg-icon
+                    class="svg-size-18 svg-fill-grey"
+                    [src]="sharedSvgRoutes.CLOSE_ICON_NORMAL"
+                ></svg-icon>
+            </div>
+        </ng-template>
+
+        <!-- #endregion CLOSE DOCUMENTS DRAWER COLUMN -->
     </app-new-table>
 
     <ng-template #statusPopover>

@@ -43,6 +43,9 @@ export class SharedSvgRoutes {
     static STACKABLE_ICON: string = 'assets/svg/common/load/ic_stackable.svg';
     static WEX_EFS: string = 'assets/svg/fuel/wex-efs.svg';
     static COMPANY_ICON: string = 'assets/svg/common/ic_company.svg';
+    static FILTER_ICON: string = 'assets/svg/common/ic_funnel.svg';
+    static EXPAND_TAGS_ICON: string =
+        'assets/svg/common/ic_arrow-left-border.svg';
     static TIME_ICON: string = 'assets/svg/common/ic_time.svg';
     static USER_ICON: string = 'assets/svg/common/ic_user.svg';
     static STATUS_ICON: string = 'assets/svg/common/ic_broker-half-circle.svg';
@@ -58,6 +61,7 @@ export class SharedSvgRoutes {
     static LTLC_FILLED: string = 'assets/svg/common/load/ltlc-filled.svg';
     static LTL_FILLED: string = 'assets/svg/common/load/ltl-filled.svg';
     static ARROW_RIGHT: string = 'assets/svg/common/ic-arrow-right.svg';
+    static DOWNLOAD_ALL: string = 'assets/svg/chat/download-icon.svg';
     static SELECT_TEMPLATE: string =
         'assets/svg/common/load/ic_load_template_btn.svg';
     static SEARCH_ICON = 'assets/svg/common/ic_search.svg';

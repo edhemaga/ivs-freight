@@ -21,6 +21,7 @@ import {
     ITableConfig,
     ITableReorderAction,
     ITableResizeAction,
+    ITableTagAction,
 } from '@shared/components/new-table/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { IFilterAction, IComment } from 'ca-components';
@@ -35,6 +36,7 @@ import { LoadStoreConstants } from '@pages/new-load/utils/constants';
 import { ITableData } from '@shared/models';
 import {
     CommentResponse,
+    FileResponse,
     LoadPossibleStatusesResponse,
     LoadStatusResponse,
 } from 'appcoretruckassist';
@@ -385,6 +387,21 @@ export class LoadStoreService {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_REORDER_CHANGE,
             reorderAction,
+        });
+    }
+
+    public dispatchGetLoadFiles(files: FileResponse[], loadId: number): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_GET_LOAD_FILES,
+            files,
+            loadId,
+        });
+    }
+
+    public dispatchFilterLoadFilesByTag(tagAction: ITableTagAction): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_FILTER_LOAD_FILES,
+            tagAction,
         });
     }
 

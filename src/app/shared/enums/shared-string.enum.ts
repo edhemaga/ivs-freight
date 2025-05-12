@@ -1,5 +1,5 @@
 export enum eSharedString {
-    OWNER = "Owner",
+    OWNER = 'Owner',
     ADMIN = 'Admin',
     USER = 'User',
     USER_LOWERCASE = 'user',
@@ -50,7 +50,6 @@ export enum eSharedString {
     INVITED = 'Invited',
     EXPIRED = 'Expired',
 
-
     // Load
     LOAD_VERTICAL_LINE = 'Load | ',
     TEMPLATE = 'Template',
@@ -58,5 +57,6 @@ export enum eSharedString {
     LOAD_NUMBER = 'loadNumber',
     HAZARDOUS = 'Hazardous',
     LOAD = 'Load',
+    LOAD_LOWERCASE = 'load',
     LOAD_TEMPLATE = 'LoadTemplate',
 }

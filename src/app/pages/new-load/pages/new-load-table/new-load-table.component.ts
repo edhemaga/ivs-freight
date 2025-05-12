@@ -18,7 +18,7 @@ import {
     eStringPlaceholder,
     eThousandSeparatorFormat,
 } from '@shared/enums';
-import { ePosition } from 'ca-components';
+import { CaFilesCountComponent, ePosition } from 'ca-components';
 
 // base classes
 import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
@@ -45,6 +45,7 @@ import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer
 // services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 import { ModalService } from '@shared/services';
+import { FilesService } from '@shared/services/files.service';
 
 // interfaces
 import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
@@ -52,6 +53,7 @@ import {
     ITableColumn,
     ITableReorderAction,
     ITableResizeAction,
+    ITableTagAction,
 } from '@shared/components/new-table/interfaces';
 import { IMappedLoad } from '@pages/new-load/interfaces';
 
@@ -98,6 +100,7 @@ import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes
         LoadTypeComponent,
         TaTruckTrailerIconComponent,
         CaCommentsComponent,
+        CaFilesCountComponent,
 
         // pipes
         TableHighlightSearchTextPipe,
@@ -108,6 +111,8 @@ export class NewLoadTableComponent
     implements OnInit, OnDestroy
 {
     protected destroy$ = new Subject<void>();
+
+    public currentUser: User = UserHelper.getUserFromLocalStorage();
 
     public changeStatusPopover: NgbPopover;
 
@@ -124,16 +129,21 @@ export class NewLoadTableComponent
     public eStringPlaceholder = eStringPlaceholder;
     public eThousandSeparatorFormat = eThousandSeparatorFormat;
 
+    // action ids
+    public selectedFilesLoadId: number | null = null;
     public selectedCommentsLoadId: number | null = null;
 
-    public currentUser: User = UserHelper.getUserFromLocalStorage();
+    // files
+    public isDownloadAllFilesAction: boolean = false;
 
     constructor(
         protected router: Router,
 
         // services
         protected loadStoreService: LoadStoreService,
-        protected modalService: ModalService
+        protected modalService: ModalService,
+
+        private filesService: FilesService
     ) {
         super();
     }
@@ -168,7 +178,7 @@ export class NewLoadTableComponent
         this.loadStoreService.dispatchReorderColumn(reorderAction);
     }
 
-    public onShowMoreClick(): void {
+    public onShowMore(): void {
         this.loadStoreService.getNewPage();
     }
 
@@ -214,6 +224,7 @@ export class NewLoadTableComponent
         loadId: number
     ): void {
         this.changeStatusPopover = tooltip;
+
         this.loadStoreService.dispatchOpenChangeStatusDropdown(loadId);
     }
 
@@ -233,12 +244,41 @@ export class NewLoadTableComponent
         this.loadStoreService.dispatchGetLoadStops(loadData);
     }
 
+    public onFilesCountClick(rowId: number): void {
+        this.filesService
+            .getFiles(eSharedString.LOAD_LOWERCASE, rowId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((files) => {
+                if (files?.length) {
+                    this.selectedFilesLoadId = rowId;
+
+                    this.isDownloadAllFilesAction = false;
+
+                    this.loadStoreService.dispatchGetLoadFiles(files, rowId);
+                }
+            });
+    }
+
+    public onDocumentsDrawerAction(type: string): void {
+        if (type === eGeneralActions.DOWNLOAD_ALL) {
+            this.isDownloadAllFilesAction = true;
+        } else {
+            this.selectedFilesLoadId = null;
+
+            this.isDownloadAllFilesAction = false;
+        }
+    }
+
+    public onDocumentsDrawerTag(action: ITableTagAction): void {
+        this.loadStoreService.dispatchFilterLoadFilesByTag(action);
+    }
+
     public onToggleComments(id: number): void {
         this.selectedCommentsLoadId =
             this.selectedCommentsLoadId === id ? null : id;
     }
 
-    public onCommentDelete(commentId: number, loadId): void {
+    public onCommentDelete(commentId: number, loadId: number): void {
         this.loadStoreService.dispatchDeleteComment(commentId, loadId);
     }
 

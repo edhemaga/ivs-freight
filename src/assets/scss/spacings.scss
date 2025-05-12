@@ -79,6 +79,9 @@
         }
     }
     &-r {
+        &-auto {
+            margin-right: auto;
+        }
         &-4 {
             margin-right: 4px;
         }
@@ -204,6 +207,10 @@
         }
     }
     &-y {
+        &-0 {
+            padding-bottom: 0px;
+            padding-top: 0px;
+        }
         &-1 {
             padding-bottom: 1px;
             padding-top: 1px;
