@@ -46,6 +46,32 @@ export class AccountTableColumnsConfig {
         hasSort: true,
         sortName: CompanyAccountSortBy.Name,
     };
+    static urlColumn: ITableColumn = {
+        id: 3,
+        key: 'url',
+        label: 'Url',
+        labelToolbar: 'url',
+        pinned: 'left',
+        width: 234,
+        minWidth: 234,
+        maxWidth: 234,
+        isResizable: true,
+        isChecked: true,
+        isDisabled: true,
+    };
+    static userUsernameColumn: ITableColumn = {
+        id: 4,
+        key: 'username',
+        label: 'Username',
+        labelToolbar: 'Username',
+        pinned: 'left',
+        width: 234,
+        minWidth: 234,
+        maxWidth: 234,
+        isResizable: true,
+        isChecked: true,
+        isDisabled: true,
+    };
 
     static accountUrlColumn: ITableColumn = {
         id: 3,

@@ -8,11 +8,13 @@ import {
     eCommonElement,
     eDropdownMenuColumns,
     eGeneralActions,
+    eSize,
     eStatusTab,
 } from '@shared/enums';
 
 // Services
 import { AccountStoreService } from './state/services/account-store.service';
+import { ModalService } from '@shared/services';
 
 // Components
 import { AccountTableComponent } from '@pages/new-account/pages/account-table/account-table.component';
@@ -20,6 +22,7 @@ import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolba
 import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { SvgIconComponent } from 'angular-svg-icon';
+import { NewAccountModalComponent } from './components/new-account-modal/new-account-modal.component';
 import {
     CaCheckboxSelectedCountComponent,
     CaFilterListDropdownComponent,
@@ -61,6 +64,7 @@ export class NewAccountComponent {
 
     constructor(
         public accountStoreService: AccountStoreService,
+        private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal
     ) {}
 
@@ -76,19 +80,24 @@ export class NewAccountComponent {
         );
     }
 
-    private toggleColumnVisibility(columnType: string, isChecked): void {
-        this.accountStoreService.dispatchToggleColumnsVisiblity(
+    private toggleColumnVisibility(
+        columnType: string,
+        isChecked: boolean
+    ): void {
+        this.accountStoreService.dispatchToggleColumnsVisibility(
             columnType,
             isChecked
         );
     }
 
+    // TODO Waiting for BE
     // public onDeleteAccountList(accounts: IMappedAccount[]): void {
     //     this.accountStoreService.dispatchDeleteAccounts(
     //         { accounts },
     //         this.ngbActiveModal
     //     );
     // }
+
     public onSearchQueryChange(query: string[]): void {
         this.accountStoreService.dispatchSearchChange(query);
     }
@@ -99,12 +108,20 @@ export class NewAccountComponent {
 
     public onToolBarAction(event: TableToolbarActions): void {
         if (!event) return;
-
         const { action, mode } = event;
 
         switch (action) {
             case eGeneralActions.OPEN_MODAL:
-                this.accountStoreService.dispatchOpenUserModal(false, null);
+                this.modalService.openModal(
+                    NewAccountModalComponent,
+                    {
+                        size: eSize.MEDIUM_LOWERCASE,
+                    },
+                    {
+                        id: null,
+                        isEdit: false,
+                    }
+                );
                 break;
 
             case eGeneralActions.VIEW_MODE:

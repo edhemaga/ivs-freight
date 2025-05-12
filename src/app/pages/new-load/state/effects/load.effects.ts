@@ -219,7 +219,6 @@ export class LoadEffect {
             ),
         { dispatch: false }
     );
-
     //#endregion
 
     //#region Details
@@ -282,7 +281,7 @@ export class LoadEffect {
     public refreshFilters$ = createEffect(() =>
         this.actions$.pipe(
             ofType(
-                LoadActions.openChangeStatuDropdown,
+                LoadActions.openChangeStatusDropdown,
                 LoadActions.revertLoadStatusSuccess,
                 LoadActions.onDeleteLoadSuccess,
                 LoadActions.onDeleteLoadListSuccess
@@ -406,7 +405,7 @@ export class LoadEffect {
     //#region Change load status
     public openChangeStatusDropdown$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(LoadActions.openChangeStatuDropdown),
+            ofType(LoadActions.openChangeStatusDropdown),
             exhaustMap((action) => {
                 const { loadId } = action || {};
 
@@ -414,14 +413,14 @@ export class LoadEffect {
                     .getLoadStatusDropdownOptions(loadId)
                     .pipe(
                         map((response) => {
-                            return LoadActions.openChangeStatuDropdownSuccess({
+                            return LoadActions.openChangeStatusDropdownSuccess({
                                 possibleStatuses: response,
                                 loadId,
                             });
                         }),
                         catchError((error) =>
                             of(
-                                LoadActions.openChangeStatuDropdownError({
+                                LoadActions.openChangeStatusDropdownError({
                                     error,
                                 })
                             )

@@ -14,6 +14,11 @@ export const accountsListSelector = createSelector(
     (state: IAccountState) => state.accountList
 );
 
+export const accountSelector = (id: number) =>
+    createSelector(selectAccountState, (state: IAccountState) =>
+        state.accountList.find((account) => account.id === id)
+    );
+
 export const tableColumnsSelector = createSelector(
     selectAccountState,
     (state) => {
