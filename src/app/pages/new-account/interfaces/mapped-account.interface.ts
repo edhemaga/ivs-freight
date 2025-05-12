@@ -1,5 +1,15 @@
+import { ICompanyAccountLabel } from '@pages/new-account/interfaces';
+
 export interface IMappedAccount {
-    id: number;
+    id?: number;
     name: string;
     isSelected: boolean;
+    username?: string;
+    password?: string;
+    companyAccountLabel?: ICompanyAccountLabel;
+    url?: string;
+    note?: string;
+    companyAccountLabelId?: number;
+    createdAt?: string;
+    updatedAt?: string;
 }

@@ -125,7 +125,7 @@ export class UserStoreService {
         });
     }
 
-    public dispatchOpenUserModal(isEdit: boolean, id: number): void {
+    public dispatchOpenCompanyAccountModal(isEdit: boolean, id: number): void {
         this.store.dispatch({
             type: UserStoreConstants.ACTION_OPEN_USER_MODAL,
             isEdit,
@@ -170,7 +170,7 @@ export class UserStoreService {
         });
     }
 
-    public dispatchToggleColumnsVisiblity(
+    public dispatchToggleColumnsVisibility(
         columnKey: string,
         isActive: boolean
     ) {

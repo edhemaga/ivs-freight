@@ -154,6 +154,9 @@ export class ListRoutes {
             resolve: {
                 accountsResolved: NewAccountResolver,
             },
+            data: {
+                title: 'Account',
+            },
         },
         {
             path: 'list/contact',

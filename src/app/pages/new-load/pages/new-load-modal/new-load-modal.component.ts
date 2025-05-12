@@ -159,7 +159,7 @@ export class NewLoadModalComponent<T> implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.setupInitalData();
+        this.setupInitialData();
     }
 
     private onLoadSave(action: eGeneralActions): void {
@@ -231,7 +231,7 @@ export class NewLoadModalComponent<T> implements OnInit {
         this.modalTitle = LoadModalHelper.generateTitle(this.editData);
     }
 
-    private setupInitalData(): void {
+    private setupInitialData(): void {
         const staticData$ = this.loadService.apiGetLoadModal();
 
         if (this.editData.isEdit || !!this.editData.type) {
@@ -280,7 +280,7 @@ export class NewLoadModalComponent<T> implements OnInit {
                     this.editData.isTemplate
                 );
             });
-        } else {
+        } else
             staticData$.subscribe((dropdownList) => {
                 this.loadForm = LoadModalHelper.createForm(
                     false,
@@ -291,7 +291,6 @@ export class NewLoadModalComponent<T> implements OnInit {
                 this.dropdownList = dropdownList;
                 this.modalTitle = LoadModalHelper.generateTitle(this.editData);
             });
-        }
     }
 
     private onCloseModal(): void {
@@ -397,7 +396,7 @@ export class NewLoadModalComponent<T> implements OnInit {
                 break;
 
             case this.eGeneralActions.CREATE_TEMPLATE:
-                // Open projection modal
+                // TODO Open projection modal
                 break;
 
             case this.eGeneralActions.SAVE:

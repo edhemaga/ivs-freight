@@ -98,8 +98,15 @@ export const milesReducer = createReducer(
         ...state,
         loading: false,
     })),
-    on(MilesAction.loadMilesSuccess, (state, { miles, activeTruckCount, inactiveTruckCount }) =>
-        Functions.updateMilesData(state, miles, activeTruckCount, inactiveTruckCount)
+    on(
+        MilesAction.loadMilesSuccess,
+        (state, { miles, activeTruckCount, inactiveTruckCount }) =>
+            Functions.updateMilesData(
+                state,
+                miles,
+                activeTruckCount,
+                inactiveTruckCount
+            )
     ),
 
     on(MilesAction.updateMilesList, (state, { miles }) =>
@@ -136,9 +143,7 @@ export const milesReducer = createReducer(
     on(MilesAction.onSeachFilterChange, (state, { query }) =>
         Functions.onSeachFilterChange(state, query)
     ),
-    on(MilesAction.resetFilters, (state) =>
-        Functions.resetFilters(state)
-    ),
+    on(MilesAction.resetFilters, (state) => Functions.resetFilters(state)),
     on(MilesAction.setStates, (state, { states }) => ({ ...state, states })),
     // #endregion
 
@@ -205,6 +210,10 @@ export const milesReducer = createReducer(
 
     on(MilesAction.getMapStopDataSuccess, (state, { unitStopData }) =>
         Functions.setMapSelectedStop(state, unitStopData)
+    ),
+
+    on(MilesAction.resetMapStopData, (state) =>
+        Functions.resetMapSelectedStop(state)
     ),
 
     on(MilesAction.setUnitMapData, (state) => Functions.setUnitMapData(state)),

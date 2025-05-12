@@ -27,4 +27,8 @@ export class MilesMapComponent {
     public handleRoutingMarkerClick(stopId: number): void {
         this.milesStoreService.dispatchGetMapStopData(stopId);
     }
+
+    public handleResetSelectedMarker(): void {
+        this.milesStoreService.dispatchResetMapStopData();
+    }
 }

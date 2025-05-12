@@ -1,17 +1,25 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { UntypedFormControl, Validators } from '@angular/forms';
 
 // Enum
 import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
 
 // Interface
-import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { ICaInput } from 'ca-components';
 
 @Pipe({
     name: 'userModalInputConfig',
     standalone: true,
 })
 export class UserModalInputConfigPipe implements PipeTransform {
-    transform({ configType }): ITaInput {
+    transform(
+        {
+            configType,
+            formContol,
+        }: { configType: string; formContol: UntypedFormControl },
+        isBankIdSelected?: boolean,
+        trigger?: UntypedFormControl
+    ): ICaInput {
         switch (configType) {
             case eUserModalForm.EMAIL:
                 return {
@@ -64,7 +72,6 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     label: 'Office',
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-252',
-                    isRequired: true,
                 };
 
             case eUserModalForm.PHONE:
@@ -73,6 +80,8 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     type: 'text',
                     label: 'Phone',
                     placeholderIcon: 'phone',
+                    mask: '(000) 000-0000',
+                    maxLength: 14,
                 };
 
             case eUserModalForm.PHONE_EXTENSION:
@@ -89,6 +98,8 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     type: 'text',
                     label: 'Personal Phone',
                     placeholderIcon: 'phone',
+                    mask: '(000) 000-0000',
+                    maxLength: 14,
                 };
 
             case eUserModalForm.PERSONAL_EMAIL:
@@ -142,6 +153,59 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     thousandSeparator: true,
                     minLength: 4,
                     maxLength: 8,
+                };
+            }
+
+            case eUserModalForm.BANK_NAME: {
+                return {
+                    name: 'Input Dropdown Bank Name',
+                    type: 'text',
+                    label: 'Bank Name',
+                    minLength: 2,
+                    maxLength: 64,
+                    textTransform: 'uppercase',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-164',
+                    dropdownImageInput: {
+                        withText: true,
+                        svg: false,
+                        image: true,
+                        template: 'user',
+                        iconsPath: '',
+                        activeItemIconKey: 'logoName',
+                    },
+                };
+            }
+            case eUserModalForm.ROUTING: {
+                return {
+                    name: 'routing-bank',
+                    type: 'text',
+                    label: 'Routing #',
+                    isRequired: true,
+                    minLength: 9,
+                    maxLength: 9,
+                };
+            }
+
+            case eUserModalForm.ACCOUNT: {
+                return {
+                    name: 'account-bank',
+                    type: 'text',
+                    label: 'Account #',
+                    isRequired: true,
+                    minLength: 5,
+                    maxLength: 17,
+                };
+            }
+
+            case eUserModalForm.PAYMENT_TYPE: {
+                return {
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Payment Type',
+                    isDropdown: true,
+                    isDisabled: formContol.disabled,
+                    dropdownWidthClass: 'w-col-177',
                 };
             }
         }

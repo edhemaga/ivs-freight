@@ -174,6 +174,8 @@ export class LoadStoreService {
         });
     }
 
+    // TODO could be extracted to a shared helper:
+    // Something like this onOpenModel<T>(modal: T), in this case we pass ILoadModal as type
     public onOpenModal(modal: ILoadModal): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_OPEN_LOAD_MODAL,
@@ -310,7 +312,7 @@ export class LoadStoreService {
         });
     }
 
-    public dispatchToggleColumnsVisiblity(
+    public dispatchToggleColumnsVisibility(
         columnKey: string,
         isActive: boolean
     ) {

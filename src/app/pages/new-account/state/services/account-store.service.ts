@@ -2,15 +2,17 @@ import { Injectable } from '@angular/core';
 
 // Selectors
 import * as AccountSelector from '@pages/new-account/state/selectors/account.selector';
+
 // Constants
 import { AccountStoreConstants } from '@pages/new-account/utils/constants';
-// RxJS
-import { Observable } from 'rxjs';
 
+// RxJS
+import { BehaviorSubject, Observable, switchMap } from 'rxjs';
+
+// Enums
 import { eCommonElement } from '@shared/enums';
 
-import { ModalService } from '@shared/services';
-
+// Models
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import {
     ITableColumn,
@@ -23,13 +25,28 @@ import { IMappedAccount } from '@pages/new-account/interfaces';
 // NgRx
 import { select, Store } from '@ngrx/store';
 
+// Modal
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 @Injectable({
     providedIn: 'root',
 })
 export class AccountStoreService {
+    private selectedAccountId$ = new BehaviorSubject<number | null>(null);
+
     public accountListSelector$: Observable<IMappedAccount[]> = this.store.pipe(
         select(AccountSelector.accountsListSelector)
     );
+
+    public accountSelector$: Observable<IMappedAccount> =
+        this.selectedAccountId$.pipe(
+            switchMap(
+                (id) =>
+                    id &&
+                    this.store.pipe(select(AccountSelector.accountSelector(id)))
+            )
+        );
+
     public activeViewModeSelector$: Observable<string> = this.store.pipe(
         select(AccountSelector.activeViewModeSelector)
     );
@@ -51,12 +68,9 @@ export class AccountStoreService {
         select(AccountSelector.toolbarDropdownMenuOptionsSelector)
     );
 
-    constructor(
-        private store: Store,
-        private modalService: ModalService
-    ) {}
+    constructor(private store: Store) {}
 
-    public dispatchOpenUserModal(isEdit: boolean, id: number): void {
+    public dispatchOpenCompanyAccountModal(isEdit: boolean, id: number): void {
         this.store.dispatch({
             type: AccountStoreConstants.ACTION_OPEN_ACCOUNT_MODAL,
             isEdit,
@@ -80,6 +94,7 @@ export class AccountStoreService {
     //             }
     //         });
     // }
+
     public dispatchSearchChange(query: string[]): void {
         this.store.dispatch({
             type: AccountStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
@@ -110,7 +125,7 @@ export class AccountStoreService {
         });
     }
 
-    public dispatchToggleColumnsVisiblity(
+    public dispatchToggleColumnsVisibility(
         columnKey: string,
         isActive: boolean
     ) {
@@ -138,5 +153,45 @@ export class AccountStoreService {
         this.store.dispatch({
             type: AccountStoreConstants.LOAD_ACCOUNTS,
         });
+    }
+
+    public dispatchOnAddAccount(
+        account: IMappedAccount,
+        isAddNew: boolean
+    ): void {
+        this.store.dispatch({
+            type: AccountStoreConstants.ACTION_ON_ADD_ACCOUNT,
+            account,
+            isAddNew,
+        });
+    }
+
+    public dispatchOnAddAndSaveAccount(account: IMappedAccount): void {
+        this.store.dispatch({
+            type: AccountStoreConstants.ACTION_ON_ADD_AND_SAVE_ACCOUNT,
+            account,
+        });
+    }
+
+    public dispatchOnEditAccount(account: IMappedAccount): void {
+        this.store.dispatch({
+            type: AccountStoreConstants.ACTION_ON_EDIT_ACCOUNT,
+            account,
+        });
+    }
+
+    public dispatchOnDeleteAccount(
+        account: IMappedAccount,
+        activeModal: NgbActiveModal
+    ): void {
+        this.store.dispatch({
+            type: AccountStoreConstants.ACTION_ON_DELETE_ACCOUNT,
+            account,
+            activeModal,
+        });
+    }
+
+    public selectAccountById(id: number): void {
+        this.selectedAccountId$.next(id);
     }
 }

@@ -14,6 +14,8 @@ import { IAccountState } from '@pages/new-account/interfaces';
 
 // Helpers
 import { AccountHelper } from '@pages/new-account/utils/helpers';
+import { IMappedAccount } from '@pages/new-account/interfaces/mapped-account.interface';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
     DropdownMenuColumnsActionsHelper,
     DropdownMenuToolbarContentHelper,
@@ -148,3 +150,47 @@ export function toggleColumnVisibility(
     };
 }
 //#endregion
+export function onAddCompanyAccount(
+    state: IAccountState,
+    account: IMappedAccount
+): IAccountState {
+    console.log(account);
+    return {
+        ...state,
+        accountList: [account, ...state.accountList],
+    };
+}
+
+export function onEditCompanyAccount(
+    state: IAccountState,
+    account: IMappedAccount
+): IAccountState {
+    const modifiedAccountList: IMappedAccount[] = state.accountList.map(
+        (_account: IMappedAccount) => {
+            if (_account.id === account.id) return account;
+            return _account;
+        }
+    );
+
+    return {
+        ...state,
+        accountList: [...modifiedAccountList],
+    };
+}
+
+export function onDeleteCompanyAccount(
+    state: IAccountState,
+    id: number,
+    activeModal: NgbActiveModal
+): IAccountState {
+    activeModal.close();
+
+    return {
+        ...state,
+        accountList: [
+            ...state.accountList.filter(
+                (account: IMappedAccount) => account.id !== id
+            ),
+        ],
+    };
+}
