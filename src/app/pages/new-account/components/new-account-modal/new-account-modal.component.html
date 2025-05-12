@@ -82,8 +82,6 @@
             <div class="divider"></div>
             @let noteValue = accountForm?.get(eFormControlName.NOTE)?.value;
             <app-ca-input-note
-                formControlName="note"
-                name="note"
                 [formControlName]="eFormControlName.NOTE"
                 [isVisibleNote]="!!noteValue"
                 [note]="noteValue ?? eStringPlaceholder.EMPTY"
