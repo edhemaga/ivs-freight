@@ -219,8 +219,8 @@ export const setMapSelectedStop = function (
 ): IMilesState {
     const { unitMapData } = state;
 
-    const markerData = unitMapData.routingMarkers.find(
-        (marker) => marker.data?.id === unitStopData.id
+    const markerData = unitMapData?.routingMarkers?.find(
+        (marker) => marker.data?.id === unitStopData?.id
     );
 
     let selectedRoutingMarkerData: IMapMarkers = null;
@@ -236,6 +236,14 @@ export const setMapSelectedStop = function (
         };
 
     const newMapData = { ...unitMapData, selectedRoutingMarkerData };
+
+    return { ...state, unitMapData: newMapData };
+};
+
+export const resetMapSelectedStop = function (state: IMilesState): IMilesState {
+    const { unitMapData } = state;
+
+    const newMapData = { ...unitMapData, selectedRoutingMarkerData: null };
 
     return { ...state, unitMapData: newMapData };
 };
