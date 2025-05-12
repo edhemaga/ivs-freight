@@ -3,9 +3,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 // Interfaces
 import { ILoadModalStopsConfigPipeArgs } from '@pages/new-load/pages/new-load-modal/interfaces';
 
-// Config
-import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-
 // Enum
 import { eLoadModalStopsForm } from '@pages/new-load/pages/new-load-modal/enums';
 import { ICaInput } from 'ca-components';

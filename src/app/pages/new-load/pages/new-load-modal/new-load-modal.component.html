@@ -180,6 +180,7 @@
                             LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG
                         "
                         [options]="dropdownList.dispatches"
+                        (selectedItem)="onDispatcherSelection($event)"
                     >
                     </ca-input-dropdown-test>
                 </div>
@@ -297,6 +298,9 @@
                 <app-new-load-modal-stops
                     [shipperContacts]="dropdownList.shipperContacts"
                     [shippers]="dropdownList.shippers"
+                    [loadForm]="loadForm"
+                    [routing]="routing"
+                    (onShipperSelection)="onShipperSelection($event)"
                 ></app-new-load-modal-stops>
 
                 <div class="divider divider--small divider--dark"></div>

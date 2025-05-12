@@ -572,6 +572,26 @@ export class LoadEffect {
     );
     //#endregion
 
+    //#region Get Load Stops List
+    public getLoadStopsList$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.onGetLoadStopsList),
+            exhaustMap((action) => {
+                const { id } = action || {};
+
+                return this.loadService.getLoadStopsList(id).pipe(
+                    map((stopsData) =>
+                        LoadActions.onGetLoadStopsByIdSuccess({
+                            loadId: id,
+                            stopsData,
+                        })
+                    )
+                );
+            })
+        )
+    );
+    //#endregion
+
     //#region Comments
 
     public addComment$ = createEffect(() =>
@@ -644,6 +664,5 @@ export class LoadEffect {
             })
         )
     );
-
     //#endregion
 }

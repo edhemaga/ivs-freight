@@ -7,6 +7,7 @@ import {
     TruckTypeResponse,
     TrailerTypeResponse,
     DriverMinimalResponse,
+    LoadStopResponse,
 } from 'appcoretruckassist';
 import { LoadDelivery, LoadPickup } from '@pages/load/pages/load-table/models';
 
@@ -37,6 +38,7 @@ export interface IMappedLoad {
     status: LoadStatusResponse;
     pickup: LoadPickup;
     delivery: LoadDelivery;
+    loadStops: LoadStopResponse;
     requirementTruck: TruckTypeResponse;
     requirementTrailer: TrailerTypeResponse;
     requirementLength: string;
