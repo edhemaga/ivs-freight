@@ -25,6 +25,34 @@ export class AccountEffect {
         private accountService: AccountService
     ) {}
 
+    public getAccountOnFilterChange$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(
+                AccountActions.onFiltersChange,
+                AccountActions.onSearchFilterChange,
+                AccountActions.tableSortingChange
+            ),
+            withLatestFrom(
+                this.store.select(AccountSelector.tableSettingsSelector),
+                this.store.select(AccountSelector.filterSelector)
+            ),
+            switchMap(([_, tableSettings, filters]) => {
+                return this.accountService
+                    .getAccountList(1, filters, tableSettings)
+                    .pipe(
+                        map((data) =>
+                            AccountActions.loadAccountsSuccess({
+                                data,
+                            })
+                        ),
+                        catchError(() =>
+                            of(AccountActions.loadAccountsFailure())
+                        )
+                    );
+            })
+        )
+    );
+
     public loadAccounts$ = createEffect(() =>
         this.actions$.pipe(
             ofType(AccountActions.loadAccounts),

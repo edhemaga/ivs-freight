@@ -63,6 +63,20 @@ export const accountReducer = createReducer(
     ),
     //#endregion
 
+    // #region Filters
+    on(AccountActions.onSearchFilterChange, (state, { query }) =>
+        AccountFunctions.onSearchFilterChange(state, query)
+    ),
+
+    on(AccountActions.onFiltersChange, (state, { filters }) =>
+        AccountFunctions.onFiltersChange(state, filters)
+    ),
+
+    on(AccountActions.tableSortingChange, (state, { column }) =>
+        AccountFunctions.onTableSortingChange(state, column)
+    ),
+    //#endregion
+
     //#region Selection
     on(AccountActions.onAccountSelection, (state, { id }) =>
         AccountFunctions.onAccountSelection(state, id)

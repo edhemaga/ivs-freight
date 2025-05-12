@@ -22,6 +22,7 @@ import { IMappedAccount } from '@pages/new-account/interfaces';
 
 // NgRx
 import { select, Store } from '@ngrx/store';
+import { IFilterAction } from 'ca-components';
 
 @Injectable({
     providedIn: 'root',
@@ -93,6 +94,13 @@ export class AccountStoreService {
         this.store.dispatch({
             type: AccountStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
             query,
+        });
+    }
+
+    public dispatchFiltersChange(filters: IFilterAction): void {
+        this.store.dispatch({
+            type: AccountStoreConstants.ACTION_FILTER_CHANGED,
+            filters,
         });
     }
 

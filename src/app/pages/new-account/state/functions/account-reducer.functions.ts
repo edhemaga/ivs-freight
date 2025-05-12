@@ -7,10 +7,14 @@ import {
     eCommonElement,
 } from '@shared/enums';
 
+// Enums
+import { IFilterAction } from 'ca-components';
+
 import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 
 // Interfaces
 import { IAccountState } from '@pages/new-account/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // Helpers
 import { AccountHelper } from '@pages/new-account/utils/helpers';
@@ -160,6 +164,55 @@ export function toggleColumnVisibility(
     return {
         ...state,
         tableColumns,
+    };
+}
+//#endregion
+
+//#region Filters
+export function onSearchFilterChange(
+    state: IAccountState,
+    searchQuery: string[]
+): IAccountState {
+    return {
+        ...state,
+        currentPage: 1,
+        filters: {
+            ...state.filters,
+            searchQuery,
+        },
+    };
+}
+
+export function onFiltersChange(
+    state: IAccountState,
+    filters: IFilterAction
+): IAccountState {
+    console.log(filters);
+    return {
+        ...state,
+        filters: {
+            ...state.filters,
+        },
+        currentPage: 1,
+    };
+}
+
+export function onTableSortingChange(
+    state: IAccountState,
+    column: ITableColumn
+): IAccountState {
+    const { columns, sortKey, sortDirection, label } =
+        StoreFunctionsHelper.toggleSort(column, state.tableColumns);
+
+    return {
+        ...state,
+        tableColumns: columns,
+        tableSettings: {
+            ...state.tableSettings,
+            sortDirection,
+            sortKey,
+            label,
+        },
     };
 }
 //#endregion

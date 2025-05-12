@@ -72,7 +72,7 @@ export const onViewModeChange = createAction(
 );
 
 // #region Filters
-export const onSeachFilterChange = createAction(
+export const onSearchFilterChange = createAction(
     AccountStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
     props<{
         query: string[];
