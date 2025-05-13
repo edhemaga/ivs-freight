@@ -44,19 +44,30 @@
                 template;
                 context: {
                     title: item.title,
+                    format: item.format,
                     text,
                 }
             "
         ></ng-container>
     </ng-template>
 
-    <ng-template #textWithTitle let-title="title" let-text="text">
+    <ng-template
+        #textWithTitle
+        let-title="title"
+        let-text="text"
+        let-format="format"
+    >
         <div class="d-flex flex-column px-1 gap-1">
             <div class="text-size-11 text-color-black ta-font-bold">
                 {{ title }}
             </div>
+
             <div class="text-size-14 text-color-black-2">
-                {{ text && text !== '' ? text : '/' }}
+                @if (format === eTableCardViewData.DATE) {
+                    {{ text | formatDateP }}
+                } @else {
+                    {{ text && text !== '' ? text : '/' }}
+                }
             </div>
         </div>
     </ng-template>

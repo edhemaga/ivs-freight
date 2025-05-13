@@ -12,7 +12,7 @@ import { CaTableCardViewComponent } from 'ca-components';
 import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 
 // pipes
-import { GetNestedValuePipe } from '@shared/pipes';
+import { GetNestedValuePipe, FormatDatePipe } from '@shared/pipes';
 
 // enums
 import { eTableCardViewData } from '@shared/enums';
@@ -38,6 +38,7 @@ import { AccountCardDataConfig } from '@pages/new-account/pages/account-card/uti
 
         // pipes
         GetNestedValuePipe,
+        FormatDatePipe,
     ],
 })
 export class AccountCardComponent {

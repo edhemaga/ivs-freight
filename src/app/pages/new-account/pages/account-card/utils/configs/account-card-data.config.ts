@@ -47,5 +47,15 @@ export class AccountCardDataConfig {
             key: 'lable',
             template: 'textWithTitle',
         },
+        {
+            title: 'Date Added',
+            key: 'lable',
+            template: 'textWithTitle',
+        },
+        {
+            title: 'Date Edited',
+            key: 'lable',
+            template: 'textWithTitle',
+        },
     ];
 }
