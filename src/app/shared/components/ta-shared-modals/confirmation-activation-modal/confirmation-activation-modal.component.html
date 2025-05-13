@@ -202,7 +202,15 @@
                                                 maxLength: 256,
                                             }"
                                             [placeholderType]="'shortAddress'"
-                                            [activeAddress]="selectedAddress?.address"
+                                            [template]="'parking'"
+                                            [parkingList]="
+                                                editData?.parking
+                                                    ? [editData?.parking]
+                                                    : null
+                                            "
+                                            [activeAddress]="
+                                                selectedAddress?.address
+                                            "
                                             (selectedAddress)="
                                                 handleLocationSelect($event)
                                             "

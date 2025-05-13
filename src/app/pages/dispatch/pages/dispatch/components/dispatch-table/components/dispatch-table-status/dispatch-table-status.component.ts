@@ -39,6 +39,7 @@ import {
     CreateDispatchCommand,
     UpdateDispatchCommand,
     AddressResponse,
+    ParkingSlotShortResponse,
 } from 'appcoretruckassist';
 import { LastStatusPassed } from '@shared/models/card-models/card-table-data.model';
 
@@ -52,6 +53,11 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
         if (timePassed)
             this.showTime = LoadStatusHelper.calculateStatusTime(timePassed);
     }
+
+    @Input() set parkingSlot(value: ParkingSlotShortResponse) {
+        this._parkingSlot = value;
+    }
+
     @Input() status?: DispatchStatusResponse;
 
     @Input() dispatchId?: number;
@@ -67,6 +73,9 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public showTime: string;
+
+    // parking
+    public _parkingSlot: ParkingSlotShortResponse;
 
     constructor(
         public datePipe: DatePipe,
@@ -124,6 +133,7 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
                     subType: TableStringEnum.STATUS_2,
                     modalTitle: this.dispatcher?.activeLoad?.loadNumber,
                     modalSecondTitle: this.dispatcher?.truck?.truckNumber,
+                    parking: this._parkingSlot?.parking,
                 }
             );
         } else {
