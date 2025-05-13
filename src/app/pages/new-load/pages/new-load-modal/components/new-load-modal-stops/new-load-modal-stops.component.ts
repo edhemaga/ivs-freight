@@ -160,10 +160,15 @@ export class NewLoadModalStopsComponent {
         check: boolean;
         action: string;
     }): void {
-        const { action } = actionEvent;
+        if (!this.stopsFormArray.valid) return;
 
+        const { action } = actionEvent;
         if (action === eLoadStopsAction.PLUS_ACTION) {
             this.onAddNewStop();
         }
+    }
+
+    public onDeleteActionIndex(index: number): void {
+        this.stopsFormArray.removeAt(index);
     }
 }
