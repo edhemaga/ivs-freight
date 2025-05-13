@@ -161,6 +161,7 @@ export const updateTabSelection = function (
         ...state,
         selectedTab,
         filters: {},
+        columns: MilesTableColumnsConfig.getTableColumns(selectedTab),
     };
 };
 
@@ -421,7 +422,7 @@ export function resetTable(state: IMilesState): IMilesState {
 
     return {
         ...state,
-        columns: MilesTableColumnsConfig.getTableColumns(),
+        columns: MilesTableColumnsConfig.getTableColumns(state.selectedTab),
         tableSettings: {
             isTableLocked: true,
             sortKey: null,
