@@ -1,3 +1,10 @@
+@let firstStopType =
+    stopsFormArray.at(0).get(eLoadModalStopsForm.STOP_TYPE)?.value;
+@let isFirstDeadHead = firstStopType === 0;
+@let totalStops =
+    isFirstDeadHead ? stopsFormArray.length - 1 : stopsFormArray.length;
+@let extraStops = totalStops - 2;
+
 <app-ca-custom-card
     customDividerClass="divider--dark"
     cardName="Stops"
@@ -5,7 +12,7 @@
     [isCardOpen]="true"
     [hasArrow]="true"
     [hasPlusIcon]="true"
-    [counter]="stopsFormArray.length"
+    [counter]="totalStops"
     [headerLeftSideTemplate]="stopsLeftSideTemplate"
     (onActionEvent)="onActionEventEmit($event)"
 >
@@ -256,6 +263,22 @@
                     @let selectedShipperId =
                         stopFormGroup.get(eLoadModalStopsForm.SHIPPER_ID)
                             ?.value;
+
+                    @let stopType =
+                        stopFormGroup.get(eLoadModalStopsForm.STOP_TYPE)?.value;
+                    @let isDeadHead = stopType === 0;
+
+                    <!-- Delete is available for steps that are not first or last, or if first stop is deadhead then second stop should be disabled -->
+                    @let hasDelete =
+                        index !== 0 &&
+                        !last &&
+                        !(
+                            index === 1 &&
+                            stopsFormArray
+                                .at(0)
+                                .get(eLoadModalStopsForm.STOP_TYPE)?.value === 0
+                        );
+
                     <app-load-modal-stop
                         [index]="index"
                         [isLast]="last"
@@ -263,6 +286,8 @@
                         [shippers]="shippers"
                         [selectedShipperId]="selectedShipperId"
                         [isOpen]="isOpen"
+                        [hasDelete]="hasDelete"
+                        (onDeleteActionIndex)="onDeleteActionIndex($event)"
                     ></app-load-modal-stop>
                 </ng-template>
             </form>
@@ -326,11 +351,11 @@
 </app-ca-custom-card>
 
 <ng-template #stopsLeftSideTemplate>
-    @if (stopsFormArray.length - 2 > 0) {
+    @if (extraStops > 0) {
         <p
             class="margin-l-4 text-size-11 br-60 background-gray-2 text-color-white-2 ca-font-bold d-flex align-items-center justify-content-center p-x-5 p-y-2"
         >
-            {{ stopsFormArray.length - 2 }} EXTRA
+            {{ extraStops }} EXTRA
         </p>
     }
 

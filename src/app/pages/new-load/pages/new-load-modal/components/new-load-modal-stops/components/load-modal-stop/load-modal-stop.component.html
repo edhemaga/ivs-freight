@@ -26,8 +26,9 @@
             _stopFormGroup.get(eLoadModalStopsForm.TIME_FROM).invalid ||
             _stopFormGroup.get(eLoadModalStopsForm.TIME_TO).invalid;
         @let stopLoadOrder =
-            _stopFormGroup.get(eLoadModalStopsForm.STOP_LOAD_ORDER)?.value;
+            _stopFormGroup.get(eLoadModalStopsForm.STOP_LOAD_ORDER)?.value ?? 1;
         @let isDeadHead = stopType === 0;
+
         @if (hasDelete && isStopHovered) {
             <div
                 class="h-26 w-26 d-flex align-items-start justify-content-center"
