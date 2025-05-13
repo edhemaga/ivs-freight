@@ -12,7 +12,6 @@ import {
     CaSearchMultipleStates2Component,
     IFilterAction,
     CaFilterStateDropdownComponent,
-    CaFilterTimeDropdownComponent,
     CaSortingCardDropdownComponent,
 } from 'ca-components';
 import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
@@ -48,7 +47,7 @@ import { TableCardBodyActions } from '@shared/models';
 
 // interfaces
 import { IStateFilters } from '@shared/interfaces';
-import { IMilesModel } from '@pages/miles/interface';
+import { IMappedMiles } from '@pages/miles/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 @Component({
@@ -65,7 +64,6 @@ import { ITableColumn } from '@shared/components/new-table/interfaces';
         CaFilterComponent,
         CaSearchMultipleStates2Component,
         CaFilterStateDropdownComponent,
-        CaFilterTimeDropdownComponent,
         TaTableEmptyComponent,
         CaSortingCardDropdownComponent,
         MilesTableComponent,
@@ -79,10 +77,8 @@ export class MilesComponent
 {
     @ViewChild(CaSearchMultipleStates2Component)
     searchComponent: CaSearchMultipleStates2Component;
-    @ViewChild(CaFilterStateDropdownComponent)
+    @ViewChild(CaFilterComponent)
     stateFilter: CaFilterStateDropdownComponent;
-    @ViewChild(CaFilterTimeDropdownComponent)
-    timeFilter: CaFilterTimeDropdownComponent;
     @ViewChild(CaFilterComponent)
     moneyFilter: CaFilterComponent;
 
@@ -95,7 +91,7 @@ export class MilesComponent
     public eActiveViewMode = eActiveViewMode;
     public eCommonElement = eCommonElement;
 
-    public firstUnit: IMilesModel;
+    public firstUnit: IMappedMiles;
 
     constructor(
         public router: Router,
@@ -121,7 +117,7 @@ export class MilesComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe(([filter, units]) => {
                 this.filter = filter;
-                this.firstUnit = units[0] || ({} as IMilesModel);
+                this.firstUnit = units[0] || ({} as IMappedMiles);
             });
     }
 
@@ -231,9 +227,10 @@ export class MilesComponent
 
     public handleFilterReset(): void {
         this.milesStoreService.dispatchResetFilters();
+
         this.searchComponent.clearAll();
+
         this.stateFilter.clearValues(true);
-        this.timeFilter.clearValues(true);
         this.moneyFilter.clearAllValues();
     }
 

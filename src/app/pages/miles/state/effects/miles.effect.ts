@@ -69,7 +69,7 @@ import { ICardValueData } from '@shared/interfaces';
 import { MilesStoreConstants } from '@pages/miles/utils/constants';
 
 // configs
-import { MilesCardDataConfig } from '@pages/miles/pages/miles-card/utils/configs/miles-card-data.config';
+import { MilesCardDataConfig } from '@pages/miles/pages/miles-card/utils/configs';
 
 @Injectable()
 export class MilesEffects {

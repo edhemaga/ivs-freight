@@ -6,9 +6,12 @@ import {
     ViewChild,
     ElementRef,
 } from '@angular/core';
-import { Subscription, Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+
+import { Subscription, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+
+// Modules
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // Form
@@ -18,7 +21,7 @@ import { ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 
 // Pipes
-import { MilesIconPipe } from '@pages/miles/pipes/miles-icon.pipe';
+import { MilesIconPipe } from '@pages/miles/pipes';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -76,6 +79,8 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
 
     @ViewChild('detailsTitleCard')
     detailsTitleCard: CaDetailsTitleCardComponent<unknown>;
+
+    private destroy$ = new Subject<void>();
 
     // svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
@@ -170,15 +175,17 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     private manageScrollDebounce(): void {
         this.subscriptions.add(
             this.scrollSubject
-                .pipe(debounceTime(300))
+                .pipe(takeUntil(this.destroy$), debounceTime(300))
                 .subscribe(() => this.onScroll())
         );
     }
     private manageSubscriptions(): void {
         this.subscriptions.add(
-            this.milesStoreService.selectedTab$.subscribe(() => {
-                this.resetFormValue();
-            })
+            this.milesStoreService.selectedTab$
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {
+                    this.resetFormValue();
+                })
         );
 
         this.manageScrollDebounce();
@@ -189,7 +196,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     private onSeachFieldChange(): void {
         this.searchForm
             .get(eGeneralActions.SEARCH_LOWERCASE)
-            ?.valueChanges.pipe(debounceTime(300))
+            ?.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(300))
             .subscribe((value) => {
                 this.milesStoreService.dispatchSearchInputChanged(value);
             });
@@ -203,5 +210,8 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         if (this.subscriptions) {
             this.subscriptions.unsubscribe();
         }
+
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

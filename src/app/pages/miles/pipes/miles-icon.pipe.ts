@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // Config
-import { MilesIconsConfig } from '@pages/miles/utils/config';
+import { MilesIconsConfig } from '@pages/miles/utils/configs';
 
 @Pipe({
     name: 'milesIcon',

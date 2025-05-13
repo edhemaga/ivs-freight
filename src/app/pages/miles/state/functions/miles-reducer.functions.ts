@@ -1,9 +1,9 @@
 // interfaces
 import {
-    IMilesModel,
+    IMappedMiles,
     IMilesState,
     IMinimalListState,
-} from '@pages/miles/interface';
+} from '@pages/miles/interfaces';
 import {
     ICardValueData,
     IMinimalListFilters,
@@ -37,7 +37,7 @@ import {
 } from 'ca-components';
 
 // configs
-import { MilesTableColumnsConfig } from '@pages/miles/utils/config';
+import { MilesTableColumnsConfig } from '@pages/miles/utils/configs';
 
 // helpers
 import { MilesDropdownMenuHelper } from '@pages/miles/utils/helpers';
@@ -88,7 +88,7 @@ export const changeViewMode = function (
 
 export const updateMilesData = function (
     state: IMilesState,
-    miles: IMilesModel[],
+    miles: IMappedMiles[],
     activeTruckCount?: number,
     inactiveTruckCount?: number
 ): IMilesState {
@@ -112,7 +112,7 @@ export const pageChanges = function (state: IMilesState): IMilesState {
 
 export const updateMilesListData = function (
     state: IMilesState,
-    miles: IMilesModel[]
+    miles: IMappedMiles[]
 ): IMilesState {
     const items = [...state.items, ...miles];
 

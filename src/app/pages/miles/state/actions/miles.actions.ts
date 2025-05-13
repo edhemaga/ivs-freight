@@ -16,7 +16,7 @@ import {
     MilesStopItemResponse,
     RoutingResponse,
 } from 'appcoretruckassist';
-import { IMilesModel } from '@pages/miles/interface';
+import { IMappedMiles } from '@pages/miles/interfaces';
 
 // interfaces
 import { ICardValueData, IStateFilters } from '@shared/interfaces';
@@ -28,7 +28,7 @@ import {
 
 export const getLoadsPayloadSuccess = createAction(
     MilesStoreConstants.LOAD_MILES_SUCCESS,
-    props<{ miles: IMilesModel[]; totalResultsCount: number }>()
+    props<{ miles: IMappedMiles[]; totalResultsCount: number }>()
 );
 
 export const getLoadsPayloadError = createAction(
@@ -38,7 +38,7 @@ export const getLoadsPayloadError = createAction(
 export const loadMilesSuccess = createAction(
     MilesStoreConstants.LOAD_MILES_SUCCESS,
     props<{
-        miles: IMilesModel[];
+        miles: IMappedMiles[];
         activeTruckCount: number;
         inactiveTruckCount: number;
     }>()
@@ -48,7 +48,7 @@ export const getMiles = createAction(MilesStoreConstants.ACTION_GET_MILES);
 
 export const updateMilesList = createAction(
     MilesStoreConstants.UPDATE_MILES_LIST,
-    props<{ miles: IMilesModel[] }>()
+    props<{ miles: IMappedMiles[] }>()
 );
 
 export const milesTabChange = createAction(

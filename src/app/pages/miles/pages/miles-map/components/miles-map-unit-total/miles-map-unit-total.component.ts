@@ -5,13 +5,14 @@ import { Component } from '@angular/core';
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 
 // Pipes
-import { MilesIconPipe } from '@pages/miles/pipes/miles-icon.pipe';
+import { MilesIconPipe } from '@pages/miles/pipes';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // enums
 import { eStringPlaceholder, eThousandSeparatorFormat } from '@shared/enums';
+import { eUnit } from 'ca-components';
 
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
@@ -38,6 +39,7 @@ export class MilesMapUnitTotalComponent {
 
     public eThousandSeparatorFormat = eThousandSeparatorFormat;
     public eStringPlaceholder = eStringPlaceholder;
+    public eUnit = eUnit;
 
     constructor(public milesStoreService: MilesStoreService) {}
 }

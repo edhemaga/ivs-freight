@@ -1,9 +1,9 @@
 // models
 import { MilesByUnitResponse } from 'appcoretruckassist';
-import { IMilesModel } from '@pages/miles/interface';
+import { IMappedMiles } from '@pages/miles/interfaces';
 
 export class MilesHelper {
-    static milesMapper(miles: MilesByUnitResponse[]): IMilesModel[] {
+    static milesMapper(miles: MilesByUnitResponse[]): IMappedMiles[] {
         return miles.map((mile) => {
             const {
                 id,
@@ -39,7 +39,7 @@ export class MilesHelper {
                 deactivated,
             } = mile;
 
-            const mappedMile: IMilesModel = {
+            const mappedMile: IMappedMiles = {
                 id,
                 isSelected: false,
                 unit: truck?.truckNumber,

@@ -11,14 +11,14 @@ import { eActiveViewMode, eCardFlipViewMode } from '@shared/enums';
 import { MilesToolbarTabs } from '@pages/miles/utils/constants';
 
 // interface
-import { IMilesState } from '@pages/miles/interface';
+import { IMilesState } from '@pages/miles/interfaces';
 
 // functions
 import * as Functions from '@pages/miles/state/functions/miles-reducer.functions';
 
 // configs
-import { MilesTableColumnsConfig } from '@pages/miles/utils/config';
-import { MilesCardDataConfig } from '@pages/miles/pages/miles-card/utils/configs/miles-card-data.config';
+import { MilesTableColumnsConfig } from '@pages/miles/utils/configs';
+import { MilesCardDataConfig } from '@pages/miles/pages/miles-card/utils/configs';
 
 // helpers
 import { MilesDropdownMenuHelper } from '@pages/miles/utils/helpers';

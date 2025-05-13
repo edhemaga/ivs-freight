@@ -10,6 +10,7 @@
         <div class="text-size-11 ta-font-bold text-color-black m-b-2 mt-1">
             Total Miles
         </div>
+
         <div class="text-size-18 ta-font-medium text-color-black m-b-8">
             {{
                 total.totalMiles
@@ -295,6 +296,7 @@
                         [ngClass]="svgClass"
                         class="svg-size-14 d-flex"
                     ></svg-icon>
+
                     <div
                         class="text-size-14 m-l-4 ta-font-medium"
                         [ngClass]="
@@ -304,6 +306,7 @@
                         {{ label }}
                     </div>
                 </div>
+
                 <div
                     class="text-size-14 text-right"
                     [ngClass]="
@@ -315,6 +318,7 @@
                             | number: eThousandSeparatorFormat.REGULAR_FORMAT
                     }}%
                 </div>
+
                 <div
                     class="text-size-14 ta-font-medium text-right"
                     [ngClass]="
@@ -352,7 +356,7 @@
 
             <div
                 class="h-8"
-                [ngStyle]="{ width: percent + '%' }"
+                [ngStyle]="{ width: percent + eUnit.PERCENTAGE_SIGN }"
                 [ngClass]="bgClass"
             ></div>
         </div>
@@ -371,6 +375,7 @@
             class="text-size-11 ta-font-bold text-color-black m-b-2 d-flex align-items-center"
         >
             {{ label }}
+
             @if (isCircleVisible) {
                 <span
                     class="m-l-4 h-10 w-10 rounded-circle d-block"
@@ -378,6 +383,7 @@
                 ></span>
             }
         </div>
+
         <div class="text-size-14 text-color-black-2">{{ value }}</div>
     </div>
 </ng-template>

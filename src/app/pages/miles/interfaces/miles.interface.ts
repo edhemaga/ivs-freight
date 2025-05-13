@@ -3,7 +3,7 @@ import { ISingleValue } from '@shared/interfaces';
 // models
 import { TruckTypeResponse } from 'appcoretruckassist';
 
-export interface IMilesModel {
+export interface IMappedMiles {
     id: number;
     isSelected: boolean;
     unit: string;
