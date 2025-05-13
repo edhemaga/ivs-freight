@@ -24,6 +24,8 @@
                     [placeholderType]="'shortAddress'"
                     [activeAddress]="selectedAddress"
                     [isDispatchBoardAddress]="true"
+                    [template]="'parking'"
+                    [parkingList]="_parkingList"
                     (closeDropdown)="onHideDropdown($event)"
                     [receivedAddressList]="addressList"
                     [receivedAddressData]="addressData"
