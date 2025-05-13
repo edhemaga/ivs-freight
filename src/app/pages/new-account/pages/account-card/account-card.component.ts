@@ -15,7 +15,7 @@ import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/t
 import { GetNestedValuePipe, FormatDatePipe } from '@shared/pipes';
 
 // enums
-import { eTableCardViewData } from '@shared/enums';
+import { eTableCardViewData, eStringPlaceholder } from '@shared/enums';
 
 // svg-routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -44,6 +44,8 @@ import { AccountCardDataConfig } from '@pages/new-account/pages/account-card/uti
 export class AccountCardComponent {
     // enums
     public eTableCardViewData = eTableCardViewData;
+    public eStringPlaceholder = eStringPlaceholder;
+
     // svg-routes
     public sharedSvgRoutes = SharedSvgRoutes;
 

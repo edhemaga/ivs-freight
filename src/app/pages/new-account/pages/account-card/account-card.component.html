@@ -66,7 +66,11 @@
                 @if (format === eTableCardViewData.DATE) {
                     {{ text | formatDateP }}
                 } @else {
-                    {{ text && text !== '' ? text : '/' }}
+                    {{
+                        text && text !== eStringPlaceholder.EMPTY
+                            ? text
+                            : eStringPlaceholder.FORWARD_SLASH
+                    }}
                 }
             </div>
         </div>
