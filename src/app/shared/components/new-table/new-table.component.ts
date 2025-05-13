@@ -193,6 +193,7 @@ export class NewTableComponent<T> {
         this.hasActiveLeftPinnedColumns =
             !!this.leftPinnedColumns?.length ||
             !!this.leftPinnedDisabledColumns?.length;
+
         this.hasActiveRightPinnedColumns = !!this.rightPinnedColumns?.length;
 
         this.leftPinnedBorderWidth =
@@ -200,6 +201,7 @@ export class NewTableComponent<T> {
                 ...this.leftPinnedDisabledColumns,
                 ...this.leftPinnedColumns,
             ]) + 8;
+
         this.rightPinnedBorderWidth =
             TableScrollHelper.getTotalColumnWidth([
                 ...this.rightPinnedColumns,

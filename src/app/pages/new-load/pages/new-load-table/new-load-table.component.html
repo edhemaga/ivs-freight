@@ -634,11 +634,13 @@
         <!-- #region DOCUMENTS COLUMN -->
 
         <ng-template #files let-data="data">
-            <app-ca-files-count
-                [rowId]="data.id"
-                [filesCount]="data.fileCount"
-                (onFilesCountAction)="onFilesCountClick($event)"
-            ></app-ca-files-count>
+            <div class="d-flex align-items-center overflow-hidden h-25p">
+                <app-ca-files-count
+                    [rowId]="data.id"
+                    [filesCount]="data.fileCount"
+                    (onFilesCountAction)="onFilesCountClick($event)"
+                ></app-ca-files-count>
+            </div>
         </ng-template>
 
         <!-- #endregion END OF DOCUMENTS COLUMN -->
