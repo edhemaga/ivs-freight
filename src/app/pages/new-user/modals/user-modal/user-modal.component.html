@@ -67,36 +67,72 @@
                     ></ca-input-dropdown-test>
                 </div>
 
-                <div class="d-grid gap-12 d-grid-office m-t-26">
+                @let phoneExtensionValue =
+                    userForm.get(eUserModalForm.PHONE_EXTENSION).value;
+
+                <div
+                    class="d-grid m-t-26"
+                    [class.d-grid-office]="
+                        !showPhoneExtension && !phoneExtensionValue
+                    "
+                    [class.d-grid-office-extension]="
+                        showPhoneExtension || phoneExtensionValue
+                    "
+                >
                     @let officeInputConfig =
                         { configType: eUserModalForm.OFFICE }
                             | userModalInputConfig;
 
-                    <ca-input-dropdown-test
-                        formControlName="officeId"
-                        optionValue="id"
-                        label="name"
-                        [options]="dropdownList?.officeShortResponses"
-                        [inputConfig]="officeInputConfig"
-                    ></ca-input-dropdown-test>
+                    <div class="m-r-12">
+                        <ca-input-dropdown-test
+                            formControlName="companyOfficeId"
+                            optionValue="id"
+                            label="name"
+                            [options]="dropdownList?.officeShortResponses"
+                            [inputConfig]="officeInputConfig"
+                        ></ca-input-dropdown-test>
+                    </div>
 
                     @let phoneInputConfig =
                         { configType: eUserModalForm.PHONE }
                             | userModalInputConfig;
 
-                    <ca-input-test
-                        formControlName="phone"
-                        [inputConfig]="phoneInputConfig"
-                    ></ca-input-test>
-
-                    <div
-                        class="w-26 h-26 br-2 background-bw2 background-hover-bw-9 svg-fill-muted svg-hover-black c-pointer d-flex align-items-center justify-content-center"
-                    >
-                        <svg-icon
-                            class="svg-size-18"
-                            [src]="svgRoutes.PLUS_ICON"
-                        ></svg-icon>
+                    <div class="m-r-6">
+                        <ca-input-test
+                            formControlName="phone"
+                            [inputConfig]="phoneInputConfig"
+                        ></ca-input-test>
                     </div>
+
+                    @if (showPhoneExtension || phoneExtensionValue) {
+                        <ng-container *ngTemplateOutlet="phoneExtension">
+                        </ng-container>
+                    } @else {
+                        <div
+                            class="w-26 h-26 br-2 background-bw2 background-hover-bw-9 svg-fill-muted svg-hover-black c-pointer d-flex align-items-center justify-content-center"
+                            ngbTooltip
+                            mainTooltip="Add Extension"
+                            tooltipBackground="#424242"
+                            position="bottom"
+                            (click)="showPhoneExtension = true"
+                        >
+                            <svg-icon
+                                class="svg-size-18"
+                                [src]="svgRoutes.PLUS_ICON"
+                            ></svg-icon>
+                        </div>
+                    }
+
+                    <ng-template #phoneExtension>
+                        @let phoneExtensionInputConfig =
+                            { configType: eUserModalForm.PHONE_EXTENSION }
+                                | userModalInputConfig;
+
+                        <ca-input-test
+                            formControlName="extensionPhone"
+                            [inputConfig]="phoneExtensionInputConfig"
+                        ></ca-input-test>
+                    </ng-template>
                 </div>
 
                 <div class="m-t-26">
@@ -177,6 +213,7 @@
                     [label]="'Include in Payroll'"
                     [name]="'include-in-payroll'"
                     [hasArrow]="false"
+                    [dividerClass]="'divider--dark divider--small'"
                     [isCardOpen]="
                         userForm.get(eUserModalForm.INCLUDED_IN_PAYROLL).value
                     "
@@ -212,15 +249,11 @@
                                 @let paymentTypeConfig =
                                     {
                                         configType: eUserModalForm.PAYMENT_TYPE,
-                                        formContol: userForm.get(
-                                            eUserModalForm.PAYMENT_TYPE
-                                        ),
-                                    }
-                                        | userModalInputConfig
-                                            : false
-                                            : selectedDepartment;
+                                    } | userModalInputConfig;
+
                                 @let paymentTypeOptions =
-                                    selectedDepartment?.name === 'Dispatch'
+                                    selectedDepartment?.name ===
+                                    eUserDepartments.DISPATCH
                                         ? dispatcherOptions
                                         : managerOptions;
 
@@ -287,8 +320,6 @@
                             </div>
                         </ng-template>
 
-                        @let isBankIdSelected =
-                            userForm.get(eUserModalForm.BANK_NAME).value;
                         <div class="d-grid gap-12 d-grid-payroll-bank m-t-26">
                             @let bank =
                                 { configType: eUserModalForm.BANK_NAME }
@@ -307,7 +338,7 @@
 
                             @let routing =
                                 { configType: eUserModalForm.ROUTING }
-                                    | userModalInputConfig: isBankIdSelected;
+                                    | userModalInputConfig;
 
                             <ca-input-test
                                 formControlName="routingNumber"
@@ -316,7 +347,7 @@
 
                             @let account =
                                 { configType: eUserModalForm.ACCOUNT }
-                                    | userModalInputConfig: isBankIdSelected;
+                                    | userModalInputConfig;
 
                             <ca-input-test
                                 formControlName="accountNumber"
@@ -348,6 +379,10 @@
                                 "
                                 [customClass]="'custom-user-modal'"
                                 [isRequired]="true"
+                                [disabled]="
+                                    userForm.get(eUserModalForm.COMMISSION)
+                                        .disabled
+                                "
                                 (onUserValueChange)="
                                     userForm
                                         .get(eUserModalForm.COMMISSION)
@@ -358,7 +393,7 @@
                     </ng-template>
                 </app-ta-checkbox-card>
 
-                <div class="divider"></div>
+                <div class="divider divider--dark divider--small"></div>
 
                 <app-ca-input-note
                     formControlName="note"

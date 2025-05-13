@@ -12,7 +12,7 @@ import { AddressEntity } from '@ca-shared/models/address-entity.model';
 import { Options } from 'ng5-slider';
 // Models
 import { Tabs } from '@ca-shared/models/tabs.model';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 // Mixins
 import { AddressMixin } from '@shared/mixins';
 import {
@@ -57,6 +57,7 @@ import {
 } from 'ca-components';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Interfaces
 import { IMappedUser, IUserModal } from '@pages/new-user/interfaces';
@@ -74,8 +75,10 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     styleUrl: './user-modal.component.scss',
     standalone: true,
     imports: [
+        // Modules
         CommonModule,
         ReactiveFormsModule,
+        NgbTooltipModule,
 
         // Components
         CaModalComponent,
@@ -90,6 +93,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaInputDatetimePickerComponent,
         TaCheckboxCardComponent,
         TaNgxSliderComponent,
+        TaAppTooltipV2Component,
 
         // Pipes
         UserModalInputConfigPipe,
@@ -137,6 +141,8 @@ export class UserModalComponent
     public managerOptions: EnumValue[] | null;
     public dispatcherOptions: EnumValue[] | null;
     public commissionOptions: Options = UserModalHelper.getCommissionOptions();
+
+    public showPhoneExtension!: boolean;
 
     constructor(
         private userService: UserService,
@@ -192,54 +198,13 @@ export class UserModalComponent
                 this.taxFormTabs = UserModalHelper.getTaxFormTabs(
                     userData ? userData.is1099 : true
                 );
-
-                this.initListeners();
             }
         );
     }
 
-    private initListeners(): void {
-        this.initIncludedInPayrollListener();
-    }
-
-    private initIncludedInPayrollListener(): void {
-        this.userForm
-            .get(eUserModalForm.INCLUDED_IN_PAYROLL)
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    UserModalHelper.updateValidators(
-                        this.userForm.get(
-                            eUserModalForm.START_DATE
-                        ) as UntypedFormControl,
-                        [Validators.required]
-                    );
-                    UserModalHelper.updateValidators(
-                        this.userForm.get(
-                            eUserModalForm.SALARY
-                        ) as UntypedFormControl,
-                        [Validators.required]
-                    );
-                } else {
-                    UserModalHelper.removeValidators(
-                        this.userForm.get(
-                            eUserModalForm.START_DATE
-                        ) as UntypedFormControl,
-                        [Validators.required]
-                    );
-
-                    UserModalHelper.removeValidators(
-                        this.userForm.get(
-                            eUserModalForm.SALARY
-                        ) as UntypedFormControl,
-                        [Validators.required]
-                    );
-                }
-            });
-    }
-
     public onSelectDepartment(event: DepartmentResponse): void {
         this.selectedDepartment = event;
+
         this.userForm.get(eUserModalForm.PAYMENT_TYPE).setValue(null);
 
         if (this.isDispatchOrManager) {
@@ -289,10 +254,12 @@ export class UserModalComponent
             this.userForm.get(eUserModalForm.COMMISSION).enable();
         } else {
             this.userForm.get(eUserModalForm.SALARY).disable();
+            this.userForm.get(eUserModalForm.SALARY).reset();
             this.userForm.get(eUserModalForm.COMMISSION).disable();
+            this.userForm.get(eUserModalForm.COMMISSION).reset();
         }
 
-        if (event.id === eUserPaymentType.COMMISSION) {
+        if (event?.id === eUserPaymentType.COMMISSION) {
             UserModalHelper.removeValidators(
                 this.userForm.get(eUserModalForm.SALARY) as UntypedFormControl,
                 [Validators.required]

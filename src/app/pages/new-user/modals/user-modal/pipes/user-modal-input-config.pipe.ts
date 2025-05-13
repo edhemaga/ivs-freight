@@ -12,14 +12,7 @@ import { ICaInput } from 'ca-components';
     standalone: true,
 })
 export class UserModalInputConfigPipe implements PipeTransform {
-    transform(
-        {
-            configType,
-            formContol,
-        }: { configType: string; formContol: UntypedFormControl },
-        isBankIdSelected?: boolean,
-        trigger?: UntypedFormControl
-    ): ICaInput {
+    transform({ configType }: { configType: string }): ICaInput {
         switch (configType) {
             case eUserModalForm.EMAIL:
                 return {
@@ -27,10 +20,10 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     type: 'text',
                     label: 'Email',
                     placeholderIcon: 'email',
-                    isRequired: true,
                     minLength: 5,
                     maxLength: 64,
                     textTransform: 'lowercase',
+                    autoFocus: true,
                 };
 
             case eUserModalForm.FIRST_NAME:
@@ -38,7 +31,6 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     name: 'First name',
                     type: 'text',
                     label: 'First Name',
-                    isRequired: true,
                     minLength: 2,
                     maxLength: 26,
                     textTransform: 'capitalize',
@@ -51,7 +43,6 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     label: 'Last Name',
                     minLength: 2,
                     maxLength: 26,
-                    isRequired: true,
                     textTransform: 'capitalize',
                 };
 
@@ -62,7 +53,6 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     label: 'Department',
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-318',
-                    isRequired: true,
                 };
 
             case eUserModalForm.OFFICE:
@@ -89,7 +79,9 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     name: 'Phone',
                     type: 'text',
                     label: 'Ext.',
-                    placeholderIcon: 'phoneExt',
+                    minLength: 1,
+                    maxLength: 8,
+                    placeholderIcon: 'phone-extension',
                 };
 
             case eUserModalForm.PERSONAL_PHONE:
@@ -138,7 +130,6 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     type: 'text',
                     isDropdown: true,
                     placeholderIcon: 'date',
-                    isRequired: true,
                     customClass: 'datetimeclass',
                 };
             }
@@ -148,7 +139,6 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     name: 'Salary',
                     type: 'text',
                     label: 'Salary',
-                    isRequired: true,
                     placeholderIcon: 'dollar',
                     thousandSeparator: true,
                     minLength: 4,
@@ -181,7 +171,6 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     name: 'routing-bank',
                     type: 'text',
                     label: 'Routing #',
-                    isRequired: true,
                     minLength: 9,
                     maxLength: 9,
                 };
@@ -191,8 +180,8 @@ export class UserModalInputConfigPipe implements PipeTransform {
                 return {
                     name: 'account-bank',
                     type: 'text',
-                    label: 'Account #',
-                    isRequired: true,
+                    label: 'Account',
+                    placeholderIcon: 'password',
                     minLength: 5,
                     maxLength: 17,
                 };
@@ -204,7 +193,6 @@ export class UserModalInputConfigPipe implements PipeTransform {
                     type: 'text',
                     label: 'Payment Type',
                     isDropdown: true,
-                    isDisabled: formContol.disabled,
                     dropdownWidthClass: 'w-col-177',
                 };
             }

@@ -53,8 +53,9 @@ export class TaCheckboxCardComponent implements ControlValueAccessor {
     @Input() subText?: string;
     @Input() isCheckboxDisabled?: boolean = false;
     @Input() clearHorizontalPadding?: boolean = false;
+    @Input() dividerClass!: string;
     @Output() onCheckboxChange = new EventEmitter<boolean>();
-    
+
     public _isCardOpen: any = 'null';
     public noActive: string;
 

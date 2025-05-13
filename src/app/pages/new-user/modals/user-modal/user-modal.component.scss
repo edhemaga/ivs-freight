@@ -8,7 +8,11 @@
     }
 
     &-office {
-        grid-template-columns: 252px 154px 26px;
+        grid-template-columns: 264px 166px 26px;
+
+        &-extension {
+            grid-template-columns: 200px 166px 90px;
+        }
     }
 
     &-personal-info {
