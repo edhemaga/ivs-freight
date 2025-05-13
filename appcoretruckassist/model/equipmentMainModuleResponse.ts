@@ -9,12 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { AssignedUnitResponse } from './assignedUnitResponse';
 
 
-export interface ParkingShortResponse { 
-    id?: number;
-    name?: string | null;
-    address?: AddressEntity;
+export interface EquipmentMainModuleResponse { 
+    assignedUnit?: AssignedUnitResponse;
+    truckUnitHistoryCount?: number;
+    trailerUnitHistoryCount?: number;
 }
 

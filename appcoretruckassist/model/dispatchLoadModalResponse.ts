@@ -13,6 +13,7 @@ import { TruckMinimalResponse } from './truckMinimalResponse';
 import { LongLat } from './longLat';
 import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { DriverMinimalResponse } from './driverMinimalResponse';
+import { DispatchStatusResponse } from './dispatchStatusResponse';
 
 
 export interface DispatchLoadModalResponse { 
@@ -25,5 +26,6 @@ export interface DispatchLoadModalResponse {
     coDriver?: DriverMinimalResponse;
     payType?: string | null;
     currentLocationCoordinates?: LongLat;
+    status?: DispatchStatusResponse;
 }
 

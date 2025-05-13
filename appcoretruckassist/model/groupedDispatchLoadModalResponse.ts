@@ -9,12 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { DispatchLoadModalResponse } from './dispatchLoadModalResponse';
 
 
-export interface ParkingShortResponse { 
-    id?: number;
-    name?: string | null;
-    address?: AddressEntity;
+export interface GroupedDispatchLoadModalResponse { 
+    teamBoard?: boolean;
+    id?: number | null;
+    dispatcher?: string | null;
+    count?: number;
+    dispatches?: Array<DispatchLoadModalResponse> | null;
 }
 

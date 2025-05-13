@@ -9,12 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { BrokerSpecParams } from './brokerSpecParams';
 
 
-export interface ParkingShortResponse { 
-    id?: number;
-    name?: string | null;
-    address?: AddressEntity;
+export interface GetBrokerListV1Query { 
+    brokerSpecParams?: BrokerSpecParams;
 }
 

@@ -9,12 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
 
 
-export interface ParkingShortResponse { 
-    id?: number;
-    name?: string | null;
-    address?: AddressEntity;
+export interface TruckEquipmentResponse { 
+    truckNumber?: string | null;
+    vin?: string | null;
+    logoName?: string | null;
 }
 

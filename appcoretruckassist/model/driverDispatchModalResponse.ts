@@ -19,5 +19,6 @@ export interface DriverDispatchModalResponse {
     owner?: number | null;
     status?: number;
     cdlEndorsements?: Array<CdlEndorsementResponse> | null;
+    offDutyLocations?: Array<string> | null;
 }
 
