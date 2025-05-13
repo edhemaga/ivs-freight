@@ -52,7 +52,7 @@ export class TableColumnClassPipe implements PipeTransform {
                   'disable-text-selection': !isTableLocked,
                   'order-2 m-l-4': isGroupAlignedRight && isTableLocked,
                   'cursor-grab': !isTableLocked && !column.isDisabled,
-                  'justify-content-center m-r-4': isPinnedRight,
+                  'justify-content-center': isPinnedRight,
               };
     }
 }

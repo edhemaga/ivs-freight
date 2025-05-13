@@ -148,11 +148,9 @@
                     >
                     </svg-icon>
 
-                    <div
-                        class="text-size-11 ta-font-bold color-inherit text-uppercase"
-                    >
+                    <p class="text-size-11 ta-font-bold color-inherit">
                         PICKUP
-                    </div>
+                    </p>
                 </div>
 
                 <div class="d-flex align-items-center w-50">
@@ -162,11 +160,9 @@
                     >
                     </svg-icon>
 
-                    <div
-                        class="text-size-11 ta-font-bold color-inherit text-uppercase"
-                    >
+                    <p class="text-size-11 ta-font-bold color-inherit">
                         DELIVERY
-                    </div>
+                    </p>
                 </div>
             </div>
         </ng-template>
@@ -409,28 +405,30 @@
         <!-- #region ASSIGNED GROUP -->
 
         <ng-template #assignedDriver let-data="data">
-            <div class="d-flex gap-1">
-                @let driverFullName =
-                    data.assignedDriver?.firstName +
-                    eStringPlaceholder.WHITESPACE +
-                    data.assignedDriver?.lastName;
+            @if (data.assignedDriver) {
+                <div class="d-flex gap-1">
+                    @let driverFullName =
+                        data.assignedDriver?.firstName +
+                        eStringPlaceholder.WHITESPACE +
+                        data.assignedDriver?.lastName;
 
-                <app-ca-profile-image
-                    [name]="driverFullName"
-                    [isRound]="false"
-                    [size]="18"
-                    [avatarImg]="data.assignedDriver?.avatarFile?.url"
-                >
-                </app-ca-profile-image>
+                    <app-ca-profile-image
+                        [name]="driverFullName"
+                        [isRound]="false"
+                        [size]="18"
+                        [avatarImg]="data.assignedDriver?.avatarFile?.url"
+                    >
+                    </app-ca-profile-image>
 
-                <div
-                    class="text-color-black-2 text-size-14"
-                    [innerHtml]="
-                        driverFullName
-                            | tableHighlightSearchText: store.searchStrings
-                    "
-                ></div>
-            </div>
+                    <div
+                        class="text-color-black-2 text-size-14"
+                        [innerHtml]="
+                            driverFullName
+                                | tableHighlightSearchText: store.searchStrings
+                        "
+                    ></div>
+                </div>
+            }
         </ng-template>
 
         <ng-template let-data="data" #assignedDriverTruckNumber>
