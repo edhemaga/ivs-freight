@@ -45,7 +45,6 @@ import {
     ActivityTimePipe,
     FormatCurrencyPipe,
     NameInitialsPipe,
-    ThousandSeparatorPipe,
 } from '@shared/pipes';
 import { AddressFullnamePipe } from '@shared/pipes/address-fullname.pipe';
 
@@ -112,7 +111,7 @@ export class UserTableComponent {
     }
 
     public openEditModal(userId: number): void {
-        this.userStoreService.dispatchOpenUserModal(true, userId);
+        this.userStoreService.dispatchOpenCompanyAccountModal(true, userId);
     }
 
     public onToggleDropdownMenuActions(

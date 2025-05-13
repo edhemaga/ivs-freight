@@ -1,4 +1,8 @@
-<div class="d-flex flex-column gap-1 w-616">
+<div
+    class="d-flex flex-column gap-1 w-616"
+    (mouseenter)="isStopHovered = true"
+    (mouseleave)="isStopHovered = false"
+>
     <div
         class="d-grid d-grid-stops gap-1 p-l-8 p-r-6 align-items-center br-3"
         [ngClass]="_stopFormGroup | stopContainerClass: isOpen"
@@ -11,20 +15,55 @@
         @let timeFrom =
             _stopFormGroup.get(eLoadModalStopsForm.TIME_FROM)?.value;
         @let timeTo = _stopFormGroup.get(eLoadModalStopsForm.TIME_TO)?.value;
+        @let timeType =
+            _stopFormGroup.get(eLoadModalStopsForm.TIME_TYPE)?.value;
+        @let shipperContactId =
+            _stopFormGroup.get(eLoadModalStopsForm.SHIPPER_CONTACT_ID)?.value;
         @let isShipperValid =
             _stopFormGroup.get(eLoadModalStopsForm.SHIPPER_ID).valid;
         @let areDatesInvalid =
             _stopFormGroup.get(eLoadModalStopsForm.DATE_FROM).invalid ||
             _stopFormGroup.get(eLoadModalStopsForm.TIME_FROM).invalid ||
             _stopFormGroup.get(eLoadModalStopsForm.TIME_TO).invalid;
-        <div
-            class="background-green h-26 w-26 br-2 text-color-white ta-font-bold text-size-14 d-flex align-items-center justify-content-center"
-            [ngClass]="
-                stopType === 1 ? 'background-green' : 'background-orange-4'
-            "
-        >
-            1
-        </div>
+        @let stopLoadOrder =
+            _stopFormGroup.get(eLoadModalStopsForm.STOP_LOAD_ORDER)?.value ?? 1;
+        @let isDeadHead = stopType === 0;
+
+        @if (hasDelete && isStopHovered) {
+            <div
+                class="h-26 w-26 d-flex align-items-start justify-content-center"
+            >
+                <div
+                    ngbTooltip
+                    position="bottom"
+                    [tooltipBackground]="eColor.BLACK"
+                    mainTooltip="eSharedString.DELETE"
+                >
+                    <svg-icon
+                        class="svg-size-18 svg-fill-red-10"
+                        [ngClass]="
+                            isOpen ? 'svg-hover-red-15' : 'svg-hover-red-14'
+                        "
+                        [src]="svgRoutes.DELETE_ICON"
+                        (click)="onDeleteIconClick($event)"
+                    ></svg-icon>
+                </div>
+            </div>
+        } @else {
+            <div
+                class="h-26 w-26 br-2 text-color-white ta-font-bold text-size-14 d-flex align-items-center justify-content-center"
+                [ngClass]="
+                    isDeadHead
+                        ? 'background-muted'
+                        : stopType === 1
+                          ? 'background-green'
+                          : 'background-orange-4'
+                "
+            >
+                {{ isDeadHead ? 0 : stopLoadOrder }}
+            </div>
+        }
+
         <div class="d-flex flex-column">
             @if (!isShipperValid && _stopFormGroup.dirty) {
                 <span
@@ -45,7 +84,7 @@
                 </span>
             } @else {
                 <span
-                    class="text-color-black ta-font-bold"
+                    class="text-color-black ta-font-bold d-flex"
                     [ngClass]="
                         shipper
                             ? isOpen
@@ -66,8 +105,14 @@
                               : extraTitle;
                     {{ shipper?.businessName ?? title }}
 
+                    @if (shipperContactId) {
+                        <svg-icon
+                            class="svg-size-10 m-l-2 d-flex align-items-center"
+                            [src]="svgRoutes.LOAD_SHIPPER_CONTACT"
+                        ></svg-icon>
+                    }
                     @if (!isShipperValid) {
-                        <span class="text-color-red-11">*</span>
+                        <span class="text-color-red-11 m-l-4">*</span>
                     }
                 </span>
                 @if (shipper?.address) {
@@ -115,12 +160,21 @@
                     [ngClass]="
                         isOpen ? 'text-color-white-4' : 'text-color-bw6-2'
                     "
-                    >{{
+                >
+                    {{
                         timeFrom
                             | loadTimeType
                             | loadDatetimeRange: (timeTo | loadTimeType)
-                    }}</span
-                >
+                    }}
+
+                    @if (timeType !== 1 && !areDatesInvalid) {
+                        •
+                        <span
+                            class="ta-font-semi-bold text-size-11 text-color-yellow-5"
+                            >Appt.</span
+                        >
+                    }
+                </span>
             }
         </div>
         <div class="d-flex flex-column text-right">

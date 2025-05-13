@@ -234,7 +234,7 @@ export class MilesStoreService {
         });
     }
 
-    public dispatchToggleColumnsVisiblity(
+    public dispatchToggleColumnsVisibility(
         columnKey: string,
         isActive: boolean
     ) {
@@ -344,6 +344,12 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_GET_MAP_STOP_DATA,
             stopId,
+        });
+    }
+
+    public dispatchResetMapStopData(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_RESET_MAP_STOP_DATA,
         });
     }
 

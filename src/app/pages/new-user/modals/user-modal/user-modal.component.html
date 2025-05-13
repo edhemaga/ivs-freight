@@ -63,6 +63,7 @@
                         label="name"
                         [options]="dropdownList?.departments"
                         [inputConfig]="departmentInputConfig"
+                        (selectedItem)="onSelectDepartment($event)"
                     ></ca-input-dropdown-test>
                 </div>
 
@@ -171,26 +172,67 @@
                     </app-ca-custom-card>
                 </div>
 
-                <app-ca-custom-card
-                    customDividerClass="divider--dark"
-                    cardName="Include in Payroll"
-                    [hasDivider]="true"
-                    [isCardOpen]="true"
+                <app-ta-checkbox-card
+                    formControlName="includeInPayroll"
+                    [label]="'Include in Payroll'"
+                    [name]="'include-in-payroll'"
+                    [hasArrow]="false"
+                    [isCardOpen]="
+                        userForm.get(eUserModalForm.INCLUDED_IN_PAYROLL).value
+                    "
                     [animationMarginParams]="{
-                        marginTop: '18px',
-                        marginBottom: '0',
+                        marginTop: userForm.get(
+                            eUserModalForm.INCLUDED_IN_PAYROLL
+                        ).value
+                            ? '6px'
+                            : '0px',
+                        marginBottom: userForm.get(
+                            eUserModalForm.INCLUDED_IN_PAYROLL
+                        ).value
+                            ? '22px'
+                            : '0px',
                     }"
                 >
-                    <div origin>
-                        <div class="d-grid gap-12 d-grid-payroll-payment">
-                            @let salary =
-                                { configType: eUserModalForm.SALARY }
-                                    | userModalInputConfig;
+                    @let paymentTypeValue =
+                        userForm.get(eUserModalForm.PAYMENT_TYPE).value;
 
-                            <ca-input-test
-                                formControlName="salary"
-                                [inputConfig]="salary"
-                            ></ca-input-test>
+                    <div body>
+                        <div
+                            class="d-grid gap-12 d-grid-payroll-payment p-t-12"
+                        >
+                            @if (!selectedDepartment || isDispatchOrManager) {
+                                <ng-container *ngTemplateOutlet="paymentType">
+                                </ng-container>
+                            } @else {
+                                <ng-container *ngTemplateOutlet="salary">
+                                </ng-container>
+                            }
+
+                            <ng-template #paymentType>
+                                @let paymentTypeConfig =
+                                    {
+                                        configType: eUserModalForm.PAYMENT_TYPE,
+                                        formContol: userForm.get(
+                                            eUserModalForm.PAYMENT_TYPE
+                                        ),
+                                    }
+                                        | userModalInputConfig
+                                            : false
+                                            : selectedDepartment;
+                                @let paymentTypeOptions =
+                                    selectedDepartment?.name === 'Dispatch'
+                                        ? dispatcherOptions
+                                        : managerOptions;
+
+                                <ca-input-dropdown-test
+                                    [optionValue]="'id'"
+                                    [label]="'name'"
+                                    formControlName="paymentType"
+                                    [inputConfig]="paymentTypeConfig"
+                                    [options]="paymentTypeOptions"
+                                    (selectedItem)="onSelectPaymentType($event)"
+                                ></ca-input-dropdown-test>
+                            </ng-template>
 
                             @let startDate =
                                 { configType: eUserModalForm.START_DATE }
@@ -208,8 +250,116 @@
                             >
                             </app-ca-tab-switch>
                         </div>
+
+                        @if (isDispatchOrManager) {
+                            <ng-container *ngTemplateOutlet="salaryCommission">
+                            </ng-container>
+                        }
+
+                        <ng-template #salaryCommission>
+                            @let isSingularPaymentType =
+                                paymentTypeValue ===
+                                    eUserPaymentType.COMMISSION ||
+                                paymentTypeValue === eUserPaymentType.SALARY;
+
+                            <div
+                                class="d-grid gap-12 m-t-26"
+                                [class.d-grid-payroll-salary-commission]="
+                                    !isSingularPaymentType
+                                "
+                            >
+                                @if (
+                                    paymentTypeValue !==
+                                    eUserPaymentType.COMMISSION
+                                ) {
+                                    <ng-container *ngTemplateOutlet="salary">
+                                    </ng-container>
+                                }
+
+                                @if (
+                                    paymentTypeValue !== eUserPaymentType.SALARY
+                                ) {
+                                    <ng-container
+                                        *ngTemplateOutlet="commission"
+                                    >
+                                    </ng-container>
+                                }
+                            </div>
+                        </ng-template>
+
+                        @let isBankIdSelected =
+                            userForm.get(eUserModalForm.BANK_NAME).value;
+                        <div class="d-grid gap-12 d-grid-payroll-bank m-t-26">
+                            @let bank =
+                                { configType: eUserModalForm.BANK_NAME }
+                                    | userModalInputConfig;
+
+                            <ca-input-dropdown-test
+                                [optionValue]="'id'"
+                                [label]="'name'"
+                                formControlName="bankId"
+                                [template]="'svg-template'"
+                                [canAddNew]="true"
+                                [options]="labelsBank"
+                                [inputConfig]="bank"
+                                (selectedItem)="onSelectBank($event)"
+                            ></ca-input-dropdown-test>
+
+                            @let routing =
+                                { configType: eUserModalForm.ROUTING }
+                                    | userModalInputConfig: isBankIdSelected;
+
+                            <ca-input-test
+                                formControlName="routingNumber"
+                                [inputConfig]="routing"
+                            ></ca-input-test>
+
+                            @let account =
+                                { configType: eUserModalForm.ACCOUNT }
+                                    | userModalInputConfig: isBankIdSelected;
+
+                            <ca-input-test
+                                formControlName="accountNumber"
+                                [inputConfig]="account"
+                            ></ca-input-test>
+                        </div>
                     </div>
-                </app-ca-custom-card>
+
+                    <ng-template #salary>
+                        @let salary =
+                            { configType: eUserModalForm.SALARY }
+                                | userModalInputConfig;
+                        <div>
+                            <ca-input-test
+                                formControlName="salary"
+                                [inputConfig]="salary"
+                            ></ca-input-test>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #commission>
+                        <div>
+                            <app-ta-ngx-slider
+                                [sliderName]="'Commission'"
+                                [sliderOptions]="commissionOptions"
+                                [startedValue]="
+                                    userForm.get(eUserModalForm.COMMISSION)
+                                        ?.value
+                                "
+                                [customClass]="'custom-user-modal'"
+                                [isRequired]="true"
+                                (onUserValueChange)="
+                                    userForm
+                                        .get(eUserModalForm.COMMISSION)
+                                        .setValue($event)
+                                "
+                            ></app-ta-ngx-slider>
+                        </div>
+                    </ng-template>
+                </app-ta-checkbox-card>
+
+                <div class="divider"></div>
+
                 <app-ca-input-note
                     formControlName="note"
                     [isVisibleNote]="true"

@@ -91,7 +91,10 @@ export class UserComponent {
 
         switch (action) {
             case eGeneralActions.OPEN_MODAL:
-                this.userStoreService.dispatchOpenUserModal(false, null);
+                this.userStoreService.dispatchOpenCompanyAccountModal(
+                    false,
+                    null
+                );
                 break;
 
             case eGeneralActions.TAB_SELECTED:
@@ -163,7 +166,7 @@ export class UserComponent {
     }
 
     private toggleColumnVisibility(columnType: string, isChecked): void {
-        this.userStoreService.dispatchToggleColumnsVisiblity(
+        this.userStoreService.dispatchToggleColumnsVisibility(
             columnType,
             isChecked
         );

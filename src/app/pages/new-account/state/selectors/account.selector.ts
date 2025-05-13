@@ -14,6 +14,11 @@ export const accountsListSelector = createSelector(
     (state: IAccountState) => state.accountList
 );
 
+export const accountSelector = (id: number) =>
+    createSelector(selectAccountState, (state: IAccountState) =>
+        state.accountList.find((account) => account.id === id)
+    );
+
 export const tableColumnsSelector = createSelector(
     selectAccountState,
     (state) => {
@@ -67,5 +72,22 @@ export const selectedTabCountSelector = createSelector(
 export const activeViewModeSelector = createSelector(
     selectAccountState,
     (state: IAccountState) => state.activeViewMode
+);
+//#endregion
+
+// #region Filters
+export const pageSelector = createSelector(
+    selectAccountState,
+    (state: IAccountState) => state.currentPage
+);
+
+export const filterSelector = createSelector(
+    selectAccountState,
+    (state: IAccountState) => state.filters
+);
+
+export const searchStringsSelector = createSelector(
+    selectAccountState,
+    (state: IAccountState) => state.filters?.searchQuery
 );
 //#endregion

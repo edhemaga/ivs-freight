@@ -53,7 +53,7 @@ export class UserEffects {
             ),
             switchMap(
                 ([_, selectedTab, tableSettings, departmentList, filters]) => {
-                    let active = selectedTab === eStatusTab.ACTIVE ? 1 : 0;
+                    const active = selectedTab === eStatusTab.ACTIVE ? 1 : 0;
 
                     return this.userService
                         .getUserList(active, 1, filters, tableSettings)
@@ -80,7 +80,7 @@ export class UserEffects {
                 this.store.select(UserSelector.tableSettingsSelector)
             ),
             switchMap(([_, selectedTab, filters, tableSettings]) => {
-                let active = selectedTab === eStatusTab.ACTIVE ? 1 : 0;
+                const active = selectedTab === eStatusTab.ACTIVE ? 1 : 0;
 
                 return forkJoin([
                     this.userService.getUserList(
@@ -105,7 +105,7 @@ export class UserEffects {
 
     public getUserListOnPageChange$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(UserActions.getLoadsOnPageChange),
+            ofType(UserActions.getUsersOnPageChange),
             withLatestFrom(
                 this.store.select(UserSelector.selectedTabSelector),
                 this.store.select(UserSelector.pageSelector),
@@ -113,7 +113,7 @@ export class UserEffects {
                 this.store.select(UserSelector.tableSettingsSelector)
             ),
             switchMap(([_, selectedTab, page, filters, tableSettings]) => {
-                let active = selectedTab === eStatusTab.ACTIVE ? 1 : 0;
+                const active = selectedTab === eStatusTab.ACTIVE ? 1 : 0;
 
                 return this.userService
                     .getUserList(active, page + 1, filters, tableSettings)

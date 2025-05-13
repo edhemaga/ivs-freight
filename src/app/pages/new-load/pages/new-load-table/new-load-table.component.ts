@@ -157,7 +157,7 @@ export class NewLoadTableComponent
     }
 
     public onColumnRemove(columnKey: string): void {
-        this.loadStoreService.dispatchToggleColumnsVisiblity(columnKey, false);
+        this.loadStoreService.dispatchToggleColumnsVisibility(columnKey, false);
     }
 
     public onColumnResize(resizeAction: ITableResizeAction): void {

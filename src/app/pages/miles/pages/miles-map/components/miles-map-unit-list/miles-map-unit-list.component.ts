@@ -45,6 +45,9 @@ import { MilesStopsTable } from '@pages/miles/utils/constants';
 // Helpers
 import { onHTMLElementScroll } from '@shared/utils/helpers/scroll-helper';
 
+// Interfaces
+import { MilesStopItemResponse } from 'appcoretruckassist';
+
 @Component({
     selector: 'app-miles-map-unit-list',
     templateUrl: './miles-map-unit-list.component.html',
@@ -154,6 +157,14 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         this.searchForm
             .get(eGeneralActions.SEARCH_LOWERCASE)
             .patchValue(eStringPlaceholder.EMPTY);
+    }
+
+    public onStopClick(
+        stop: MilesStopItemResponse,
+        isSelectedStop?: boolean
+    ): void {
+        if (isSelectedStop) this.milesStoreService.dispatchResetMapStopData();
+        else this.milesStoreService.dispatchGetMapStopData(stop.id);
     }
 
     private manageScrollDebounce(): void {

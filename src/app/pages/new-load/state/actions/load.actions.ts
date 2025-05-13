@@ -134,7 +134,7 @@ export const onGetLoadByIdError = createAction(
     LoadStoreConstants.ACTION_GET_LOAD_BY_ID_ERROR
 );
 
-export const onMapVisiblityToggle = createAction(
+export const onMapVisibilityToggle = createAction(
     LoadStoreConstants.ACTION_TOGGLE_MAP
 );
 //#endregion
@@ -225,18 +225,18 @@ export const revertLoadStatusError = createAction(
 );
 // #endregion
 
-// #region openChangeStatuDropdown
-export const openChangeStatuDropdown = createAction(
+// #region openChangeStatusDropdown
+export const openChangeStatusDropdown = createAction(
     LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN,
     props<{ loadId: number }>()
 );
 
-export const openChangeStatuDropdownSuccess = createAction(
+export const openChangeStatusDropdownSuccess = createAction(
     LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN_SUCCESS,
     props<{ possibleStatuses: LoadPossibleStatusesResponse; loadId: number }>()
 );
 
-export const openChangeStatuDropdownError = createAction(
+export const openChangeStatusDropdownError = createAction(
     LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN_ERROR,
     props<{ error: Error }>()
 );

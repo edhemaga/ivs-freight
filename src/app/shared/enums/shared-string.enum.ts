@@ -1,5 +1,5 @@
 export enum eSharedString {
-    OWNER = "Owner",
+    OWNER = 'Owner',
     ADMIN = 'Admin',
     USER = 'User',
     USER_LOWERCASE = 'user',
@@ -9,6 +9,7 @@ export enum eSharedString {
     TRAILER = 'trailer',
     DRIVER = 'driver',
     MILES = 'Miles',
+    ACCOUNT_LOWERCASE = 'account',
 
     CDL = 'cdl',
     DRUG_ALCOHOL = 'drug-alcohol',
@@ -31,6 +32,7 @@ export enum eSharedString {
 
     YES = 'Yes',
     EMPTY_STRING_PLACEHOLDER = '',
+    DELETE = 'Delete',
 
     // Miles Stop Types
     PICKUP = 'Pickup',
@@ -49,7 +51,6 @@ export enum eSharedString {
     // Status
     INVITED = 'Invited',
     EXPIRED = 'Expired',
-
 
     // Load
     LOAD_VERTICAL_LINE = 'Load | ',
