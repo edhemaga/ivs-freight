@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
+// Enums
 import {
     eCommonElement,
     eDropdownMenuColumns,
@@ -26,11 +27,13 @@ import {
     CaCheckboxSelectedCountComponent,
     CaFilterListDropdownComponent,
     CaSearchMultipleStates2Component,
+    IFilterAction,
 } from 'ca-components';
 
 // Models
 import { TableCardBodyActions, TableToolbarActions } from '@shared/models';
 
+// Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
@@ -97,6 +100,10 @@ export class NewAccountComponent {
 
     public onSearchQueryChange(query: string[]): void {
         this.accountStoreService.dispatchSearchChange(query);
+    }
+
+    public setFilters(filters: IFilterAction): void {
+        this.accountStoreService.dispatchFiltersChange(filters);
     }
 
     public onToolBarAction(event: TableToolbarActions): void {
