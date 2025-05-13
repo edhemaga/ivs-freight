@@ -418,7 +418,14 @@
                     class="background-muted br-2 h-26 p-l-6 p-r-4 text-color-white text-size-14 ta-font-bold align-items-center d-flex"
                     [class.m-r-6]="!isTemplate"
                 >
-                    {{ text }}
+                    <span>{{ text }}</span>
+
+                    <div class="h-18 w-18 m-l-4 d-flex">
+                        <svg-icon
+                            [src]="svgRoutes.LOAD_FILLED"
+                            class="svg-size-18 svg-fill-white-4 d-flex"
+                        ></svg-icon>
+                    </div>
                 </div>
 
                 @if (!isTemplate) {

@@ -1,3 +1,4 @@
+// import { FormControl } from '@angular/forms';
 import { UntypedFormGroup, Validators } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 
@@ -23,12 +24,28 @@ export class AccountHelper {
         accounts: CompanyAccountResponse[]
     ): IMappedAccount[] {
         return accounts.map((account) => {
-            const { id, name } = account;
+            const {
+                id,
+                name,
+                url,
+                username,
+                password,
+                companyAccountLabel,
+                createdAt,
+                updatedAt,
+            } = account;
 
             const mapped: IMappedAccount = {
                 id,
                 name,
                 isSelected: false,
+                url,
+                username,
+                password,
+                companyAccountLabel,
+                createdAt,
+                updatedAt,
+                // formControl: new FormControl(),
             };
 
             return mapped;

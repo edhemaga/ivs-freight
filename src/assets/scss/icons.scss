@@ -47,6 +47,10 @@
             @include svg-fill($white-2);
         }
 
+        &-white-4 {
+            @include svg-fill($white-4);
+        }
+
         &-muted {
             @include svg-fill($muted);
         }
@@ -207,6 +211,10 @@
 
         &-red-14 {
             @include svg-hover($ta-red-14);
+        }
+
+        &-red-15 {
+            @include svg-hover($ta-red-15);
         }
     }
 

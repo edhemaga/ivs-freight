@@ -43,7 +43,7 @@ export const onGetListError = createAction(
     UserStoreConstants.ACTION_DISPATCH_LOAD_USER_LIST_ERROR
 );
 
-export const getLoadsOnPageChange = createAction(
+export const getUsersOnPageChange = createAction(
     UserStoreConstants.ACTION_GET_NEW_PAGE_RESULTS
 );
 //#endregion

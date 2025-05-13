@@ -1,15 +1,17 @@
-import { ICompanyAccountLabel } from '@pages/new-account/interfaces';
+// import { FormControl } from '@angular/forms';
+import { ICompanyAccountLabel } from './company-account-label.interface';
 
 export interface IMappedAccount {
-    id?: number;
-    name: string;
+    id: number;
+    name: string | null;
     isSelected: boolean;
-    username?: string;
-    password?: string;
+    url: string | null;
+    username: string | null;
+    password: string | null;
+    createdAt: string | null;
+    updatedAt: string | null;
     companyAccountLabel?: ICompanyAccountLabel;
-    url?: string;
     note?: string;
     companyAccountLabelId?: number;
-    createdAt?: string;
-    updatedAt?: string;
+    // formControl: FormControl;
 }

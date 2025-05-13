@@ -30,7 +30,10 @@ import { SvgIconComponent } from 'angular-svg-icon';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Enum
-import { eLoadModalStopsForm } from '@pages/new-load/pages/new-load-modal/enums';
+import {
+    eLoadModalStopsForm,
+    eLoadStopsAction,
+} from '@pages/new-load/pages/new-load-modal/enums';
 
 // Pipes
 import { LoadStopInputConfigPipe } from '@pages/new-load/pages/new-load-modal/pipes/load-stop-input-config.pipe';
@@ -116,7 +119,9 @@ export class NewLoadModalStopsComponent {
 
     public onAddNewStop(): void {
         const newStop = LoadModalStopsHelper.createStop(this.fb, {
-            stopType: 1,
+            stopType: {
+                id: 1,
+            },
         });
 
         const index = Math.max(this.stopsFormArray.length - 1, 0);
@@ -149,5 +154,21 @@ export class NewLoadModalStopsComponent {
     public onStopTypeChange(tab: Tabs, index: number): void {
         const stop = this.stopsFormArray.at(index) as FormGroup;
         stop.get(eLoadModalStopsForm.STOP_TYPE).patchValue(tab.id);
+    }
+
+    public onActionEventEmit(actionEvent: {
+        check: boolean;
+        action: string;
+    }): void {
+        if (!this.stopsFormArray.valid) return;
+
+        const { action } = actionEvent;
+        if (action === eLoadStopsAction.PLUS_ACTION) {
+            this.onAddNewStop();
+        }
+    }
+
+    public onDeleteActionIndex(index: number): void {
+        this.stopsFormArray.removeAt(index);
     }
 }

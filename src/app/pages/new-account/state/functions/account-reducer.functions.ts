@@ -7,10 +7,14 @@ import {
     eCommonElement,
 } from '@shared/enums';
 
+// Enums
+import { IFilterAction } from 'ca-components';
+
 import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 
 // Interfaces
 import { IAccountState } from '@pages/new-account/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interfaces';
 
 // Helpers
 import { AccountHelper } from '@pages/new-account/utils/helpers';
@@ -26,14 +30,25 @@ export function onLoadAccountsSuccess(
     state: IAccountState,
     data: GetCompanyAccountListResponse
 ): IAccountState {
+    return {
+        ...state,
+        accountList: AccountHelper.accountsMapper(data.pagination.data),
+        searchResultsCount: data.count,
+        currentPage: state.currentPage + 1,
+    };
+}
+
+export function loadAccountsOnPageChangeSuccess(
+    state: IAccountState,
+    payload: GetCompanyAccountListResponse
+): IAccountState {
     const accountList = [
         ...state.accountList,
-        ...AccountHelper.accountsMapper(data.pagination.data),
+        ...AccountHelper.accountsMapper(payload.pagination.data),
     ];
     return {
         ...state,
         accountList,
-        searchResultsCount: data.count,
         currentPage: state.currentPage + 1,
     };
 }
@@ -150,10 +165,60 @@ export function toggleColumnVisibility(
     };
 }
 //#endregion
+
+//#region Filters
+export function onSearchFilterChange(
+    state: IAccountState,
+    searchQuery: string[]
+): IAccountState {
+    return {
+        ...state,
+        currentPage: 1,
+        filters: {
+            ...state.filters,
+            searchQuery,
+        },
+    };
+}
+
+export function onFiltersChange(
+    state: IAccountState,
+    filters: IFilterAction
+): IAccountState {
+    console.log(filters);
+    return {
+        ...state,
+        filters: {
+            ...state.filters,
+        },
+        currentPage: 1,
+    };
+}
+
+export function onTableSortingChange(
+    state: IAccountState,
+    column: ITableColumn
+): IAccountState {
+    const { columns, sortKey, sortDirection, label } =
+        StoreFunctionsHelper.toggleSort(column, state.tableColumns);
+
+    return {
+        ...state,
+        tableColumns: columns,
+        tableSettings: {
+            ...state.tableSettings,
+            sortDirection,
+            sortKey,
+            label,
+        },
+    };
+}
+//#endregion
 export function onAddCompanyAccount(
     state: IAccountState,
     account: IMappedAccount
 ): IAccountState {
+    console.log(account);
     return {
         ...state,
         accountList: [account, ...state.accountList],

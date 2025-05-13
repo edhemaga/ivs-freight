@@ -57,6 +57,9 @@ export const accountReducer = createReducer(
     on(AccountActions.loadAccountsSuccess, (state, { data }) =>
         AccountFunctions.onLoadAccountsSuccess(state, data)
     ),
+    on(AccountActions.loadAccountsOnPageChangeSuccess, (state, { payload }) =>
+        AccountFunctions.loadAccountsOnPageChangeSuccess(state, payload)
+    ),
     on(AccountActions.loadAccountsFailure, (state) =>
         AccountFunctions.onLoadAccountsError(state)
     ),
@@ -65,6 +68,20 @@ export const accountReducer = createReducer(
     //#region Tabs
     on(AccountActions.onViewModeChange, (state, { viewMode }) =>
         AccountFunctions.onViewModeChange(state, viewMode)
+    ),
+    //#endregion
+
+    // #region Filters
+    on(AccountActions.onSearchFilterChange, (state, { query }) =>
+        AccountFunctions.onSearchFilterChange(state, query)
+    ),
+
+    on(AccountActions.onFiltersChange, (state, { filters }) =>
+        AccountFunctions.onFiltersChange(state, filters)
+    ),
+
+    on(AccountActions.tableSortingChange, (state, { column }) =>
+        AccountFunctions.onTableSortingChange(state, column)
     ),
     //#endregion
 
@@ -93,6 +110,9 @@ export const accountReducer = createReducer(
             AccountFunctions.toggleColumnVisibility(state, columnKey, isActive)
     ),
     on(AccountActions.onAddAccountSuccess, (state, { account }) =>
+        AccountFunctions.onAddCompanyAccount(state, account)
+    ),
+    on(AccountActions.onAddAndSaveAccount, (state, { account }) =>
         AccountFunctions.onAddCompanyAccount(state, account)
     ),
     on(AccountActions.onEditAccountSuccess, (state, { account }) =>

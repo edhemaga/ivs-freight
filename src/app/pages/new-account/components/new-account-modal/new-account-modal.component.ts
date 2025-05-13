@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { forkJoin, map, of, Subject, takeUntil, Observable } from 'rxjs';
+import { forkJoin, map, of, Subject, takeUntil, Observable, tap } from 'rxjs';
 
 import {
     FormsModule,
@@ -122,9 +122,6 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
     public eModalButtonSize = eModalButtonSize;
     public eModalButtonClassType = eModalButtonClassType;
 
-    // actions
-    public;
-
     constructor(
         // services
         private modalService: ModalService,
@@ -172,9 +169,21 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
                     ...this.accountForm.value,
                     companyAccountLabelId: this.selectedAccountLabel?.id,
                 };
-                this.accountStoreService.dispatchOnAddAccount(onAddData, true);
-                this.accountForm.reset();
-                this.activeAction = null;
+
+                this.accountService
+                    .addCompanyAccount(onAddData)
+                    .pipe(
+                        takeUntil(this.destroy$),
+                        tap(() => {
+                            this.accountStoreService.dispatchOnAddAndSaveAccount(
+                                onAddData
+                            );
+                            this.accountForm.reset();
+                            this.activeAction = null;
+                        })
+                    )
+                    .subscribe();
+
                 break;
             case eGeneralActions.DELETE:
                 if (!this.editData?.id) return;
@@ -252,12 +261,12 @@ export class NewAccountModalComponent implements OnInit, OnDestroy {
         this.isEditMode = this.editData?.isEdit;
 
         const userData$: Observable<IMappedAccount> = this.isEditMode
-            ? this.accountService.getCompanyAccountById(this.editData.id)
+            ? this.accountService.getCompanyAccountById(this.editData?.id)
             : of(null);
 
         forkJoin([userData$]).subscribe(([account]) => {
             this.editAccountData = account;
-            if (this.isEditMode)
+            if (this.isEditMode && this.editData?.id)
                 this.accountForm = AccountHelper.patchAccountModalForm(
                     this.accountForm,
                     account

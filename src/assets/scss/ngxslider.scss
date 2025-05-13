@@ -144,6 +144,15 @@
         .custom-slider-text {
             margin: 0 !important;
         }
+
+        &.required {
+            .custom-slider-text {
+                &::after {
+                    content: ' *';
+                    color: #ef5350;
+                }
+            }
+        }
     }
 
     &.custom-user-modal {

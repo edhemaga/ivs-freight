@@ -27,6 +27,8 @@ export class DispatchTableLastLocationComponentComponent extends AddressMixin(
     }
 ) {
     @Input() set parkingList(value: DispatchBoardParking[]) {
+        this._parkingList = value;
+
         if (this.address) this.checkParkingLocation(value);
     }
 
@@ -52,6 +54,8 @@ export class DispatchTableLastLocationComponentComponent extends AddressMixin(
     public isDisplayParkingIcon: boolean = false;
 
     public _locationDropdownWidth: number;
+
+    public _parkingList: DispatchBoardParking[];
 
     constructor(public addressService: AddressService) {
         super();
