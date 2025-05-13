@@ -13,7 +13,13 @@ export enum eUserModalForm {
     ADDRESS_UNIT = 'addressUnit',
     NOTE = 'note',
     START_DATE = 'startDate',
+    PAYMENT_TYPE = 'paymentType',
     SALARY = 'salary',
+    BASE = 'base',
     IS_1099 = 'is1099',
     INCLUDED_IN_PAYROLL = 'includeInPayroll',
+    BANK_NAME = 'bankId',
+    ROUTING = 'routingNumber',
+    ACCOUNT = 'accountNumber',
+    COMMISSION = 'commission',
 }

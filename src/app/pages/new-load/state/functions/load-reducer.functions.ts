@@ -275,7 +275,7 @@ export function onGetLoadByIdError(state: ILoadState): ILoadState {
     return LoadStoreHelper.setLoadDetailsState(state, {}, false, {});
 }
 
-export function onMapVisiblityToggle(state: ILoadState): ILoadState {
+export function onMapVisibilityToggle(state: ILoadState): ILoadState {
     const { details } = state;
 
     return {
@@ -455,7 +455,7 @@ export function toggleCardFlipViewMode(state: ILoadState): ILoadState {
 }
 //#endregion
 
-export function openChangeStatuDropdownSuccessResult(
+export function openChangeStatusDropdownSuccessResult(
     state: ILoadState,
     possibleStatuses: LoadPossibleStatusesResponse,
     loadId: number

@@ -7,6 +7,7 @@ import {
     EnumValue,
     LoadRequirementsResponse,
     LoadResponse,
+    LoadStopResponse,
     LoadTemplateResponse,
     LoadType,
 } from 'appcoretruckassist';
@@ -117,15 +118,9 @@ export class LoadModalHelper {
             ),
             invoicedDate: new UntypedFormControl(load?.invoicedDate),
 
-            // TODO: Once edit is working we need to connect stops, for now show origin and destination
-            stops: new FormArray([
-                LoadModalStopsHelper.createStop(new FormBuilder(), {
-                    stopType: 1,
-                }),
-                LoadModalStopsHelper.createStop(new FormBuilder(), {
-                    stopType: 2,
-                }),
-            ]),
+            stops: new FormArray(
+                LoadModalHelper.generateLoadStops(isEdit, load?.stops)
+            ),
         });
     }
 
@@ -204,6 +199,28 @@ export class LoadModalHelper {
             );
             dispatcherControl.updateValueAndValidity();
         }
+    }
+
+    static generateLoadStops(isEdit: boolean, stops: LoadStopResponse[]) {
+        if (isEdit) {
+            return stops.map((stop) =>
+                LoadModalStopsHelper.createStop(new FormBuilder(), stop)
+            );
+        }
+
+        // Create destination and origin stops
+        return [
+            LoadModalStopsHelper.createStop(new FormBuilder(), {
+                stopType: {
+                    id: 1,
+                },
+            }),
+            LoadModalStopsHelper.createStop(new FormBuilder(), {
+                stopType: {
+                    id: 2,
+                },
+            }),
+        ];
     }
 
     // TODO: Should we define return type? All the values should be inside form anyway?

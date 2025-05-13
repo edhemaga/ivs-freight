@@ -73,7 +73,8 @@ $sizes-width: (
     462,
     612,
     616,
-    620
+    620,
+    628
 );
 
 @mixin size-classes($class, $property, $sizes) {

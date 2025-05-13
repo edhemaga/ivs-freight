@@ -10,11 +10,17 @@
     "
 ></app-toolbar-tabs>
 
-<div class="new-table--toolbar-divider">
-    <div
-        class="new-table--toolbar-divider-border background-light-grey-6"
-    ></div>
-</div>
+<!-- if there are tabs in toolbar -->
+@if (data) {
+    <div class="new-table--toolbar-divider">
+        <div
+            class="new-table--toolbar-divider-border background-light-grey-6"
+        ></div>
+    </div>
+} @else {
+    <!-- if there is no tabs in toolbar remove divider from the left side (next to List Card view switch) -->
+    <div class="m-l-4"></div>
+}
 
 @if (betweenTabsTemplate) {
     <ng-container *ngTemplateOutlet="betweenTabsTemplate"></ng-container>

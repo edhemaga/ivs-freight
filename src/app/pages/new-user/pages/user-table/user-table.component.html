@@ -411,15 +411,17 @@
         <!-- #region END OF DATES GROUP -->
 
         <ng-template let-data="data" #action>
-            <ca-dropdown-menu
-                [type]="'dots-menu-type'"
-                [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
-                [options]="store.tableDropdownMenuOptions"
-                (dropdownOptionEmitter)="
-                    onToggleDropdownMenuActions($event, data)
-                "
-            >
-            </ca-dropdown-menu>
+            <div class="d-flex h-26">
+                <ca-dropdown-menu
+                    [type]="'dots-menu-type'"
+                    [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
+                    [options]="store.tableDropdownMenuOptions"
+                    (dropdownOptionEmitter)="
+                        onToggleDropdownMenuActions($event, data)
+                    "
+                >
+                </ca-dropdown-menu>
+            </div>
         </ng-template>
     </app-new-table>
 }

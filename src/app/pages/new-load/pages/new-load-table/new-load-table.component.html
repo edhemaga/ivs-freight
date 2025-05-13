@@ -613,15 +613,21 @@
         </ng-template>
 
         <ng-template let-data="data" #action>
-            <ca-dropdown-menu
-                [type]="'dots-menu-type'"
-                [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
-                [options]="data.tableDropdownContent"
-                (dropdownOptionEmitter)="
-                    onToggleDropdownMenuActions($event, data, store.selectedTab)
-                "
-            >
-            </ca-dropdown-menu>
+            <div class="d-flex h-26">
+                <ca-dropdown-menu
+                    [type]="'dots-menu-type'"
+                    [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
+                    [options]="data.tableDropdownContent"
+                    (dropdownOptionEmitter)="
+                        onToggleDropdownMenuActions(
+                            $event,
+                            data,
+                            store.selectedTab
+                        )
+                    "
+                >
+                </ca-dropdown-menu>
+            </div>
         </ng-template>
 
         <!-- #region Comments -->

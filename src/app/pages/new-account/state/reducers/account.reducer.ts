@@ -1,16 +1,24 @@
 // Actions
 import * as AccountActions from '@pages/new-account/state/actions/account.action';
+
 // Config
 import { AccountTableColumnsConfig } from '@pages/new-account/utils/config';
 
-import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
+// Enums
+import {
+    eCardFlipViewMode,
+    eCommonElement,
+    eStringPlaceholder,
+} from '@shared/enums';
 
 // Interfaces
 import { IAccountState } from '@pages/new-account/interfaces';
 
+// Helpers
 import { DropdownMenuToolbarContentHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 import { createReducer, on } from '@ngrx/store';
+
 // Functions
 import * as AccountFunctions from '@pages/new-account/state/functions/account-reducer.functions';
 
@@ -25,7 +33,7 @@ export const initialState: IAccountState = {
         isTableLocked: true,
         sortKey: null,
         sortDirection: null,
-        label: '',
+        label: eStringPlaceholder.EMPTY,
     },
     activeViewMode: eCommonElement.LIST,
 
@@ -49,6 +57,9 @@ export const accountReducer = createReducer(
     on(AccountActions.loadAccountsSuccess, (state, { data }) =>
         AccountFunctions.onLoadAccountsSuccess(state, data)
     ),
+    on(AccountActions.loadAccountsOnPageChangeSuccess, (state, { payload }) =>
+        AccountFunctions.loadAccountsOnPageChangeSuccess(state, payload)
+    ),
     on(AccountActions.loadAccountsFailure, (state) =>
         AccountFunctions.onLoadAccountsError(state)
     ),
@@ -57,6 +68,20 @@ export const accountReducer = createReducer(
     //#region Tabs
     on(AccountActions.onViewModeChange, (state, { viewMode }) =>
         AccountFunctions.onViewModeChange(state, viewMode)
+    ),
+    //#endregion
+
+    // #region Filters
+    on(AccountActions.onSearchFilterChange, (state, { query }) =>
+        AccountFunctions.onSearchFilterChange(state, query)
+    ),
+
+    on(AccountActions.onFiltersChange, (state, { filters }) =>
+        AccountFunctions.onFiltersChange(state, filters)
+    ),
+
+    on(AccountActions.tableSortingChange, (state, { column }) =>
+        AccountFunctions.onTableSortingChange(state, column)
     ),
     //#endregion
 
@@ -83,6 +108,19 @@ export const accountReducer = createReducer(
         AccountActions.toggleColumnVisibility,
         (state, { columnKey, isActive }) =>
             AccountFunctions.toggleColumnVisibility(state, columnKey, isActive)
-    )
+    ),
+    on(AccountActions.onAddAccountSuccess, (state, { account }) =>
+        AccountFunctions.onAddCompanyAccount(state, account)
+    ),
+    on(AccountActions.onAddAndSaveAccount, (state, { account }) =>
+        AccountFunctions.onAddCompanyAccount(state, account)
+    ),
+    on(AccountActions.onEditAccountSuccess, (state, { account }) =>
+        AccountFunctions.onEditCompanyAccount(state, account)
+    ),
+    on(AccountActions.onDeleteAccountSuccess, (state, { id, activeModal }) =>
+        AccountFunctions.onDeleteCompanyAccount(state, id, activeModal)
+    ),
+    on(AccountActions.onOpenModal, (state) => state)
     //#endregion
 );

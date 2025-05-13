@@ -3,6 +3,7 @@ import {
     UntypedFormGroup,
     UntypedFormControl,
     Validators,
+    ValidatorFn,
 } from '@angular/forms';
 
 // Models
@@ -14,13 +15,19 @@ import { eUserModalForm } from '@pages/new-user/modals/user-modal/enums';
 
 // Validators
 import {
+    accountBankValidation,
     addressUnitValidation,
     addressValidation,
+    bankValidation,
     firstNameValidation,
     lastNameValidation,
     phoneExtension,
     phoneFaxRegex,
+    routingBankValidation,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
+
+// bootstrap
+import { Options } from 'ng5-slider';
 
 export class UserModalHelper {
     static createForm(userData: CompanyUserResponse): UntypedFormGroup {
@@ -45,8 +52,7 @@ export class UserModalHelper {
                 userData?.isAdmin ?? false
             ),
             [eUserModalForm.OFFICE]: new UntypedFormControl(
-                userData?.companyOffice?.id,
-                [Validators.required]
+                userData?.companyOffice?.id
             ),
             [eUserModalForm.PHONE]: new UntypedFormControl(userData?.phone, [
                 phoneFaxRegex,
@@ -56,8 +62,8 @@ export class UserModalHelper {
                 [...phoneExtension]
             ),
             [eUserModalForm.PERSONAL_EMAIL]: new UntypedFormControl(
-                userData?.personalEmail ?? null,
-                [Validators.email]
+                userData?.personalEmail ?? null
+                // [Validators.email]
             ),
             [eUserModalForm.PERSONAL_PHONE]: new UntypedFormControl(
                 userData?.personalPhone ?? null,
@@ -73,13 +79,40 @@ export class UserModalHelper {
             ),
             [eUserModalForm.NOTE]: new UntypedFormControl(userData?.note),
             [eUserModalForm.START_DATE]: new UntypedFormControl(
-                userData?.startDate,
-                [Validators.required]
+                userData?.startDate ?? null
             ),
-            [eUserModalForm.SALARY]: new UntypedFormControl(userData?.salary),
+            [eUserModalForm.SALARY]: new UntypedFormControl(
+                userData?.salary ?? userData?.base
+            ),
             [eUserModalForm.IS_1099]: new UntypedFormControl(userData?.is1099),
             [eUserModalForm.INCLUDED_IN_PAYROLL]: new UntypedFormControl(
                 userData?.includeInPayroll ?? false
+            ),
+            [eUserModalForm.BANK_NAME]: new UntypedFormControl(
+                userData?.bank?.id,
+                [...bankValidation]
+            ),
+            [eUserModalForm.ROUTING]: new UntypedFormControl(
+                {
+                    value: userData?.routingNumber,
+                    disabled: !userData?.routingNumber,
+                },
+                [...routingBankValidation]
+            ),
+            [eUserModalForm.ACCOUNT]: new UntypedFormControl(
+                {
+                    value: userData?.accountNumber,
+                    disabled: !userData?.accountNumber,
+                },
+                [...accountBankValidation]
+            ),
+            [eUserModalForm.PAYMENT_TYPE]: new UntypedFormControl({
+                value: userData?.paymentType?.id ?? null,
+                disabled: true,
+            }),
+            [eUserModalForm.COMMISSION]: new UntypedFormControl(
+                userData?.commission ?? null
+                // disabled: true,
             ),
         });
     }
@@ -132,5 +165,31 @@ export class UserModalHelper {
                 disabled: true,
             },
         ];
+    }
+
+    static getCommissionOptions(): Options {
+        return {
+            floor: 2.5,
+            ceil: 25,
+            step: 0.5,
+            showSelectionBar: true,
+            hideLimitLabels: true,
+        };
+    }
+
+    static updateValidators(
+        formControl: UntypedFormControl,
+        validators: ValidatorFn[] | null
+    ) {
+        formControl.setValidators(validators);
+        formControl.updateValueAndValidity();
+    }
+
+    static removeValidators(
+        formControl: UntypedFormControl,
+        validators: ValidatorFn[] | null
+    ) {
+        formControl.removeValidators(validators);
+        formControl.updateValueAndValidity();
     }
 }
