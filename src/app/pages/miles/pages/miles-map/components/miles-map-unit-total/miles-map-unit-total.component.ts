@@ -11,7 +11,7 @@ import { MilesIconPipe } from '@pages/miles/pipes/miles-icon.pipe';
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // enums
-import { eThousandSeparatorFormat } from '@shared/enums';
+import { eStringPlaceholder, eThousandSeparatorFormat } from '@shared/enums';
 
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
@@ -37,6 +37,7 @@ export class MilesMapUnitTotalComponent {
     public sharedSvgRoutes = SharedSvgRoutes;
 
     public eThousandSeparatorFormat = eThousandSeparatorFormat;
+    public eStringPlaceholder = eStringPlaceholder;
 
     constructor(public milesStoreService: MilesStoreService) {}
 }

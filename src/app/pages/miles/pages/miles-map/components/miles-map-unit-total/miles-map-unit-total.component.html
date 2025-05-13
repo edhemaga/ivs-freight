@@ -18,15 +18,18 @@
         </div>
 
         @let totalUnitCount = total.loadedMiles + total.emptyMiles;
+
         <!-- If we don't have total count set percent as 0  -->
+
         @let percent =
             !totalUnitCount ? 0 : (total.loadedMiles / totalUnitCount) * 100;
+
         <ng-container
             *ngTemplateOutlet="
                 milesProgressBar;
                 context: {
-                    label: '',
-                    percent: percent,
+                    label: eStringPlaceholder.EMPTY,
+                    percent,
                     count: totalUnitCount,
                     color: 'muted',
                 }
@@ -76,6 +79,11 @@
                 [hasArrow]="true"
                 [hasDarkDivider]="true"
                 [hasCounter]="total.stops.count"
+                [capsulaText]="
+                    total.extraStopCount
+                        ? total.extraStopCount + ' EXTRA'
+                        : eStringPlaceholder.EMPTY
+                "
                 [hasSmallDivider]="true"
                 [animationMarginParams]="{
                     marginTop: '0',
@@ -192,6 +200,7 @@
                             | number
                                 : eThousandSeparatorFormat.REGULAR_FORMAT) ??
                             total.fuelTotalGalons) + ' gal';
+
                     <ng-container
                         *ngTemplateOutlet="
                             columns;
@@ -202,6 +211,7 @@
                         "
                     >
                     </ng-container>
+
                     <ng-container
                         *ngTemplateOutlet="
                             columns;
@@ -212,6 +222,7 @@
                         "
                     >
                     </ng-container>
+
                     <ng-container
                         *ngTemplateOutlet="
                             columns;
@@ -222,12 +233,35 @@
                         "
                     >
                     </ng-container>
+
+                    <ng-container
+                        *ngTemplateOutlet="
+                            columns;
+                            context: {
+                                label: 'MPL',
+                                value: total.milesPerLoad,
+                            }
+                        "
+                    >
+                    </ng-container>
+
                     <ng-container
                         *ngTemplateOutlet="
                             columns;
                             context: {
                                 label: 'Revenue',
                                 value: total.revenue | currency,
+                            }
+                        "
+                    >
+                    </ng-container>
+
+                    <ng-container
+                        *ngTemplateOutlet="
+                            columns;
+                            context: {
+                                label: 'RPM',
+                                value: total.ratePerMile | currency,
                             }
                         "
                     >
@@ -276,7 +310,10 @@
                         percent ? 'text-color-muted' : 'text-color-light-grey-6'
                     "
                 >
-                    {{ percent | number: '1.0-0' }}%
+                    {{
+                        percent
+                            | number: eThousandSeparatorFormat.REGULAR_FORMAT
+                    }}%
                 </div>
                 <div
                     class="text-size-14 ta-font-medium text-right"
@@ -287,12 +324,32 @@
                     {{ count }}
                 </div>
             </div>
+        } @else {
+            <div
+                class="d-flex align-items-center justify-content-between position-relative bottom--4"
+            >
+                @let percentRemain =
+                    100 -
+                    (percent | number: eThousandSeparatorFormat.REGULAR_FORMAT);
+
+                <p class="text-size-11 text-color-muted ta-font-semi-bold">
+                    {{
+                        percent
+                            | number: eThousandSeparatorFormat.REGULAR_FORMAT
+                    }}%
+                </p>
+
+                <p class="text-size-11 text-color-muted ta-font-semi-bold">
+                    {{ percentRemain }}%
+                </p>
+            </div>
         }
 
         <div
             class="stop-progress-bar h-8 w-100 d-inline-block br-2 background-dark-2 overflow-hidden mb-1"
         >
             @let bgClass = percent ? 'background-' + color : 'background-muted';
+
             <div
                 class="h-8"
                 [ngStyle]="{ width: percent + '%' }"
