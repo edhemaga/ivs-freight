@@ -30,10 +30,11 @@ export function onLoadAccountsSuccess(
     state: IAccountState,
     data: GetCompanyAccountListResponse
 ): IAccountState {
+    console.log(data);
     return {
         ...state,
         accountList: AccountHelper.accountsMapper(data.pagination.data),
-        searchResultsCount: data.count,
+        searchResultsCount: data.pagination.count,
         currentPage: state.currentPage + 1,
     };
 }
