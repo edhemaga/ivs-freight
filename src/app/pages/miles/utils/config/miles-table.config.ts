@@ -13,6 +13,7 @@ export class MilesTableColumnsConfig {
             MilesTableColumnsConfig.loadGroupColumn,
             MilesTableColumnsConfig.fuelGroupColumn,
             MilesTableColumnsConfig.milesGroupColumn,
+            MilesTableColumnsConfig.revenueGroupColumn,
             MilesTableColumnsConfig.dateDeactivatedColumn,
         ];
     }
