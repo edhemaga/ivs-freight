@@ -21,5 +21,6 @@ export interface DriverDispatchResponse {
     vacation?: boolean;
     avatarFile?: FileResponse;
     endorsements?: Array<string> | null;
+    offDutyLocations?: Array<string> | null;
 }
 

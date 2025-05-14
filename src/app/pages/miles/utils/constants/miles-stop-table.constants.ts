@@ -1,4 +1,6 @@
-import { IMilesStopTableHeader } from '@pages/miles/interface';
+import { IMilesStopTableHeader } from '@pages/miles/pages/miles-map/interfaces';
+
+// configs
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 export class MilesStopsTable {

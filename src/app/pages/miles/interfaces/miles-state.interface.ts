@@ -18,15 +18,15 @@ import { ITableConfig } from '@shared/components/new-table/interfaces';
 // External Services or Models
 import { MilesStateFilterResponse, RoutingResponse } from 'appcoretruckassist';
 import {
-    IMilesModel,
+    IMappedMiles,
     IMilesTabResults,
     IMinimalListState,
     IMinimalStopsState,
-} from '@pages/miles/interface';
+} from '@pages/miles/interfaces';
 import { ICaMapProps } from 'ca-components';
 
 export interface IMilesState {
-    items: IMilesModel[];
+    items: IMappedMiles[];
     loading: boolean;
     tableViewData: ITableData[];
     selectedTab: eMileTabs;

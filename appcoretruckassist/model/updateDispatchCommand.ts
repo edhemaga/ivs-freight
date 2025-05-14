@@ -23,6 +23,7 @@ export interface UpdateDispatchCommand {
     driverId?: number | null;
     coDriverId?: number | null;
     location?: AddressEntity;
+    isParkingLocation?: boolean;
     longitude?: number | null;
     latitude?: number | null;
     note?: string | null;

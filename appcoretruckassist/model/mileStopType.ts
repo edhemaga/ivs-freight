@@ -11,7 +11,7 @@
  */
 
 
-export type MileStopType = 'Pickup' | 'Delivery' | 'Fuel' | 'Repair' | 'Parking' | 'DeadHead' | 'Towing';
+export type MileStopType = 'Pickup' | 'Delivery' | 'Fuel' | 'Repair' | 'Parking' | 'DeadHead' | 'Towing' | 'Split';
 
 export const MileStopType = {
     Pickup: 'Pickup' as MileStopType,
@@ -20,6 +20,7 @@ export const MileStopType = {
     Repair: 'Repair' as MileStopType,
     Parking: 'Parking' as MileStopType,
     DeadHead: 'DeadHead' as MileStopType,
-    Towing: 'Towing' as MileStopType
+    Towing: 'Towing' as MileStopType,
+    Split: 'Split' as MileStopType
 };
 

@@ -36,6 +36,7 @@ export interface DispatchResponse {
     phone?: string | null;
     email?: string | null;
     location?: AddressEntity;
+    isParkingLocation?: boolean;
     latitude?: number | null;
     longitude?: number | null;
     status?: DispatchStatusResponse;

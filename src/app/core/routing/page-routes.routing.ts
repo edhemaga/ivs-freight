@@ -18,11 +18,11 @@ import { RoadsideInactiveResolver } from '@pages/safety/violation/resolvers/road
 import { AccidentActiveResolver } from '@pages/safety/accident/resolvers/accident-active.resolver';
 import { AccidentInactiveResolver } from '@pages/safety/accident/resolvers/accident-inactive.resolver';
 import { AccidentNonReportedResolver } from '@pages/safety/accident/resolvers/accident-non-reported.resolver';
-import { MilesResolver } from '@pages/miles/resolvers/miles.resolver';
+import { MilesResolver } from '@pages/miles/resolvers';
 import { TodoResolver } from '@pages/to-do/resolvers/to-do.resolver';
 import { RoutingStateResolver } from '@pages/routing/resolvers/routing-state.resolver';
 import { TelematicResolver } from '@pages/telematic/resolvers/telematic-state.resolver';
-import { MilesDetailsResolver } from '@pages/miles/resolvers/miles-details.resolver';
+import { MilesDetailsResolver } from '@pages/miles/resolvers';
 
 export class PageRoutes {
     static routes = [

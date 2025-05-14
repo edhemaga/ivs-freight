@@ -11,11 +11,12 @@
  */
 
 
-export type StateFilter = 'Broker' | 'Shipper' | 'RepairShop';
+export type StateFilter = 'Broker' | 'Shipper' | 'RepairShop' | 'Miles';
 
 export const StateFilter = {
     Broker: 'Broker' as StateFilter,
     Shipper: 'Shipper' as StateFilter,
-    RepairShop: 'RepairShop' as StateFilter
+    RepairShop: 'RepairShop' as StateFilter,
+    Miles: 'Miles' as StateFilter
 };
 

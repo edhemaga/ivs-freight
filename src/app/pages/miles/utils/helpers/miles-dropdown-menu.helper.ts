@@ -26,6 +26,5 @@ export class MilesDropdownMenuHelper {
             : DropdownMenuContentHelper.getToolbarColumnsDropdownContent(
                   milesColumnsList
               );
-        return [];
     }
 }
