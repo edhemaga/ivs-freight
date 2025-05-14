@@ -4,6 +4,7 @@ import {
     UntypedFormControl,
     Validators,
     ValidatorFn,
+    AbstractControl,
 } from '@angular/forms';
 
 // Models
@@ -27,7 +28,7 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // bootstrap
-import { Options } from 'ng5-slider';
+import { Options } from '@angular-slider/ngx-slider';
 
 export class UserModalHelper {
     static createForm(userData: CompanyUserResponse): UntypedFormGroup {
@@ -81,12 +82,14 @@ export class UserModalHelper {
             [eUserModalForm.START_DATE]: new UntypedFormControl(
                 userData?.startDate ?? null
             ),
-            [eUserModalForm.SALARY]: new UntypedFormControl(
-                userData?.salary ?? userData?.base
-            ),
+            [eUserModalForm.SALARY]: new UntypedFormControl({
+                value: userData?.salary ?? userData?.base,
+                disabled: true,
+            }),
             [eUserModalForm.IS_1099]: new UntypedFormControl(userData?.is1099),
             [eUserModalForm.INCLUDED_IN_PAYROLL]: new UntypedFormControl(
-                userData?.includeInPayroll ?? false
+                userData?.includeInPayroll ?? false,
+                [this.requiredIfIncludedInPayroll()]
             ),
             [eUserModalForm.BANK_NAME]: new UntypedFormControl(
                 userData?.bank?.id,
@@ -191,5 +194,41 @@ export class UserModalHelper {
     ) {
         formControl.removeValidators(validators);
         formControl.updateValueAndValidity();
+    }
+
+    static requiredIfIncludedInPayroll(): ValidatorFn {
+        return (control: AbstractControl) => {
+            if (!control.parent) return null;
+
+            if (control.value) {
+                UserModalHelper.updateValidators(
+                    control.parent.get(
+                        eUserModalForm.START_DATE
+                    ) as UntypedFormControl,
+                    [Validators.required]
+                );
+                UserModalHelper.updateValidators(
+                    control.parent.get(
+                        eUserModalForm.SALARY
+                    ) as UntypedFormControl,
+                    [Validators.required]
+                );
+            } else {
+                UserModalHelper.removeValidators(
+                    control.parent.get(
+                        eUserModalForm.START_DATE
+                    ) as UntypedFormControl,
+                    [Validators.required]
+                );
+                UserModalHelper.removeValidators(
+                    control.parent.get(
+                        eUserModalForm.SALARY
+                    ) as UntypedFormControl,
+                    [Validators.required]
+                );
+            }
+
+            return null;
+        };
     }
 }
