@@ -10,16 +10,18 @@
  * Do not edit the class manually.
  */
 import { CommentResponse } from './commentResponse';
-import { LoadStatusResponse } from './loadStatusResponse';
 import { EnumValue } from './enumValue';
-import { LoadStopInfo } from './loadStopInfo';
-import { LoadBrokerInfo } from './loadBrokerInfo';
 import { LoadRequirementsResponse } from './loadRequirementsResponse';
-import { LoadDriverInfo } from './loadDriverInfo';
 import { BillingInfo } from './billingInfo';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
 import { LoadDetails } from './loadDetails';
 import { MilesInfo } from './milesInfo';
+import { BrokerContactResponse } from './brokerContactResponse';
+import { LoadStatusResponse } from './loadStatusResponse';
+import { LoadStopInfo } from './loadStopInfo';
+import { LoadBrokerInfo } from './loadBrokerInfo';
+import { LoadDriverInfo } from './loadDriverInfo';
+import { LoadBillingAdditionalResponse } from './loadBillingAdditionalResponse';
 
 
 export interface LoadListDto { 
@@ -31,8 +33,10 @@ export interface LoadListDto {
     lastStatusPassed?: { [key: string]: number; } | null;
     status?: LoadStatusResponse;
     dispatcher?: CompanyUserShortResponse;
+    companyName?: string | null;
     broker?: LoadBrokerInfo;
     brokers?: Array<LoadBrokerInfo> | null;
+    brokerContact?: BrokerContactResponse;
     loadDetails?: LoadDetails;
     truckId?: number | null;
     trailerId?: number | null;
@@ -43,6 +47,7 @@ export interface LoadListDto {
     totalRate?: number;
     totalAdjustedRate?: number | null;
     additionalBillingRatesTotal?: number | null;
+    additionalBillingRates?: Array<LoadBillingAdditionalResponse> | null;
     advancePay?: number | null;
     driver?: LoadDriverInfo;
     totalDue?: number;

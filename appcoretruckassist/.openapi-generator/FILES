@@ -24,6 +24,7 @@ api/department.service.ts
 api/dispatch.service.ts
 api/driver.service.ts
 api/employmentHistory.service.ts
+api/equipent.service.ts
 api/event.service.ts
 api/file.service.ts
 api/fuel.service.ts
@@ -38,6 +39,7 @@ api/medical.service.ts
 api/miles.service.ts
 api/mvr.service.ts
 api/note.service.ts
+api/notificationDevice.service.ts
 api/owner.service.ts
 api/ownerHistory.service.ts
 api/parking.service.ts
@@ -190,9 +192,11 @@ model/assignGpsDevicesToCompanyCommand.ts
 model/assignGpsDevicesToTrailerCommand.ts
 model/assignGpsDevicesToTruckCommand.ts
 model/assignLoadModalResponse.ts
+model/assignLoadModalV1Response.ts
 model/assignedLoadListResponse.ts
 model/assignedLoadResponse.ts
 model/assignedLoadStopResponse.ts
+model/assignedUnitResponse.ts
 model/authorizationFeedbackResponse.ts
 model/autocompleteSearchLayer.ts
 model/avatarResponse.ts
@@ -234,6 +238,7 @@ model/brokerResponsePagination.ts
 model/brokerShipperContact.ts
 model/brokerShortMobileResponse.ts
 model/brokerShortResponse.ts
+model/brokerSpecParams.ts
 model/byStateReportType.ts
 model/cdlEndorsementResponse.ts
 model/cdlFeedbackResponse.ts
@@ -370,6 +375,7 @@ model/createMedicalCertificateReviewCommand.ts
 model/createMilesStopCommand.ts
 model/createMobileAccountCommand.ts
 model/createMvrAuthReviewCommand.ts
+model/createNotificationDeviceCommand.ts
 model/createOffDutyLocationCommand.ts
 model/createParkingCommand.ts
 model/createPayrollBonusCommand.ts
@@ -501,6 +507,7 @@ model/entityTypeActivityLogResponse.ts
 model/entityTypeNote.ts
 model/entityTypeReview.ts
 model/enumValue.ts
+model/equipmentMainModuleResponse.ts
 model/equipmentMobileResponse.ts
 model/eventModalResponse.ts
 model/eventResponse.ts
@@ -554,6 +561,7 @@ model/fuelledVehicleResponse.ts
 model/fuelledVehicleResponsePagination.ts
 model/getAccountDetailsCommand.ts
 model/getBrokerListResponse.ts
+model/getBrokerListV1Query.ts
 model/getCdlModalResponse.ts
 model/getCommentModalResponse.ts
 model/getCompanyAccountLabelListResponse.ts
@@ -583,6 +591,7 @@ model/getTransactionModalFranchiseStopResponse.ts
 model/getTransactionModalFranchiseStopResponsePagination.ts
 model/getTruckModalResponse.ts
 model/gpsType.ts
+model/groupedDispatchLoadModalResponse.ts
 model/hazardousMaterialResponse.ts
 model/hireApplicantCommand.ts
 model/hosResponse.ts
@@ -654,6 +663,7 @@ model/loadMobileListResponse.ts
 model/loadMobileResponse.ts
 model/loadMobileSortBy.ts
 model/loadModalResponse.ts
+model/loadModalV1Response.ts
 model/loadPaymentPayCommand.ts
 model/loadPaymentPayResponse.ts
 model/loadPossibleStatusesResponse.ts
@@ -1065,6 +1075,7 @@ model/trafficViolationItemReviewResponse.ts
 model/trailerAccidentResponse.ts
 model/trailerAutocompleteModelResponse.ts
 model/trailerDispatchModalResponse.ts
+model/trailerEquipmentResponse.ts
 model/trailerFilterResponse.ts
 model/trailerFuelConsumptionChartResponse.ts
 model/trailerFuelConsumptionResponse.ts
@@ -1092,6 +1103,7 @@ model/truckAccidentResponse.ts
 model/truckAutocompleteModelResponse.ts
 model/truckDispatchModalResponse.ts
 model/truckEngineModelResponse.ts
+model/truckEquipmentResponse.ts
 model/truckExpensesChartResponse.ts
 model/truckExpensesResponse.ts
 model/truckFilterListResponse.ts

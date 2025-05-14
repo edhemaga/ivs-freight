@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // NgRx
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -15,6 +16,7 @@ import {
     tap,
     forkJoin,
     withLatestFrom,
+    filter,
 } from 'rxjs';
 
 // Services
@@ -26,17 +28,26 @@ import * as AccountActions from '@pages/new-account/state/actions/account.action
 
 // Selectors
 import * as AccountSelector from '@pages/new-account/state/selectors/account.selector';
+
 // Components
 import { NewAccountModalComponent } from '@pages/new-account/components/new-account-modal/new-account-modal.component';
 import { NewDeleteAccountModalComponent } from '@pages/new-account/components/new-delete-account-modal/new-delete-account-modal.component';
+import { CardColumnsModalComponent } from '@shared/components/card-columns-modal/card-columns-modal.component';
 
 // Enums
-import { eGeneralActions, eSize } from '@shared/enums';
+import {
+    eGeneralActions,
+    eSharedString,
+    eSize,
+    TableStringEnum,
+} from '@shared/enums';
 
-// Models
+// Interfaces
 import { IMappedAccount } from '../../interfaces/mapped-account.interface';
+import { ICardValueData } from '@shared/interfaces';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+// Configs
+import { AccountCardDataConfig } from '@pages/new-account/pages/account-card/utils/configs/account-card-data.config';
 
 @Injectable()
 export class AccountEffect {
@@ -236,6 +247,52 @@ export class AccountEffect {
                     );
                 }
             )
+        )
+    );
+
+    public openColumnsModal$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AccountActions.openColumnsModal),
+            withLatestFrom(
+                this.store.select(AccountSelector.frontSideDataSelector),
+                this.store.select(AccountSelector.backSideDataSelector)
+            ),
+            switchMap(([_, frontSideData, backSideData]) => {
+                const title = eSharedString.ACCOUNT_CAPITALIZED;
+
+                const action = {
+                    data: {
+                        cardsAllData: AccountCardDataConfig.CARD_ALL_DATA,
+                        front_side: frontSideData,
+                        back_side: backSideData,
+                        numberOfRows: frontSideData.length,
+                        checked: true,
+                    },
+                    title,
+                };
+
+                return from(
+                    this.modalService.openModal(
+                        CardColumnsModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        action
+                    )
+                ).pipe(
+                    filter((result) => !!result),
+                    map((result) =>
+                        AccountActions.setColumnsModalResult({
+                            frontSideData: result.selectedColumns.front_side
+                                .slice(0, result.selectedColumns.numberOfRows)
+                                .map(
+                                    (front: ICardValueData) => front.inputItem
+                                ),
+                            backSideData: result.selectedColumns.back_side
+                                .slice(0, result.selectedColumns.numberOfRows)
+                                .map((back: ICardValueData) => back.inputItem),
+                        })
+                    )
+                );
+            })
         )
     );
 }

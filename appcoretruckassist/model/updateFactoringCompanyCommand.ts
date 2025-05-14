@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PoBoxEntity } from './poBoxEntity';
 import { AddressEntity } from './addressEntity';
 
 
@@ -20,6 +21,6 @@ export interface UpdateFactoringCompanyCommand {
     address?: AddressEntity;
     noticeOfAssigment?: string | null;
     note?: string | null;
-    poBox?: string | null;
+    poBox?: PoBoxEntity;
 }
 

@@ -11,7 +11,7 @@
  */
 
 
-export type MilesStopSortBy = 'UnitNumber' | 'UnitType' | 'Count' | 'Pickup' | 'Delivery' | 'Fuel' | 'Parking' | 'Deadhead' | 'Repair' | 'Towing' | 'Load' | 'FuelGallons' | 'FuelCost' | 'MilesPerGalon' | 'LoadedMiles' | 'EmptyMiles' | 'TotalMiles' | 'Revenue' | 'Deactivated';
+export type MilesStopSortBy = 'UnitNumber' | 'UnitType' | 'Count' | 'Pickup' | 'Delivery' | 'Fuel' | 'Parking' | 'Deadhead' | 'Repair' | 'Towing' | 'Split' | 'Load' | 'ExtraStops' | 'RatePerMile' | 'FuelGallons' | 'FuelCost' | 'MilesPerGalon' | 'LoadedMiles' | 'EmptyMiles' | 'TotalMiles' | 'MilesPerLoad' | 'Revenue' | 'Deactivated';
 
 export const MilesStopSortBy = {
     UnitNumber: 'UnitNumber' as MilesStopSortBy,
@@ -24,13 +24,17 @@ export const MilesStopSortBy = {
     Deadhead: 'Deadhead' as MilesStopSortBy,
     Repair: 'Repair' as MilesStopSortBy,
     Towing: 'Towing' as MilesStopSortBy,
+    Split: 'Split' as MilesStopSortBy,
     Load: 'Load' as MilesStopSortBy,
+    ExtraStops: 'ExtraStops' as MilesStopSortBy,
+    RatePerMile: 'RatePerMile' as MilesStopSortBy,
     FuelGallons: 'FuelGallons' as MilesStopSortBy,
     FuelCost: 'FuelCost' as MilesStopSortBy,
     MilesPerGalon: 'MilesPerGalon' as MilesStopSortBy,
     LoadedMiles: 'LoadedMiles' as MilesStopSortBy,
     EmptyMiles: 'EmptyMiles' as MilesStopSortBy,
     TotalMiles: 'TotalMiles' as MilesStopSortBy,
+    MilesPerLoad: 'MilesPerLoad' as MilesStopSortBy,
     Revenue: 'Revenue' as MilesStopSortBy,
     Deactivated: 'Deactivated' as MilesStopSortBy
 };

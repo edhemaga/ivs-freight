@@ -10,9 +10,11 @@
  * Do not edit the class manually.
  */
 import { LoadDispatcherMobileResponse } from './loadDispatcherMobileResponse';
+import { LoadStopProgressBarMobileResponse } from './loadStopProgressBarMobileResponse';
 import { DispatchShortMobileResponse } from './dispatchShortMobileResponse';
 import { LoadStopMobileShortResponse } from './loadStopMobileShortResponse';
 import { AddressMobileResponse } from './addressMobileResponse';
+import { MilesMobileResponse } from './milesMobileResponse';
 import { DispatchStatusResponse } from './dispatchStatusResponse';
 
 
@@ -24,7 +26,9 @@ export interface DispatchMobileResponse {
     nextStop?: AddressMobileResponse;
     pickup?: LoadStopMobileShortResponse;
     delivery?: LoadStopMobileShortResponse;
+    loadStops?: Array<LoadStopProgressBarMobileResponse> | null;
     dispatcher?: LoadDispatcherMobileResponse;
     dispatch?: DispatchShortMobileResponse;
+    miles?: MilesMobileResponse;
 }
 

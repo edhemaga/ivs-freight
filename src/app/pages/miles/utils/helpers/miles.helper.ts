@@ -1,9 +1,9 @@
 // models
 import { MilesByUnitResponse } from 'appcoretruckassist';
-import { IMilesModel } from '@pages/miles/interface';
+import { IMappedMiles } from '@pages/miles/interfaces';
 
 export class MilesHelper {
-    static milesMapper(miles: MilesByUnitResponse[]): IMilesModel[] {
+    static milesMapper(miles: MilesByUnitResponse[]): IMappedMiles[] {
         return miles.map((mile) => {
             const {
                 id,
@@ -23,17 +23,23 @@ export class MilesHelper {
                 repairPercentage,
                 towingCount,
                 towingPercentage,
+                splitCount,
+                splitPercentage,
                 loadCount,
+                extraStopCount,
+                ratePerMile,
                 fuelTotalGalons,
                 fuelCost,
                 milesPerGalon,
                 loadedMiles,
                 emptyMiles,
                 totalMiles,
+                milesPerLoad,
                 revenue,
+                deactivated,
             } = mile;
 
-            const mappedMile: IMilesModel = {
+            const mappedMile: IMappedMiles = {
                 id,
                 isSelected: false,
                 unit: truck?.truckNumber,
@@ -71,17 +77,17 @@ export class MilesHelper {
                     percent: towingPercentage,
                 },
                 splitCount: {
-                    count: null, // w8 for back,
-                    percent: null, // w8 for back,
+                    count: splitCount,
+                    percent: splitPercentage,
                 },
                 loadCount: {
                     value: loadCount,
                 },
                 loadExtraStops: {
-                    value: null, // w8 for back,
+                    value: extraStopCount,
                 },
                 loadRatePerMile: {
-                    value: null, // w8 for back,
+                    value: ratePerMile,
                 },
                 fuelGalons: {
                     value: fuelTotalGalons,
@@ -100,13 +106,13 @@ export class MilesHelper {
                     value: totalMiles,
                 },
                 milesPerLoad: {
-                    value: null, // w8 for back,
+                    value: milesPerLoad,
                 },
                 revenue: {
                     value: revenue,
                 },
                 dateDeactivated: {
-                    value: null, // w8 for back,
+                    value: deactivated,
                 },
             };
 

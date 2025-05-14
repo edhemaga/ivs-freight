@@ -14,6 +14,7 @@ import { eCommonElement } from '@shared/enums';
 
 // Interface
 import { ITableColumn } from '@shared/components/new-table/interfaces';
+import { ICardValueData } from '@shared/interfaces';
 
 // Modal
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -65,6 +66,14 @@ export const setToolbarDropdownMenuColumnsActive = createAction(
 export const toggleColumnVisibility = createAction(
     AccountStoreConstants.ACTION_TOGGLE_COLUMN_VISIBILITY,
     props<{ columnKey: string; isActive: boolean }>()
+);
+
+export const toggleCardFlipViewMode = createAction(
+    AccountStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE
+);
+
+export const openColumnsModal = createAction(
+    AccountStoreConstants.ACTION_OPEN_COLUMNS_MODAL
 );
 //#endregion
 
@@ -158,4 +167,12 @@ export const onDeleteAccountSuccess = createAction(
 export const onDeleteAccountError = createAction(
     AccountStoreConstants.ACTION_ON_DELETE_ACCOUNT_ERROR,
     props<{ error: Error }>()
+);
+
+export const setColumnsModalResult = createAction(
+    AccountStoreConstants.ACTION_SET_COLUMNS_MODAL_RESULT,
+    props<{
+        frontSideData: ICardValueData[];
+        backSideData: ICardValueData[];
+    }>()
 );

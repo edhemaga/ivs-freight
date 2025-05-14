@@ -67,7 +67,7 @@ import {
     IMinimalListFilters,
     IStateFilters,
 } from '@shared/interfaces';
-import { IMilesModel, IMilesTabResults } from '@pages/miles/interface';
+import { IMappedMiles, IMilesTabResults } from '@pages/miles/interfaces';
 
 @Injectable({
     providedIn: 'root',
@@ -78,7 +78,7 @@ export class MilesStoreService {
         private router: Router
     ) {}
 
-    public miles$: Observable<IMilesModel[]> = this.store.pipe(
+    public miles$: Observable<IMappedMiles[]> = this.store.pipe(
         select(selectMilesItems)
     );
     public activeViewMode$: Observable<string> = this.store.pipe(
@@ -266,7 +266,7 @@ export class MilesStoreService {
         });
     }
 
-    public dispatchSelectUnit(unit: IMilesModel): void {
+    public dispatchSelectUnit(unit: IMappedMiles): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_UNIT_SELECTED,
             unit,

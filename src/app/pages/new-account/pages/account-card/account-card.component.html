@@ -1,1 +1,92 @@
-<p>account-card works!</p>
+@let store =
+    {
+        account: accountStoreService.accountListSelector$ | async,
+        tabResultsSelector:
+            accountStoreService.selectedTabCountSelector$ | async,
+    };
+
+@if (store.account) {
+    <ca-table-card-view
+        [viewData]="store.account"
+        [frontSide]="frontSide"
+        [backSide]="backSide"
+        [cardTitle]="'name'"
+        [totalDataCount]="store.tabResultsSelector"
+        (showMore)="onShowMoreClick()"
+    ></ca-table-card-view>
+
+    <ng-template #frontSide let-data="data">
+        @for (item of cardData.FRONT_SIDE_DATA; track $index) {
+            <ng-container
+                *ngTemplateOutlet="cardTemplate; context: { item, data }"
+            ></ng-container>
+        }
+    </ng-template>
+
+    <ng-template #backSide let-data="data">
+        @for (item of cardData.BACK_SIDE_DATA; track $index) {
+            <ng-container
+                *ngTemplateOutlet="cardTemplate; context: { item, data }"
+            ></ng-container>
+        }
+    </ng-template>
+
+    <ng-template #cardTemplate let-item="item" let-data="data">
+        @let template =
+            item.template === eTableCardViewData.PASSWORD
+                ? password
+                : textWithTitle;
+
+        @let text = data | getNestedValue: item.key;
+
+        <ng-container
+            *ngTemplateOutlet="
+                template;
+                context: {
+                    title: item.title,
+                    format: item.format,
+                    text,
+                }
+            "
+        ></ng-container>
+    </ng-template>
+
+    <ng-template
+        #textWithTitle
+        let-title="title"
+        let-text="text"
+        let-format="format"
+    >
+        <div class="d-flex flex-column px-1 gap-1">
+            <div class="text-size-11 text-color-black ta-font-bold">
+                {{ title }}
+            </div>
+
+            <div class="text-size-14 text-color-black-2">
+                @if (format === eTableCardViewData.DATE) {
+                    {{ text | formatDateP }}
+                } @else {
+                    {{
+                        text && text !== eStringPlaceholder.EMPTY
+                            ? text
+                            : eStringPlaceholder.FORWARD_SLASH
+                    }}
+                }
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #password let-title="title" let-text="text">
+        <div class="d-flex flex-column px-1">
+            <div class="text-size-11 text-color-black ta-font-bold">
+                {{ title }}
+            </div>
+            <div class="h-22 overflow-hidden">
+                <app-ta-password-account-hidden-characters
+                    [passwordOrAccount]="text"
+                    [isPassword]="true"
+                ></app-ta-password-account-hidden-characters>
+            </div>
+        </div>
+    </ng-template>
+}

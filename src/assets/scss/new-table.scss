@@ -1,80 +1,7 @@
 @import 'src/theme/variables';
 
 .new-table {
-    &--row {
-        &-heading {
-            &-inner {
-                width: calc(100% - 9px);
-
-                &.aligned-right {
-                    width: calc(100% - 4px);
-                }
-            }
-
-            // hover
-            &-group .hover-element,
-            .hover-element {
-                width: calc(100% - 6px);
-            }
-
-            // sort
-            &-sortable {
-                &:hover {
-                    .new-table--row-heading-arrow {
-                        display: flex !important;
-                    }
-                }
-            }
-
-            // resize
-            .resize-handler {
-                &:hover {
-                    transform: scaleX(2);
-                }
-
-                cursor:
-                    url('/assets/svg/common/resize-arrow-outline.svg') 8 32,
-                    col-resize;
-            }
-        }
-
-        // documents drawer
-        &-documents-drawer-row {
-            max-width: 0;
-
-            &.active {
-                max-width: 100%;
-
-                .new-table--row-documents-drawer-row-tag {
-                    visibility: visible;
-                }
-            }
-
-            &-tag {
-                visibility: hidden;
-            }
-        }
-    }
-
-    &--pinned-left,
-    &--pinned-right {
-        position: sticky;
-    }
-
-    &--scroll-border {
-        height: calc(100% - 18px);
-
-        &-left {
-            background-image: linear-gradient(to right, $bw2, $bw-10);
-        }
-
-        &-right {
-            background-image: linear-gradient(to right, $bw-10, $bw2);
-        }
-    }
-
-    &--toolbar-container,
-    &--table-container {
+    &--toolbar-container {
         max-width: calc(100vw - 85px);
     }
 
@@ -158,23 +85,4 @@
             }
         }
     }
-}
-
-// SEARCH HIGHLIGHT
-.table-highlight-text-0 {
-    color: $special-filter-green;
-    background: $special-filter-green-bg;
-    @include text-selection($special-filter-green);
-}
-
-.table-highlight-text-1 {
-    color: $ta-yellow-2;
-    background: $special-filter-orange-bg;
-    @include text-selection($ta-yellow-2);
-}
-
-.table-highlight-text-2 {
-    color: $special-filter-purple-1;
-    background: $special-filter-purple-bg;
-    @include text-selection($special-filter-purple-1);
 }

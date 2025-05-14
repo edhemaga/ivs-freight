@@ -30,7 +30,11 @@ export interface MilesByUnitResponse {
     deadHeadPercentage?: number;
     towingCount?: number;
     towingPercentage?: number;
+    splitCount?: number;
+    splitPercentage?: number;
     loadCount?: number;
+    extraStopCount?: number;
+    ratePerMile?: number | null;
     revenue?: number | null;
     fuelTotalGalons?: number | null;
     fuelCost?: number | null;
@@ -38,5 +42,7 @@ export interface MilesByUnitResponse {
     loadedMiles?: number | null;
     emptyMiles?: number | null;
     totalMiles?: number | null;
+    milesPerLoad?: number | null;
+    deactivated?: string | null;
 }
 

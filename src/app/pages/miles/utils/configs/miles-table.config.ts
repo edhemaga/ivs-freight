@@ -4,8 +4,13 @@ import { MilesStopSortBy } from 'appcoretruckassist';
 // interfaces
 import { ITableColumn } from '@shared/components/new-table/interfaces';
 
+// enums
+import { eMileTabs } from '@pages/miles/enums';
+
 export class MilesTableColumnsConfig {
-    static getTableColumns(): ITableColumn[] {
+    static getTableColumns(selectedTab: eMileTabs): ITableColumn[] {
+        const isInactiveTruckList = selectedTab === eMileTabs.INACTIVE;
+
         return [
             MilesTableColumnsConfig.unitColumn,
             MilesTableColumnsConfig.truckTypeColumn,
@@ -14,7 +19,9 @@ export class MilesTableColumnsConfig {
             MilesTableColumnsConfig.fuelGroupColumn,
             MilesTableColumnsConfig.milesGroupColumn,
             MilesTableColumnsConfig.revenueGroupColumn,
-            MilesTableColumnsConfig.dateDeactivatedColumn,
+            ...(isInactiveTruckList
+                ? [MilesTableColumnsConfig.dateDeactivatedColumn]
+                : []),
         ];
     }
 
@@ -171,6 +178,7 @@ export class MilesTableColumnsConfig {
                 isResizable: true,
                 isChecked: true,
                 hasSort: true,
+                sortName: MilesStopSortBy.Split,
             },
         ],
     };
@@ -206,6 +214,7 @@ export class MilesTableColumnsConfig {
                 isResizable: true,
                 isChecked: false,
                 hasSort: true,
+                sortName: MilesStopSortBy.ExtraStops,
             },
             {
                 id: 14,
@@ -218,6 +227,7 @@ export class MilesTableColumnsConfig {
                 isResizable: true,
                 isChecked: true,
                 hasSort: true,
+                sortName: MilesStopSortBy.RatePerMile,
             },
         ],
     };
@@ -327,6 +337,7 @@ export class MilesTableColumnsConfig {
                 isResizable: true,
                 isChecked: false,
                 hasSort: true,
+                sortName: MilesStopSortBy.MilesPerLoad,
             },
         ],
     };

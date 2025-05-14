@@ -1,5 +1,5 @@
 <div class="custom-checkbox-card">
-    <div class="divider"></div>
+    <div class="divider {{ dividerClass }}"></div>
     <div
         class="d-flex align-items-center checkbox-card-header"
         [ngClass]="{
@@ -8,7 +8,7 @@
                 : getSuperControl.value,
             'justify-content-between': !subText,
             'checkbox-disabled': isCheckboxDisabled,
-            'clear-horizontal-padding': clearHorizontalPadding
+            'clear-horizontal-padding': clearHorizontalPadding,
         }"
     >
         <app-ta-checkbox
@@ -48,7 +48,7 @@
                         visible: reverseLogic
                             ? !getSuperControl.value
                             : getSuperControl.value,
-                        rotate: reverseLogic ? _isCardOpen : !_isCardOpen
+                        rotate: reverseLogic ? _isCardOpen : !_isCardOpen,
                     }"
                     (click)="onToggleCard($event)"
                 ></svg-icon>
@@ -64,7 +64,7 @@
         [ngStyle]="animationMarginParams"
         [@showHideCardBody]="{
             value: _isCardOpen?.toString(),
-            params: animationMarginParams
+            params: animationMarginParams,
         }"
     >
         <ng-content select="[body]"></ng-content>
@@ -78,7 +78,7 @@
         [ngStyle]="animationMarginParams"
         [@showHideCardBodyFalsy]="{
             value: _isCardOpen?.toString(),
-            params: animationMarginParams
+            params: animationMarginParams,
         }"
     >
         <ng-content select="[bodyFalse]"></ng-content>

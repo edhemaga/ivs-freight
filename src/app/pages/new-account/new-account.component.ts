@@ -18,6 +18,7 @@ import { ModalService } from '@shared/services';
 
 // Components
 import { AccountTableComponent } from '@pages/new-account/pages/account-table/account-table.component';
+import { AccountCardComponent } from '@pages/new-account/pages/account-card/account-card.component';
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
 import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -52,6 +53,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         SvgIconComponent,
         CaCheckboxSelectedCountComponent,
         TaAppTooltipV2Component,
+        AccountCardComponent,
     ],
     templateUrl: './new-account.component.html',
     styleUrl: './new-account.component.scss',
@@ -98,6 +100,14 @@ export class NewAccountComponent {
     //     );
     // }
 
+    private handleFlipAllCards(): void {
+        this.accountStoreService.dispatchToggleCardFlipViewMode();
+    }
+
+    private openColumnsModal(): void {
+        this.accountStoreService.dispatchOpenColumnsModal();
+    }
+
     public onSearchQueryChange(query: string[]): void {
         this.accountStoreService.dispatchSearchChange(query);
     }
@@ -143,6 +153,12 @@ export class NewAccountComponent {
                 break;
             case eDropdownMenuColumns.COLUMNS_BACK_TYPE:
                 this.setToolbarDropdownMenuColumnsActive(false);
+                break;
+            case eDropdownMenuColumns.FLIP_ALL_CARDS_TYPE:
+                this.handleFlipAllCards();
+                break;
+            case eDropdownMenuColumns.COLUMNS_CARD_TYPE:
+                this.openColumnsModal();
                 break;
             default:
                 this.toggleColumnVisibility(type, isActive);
