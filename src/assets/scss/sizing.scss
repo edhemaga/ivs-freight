@@ -8,6 +8,7 @@ $sizes-height: (
     18,
     22,
     24,
+    25,
     26,
     30,
     34,
@@ -16,12 +17,13 @@ $sizes-height: (
     42,
     44,
     52,
+    202,
     486,
     800,
     960
 );
 
-// DO NOT USE 25, 33, ,50,75,100. They are bootstrap width classes
+// DO NOT USE 25, 33, ,50,75,100. They are bootstrap width classes (or create separate class, check down below)
 $sizes-width: (
     2,
     7,
@@ -108,7 +110,19 @@ $sizes-width: (
     &-40p {
         width: 40%;
     }
+    &-62p {
+        width: 62%;
+    }
+    &-80p {
+        width: 80%;
+    }
     &-90p {
         width: 90%;
+    }
+}
+
+.h {
+    &-25p {
+        height: 25px;
     }
 }

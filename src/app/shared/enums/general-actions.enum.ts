@@ -26,6 +26,14 @@ export enum eGeneralActions {
     PREVIOUS = 'Previous',
     PREVIOUS_LOWERCASE = 'previous',
 
+    EXPAND = 'Expand',
+    EXPAND_COLLAPSE = 'expand-collapse',
+    COLLAPSE = 'Collapse',
+    DOWNLOAD_ALL = 'Download All',
+    TAG = 'tag',
+    REMOVE = 'Remove',
+    SELECT = 'Select',
+
     SELECT_ALL = 'Select All',
     SELECT_REMAINING = 'Select Remaining',
     CLEAR_SELECTED = 'Clear Selected',

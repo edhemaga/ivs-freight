@@ -59,8 +59,9 @@ export class LoadHelper {
                 createdAt,
                 dateCreated,
                 updatedAt,
-                note,
+                fileCount,
                 comments,
+                note,
             } = load;
 
             const requirementLength =
@@ -97,7 +98,6 @@ export class LoadHelper {
                     broker?.phoneExt ?? brokerContact?.extensionPhone,
                 referenceNumber:
                     loadDetails?.referenceNumber ?? referenceNumber,
-                comments,
                 commodity:
                     loadDetails?.generalCommodityName ?? generalCommodity?.name,
                 weight: {
@@ -173,6 +173,8 @@ export class LoadHelper {
                 dateEdited: {
                     value: updatedAt,
                 },
+                fileCount,
+                comments,
                 note,
                 tableDropdownContent,
             };

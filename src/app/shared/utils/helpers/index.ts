@@ -18,3 +18,4 @@ export * from './open-hours.helper';
 export * from './table-view.helper';
 export * from './user.helper';
 export * from './card-default-values.helper';
+export * from './tags.helper';

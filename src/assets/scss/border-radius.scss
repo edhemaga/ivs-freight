@@ -27,3 +27,22 @@
         border-radius: 60px;
     }
 }
+
+.br-t {
+    &-3 {
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+    }
+}
+
+.br-b {
+    &-0 {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    &-3 {
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+    }
+}

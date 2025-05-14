@@ -4,11 +4,13 @@ import {
     ITableColumn,
     ITableReorderAction,
     ITableResizeAction,
+    ITableTagAction,
 } from '@shared/components/new-table/interfaces';
 
 // Models
 import {
     DispatcherFilterResponse,
+    FileResponse,
     LoadListLoadStopResponse,
     LoadListResponse,
     LoadMinimalListResponse,
@@ -27,7 +29,7 @@ import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
 
 // Helper
 import { LoadHelper, LoadStoreHelper } from '@pages/new-load/utils/helpers';
-import { FilterHelper } from '@shared/utils/helpers';
+import { FilterHelper, TagsHelper } from '@shared/utils/helpers';
 import {
     DropdownMenuColumnsActionsHelper,
     DropdownMenuToolbarContentHelper,
@@ -479,7 +481,7 @@ export const updateLoadStatusSuccessResult = function (
     let searchResultsCount = state.searchResultsCount;
 
     if (statusType?.name === selectedTab) {
-        let loadUpdated: IMappedLoad = (<IMappedLoad[]>loadsClone).find(
+        const loadUpdated: IMappedLoad = (<IMappedLoad[]>loadsClone).find(
             (_) => _.id === id
         );
 
@@ -527,5 +529,60 @@ export function setLoadPickupDeliveryStopsData(
             loadId,
             ...stopsData,
         },
+    };
+}
+
+export function setLoadFiles(
+    state: ILoadState,
+    files: FileResponse[],
+    loadId: number
+): ILoadState {
+    const tags = TagsHelper.createDocumentsDrawerTags(files);
+
+    const loads = state.loads.map((load) =>
+        load.id === loadId
+            ? {
+                  ...load,
+                  tableAttachments: files,
+                  tableAttachmentTags: tags,
+              }
+            : load
+    );
+
+    return {
+        ...state,
+        loads,
+    };
+}
+
+export function filterLoadFiles(
+    state: ILoadState,
+    tagAction: ITableTagAction
+): ILoadState {
+    const { rowId, tagId } = tagAction;
+
+    const loads = state.loads.map((load) => {
+        if (load.id === rowId) {
+            const { tableAttachments, tableAttachmentTags } = load;
+
+            const { tags, files } = TagsHelper.filterTagsAndFiles(
+                tableAttachmentTags,
+                tableAttachments,
+                tagId
+            );
+
+            return {
+                ...load,
+                tableAttachments: files,
+                tableAttachmentTags: tags,
+            };
+        }
+
+        return load;
+    });
+
+    return {
+        ...state,
+        loads,
     };
 }

@@ -11,6 +11,7 @@ import { LoadStoreConstants } from '@pages/new-load/utils/constants';
 // Models
 import {
     DispatcherFilterResponse,
+    FileResponse,
     LoadListLoadStopResponse,
     LoadListResponse,
     LoadMinimalListResponse,
@@ -28,6 +29,7 @@ import {
     ITableColumn,
     ITableReorderAction,
     ITableResizeAction,
+    ITableTagAction,
 } from '@shared/components/new-table/interfaces';
 
 // Ca components
@@ -300,6 +302,24 @@ export const onGetLoadStopsByIdSuccess = createAction(
     props<{ loadId: number; stopsData: LoadListLoadStopResponse }>()
 );
 //#endregion
+
+//#region Files
+export const onGetLoadFiles = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_FILES,
+    props<{
+        files: FileResponse[];
+        loadId: number;
+    }>()
+);
+
+export const onFilterLoadFiles = createAction(
+    LoadStoreConstants.ACTION_FILTER_LOAD_FILES,
+    props<{
+        tagAction: ITableTagAction;
+    }>()
+);
+
+//#endregion Files
 
 //#region Comments
 export const onAddLoadComment = createAction(

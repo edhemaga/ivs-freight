@@ -201,6 +201,10 @@
             @include svg-hover($bw6-2);
         }
 
+        &-bw-9 {
+            @include svg-hover($bw6-2);
+        }
+
         &-trash-red {
             @include svg-hover($settings-trash-red);
         }

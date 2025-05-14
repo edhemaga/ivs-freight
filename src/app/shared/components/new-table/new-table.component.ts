@@ -9,6 +9,7 @@ import {
     Output,
     QueryList,
     TemplateRef,
+    ViewChild,
     ViewChildren,
 } from '@angular/core';
 import {
@@ -26,6 +27,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
 import { CaShowMoreComponent } from 'ca-components';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -54,6 +56,7 @@ import {
     ITableColumn,
     ITableReorderAction,
     ITableResizeAction,
+    ITableTagAction,
 } from '@shared/components/new-table/interfaces';
 import { ICustomScrollEvent } from '@shared/components/ta-custom-scrollbar/interfaces';
 
@@ -75,6 +78,7 @@ import { TableScrollHelper } from '@shared/components/new-table/utils/helpers';
         TaAppTooltipV2Component,
         TaCustomScrollbarComponent,
         CaShowMoreComponent,
+        TaUploadFilesComponent,
 
         // pipes
         TableColumnClassPipe,
@@ -96,16 +100,22 @@ export class NewTableComponent<T> {
     @ViewChildren('scrollableColumns')
     scrollableColumns!: QueryList<ElementRef>;
 
+    @ViewChild('documents') documents: TaUploadFilesComponent;
+
     @Input() set columns(value: ITableColumn[]) {
         this.processColumns(value);
     }
 
+    @Input() set isDownloadAllFilesAction(value: ITableColumn[]) {
+        if (value) this.documents.downloadAllFiles();
+    }
+
     @Input() rows: T[] = [];
+    @Input() documentsDrawerActiveRowId?: number;
     @Input() isTableLocked: boolean;
     @Input() totalDataCount: number;
     @Input() headerTemplates: { [key: string]: TemplateRef<T> } = {};
     @Input() templates: { [key: string]: TemplateRef<T> } = {};
-    @Input() expandedRows: Set<number> = new Set([]);
 
     @Output() onColumnSort: EventEmitter<ITableColumn> = new EventEmitter();
     @Output() onColumnPin: EventEmitter<ITableColumn> = new EventEmitter();
@@ -115,12 +125,16 @@ export class NewTableComponent<T> {
     @Output() onColumnReorder: EventEmitter<ITableReorderAction> =
         new EventEmitter();
     @Output() onShowMore: EventEmitter<boolean> = new EventEmitter();
+    @Output() onDocumentsDrawerTag: EventEmitter<ITableTagAction> =
+        new EventEmitter();
 
     // columns
     public leftPinnedColumns: ITableColumn[] = [];
     public leftPinnedDisabledColumns: ITableColumn[] = [];
     public mainColumns: ITableColumn[] = [];
     public rightPinnedColumns: ITableColumn[] = [];
+    public rightPinnedDocumentsDrawerColumns: ITableColumn[] = [];
+
     public hasActiveLeftPinnedColumns: boolean = false;
     public hasActiveRightPinnedColumns: boolean = false;
 
@@ -130,6 +144,7 @@ export class NewTableComponent<T> {
 
     public isResize: boolean = false;
     public isReorder: boolean = false;
+    public isTagsRowExpanded: boolean = false;
 
     // enums
     public ePosition = ePosition;
@@ -160,7 +175,13 @@ export class NewTableComponent<T> {
         );
 
         this.rightPinnedColumns = columns.filter(
-            (col) => col.pinned === ePosition.RIGHT
+            (col) =>
+                col.pinned === ePosition.RIGHT && !col.isDocumentsDrawerColumn
+        );
+
+        this.rightPinnedDocumentsDrawerColumns = columns.filter(
+            (col) =>
+                col.pinned === ePosition.RIGHT && col.isDocumentsDrawerColumn
         );
 
         this.mainColumns = columns.filter((col) => !col.pinned);
@@ -172,6 +193,7 @@ export class NewTableComponent<T> {
         this.hasActiveLeftPinnedColumns =
             !!this.leftPinnedColumns?.length ||
             !!this.leftPinnedDisabledColumns?.length;
+
         this.hasActiveRightPinnedColumns = !!this.rightPinnedColumns?.length;
 
         this.leftPinnedBorderWidth =
@@ -179,6 +201,7 @@ export class NewTableComponent<T> {
                 ...this.leftPinnedDisabledColumns,
                 ...this.leftPinnedColumns,
             ]) + 8;
+
         this.rightPinnedBorderWidth =
             TableScrollHelper.getTotalColumnWidth([
                 ...this.rightPinnedColumns,
@@ -253,6 +276,15 @@ export class NewTableComponent<T> {
         this.onShowMore.emit();
     }
 
+    public onDocumentsDrawerAction(
+        action: string,
+        tagAction?: ITableTagAction
+    ): void {
+        action === eGeneralActions.EXPAND_COLLAPSE
+            ? (this.isTagsRowExpanded = !this.isTagsRowExpanded)
+            : this.onDocumentsDrawerTag.emit(tagAction);
+    }
+
     public onHorizontalScroll(scrollEvent: ICustomScrollEvent): void {
         if (scrollEvent.eventAction === eCustomScroll.SCROLLING) {
             let isMaxScroll = false;
@@ -294,10 +326,5 @@ export class NewTableComponent<T> {
                 this.isRightScrollLineShown = false;
             } else this.isRightScrollLineShown = true;
         }
-    }
-
-    //TODO documents drawer
-    public isRowExpanded(rowId: number): boolean {
-        return this.expandedRows?.has(rowId);
     }
 }

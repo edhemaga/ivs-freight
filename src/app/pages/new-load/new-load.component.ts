@@ -127,7 +127,7 @@ export class NewLoadComponent<T> {
         this.loadStoreService.onSelectAll(action);
     }
 
-    public onToolbarDropdownMenuActions<T>(action: TableCardBodyActions<T>) {
+    public onToolbarDropdownMenuActions(action: TableCardBodyActions<T>) {
         const { type, isActive } = action;
         switch (type) {
             case eDropdownMenuColumns.OPEN_TYPE:

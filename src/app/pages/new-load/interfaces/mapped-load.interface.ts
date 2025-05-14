@@ -8,12 +8,13 @@ import {
     TrailerTypeResponse,
     DriverMinimalResponse,
     LoadStopResponse,
+    FileResponse,
 } from 'appcoretruckassist';
 import { LoadDelivery, LoadPickup } from '@pages/load/pages/load-table/models';
 
 // interfaces
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { ISingleValue } from '@shared/interfaces';
+import { DocumentsDrawerTag, ISingleValue } from '@shared/interfaces';
 import { IComment } from 'ca-components';
 
 export interface IMappedLoad {
@@ -24,7 +25,6 @@ export interface IMappedLoad {
     loadType: EnumValue;
     dispatcher: CompanyUserShortResponse;
     companyName: string;
-    comments: IComment[];
     brokerBusinessName: string;
     brokerContact: string;
     brokerPhone: string;
@@ -68,6 +68,10 @@ export interface IMappedLoad {
     datePaid: ISingleValue;
     dateCreated: ISingleValue;
     dateEdited: ISingleValue;
+    fileCount: number;
+    comments: IComment[];
     note: string;
     tableDropdownContent: IDropdownMenuItem[];
+    tableAttachments?: FileResponse[];
+    tableAttachmentTags?: DocumentsDrawerTag[];
 }

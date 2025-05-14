@@ -71,6 +71,11 @@ export class LoadStoreConstants {
     public static ACTION_ON_DELETE_LOAD_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_ON_DELETE_LOAD_SUCCESS`;
     //#endregion
 
+    //#region Files
+    public static ACTION_GET_LOAD_FILES = `${this.COMPONENT_NAME_KEY} ACTION_GET_LOAD_FILES`;
+    public static ACTION_FILTER_LOAD_FILES = `${this.COMPONENT_NAME_KEY} ACTION_FILTER_LOAD_FILES`;
+    //#endregion Files
+
     //#region Comments
     public static ACTION_ON_COMMENT_ADD = `${this.COMPONENT_NAME_KEY} ACTION_ON_COMMENT_ADD`;
     public static ACTION_ON_COMMENT_ADD_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_ON_COMMENT_ADD_SUCCESS`;
@@ -83,7 +88,7 @@ export class LoadStoreConstants {
     public static ACTION_ON_COMMENT_EDIT = `${this.COMPONENT_NAME_KEY} ACTION_ON_COMMENT_EDIT`;
     public static ACTION_ON_COMMENT_EDIT_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_ON_COMMENT_EDIT_SUCCESS`;
     public static ACTION_ON_COMMENT_EDIT_ERROR = `${this.COMPONENT_NAME_KEY} ACTION_ON_COMMENT_EDIT_ERROR`;
-    //#endregion
+    //#endregion Comments
 
     //#region Get Load Pickup Delivery Stops
     public static ACTION_GET_LOAD_STOPS_LIST = `${this.COMPONENT_NAME_KEY} ACTION_GET_LOAD_STOPS_LIST`;

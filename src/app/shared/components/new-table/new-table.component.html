@@ -14,7 +14,9 @@
         <div>
             <!-- Header -->
 
-            <div class="d-flex p-x-8 prevent-text-selection new-table--header">
+            <div
+                class="d-flex p-l-8 p-r-4 prevent-text-selection new-table--header"
+            >
                 <!-- Pinned Left Disabled Columns -->
 
                 <div class="d-flex background-inherit left-0 p-b-6">
@@ -165,125 +167,119 @@
                     "
                 ></div>
 
+                <!-- Rows -->
+
                 @for (row of rows; track row.id) {
-                    <div
-                        class="d-flex align-items-center background-white p-x-4 br-3 m-b-2 scrollable-columns"
-                    >
-                        @if (row) {
-                            <div
-                                class="d-flex align-items-center p-l-4 br-3 p-y-1 m-t-4 m-b-4 h-26 mw-100"
-                                [class]="
-                                    row.isSelected
-                                        ? 'background-light-grey'
-                                        : 'background-hover-bw2'
-                                "
-                            >
-                                <!-- Pinned Left Disabled Columns -->
-
+                    @if (documentsDrawerActiveRowId === row.id) {
+                        <ng-container
+                            *ngTemplateOutlet="
+                                documentsDrawerTemplate;
+                                context: {
+                                    row,
+                                }
+                            "
+                        ></ng-container>
+                    } @else {
+                        <div
+                            class="d-flex align-items-center background-white p-x-4 br-3 m-b-2 scrollable-columns"
+                        >
+                            @if (row) {
                                 <div
-                                    class="d-flex align-items-center background-inherit left-0"
+                                    class="d-flex align-items-center p-l-4 br-3 p-y-1 m-t-4 m-b-4 h-26 mw-100"
+                                    [class]="
+                                        row.isSelected
+                                            ? 'background-light-grey'
+                                            : 'background-hover-bw2'
+                                    "
                                 >
-                                    @for (
-                                        column of leftPinnedDisabledColumns;
-                                        track column.key
-                                    ) {
-                                        <ng-container
-                                            *ngTemplateOutlet="
-                                                cellTemplate;
-                                                context: {
-                                                    column,
-                                                    row,
-                                                }
-                                            "
-                                        ></ng-container>
-                                    }
-                                </div>
+                                    <!-- Pinned Left Disabled Columns -->
 
-                                <!-- Pinned Left Columns -->
+                                    <div
+                                        class="d-flex align-items-center background-inherit left-0"
+                                    >
+                                        @for (
+                                            column of leftPinnedDisabledColumns;
+                                            track column.key
+                                        ) {
+                                            <ng-container
+                                                *ngTemplateOutlet="
+                                                    cellTemplate;
+                                                    context: {
+                                                        column,
+                                                        row,
+                                                    }
+                                                "
+                                            ></ng-container>
+                                        }
+                                    </div>
 
-                                <div
-                                    class="d-flex align-items-center background-inherit left-0 new-table--pinned-left"
-                                >
-                                    @for (
-                                        column of leftPinnedColumns;
-                                        track column.key
-                                    ) {
-                                        <ng-container
-                                            *ngTemplateOutlet="
-                                                cellTemplate;
-                                                context: {
-                                                    column,
-                                                    row,
-                                                }
-                                            "
-                                        ></ng-container>
-                                    }
-                                </div>
+                                    <!-- Pinned Left Columns -->
 
-                                <!-- Main Columns -->
+                                    <div
+                                        class="d-flex align-items-center background-inherit left-0 new-table--pinned-left"
+                                    >
+                                        @for (
+                                            column of leftPinnedColumns;
+                                            track column.key
+                                        ) {
+                                            <ng-container
+                                                *ngTemplateOutlet="
+                                                    cellTemplate;
+                                                    context: {
+                                                        column,
+                                                        row,
+                                                    }
+                                                "
+                                            ></ng-container>
+                                        }
+                                    </div>
 
-                                <div
-                                    #scrollableColumns
-                                    class="d-flex align-items-center not-pined-columns overflow-hidden scrollable-columns p-l-6"
-                                >
-                                    @for (
-                                        column of mainColumns;
-                                        track column.key
-                                    ) {
-                                        <ng-container
-                                            *ngTemplateOutlet="
-                                                cellTemplate;
-                                                context: {
-                                                    column,
-                                                    row,
-                                                }
-                                            "
-                                        ></ng-container>
-                                    }
-                                </div>
+                                    <!-- Main Columns -->
 
-                                <!-- Pinned Right Columns -->
+                                    <div
+                                        #scrollableColumns
+                                        class="d-flex align-items-center p-l-6 not-pined-columns overflow-hidden scrollable-columns"
+                                    >
+                                        @for (
+                                            column of mainColumns;
+                                            track column.key
+                                        ) {
+                                            <ng-container
+                                                *ngTemplateOutlet="
+                                                    cellTemplate;
+                                                    context: {
+                                                        column,
+                                                        row,
+                                                    }
+                                                "
+                                            ></ng-container>
+                                        }
+                                    </div>
 
-                                <div
-                                    class="d-flex align-items-center background-inherit right-0 br-3 new-table--pinned-right"
-                                >
-                                    @for (
-                                        column of rightPinnedColumns;
-                                        track column.key
-                                    ) {
-                                        <ng-container
-                                            *ngTemplateOutlet="
-                                                cellTemplate;
-                                                context: {
-                                                    column,
-                                                    row,
-                                                }
-                                            "
-                                        ></ng-container>
-                                    }
-                                </div>
-                            </div>
+                                    <!-- Pinned Right Columns -->
 
-                            <!-- Expanded Row -->
-
-                            @if (isRowExpanded(row.id)) {
-                                <div
-                                    class="background-light-grey p-x-8 p-y-8 m-b-2 br-3 pos-relative expanded-row"
-                                >
-                                    @if (templates['expandedRow']) {
-                                        <ng-container
-                                            [ngTemplateOutlet]="
-                                                templates['expandedRow']
-                                            "
-                                            [ngTemplateOutletContext]="{
-                                                data: row,
-                                            }"
-                                        ></ng-container>
-                                    }
+                                    <div
+                                        class="d-flex align-items-center background-inherit right-0 br-3 new-table--pinned-right"
+                                    >
+                                        @for (
+                                            column of rightPinnedColumns;
+                                            track column.key
+                                        ) {
+                                            <ng-container
+                                                *ngTemplateOutlet="
+                                                    cellTemplate;
+                                                    context: {
+                                                        column,
+                                                        row,
+                                                    }
+                                                "
+                                            ></ng-container>
+                                        }
+                                    </div>
                                 </div>
                             }
-                        }
-                    </div>
+                        </div>
+                    }
                 }
 
                 <!-- Footer -->
@@ -301,6 +297,8 @@
 </app-ta-custom-scrollbar>
 
 <!-- Templates -->
+
+<!-- #region COLUMN TEMPLATE -->
 
 <ng-template #columnTemplate let-column="column" let-nextColumn="nextColumn">
     @let isGroupAlignedRight = column.isAlignedRight;
@@ -340,28 +338,30 @@
                 @let hasDoubleHeightBorder =
                     _lastColumn && !!nextColumn?.columns;
 
-                <div
-                    class="d-flex reorder-container"
-                    cdkDrag
-                    [cdkDragDisabled]="isReorderDisabled || !column.label"
-                    (cdkDragStarted)="onReorderStart()"
-                >
-                    <ng-container
-                        *ngTemplateOutlet="
-                            columnDisplay;
-                            context: {
-                                column: _column,
-                                groupColumn: column,
-                                hasLabelTop,
-                                isGroup: true,
-                                isLastInGroup: _lastColumn,
-                                isGroupAlignedRight,
-                                hasDoubleHeightBorder,
-                                isGroupHeadingHover,
-                            }
-                        "
-                    ></ng-container>
-                </div>
+                @if (_column.isChecked) {
+                    <div
+                        class="d-flex reorder-container"
+                        cdkDrag
+                        [cdkDragDisabled]="isReorderDisabled || !column.label"
+                        (cdkDragStarted)="onReorderStart()"
+                    >
+                        <ng-container
+                            *ngTemplateOutlet="
+                                columnDisplay;
+                                context: {
+                                    column: _column,
+                                    groupColumn: column,
+                                    hasLabelTop,
+                                    isGroup: true,
+                                    isLastInGroup: _lastColumn,
+                                    isGroupAlignedRight,
+                                    hasDoubleHeightBorder,
+                                    isGroupHeadingHover,
+                                }
+                            "
+                        ></ng-container>
+                    </div>
+                }
             }
 
             <!-- Hover Div -->
@@ -515,133 +515,20 @@
 
                     <!-- Actions -->
 
-                    <!-- Pin, Remove Column Action -->
-
-                    @let hasActions =
-                        !isTableLocked && !column.isDisabled && !isReorder;
-
-                    @if (hasActions) {
-                        @let tableColumnActionClass =
-                            {
+                    <ng-container
+                        *ngTemplateOutlet="
+                            actionsTemplate;
+                            context: {
+                                column,
+                                groupColumn,
                                 isHeadingHover,
                                 isGroupHeadingHover,
                                 isGroup,
                                 isLastInGroup,
                                 isPinned,
-                            } | tableColumnActionClass;
-
-                        <div
-                            class="d-flex position-relative right-0 new-table--row-heading-actions"
-                            [ngClass]="tableColumnActionClass"
-                        >
-                            <!-- Pin Column Action -->
-
-                            @let hasPinAction = !isGroup || isLastInGroup;
-
-                            @if (hasPinAction) {
-                                @let pinColumnTooltip =
-                                    isPinned
-                                        ? eGeneralActions.REMOVE_PIN
-                                        : isLastInGroup
-                                          ? eGeneralActions.PIN_GROUP
-                                          : eGeneralActions.PIN_COLUMN;
-
-                                @let pinColumnAction =
-                                    isLastInGroup ? groupColumn : column;
-
-                                <div
-                                    class="d-flex justfiy-content-center align-items-center m-r-2 c-pointer pin-action"
-                                    ngbTooltip
-                                    [mainTooltip]="pinColumnTooltip"
-                                    [tooltipBackground]="eColor.BLACK"
-                                    [position]="ePosition.BOTTOM"
-                                    (click)="onColumnPinAction(pinColumnAction)"
-                                >
-                                    @let pinColumnClass =
-                                        {
-                                            isPinned,
-                                            isPinAction: true,
-                                        } | tableColumnActionClass;
-
-                                    <svg-icon
-                                        class="svg-size-14"
-                                        [ngClass]="pinColumnClass"
-                                        [src]="sharedSvgRoutes.PIN_ICON"
-                                    ></svg-icon>
-                                </div>
                             }
-
-                            <!-- Remove Column Action -->
-
-                            @let hasRemoveColumnAction =
-                                !isGroup
-                                    ? !isPinned
-                                    : !isLastInGroup || !isPinned;
-
-                            @if (hasRemoveColumnAction) {
-                                @let removeColumnTooltip =
-                                    isLastInGroup
-                                        ? eGeneralActions.REMOVE_GROUP
-                                        : eGeneralActions.REMOVE_COLUMN;
-
-                                @let removeColumnAction =
-                                    isLastInGroup
-                                        ? groupColumn.key
-                                        : column.key;
-
-                                <div
-                                    class="d-flex justfiy-content-center align-items-center svg-fill-grey svg-hover-black c-pointer remove-column-action"
-                                    ngbTooltip
-                                    [mainTooltip]="removeColumnTooltip"
-                                    [tooltipBackground]="eColor.BLACK"
-                                    [position]="ePosition.BOTTOM"
-                                    (click)="
-                                        onColumnRemoveAction(removeColumnAction)
-                                    "
-                                >
-                                    <svg-icon
-                                        class="svg-size-18"
-                                        [src]="
-                                            sharedSvgRoutes.CLOSE_ICON_NORMAL
-                                        "
-                                    ></svg-icon>
-                                </div>
-                            }
-
-                            <!-- Reorder Column Action -->
-
-                            <div
-                                class="position-relative right--11 d-none reorder-action"
-                            >
-                                <svg-icon
-                                    class="svg-size-14"
-                                    [src]="sharedSvgRoutes.REORDER_COLUMN_ICON"
-                                ></svg-icon>
-                            </div>
-                        </div>
-                    } @else {
-                        <!-- Sort Column Action -->
-
-                        @let isSortActive = !!column.direction;
-
-                        @let sortColumnClass =
-                            {
-                                isSortActive,
-                                isSortAction: true,
-                            } | tableColumnActionClass;
-
-                        @let sortColumnIconSrc =
-                            !isSortActive ||
-                            column.direction === sortOrder.Ascending
-                                ? sharedSvgRoutes.SORT_ICON
-                                : sharedSvgRoutes.SORT_ICON_ASC;
-
-                        <svg-icon
-                            class="new-table--row-heading-arrow m-l-4 svg-size-14"
-                            [ngClass]="sortColumnClass"
-                            [src]="sortColumnIconSrc"
-                        ></svg-icon>
-                    }
+                        "
+                    ></ng-container>
                 </div>
 
                 <!-- Hover Div -->
@@ -663,6 +550,10 @@
         }
     </ng-template>
 </ng-template>
+
+<!-- #endregion COLUMN TEMPLATE -->
+
+<!-- #region CELL TEMPLATE -->
 
 <ng-template #cellTemplate let-column="column" let-row="row">
     @if (column.columns?.length) {
@@ -704,7 +595,10 @@
     >
         @if (column.isChecked) {
             @let tableColumnCellClass =
-                { 'p-l-7': hasPaddingLeft, 'm-r-7': hasMarginRight };
+                {
+                    'p-l-7': hasPaddingLeft,
+                    'm-r-7': hasMarginRight,
+                };
 
             @let tableColumnCellWidth =
                 {
@@ -741,3 +635,323 @@
         }
     </ng-template>
 </ng-template>
+
+<!-- #endregion CELL TEMPLATE -->
+
+<!-- #region ACTIONS TEMPLATE -->
+
+<ng-template
+    #actionsTemplate
+    let-column="column"
+    let-groupColumn="groupColumn"
+    let-isHeadingHover="isHeadingHover"
+    let-isGroupHeadingHover="isGroupHeadingHover"
+    let-isGroup="isGroup"
+    let-isLastInGroup="isLastInGroup"
+    let-isPinned="isPinned"
+>
+    <!-- Pin, Remove Column Action -->
+
+    @let hasActions = !isTableLocked && !column.isDisabled && !isReorder;
+
+    @if (hasActions) {
+        @let tableColumnActionClass =
+            {
+                isHeadingHover,
+                isGroupHeadingHover,
+                isGroup,
+                isLastInGroup,
+                isPinned,
+            } | tableColumnActionClass;
+
+        <div
+            class="d-flex position-relative right-0 new-table--row-heading-actions"
+            [ngClass]="tableColumnActionClass"
+        >
+            <!-- Pin Column Action -->
+
+            @let hasPinAction = !isGroup || isLastInGroup;
+
+            @if (hasPinAction) {
+                @let pinColumnTooltip =
+                    isPinned
+                        ? eGeneralActions.REMOVE_PIN
+                        : isLastInGroup
+                          ? eGeneralActions.PIN_GROUP
+                          : eGeneralActions.PIN_COLUMN;
+
+                @let pinColumnAction = isLastInGroup ? groupColumn : column;
+
+                <div
+                    class="d-flex justfiy-content-center align-items-center m-r-2 c-pointer pin-action"
+                    ngbTooltip
+                    [mainTooltip]="pinColumnTooltip"
+                    [tooltipBackground]="eColor.BLACK"
+                    [position]="ePosition.BOTTOM"
+                    (click)="onColumnPinAction(pinColumnAction)"
+                >
+                    @let pinColumnClass =
+                        {
+                            isPinned,
+                            isPinAction: true,
+                        } | tableColumnActionClass;
+
+                    <svg-icon
+                        class="svg-size-14"
+                        [ngClass]="pinColumnClass"
+                        [src]="sharedSvgRoutes.PIN_ICON"
+                    ></svg-icon>
+                </div>
+            }
+
+            <!-- Remove Column Action -->
+
+            @let hasRemoveColumnAction =
+                !isGroup ? !isPinned : !isLastInGroup || !isPinned;
+
+            @if (hasRemoveColumnAction) {
+                @let removeColumnTooltip =
+                    isLastInGroup
+                        ? eGeneralActions.REMOVE_GROUP
+                        : eGeneralActions.REMOVE_COLUMN;
+
+                @let removeColumnAction =
+                    isLastInGroup ? groupColumn.key : column.key;
+
+                <div
+                    class="d-flex justfiy-content-center align-items-center svg-fill-grey svg-hover-black c-pointer remove-column-action"
+                    ngbTooltip
+                    [mainTooltip]="removeColumnTooltip"
+                    [tooltipBackground]="eColor.BLACK"
+                    [position]="ePosition.BOTTOM"
+                    (click)="onColumnRemoveAction(removeColumnAction)"
+                >
+                    <svg-icon
+                        class="svg-size-18"
+                        [src]="sharedSvgRoutes.CLOSE_ICON_NORMAL"
+                    ></svg-icon>
+                </div>
+            }
+
+            <!-- Reorder Column Action -->
+
+            <div class="position-relative right--11 d-none reorder-action">
+                <svg-icon
+                    class="svg-size-14"
+                    [src]="sharedSvgRoutes.REORDER_COLUMN_ICON"
+                ></svg-icon>
+            </div>
+        </div>
+    } @else {
+        <!-- Sort Column Action -->
+
+        @let isSortActive = !!column.direction;
+
+        @let sortColumnClass =
+            {
+                isSortActive,
+                isSortAction: true,
+            } | tableColumnActionClass;
+
+        @let sortColumnIconSrc =
+            !isSortActive || column.direction === sortOrder.Ascending
+                ? sharedSvgRoutes.SORT_ICON
+                : sharedSvgRoutes.SORT_ICON_ASC;
+
+        <svg-icon
+            class="new-table--row-heading-arrow m-l-4 svg-size-14"
+            [ngClass]="sortColumnClass"
+            [src]="sortColumnIconSrc"
+        ></svg-icon>
+    }
+</ng-template>
+
+<!-- #endregion ACTIONS TEMPLATE -->
+
+<!-- #region DOCUMENTS DRAWER TEMPLATE -->
+
+<ng-template #documentsDrawerTemplate let-row="row">
+    <div
+        class="d-flex align-items-center background-black-2 p-x-4 br-t-3 br-b-0 m-b-2 scrollable-columns overflow-hidden"
+    >
+        @if (row) {
+            <div
+                class="d-flex align-items-center background-black-2 p-l-4 br-3 p-y-1 m-t-4 m-b-4 h-26 w-100 overflow-hidden"
+            >
+                <!-- Documents Drawer Left Columns -->
+
+                <div
+                    class="d-flex align-items-center background-inherit left-0 new-table--pinned-left"
+                >
+                    @for (
+                        column of leftPinnedDisabledColumns;
+                        track column.key
+                    ) {
+                        <ng-container
+                            *ngTemplateOutlet="
+                                cellTemplate;
+                                context: {
+                                    column,
+                                    row,
+                                }
+                            "
+                        ></ng-container>
+                    }
+                </div>
+
+                <!-- Counter -->
+
+                <div
+                    class="d-flex align-items-center p-x-8 border-left-bw6-2 border-right-bw6-2"
+                >
+                    <p
+                        class="m-r-4 ta-font-medium text-size-14 text-color-white"
+                    >
+                        Document
+                    </p>
+
+                    <div
+                        class="d-flex align-items-center justify-content-center w-fit-content h-18 p-y-2 p-x-5 br-50 background-bw-9"
+                    >
+                        <p
+                            class="m-0 ta-font-bold text-size-11 text-color-black"
+                        >
+                            {{ row.tableAttachments.length }}
+                            of
+                            {{ row.tableAttachments.length }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Filter -->
+
+                <div
+                    class="d-flex align-items-center justify-content-center p-x-8"
+                >
+                    <svg-icon
+                        class="svg-size-18"
+                        [src]="sharedSvgRoutes.FILTER_ICON"
+                    ></svg-icon>
+                </div>
+
+                <!-- Tags -->
+
+                <div class="d-flex align-items-center m-r-auto">
+                    <div
+                        class="d-flex align-items-center new-table--row-documents-drawer-row"
+                        [ngClass]="{
+                            active: isTagsRowExpanded,
+                        }"
+                    >
+                        @for (
+                            tag of row?.tableAttachmentTags;
+                            let tagIndex = $index;
+                            track tagIndex
+                        ) {
+                            @let documentsDrawerTagAction =
+                                {
+                                    rowId: row.id,
+                                    tagId: tag.id,
+                                };
+
+                            <div
+                                class="d-flex align-items-center justify-content-center w-fit-content h-18 p-y-0 p-x-8 br-50 m-r-4 c-pointer new-table--row-documents-drawer-row-tag"
+                                [ngClass]="
+                                    tag.isSelected
+                                        ? 'background-blue-18 background-hover-blue-16 text-color-white text-hover-blue-15'
+                                        : 'background-black background-hover-bw2 text-color-white text-hover-black'
+                                "
+                                ngbTooltip
+                                [mainTooltip]="
+                                    tag?.isSelected
+                                        ? eGeneralActions.REMOVE
+                                        : eGeneralActions.SELECT
+                                "
+                                [tooltipBackground]="eColor.BLACK"
+                                [position]="ePosition.BOTTOM"
+                                (click)="
+                                    onDocumentsDrawerAction(
+                                        eGeneralActions.TAG,
+                                        documentsDrawerTagAction
+                                    )
+                                "
+                            >
+                                <p class="m-0 ta-font-bold text-size-11">
+                                    {{ tag.title }}
+                                </p>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Expand Tags Btn -->
+
+                    <div
+                        class="d-flex align-items-center justify-content-center svg-hover-bw-9 c-pointer"
+                        [ngStyle]="{
+                            transform: isTagsRowExpanded
+                                ? 'unset'
+                                : 'rotate(180deg)',
+                        }"
+                        ngbTooltip
+                        [mainTooltip]="
+                            isTagsRowExpanded
+                                ? eGeneralActions.COLLAPSE
+                                : eGeneralActions.EXPAND
+                        "
+                        [tooltipBackground]="eColor.BLACK"
+                        [position]="ePosition.BOTTOM"
+                        (click)="
+                            onDocumentsDrawerAction(
+                                eGeneralActions.EXPAND_COLLAPSE
+                            )
+                        "
+                    >
+                        <svg-icon
+                            class="svg-fill-grey position-relative"
+                            [class]="isTagsRowExpanded ? 'top-0' : 'top--2'"
+                            [src]="sharedSvgRoutes.EXPAND_TAGS_ICON"
+                        ></svg-icon>
+                    </div>
+                </div>
+
+                <!-- Documents Drawer Right Columns -->
+
+                <div
+                    class="d-flex align-items-center background-inherit right-0 new-table--pinned-right"
+                >
+                    @for (
+                        column of rightPinnedDocumentsDrawerColumns;
+                        track column.key
+                    ) {
+                        <ng-container
+                            *ngTemplateOutlet="
+                                cellTemplate;
+                                context: {
+                                    column,
+                                    row,
+                                }
+                            "
+                        ></ng-container>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Documents -->
+
+    <div
+        class="d-flex position-relative top--2 h-202 br-b-3 background-light-grey-5"
+    >
+        <app-ta-upload-files
+            #documents
+            [customClassName]="'table-details'"
+            [size]="'extralarge'"
+            [reviewMode]="'REVIEW_MODE'"
+            [slideWidth]="209"
+            [files]="row?.tableAttachments"
+        ></app-ta-upload-files>
+    </div>
+</ng-template>
+
+<!-- #endregion DOCUMENTS DRAWER TEMPLATE -->

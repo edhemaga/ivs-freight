@@ -225,6 +225,15 @@ export const loadReducer = createReducer(
 
     //#endregion
 
+    //#region Files
+    on(LoadActions.onGetLoadFiles, (state, { files, loadId }) =>
+        Functions.setLoadFiles(state, files, loadId)
+    ),
+    on(LoadActions.onFilterLoadFiles, (state, { tagAction }) =>
+        Functions.filterLoadFiles(state, tagAction)
+    ),
+    //#endregion Files
+
     //#region Comments
     on(LoadActions.onAddLoadComment, (state) => ({ ...state })),
     on(LoadActions.onAddLoadCommentSuccess, (state, { comment, loadId }) => {

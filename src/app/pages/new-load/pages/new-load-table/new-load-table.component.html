@@ -37,7 +37,6 @@
             companyName,
             brokerBusinessName,
             brokerContact,
-            comments,
             brokerPhone,
             referenceNumber,
             commodity,
@@ -69,8 +68,13 @@
             datePaid: dateTemplate,
             dateCreated: dateTemplate,
             dateEdited: dateTemplate,
+            files,
+            comments,
             note,
             action,
+            documentsDrawerDownloadAll,
+            closeDocumentsDrawer,
+            documentsDrawerAction: action,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
@@ -78,6 +82,8 @@
     <app-new-table
         [columns]="store.columns"
         [rows]="store.viewData"
+        [documentsDrawerActiveRowId]="selectedFilesLoadId"
+        [isDownloadAllFilesAction]="isDownloadAllFilesAction"
         [isTableLocked]="isTableLocked"
         [totalDataCount]="store.selectedTabCountSelector"
         [headerTemplates]="headerTemplates"
@@ -87,7 +93,8 @@
         (onColumnRemove)="onColumnRemove($event)"
         (onColumnResize)="onColumnResize($event)"
         (onColumnReorder)="onColumnReorder($event)"
-        (onShowMore)="onShowMoreClick()"
+        (onShowMore)="onShowMore()"
+        (onDocumentsDrawerTag)="onDocumentsDrawerTag($event)"
     >
         <!-- Header Templates -->
 
@@ -133,33 +140,29 @@
         <!-- #region PICKUP & DELIVERY HEADER COLUMN -->
 
         <ng-template #pickupDeliveryHeaderTemplate>
-            <div class="d-flex align-items-center w-100">
-                <div class="d-flex align-items-center w-50">
+            <div class="d-flex align-items-center w-80p">
+                <div class="d-flex align-items-center w-62p">
                     <svg-icon
                         [src]="sharedSvgRoutes.PICKUP_ICON"
                         class="d-flex svg-fill-green svg-size-14 m-l-6 m-r-6"
                     >
                     </svg-icon>
 
-                    <div
-                        class="text-size-11 ta-font-bold color-inherit text-uppercase"
-                    >
+                    <p class="text-size-11 ta-font-bold color-inherit">
                         PICKUP
-                    </div>
+                    </p>
                 </div>
 
-                <div class="d-flex align-items-center w-50">
+                <div class="d-flex align-items-center">
                     <svg-icon
                         [src]="sharedSvgRoutes.DELIVERY_ICON"
                         class="d-flex svg-fill-orange-4 svg-size-14 m-l-6 m-r-6"
                     >
                     </svg-icon>
 
-                    <div
-                        class="text-size-11 ta-font-bold color-inherit text-uppercase"
-                    >
+                    <p class="text-size-11 ta-font-bold color-inherit">
                         DELIVERY
-                    </div>
+                    </p>
                 </div>
             </div>
         </ng-template>
@@ -238,7 +241,12 @@
                 }
 
                 <span
-                    class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
+                    class="c-pointer text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
+                    [class]="
+                        selectedFilesLoadId === data.id
+                            ? 'text-color-white'
+                            : 'text-color-black'
+                    "
                     ngbTooltip
                     [mainTooltip]="eGeneralActions.VIEW_DETAILS"
                     [tooltipBackground]="eColor.BLACK"
@@ -267,7 +275,14 @@
                     </app-load-type>
                 }
 
-                <p class="text-color-black text-size-14 ta-font-bold">
+                <p
+                    class="text-size-14 ta-font-bold"
+                    [class]="
+                        selectedFilesLoadId === data.id
+                            ? 'text-color-white'
+                            : 'text-color-black'
+                    "
+                >
                     {{ data.templateName }}
                 </p>
             </div>
@@ -310,7 +325,7 @@
 
         <ng-template let-data="data" #companyName>
             <div
-                class="text-color-black-2 text-size-14"
+                class="text-color-black-2 text-size-14 text-truncate"
                 [innerHtml]="
                     data.companyName
                         | tableHighlightSearchText: store.searchStrings
@@ -390,28 +405,30 @@
         <!-- #region ASSIGNED GROUP -->
 
         <ng-template #assignedDriver let-data="data">
-            <div class="d-flex gap-1">
-                @let driverFullName =
-                    data.assignedDriver?.firstName +
-                    eStringPlaceholder.WHITESPACE +
-                    data.assignedDriver?.lastName;
+            @if (data.assignedDriver) {
+                <div class="d-flex gap-1">
+                    @let driverFullName =
+                        data.assignedDriver?.firstName +
+                        eStringPlaceholder.WHITESPACE +
+                        data.assignedDriver?.lastName;
 
-                <app-ca-profile-image
-                    [name]="driverFullName"
-                    [isRound]="false"
-                    [size]="18"
-                    [avatarImg]="data.assignedDriver?.avatarFile?.url"
-                >
-                </app-ca-profile-image>
+                    <app-ca-profile-image
+                        [name]="driverFullName"
+                        [isRound]="false"
+                        [size]="18"
+                        [avatarImg]="data.assignedDriver?.avatarFile?.url"
+                    >
+                    </app-ca-profile-image>
 
-                <div
-                    class="text-color-black-2 text-size-14"
-                    [innerHtml]="
-                        driverFullName
-                            | tableHighlightSearchText: store.searchStrings
-                    "
-                ></div>
-            </div>
+                    <div
+                        class="text-color-black-2 text-size-14"
+                        [innerHtml]="
+                            driverFullName
+                                | tableHighlightSearchText: store.searchStrings
+                        "
+                    ></div>
+                </div>
+            }
         </ng-template>
 
         <ng-template let-data="data" #assignedDriverTruckNumber>
@@ -612,29 +629,29 @@
             </p>
         </ng-template>
 
-        <ng-template let-data="data" #action>
-            <div class="d-flex h-26">
-                <ca-dropdown-menu
-                    [type]="'dots-menu-type'"
-                    [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
-                    [options]="data.tableDropdownContent"
-                    (dropdownOptionEmitter)="
-                        onToggleDropdownMenuActions(
-                            $event,
-                            data,
-                            store.selectedTab
-                        )
-                    "
-                >
-                </ca-dropdown-menu>
+        <!-- #endregion END OF DATE COLUMN -->
+
+        <!-- #region DOCUMENTS COLUMN -->
+
+        <ng-template #files let-data="data">
+            <div class="d-flex align-items-center overflow-hidden h-25p">
+                <app-ca-files-count
+                    [rowId]="data.id"
+                    [filesCount]="data.fileCount"
+                    (onFilesCountAction)="onFilesCountClick($event)"
+                ></app-ca-files-count>
             </div>
         </ng-template>
 
-        <!-- #region Comments -->
-        <ng-template let-data="data" #comments>
+        <!-- #endregion END OF DOCUMENTS COLUMN -->
+
+        <!-- #region COMMENTS COLUMN -->
+
+        <ng-template #comments let-data="data">
             @let loadId = data?.id;
             @let isSelected = loadId === selectedCommentsLoadId;
             @let commentCount = data?.comments?.length;
+
             <div
                 class="w-26 h-26 d-flex place-items-center c-pointer br-2 m-t-1"
                 [class.background-black]="isSelected"
@@ -651,6 +668,7 @@
                     ></svg-icon>
                 </div>
             </div>
+
             @if (isSelected) {
                 <div class="position-absolute z-1">
                     <div class="position-relative">
@@ -675,9 +693,12 @@
                 </div>
             }
         </ng-template>
-        <!-- #endregion End of Comments -->
 
-        <ng-template let-data="data" #note>
+        <!-- #endregion END OF COMMENTS COLUMN -->
+
+        <!-- #region NOTE COLUMN -->
+
+        <ng-template #note let-data="data">
             @let entityType =
                 store.selectedTab === eSharedString.TEMPLATE
                     ? eSharedString.LOAD_TEMPLATE
@@ -694,19 +715,70 @@
             </app-ta-note>
         </ng-template>
 
-        <ng-template let-data="data" #action>
-            <ca-dropdown-menu
-                [type]="'dots-menu-type'"
-                [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
-                [options]="data.tableDropdownContent"
-                (dropdownOptionEmitter)="
-                    onToggleDropdownMenuActions($event, data, store.selectedTab)
-                "
-            >
-            </ca-dropdown-menu>
+        <!-- #endregion END OF NOTE COLUMN -->
+
+        <!-- #region ACTIONS COLUMN -->
+
+        <ng-template #action let-data="data">
+            <div class="d-flex h-26">
+                <ca-dropdown-menu
+                    [type]="'dots-menu-type'"
+                    [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
+                    [options]="data.tableDropdownContent"
+                    [isDarkBackground]="selectedFilesLoadId === data.id"
+                    (dropdownOptionEmitter)="
+                        onToggleDropdownMenuActions(
+                            $event,
+                            data,
+                            store.selectedTab
+                        )
+                    "
+                >
+                </ca-dropdown-menu>
+            </div>
         </ng-template>
 
-        <!-- #endregion END OF ACTIONS -->
+        <!-- #endregion END OF ACTIONS COLUMN -->
+
+        <!-- #region DOCUMENTS DRAWER DOWNLOAD ALL COLUMN -->
+
+        <ng-template #documentsDrawerDownloadAll>
+            <div
+                class="d-flex align-items-center justify-content-center c-pointer br-2 background-hover-dark-3 svg-hover-bw-9"
+                ngbTooltip
+                [mainTooltip]="eGeneralActions.DOWNLOAD_ALL"
+                [tooltipBackground]="eColor.BLACK"
+                [position]="ePosition.BOTTOM"
+                (click)="onDocumentsDrawerAction(eGeneralActions.DOWNLOAD_ALL)"
+            >
+                <svg-icon
+                    class="svg-size-18 svg-fill-grey position-relative bottom-1"
+                    [src]="sharedSvgRoutes.DOWNLOAD_ALL"
+                ></svg-icon>
+            </div>
+        </ng-template>
+
+        <!-- #endregion DOCUMENTS DRAWER DOWNLOAD ALL COLUMN -->
+
+        <!-- #region CLOSE DOCUMENTS DRAWER COLUMN -->
+
+        <ng-template #closeDocumentsDrawer>
+            <div
+                class="d-flex align-items-center justify-content-center c-pointer br-2 background-hover-dark-3 svg-hover-bw-9"
+                ngbTooltip
+                [mainTooltip]="eGeneralActions.CLOSE"
+                [tooltipBackground]="eColor.BLACK"
+                [position]="ePosition.BOTTOM"
+                (click)="onDocumentsDrawerAction(eGeneralActions.CLOSE)"
+            >
+                <svg-icon
+                    class="svg-size-18 svg-fill-grey"
+                    [src]="sharedSvgRoutes.CLOSE_ICON_NORMAL"
+                ></svg-icon>
+            </div>
+        </ng-template>
+
+        <!-- #endregion CLOSE DOCUMENTS DRAWER COLUMN -->
     </app-new-table>
 
     <ng-template #statusPopover>
