@@ -4,7 +4,7 @@ export enum eUserModalForm {
     LAST_NAME = 'lastName',
     DEPARTMENT = 'departmentId',
     IS_ADMIN = 'isAdmin',
-    OFFICE = 'officeId',
+    OFFICE = 'companyOfficeId',
     PHONE = 'phone',
     PHONE_EXTENSION = 'extensionPhone',
     PERSONAL_PHONE = 'personalPhone',
