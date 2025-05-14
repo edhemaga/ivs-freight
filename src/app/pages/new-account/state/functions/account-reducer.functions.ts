@@ -15,6 +15,7 @@ import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers
 // Interfaces
 import { IAccountState } from '@pages/new-account/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interfaces';
+import { ICardValueData } from '@shared/interfaces';
 
 // Helpers
 import { AccountHelper } from '@pages/new-account/utils/helpers';
@@ -162,6 +163,44 @@ export function toggleColumnVisibility(
     return {
         ...state,
         tableColumns,
+    };
+}
+
+export function toggleCardFlipViewMode(state: IAccountState): IAccountState {
+    const {
+        cardFlipViewMode,
+        activeViewMode,
+        tableSettings,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
+
+    const nextCardFlipViewMode =
+        cardFlipViewMode === eCardFlipViewMode.FRONT
+            ? eCardFlipViewMode.BACK
+            : eCardFlipViewMode.FRONT;
+
+    return {
+        ...state,
+        cardFlipViewMode: nextCardFlipViewMode,
+        toolbarDropdownMenuOptions:
+            DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                nextCardFlipViewMode,
+                isToolbarDropdownMenuColumnsActive
+            ),
+    };
+}
+
+export function setColumnsModalResult(
+    state: IAccountState,
+    frontSideData: ICardValueData[],
+    backSideData: ICardValueData[]
+): IAccountState {
+    return {
+        ...state,
+        frontSideData,
+        backSideData,
     };
 }
 //#endregion

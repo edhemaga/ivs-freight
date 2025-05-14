@@ -21,6 +21,7 @@ import {
 
 // Interfaces
 import { IMappedAccount } from '@pages/new-account/interfaces';
+import { ICardValueData } from '@shared/interfaces';
 
 // NgRx
 import { select, Store } from '@ngrx/store';
@@ -70,6 +71,14 @@ export class AccountStoreService {
     > = this.store.pipe(
         select(AccountSelector.toolbarDropdownMenuOptionsSelector)
     );
+    public cardFlipViewModeSelector$: Observable<string> = this.store.pipe(
+        select(AccountSelector.cardFlipViewModeSelector)
+    );
+    public frontSideDataSelector$: Observable<ICardValueData[]> =
+        this.store.pipe(select(AccountSelector.frontSideDataSelector));
+
+    public backSideDataSelector$: Observable<ICardValueData[]> =
+        this.store.pipe(select(AccountSelector.backSideDataSelector));
 
     constructor(private store: Store) {}
 
@@ -210,5 +219,17 @@ export class AccountStoreService {
 
     public selectAccountById(id: number): void {
         this.selectedAccountId$.next(id);
+    }
+
+    public dispatchToggleCardFlipViewMode(): void {
+        this.store.dispatch({
+            type: AccountStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE,
+        });
+    }
+
+    public dispatchOpenColumnsModal(): void {
+        this.store.dispatch({
+            type: AccountStoreConstants.ACTION_OPEN_COLUMNS_MODAL,
+        });
     }
 }
