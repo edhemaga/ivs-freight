@@ -100,6 +100,14 @@ export class NewAccountComponent {
     //     );
     // }
 
+    private handleFlipAllCards(): void {
+        this.accountStoreService.dispatchToggleCardFlipViewMode();
+    }
+
+    private openColumnsModal(): void {
+        this.accountStoreService.dispatchOpenColumnsModal();
+    }
+
     public onSearchQueryChange(query: string[]): void {
         this.accountStoreService.dispatchSearchChange(query);
     }
@@ -145,6 +153,12 @@ export class NewAccountComponent {
                 break;
             case eDropdownMenuColumns.COLUMNS_BACK_TYPE:
                 this.setToolbarDropdownMenuColumnsActive(false);
+                break;
+            case eDropdownMenuColumns.FLIP_ALL_CARDS_TYPE:
+                this.handleFlipAllCards();
+                break;
+            case eDropdownMenuColumns.COLUMNS_CARD_TYPE:
+                this.openColumnsModal();
                 break;
             default:
                 this.toggleColumnVisibility(type, isActive);

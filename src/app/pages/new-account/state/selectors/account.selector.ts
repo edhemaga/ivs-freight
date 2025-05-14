@@ -3,6 +3,9 @@ import { IAccountState } from '@pages/new-account/interfaces';
 
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
+// Enums
+import { eCardFlipViewMode } from '@shared/enums';
+
 export const accountFeatureKey: string = 'account';
 
 //#region List
@@ -91,3 +94,23 @@ export const searchStringsSelector = createSelector(
     (state: IAccountState) => state.filters?.searchQuery
 );
 //#endregion
+
+// #region Cards
+export const cardFlipViewModeSelector = createSelector(
+    selectAccountState,
+    (state: IAccountState) => {
+        const { cardFlipViewMode } = state || {};
+        return eCardFlipViewMode[cardFlipViewMode];
+    }
+);
+
+export const frontSideDataSelector = createSelector(
+    selectAccountState,
+    (state: IAccountState) => state.frontSideData
+);
+
+export const backSideDataSelector = createSelector(
+    selectAccountState,
+    (state: IAccountState) => state.backSideData
+);
+// #endregion

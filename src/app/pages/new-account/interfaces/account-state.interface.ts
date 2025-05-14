@@ -1,14 +1,14 @@
-import { eCommonElement } from '@shared/enums';
+// enums
+import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
 
+// interfaces
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import {
     ITableColumn,
     ITableConfig,
 } from '@shared/components/new-table/interfaces';
-
-// Interfaces
 import { IMappedAccount } from '@pages/new-account/interfaces';
-import { IStateFilters } from '@shared/interfaces';
+import { ICardValueData, IStateFilters } from '@shared/interfaces';
 
 export interface IAccountState {
     accountList: IMappedAccount[];
@@ -26,4 +26,9 @@ export interface IAccountState {
     // Hamburger menu options
     toolbarDropdownMenuOptions: IDropdownMenuItem[];
     isToolbarDropdownMenuColumnsActive: boolean;
+
+    // Cards
+    cardFlipViewMode: eCardFlipViewMode;
+    frontSideData: ICardValueData[];
+    backSideData: ICardValueData[];
 }
