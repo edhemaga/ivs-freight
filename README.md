@@ -1,5 +1,5 @@
 # My latest Angular portfolio. 
-### Angular 14 to 17 versions were used in the project. 
+### Angular 13 to 17 versions were used in the project. 
 
 Involved over the entire project but was the owner and built it completely from scratch: 'Chat'
 
